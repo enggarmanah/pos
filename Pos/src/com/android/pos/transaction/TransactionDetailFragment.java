@@ -178,8 +178,8 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		
 		totalOrder = totalOrder - discount;
 		
-		int tax = (int) Math.round(0.1 * totalOrder);
-		int serviceCharge = (int) Math.round(0.05 * totalOrder);
+		int tax = mTransaction.getTaxAmount();
+		int serviceCharge = mTransaction.getServiceChargeAmount();
 		
 		mTaxText.setText(CommonUtil.formatCurrency(tax));
 		mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));
