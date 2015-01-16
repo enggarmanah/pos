@@ -1,0 +1,142 @@
+<!--
+  Copyright 2013 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">POS Waroeng 1.0</string>
+    
+    <string-array name="app_menus">
+        <item>Kasir</item>
+        <item>Transaksi Hari Ini</item>
+        <item>Pengeluaran</item>
+        <item>Rekap Untung Rugi</item>
+        <item>Statistik</item>
+        <item>Manajemen Pengguna</item>
+        <item>Manajemen Data</item>
+        <item>Keluar</item>
+    </string-array>
+    
+    <string name="menu_cashier">Kasir</string>
+    <string name="menu_today_transaction">Transaksi Hari Ini</string>
+    <string name="menu_expense">Pengeluaran</string>
+    <string name="menu_profit_lost">Rekap Untung Rugi</string>
+    <string name="menu_statistic">Statistik</string>
+    <string name="menu_user_management">Manajemen Pengguna</string>
+    <string name="menu_data_management">Manajemen Data</string>
+    <string name="menu_logout">Keluar</string> 
+    
+    <string name="module_merchant">Data Merchant</string>
+    <string name="module_product_group">Data Group Produk</string>
+    <string name="module_product">Data Produk</string>
+    <string name="module_employee">Data Pegawai</string>
+    <string name="module_customer">Data Pelanggan</string>
+    <string name="module_discount">Data Diskon</string>
+    
+    <string name="empty"></string>
+    <string name="search">Cari</string>
+    <string name="add">Tambah</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Batal</string>
+    <string name="delete">Hapus</string>
+    <string name="select">Pilih</string>
+    <string name="confirmation">Konfirmasi</string>
+    <string name="none"></string>
+    
+    <string name="product_search">Cari Produk</string>
+    <string name="product_list">Daftar Produk</string>
+    <string name="product_add">Tambah Produk</string>
+    <string name="product_group_list">Kategori Produk</string>
+    
+    <string name="msg_notification_search_action">Masukkan kata pencarian pada kolom di atas.</string>
+    <string name="msg_product_success">Produk telah berhasil disimpan.</string>
+    
+    <string name="field_name">Nama</string>
+    <string name="field_type">Tipe</string>
+    <string name="field_group">Kategori</string>
+    <string name="field_price">Harga</string>
+    <string name="field_pic_required">Butuh PIC</string>
+    <string name="field_commision">Komisi</string>
+    <string name="field_promo_price">Harga Promo</string>
+    <string name="field_promo_start">Awal Promo</string>
+    <string name="field_promo_end">Akhir Promo</string>
+    <string name="field_status">Status</string>
+    <string name="field_address">Alamat</string>
+    <string name="field_contact_name">Manajer</string>
+    <string name="field_contact_telephone">Telepon</string>
+    <string name="field_login_id">Login Id</string>
+    <string name="field_password">Password</string>
+    <string name="field_period_start">Awal Akses</string>
+    <string name="field_period_end">Akhir Akses</string>
+    <string name="field_tax_percentage">Pajak (%)</string>
+    <string name="field_service_charge_percentage">Service Charge (%)</string>
+    <string name="field_role">Hak Akses</string>
+    <string name="field_telephone">Telepon</string>
+    <string name="field_email">Email</string>
+    <string name="field_emailStatus">Status Email</string>
+    <string name="field_percentage">Persentase</string>
+    
+    <string name="count">Jumlah</string>
+    <string name="number_0">0</string>
+    <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="number_6">6</string>
+    <string name="number_7">7</string>
+    <string name="number_8">8</string>
+    <string name="number_9">9</string>
+    <string name="number_c">C</string>
+    <string name="delete_char">X</string>
+    
+    <string name="total">Total</string>
+    <string name="payment">Bayar</string>
+    <string name="payment_type">Tipe</string>
+    <string name="change">Kembali</string>
+    <string name="order">Pemesanan</string>
+    <string name="print">Print Nota</string>
+    
+    <string name="product_group">Kategori</string>
+    <string name="product">Produk</string>
+    
+    <string name="select_discount">Pilih Diskon</string>
+    <string name="discount">Diskon</string>
+    <string name="no_discount">Tanpa Diskon</string>
+    <string name="tax">Pajak PPN</string>
+    <string name="service_charge">Service Charge</string>
+    <string name="transaction_summary">Konfirmasi Transaksi</string>
+    
+    <string name="customer">Pelanggan</string>
+    <string name="search_customer">Cari Pelanggan</string>
+    <string name="select_customer">Pilih Pelanggan</string>
+    <string name="track_customer">Catat Pelanggan</string>
+    <string name="no_customer">Tanpa Pelanggan</string>
+    
+    <string name="transaction">Transaksi</string>
+    <string name="transaction_no">No. Transaksi</string>
+    <string name="transaction_cashier">Kasir</string>
+    <string name="transaction_list">Daftar Transaksi</string>
+    
+    <string name="none_paired">Tidak ada printer yang terhubung</string>
+    <string name="scanning">Melaksanakan scanning printer</string>
+    <string name="select_device">Silahkan pilih printer</string>
+    <string name="none_found">Tidak ada printer yang ditemukan</string>
+    
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    
+</resources>

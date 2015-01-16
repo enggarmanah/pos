@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/RightFragmentStyle" >
+
+    <LinearLayout style="@style/FormStyle" >
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_name" />
+
+            <EditText
+                android:id="@+id/nameTxt"
+                style="@style/FormInputStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_type" />
+
+            <Spinner
+                android:id="@+id/typeSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_group" />
+
+            <Spinner
+                android:id="@+id/productGrpSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_price" />
+
+            <EditText
+                android:id="@+id/priceTxt"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_pic_required" />
+
+            <Spinner
+                android:id="@+id/picRequiredSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_commision" />
+
+            <EditText
+                android:id="@+id/commisionTxt"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_promo_price" />
+
+            <EditText
+                android:id="@+id/promoPriceTxt"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_promo_start" />
+
+            <EditText
+                android:id="@+id/promoStartDate"
+                style="@style/FormInputDateStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_promo_end" />
+
+            <EditText
+                android:id="@+id/promoEndDate"
+                style="@style/FormInputDateStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_status" />
+
+            <Spinner
+                android:id="@+id/statusSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/FormButtonLayoutStyle" >
+
+            <Button
+                android:id="@+id/okBtn"
+                style="@style/OkButtonStyle" />
+
+            <View style="@style/ButtonDividerStyle" />
+
+            <Button
+                android:id="@+id/cancelBtn"
+                style="@style/CancelButtonStyle" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

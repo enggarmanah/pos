@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+    <color name="header_background">#2d5b81</color>
+    <color name="header_text">#FFF</color>
+    
+    <color name="dialog_header_text">#FFF</color>
+    <color name="dialog_header_background">#285275</color>
+    
+    <color name="dialog_button_text">#FFF</color>
+    <color name="dialog_button_background">#285275</color>
+    
+    <color name="section_header_background">#aac8e1</color>
+    <color name="section_header_text">#40444d</color>
+    
+    <color name="border_gray">#AAA</color>
+    <color name="border_white">#FFF</color>
+    <color name="border_blue">#c3d8ea</color>
+    
+    <color name="text_light">#808694</color>
+    <color name="text_default">#50545f</color>
+    <color name="text_dark">#40444d</color>
+    <color name="text_blue">#5e98c7</color>
+    
+    <color name="background">#FFF</color>
+    <color name="background_blue">#aac8e1</color>
+    <color name="background_blue_light">#cfe1ef</color>
+    
+    <color name="payment_disc_tax_charge_text">#50545f</color>
+    <color name="payment_disc_tax_charge_background">#FFF</color>
+    <color name="payment_total_text">#40444d</color>
+    <color name="payment_total_background">#cfe1ef</color>
+    <color name="payment_btn_text">#FFF</color>
+    <color name="payment_btn_background">#2d5b81</color>
+    
+    <color name="form_text_background">#FFFFFF</color>
+    <color name="left_panel_background">#DDDDDD</color>
+    
+    <color name="list_divider">#EEE</color>
+    <color name="button_divider">#999</color>
+    
+    <color name="search_row_start">#DEDEDE</color>
+    <color name="search_row_end">#DEDEDE</color>
+    
+    <color name="input_text">#333</color>
+    
+    <color name="list_row_background">#FFF</color>
+    <color name="list_row_normal_text">#50545f</color>
+    <color name="list_row_normal_light_text">#5e98c7</color>
+    <color name="list_row_normal_background">#FFF</color>
+    <color name="list_row_selected_text">#50545f</color>
+    <color name="list_row_selected_background">#e2f3fd</color>
+    
+    <color name="button_normal">#e9f1f7</color>
+    <color name="button_pressed">#90b8d9</color>
+    <color name="button_focused">#90b8d9</color>
+    
+    <color name="button_darkblue_normal">#2d5b81</color>
+	
+</resources>

@@ -1,0 +1,89 @@
+<!--
+  Copyright 2013 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.pos"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="21" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/app_theme" >
+        <activity
+            android:name="com.android.pos.cashier.CashierActivity"
+            android:label="@string/menu_cashier"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.cashier.CashierPaymentDeviceListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity
+            android:name="com.android.pos.user.UserMgtActivity"
+            android:label="@string/menu_user_management" >
+        </activity>
+        <activity
+            android:name="com.android.pos.reference.MainMenuActivity"
+            android:label="@string/menu_data_management" >
+        </activity>
+        <activity
+            android:name="com.android.pos.reference.merchant.MerchantMgtActivity"
+            android:label="@string/module_merchant" >
+        </activity>
+        <activity
+            android:name="com.android.pos.reference.productGrp.ProductGrpMgtActivity"
+            android:label="@string/module_product_group" >
+        </activity>
+        <activity
+            android:name="com.android.pos.reference.product.ProductMgtActivity"
+            android:label="@string/module_product" >
+        </activity>
+        <activity
+            android:name="com.android.pos.reference.employee.EmployeeMgtActivity"
+            android:label="@string/module_employee" >
+        </activity>
+        <activity
+            android:name="com.android.pos.reference.customer.CustomerMgtActivity"
+            android:label="@string/module_customer" >
+        </activity>
+        <activity
+            android:name="com.android.pos.reference.discount.DiscountMgtActivity"
+            android:label="@string/module_discount" >
+        </activity>
+        <activity
+            android:name="com.android.pos.transaction.TransactionActivity"
+            android:label="@string/menu_today_transaction"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

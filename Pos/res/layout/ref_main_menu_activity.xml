@@ -1,0 +1,76 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- As the main content view, the view below consumes the entire
+         space available using match_parent in both dimensions. -->
+    
+    <LinearLayout
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        
+        <Button
+            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:text="@string/module_merchant"
+            android:textSize="17sp"
+            android:onClick="goToModuleMerchant"/>
+        
+        <Button
+            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:text="@string/module_product_group"
+            android:textSize="17sp"
+            android:onClick="goToModuleProductGroup"/>
+        
+        <Button
+            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:text="@string/module_product"
+            android:textSize="17sp"
+            android:onClick="goToModuleProduct"/>
+        
+        <Button
+            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:text="@string/module_employee"
+            android:textSize="17sp"
+            android:onClick="goToModuleEmployee"/>
+        
+        <Button
+            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:text="@string/module_customer"
+            android:textSize="17sp"
+            android:onClick="goToModuleCustomer"/>
+        
+        <Button
+            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:text="@string/module_discount"
+            android:textSize="17sp"
+            android:onClick="goToModuleDiscount"/>
+        
+    </LinearLayout>
+
+    <!-- android:layout_gravity="start" tells DrawerLayout to treat
+         this as a sliding drawer on the left side for left-to-right
+         languages and on the right side for right-to-left languages.
+         The drawer is given a fixed width in dp and extends the full height of
+         the container. A solid background is used for contrast
+         with the content view. -->
+    <ListView
+        android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#111"/>
+    
+</android.support.v4.widget.DrawerLayout>

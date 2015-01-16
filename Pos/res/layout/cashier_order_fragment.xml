@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LeftFragmentStyle" >
+
+    <LinearLayout
+        android:id="@+id/topPanel"
+        style="@style/SectionTopPanelStyle">
+
+        <TextView
+            android:id="@+id/navigationTitle"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/order"
+            style="@style/SectionTopTextStyle"/>
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/belowPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/discountPanel"
+            style="@style/PaymentRowStyle" >
+
+            <TextView
+                android:id="@+id/discountLabelText"
+                style="@style/PaymentRowContentLeftStyle" />
+
+            <TextView
+                android:id="@+id/discountText"
+                style="@style/PaymentRowContentRightStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/taxPanel"
+            style="@style/PaymentRowStyle" >
+
+            <TextView
+                style="@style/PaymentRowContentLeftStyle"
+                android:text="@string/tax" />
+
+            <TextView
+                android:id="@+id/taxText"
+                style="@style/PaymentRowContentRightStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/serviceChargePanel"
+            style="@style/PaymentRowStyle" >
+
+            <TextView
+                style="@style/PaymentRowContentLeftStyle"
+                android:text="@string/service_charge" />
+
+            <TextView
+                android:id="@+id/serviceChargeText"
+                style="@style/PaymentRowContentRightStyle" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/PaymentRowTotalStyle" >
+
+            <TextView
+                style="@style/PaymentRowTotalContentLeftStyle"
+                android:text="@string/total" />
+
+            <TextView
+                android:id="@+id/totalOrderText"
+                style="@style/PaymentRowTotalContentRightStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/payment_btn_background"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp" >
+
+            <TextView
+                android:id="@+id/paymentText"
+                style="@style/CashierButtonStyle"
+                android:text="@string/payment"
+                android:textColor="@color/payment_btn_text" />
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="@color/payment_btn_text" />
+
+            <TextView
+                android:id="@+id/cancelText"
+                style="@style/CashierButtonStyle"
+                android:text="@string/cancel"
+                android:textColor="@color/payment_btn_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        style="@style/ListViewWrapperStyle"
+        android:layout_above="@id/belowPanel"
+        android:layout_below="@id/topPanel" >
+
+        <ListView
+            android:id="@+id/transactionItemList"
+            style="@style/ListViewStyle"/>
+    </FrameLayout>
+
+</RelativeLayout>

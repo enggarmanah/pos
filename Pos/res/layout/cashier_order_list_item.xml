@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListViewRowStyle">
+
+    <TextView
+        android:id="@+id/quantityText"
+        style="@style/ListViewRowTransItemCountTextStyle"/>
+    
+    <LinearLayout
+        style="@style/ListViewRowTransItemNameTextStyle"
+        android:orientation="vertical">
+    	
+        <TextView
+	        android:id="@+id/nameText"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	        android:textColor="@color/list_row_normal_text"
+	        android:textSize="16sp"
+	        android:textStyle="bold"/>
+        
+        <TextView
+	        android:id="@+id/picText"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent"
+	        android:textColor="#777"
+	        android:textSize="16sp"
+	        android:textStyle="bold"/>
+    
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/priceText"
+        style="@style/ListViewRowTransItemPriceTextStyle"/>
+    
+    <TextView
+        android:id="@+id/totalPriceText"
+        style="@style/ListViewRowTransItemTotalPriceTextStyle"/>
+
+</LinearLayout>
