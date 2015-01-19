@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,9 +23,6 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
 	EditText mNameText;
 	EditText mPercentageText;
 	
-    Button mOkButton;
-    Button mCancelButton;
-    
     private DiscountDao discountDao = DbHelper.getSession().getDiscountDao();
     
     @Override
@@ -49,13 +45,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
         mNameText = (EditText) getView().findViewById(R.id.nameTxt);
         mPercentageText = (EditText) getView().findViewById(R.id.percentageTxt);	
     	
-        mOkButton = (Button) getView().findViewById(R.id.okBtn);
-        mOkButton.setOnClickListener(getOkBtnClickListener());
-        
-        mCancelButton = (Button) getView().findViewById(R.id.cancelBtn);
-        mCancelButton.setOnClickListener(getCancelBtnClickListener());
-        
-    	mandatoryFields = new ArrayList<DiscountEditFragment.FormField>();
+        mandatoryFields = new ArrayList<DiscountEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mPercentageText, R.string.field_percentage));
     }

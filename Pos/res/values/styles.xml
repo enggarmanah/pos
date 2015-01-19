@@ -16,12 +16,37 @@
         <item name="android:textColor">#FFF</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="ActionButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
         <item name="android:minWidth">50dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+
+    <style name="MenuDrawerStyle">
+        <item name="android:layout_width">240dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:background">#f5f9fc</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:divider">#CCC</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="DataManagementMenuStyle">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">300dp</item>
+        <item name="android:background">@color/background_blue</item>
+        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">3dp</item>
     </style>
 
     <style name="LeftFragmentStyle">
@@ -47,9 +72,10 @@
     </style>
 
     <style name="ListViewWrapperStyle">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/border_blue</item>
+        <item name="android:paddingTop">1dp</item>
         <item name="android:paddingBottom">1dp</item>
         <item name="android:paddingLeft">1dp</item>
         <item name="android:paddingRight">1dp</item>
@@ -76,14 +102,13 @@
 
     <style name="ListViewRowTextStyle">
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/list_row_normal_text</item>
-        <item name="android:background">@color/list_row_normal_background</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="ListViewRowDiscountStyle">
@@ -149,7 +174,7 @@
     </style>
 
     <style name="ListViewRowTransItemCountTextStyle" parent="ListViewRowTransItemBaseTextStyle">
-        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:layout_gravity">top</item>
     </style>
@@ -183,7 +208,7 @@
     </style>
 
     <style name="ListViewRowDeleteButtonBaseStyle" parent="ListViewRowImageButtonBaseStyle">
-        <item name="android:src">@drawable/action_discard</item>
+        <item name="android:src">@drawable/action_delete</item>
     </style>
 
     <style name="ListViewRowDeleteButtonStyle" parent="ListViewRowDeleteButtonBaseStyle">
@@ -239,38 +264,38 @@
     </style>
 
     <style name="FormStyle">
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/border_blue</item>
+        <item name="android:paddingTop">1dp</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingLeft">1dp</item>
+        <item name="android:paddingRight">1dp</item>
     </style>
 
     <style name="FormRowStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/background</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
     </style>
 
-    <style name="FormTextBaseStyle">
+    <style name="FormTextStyle">
         <item name="android:paddingTop">7dp</item>
         <item name="android:layout_weight">3</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#EEEEEE</item>
-        <item name="android:background">#DD666666</item>
+        <item name="android:textColor">@color/text_default</item>
         <item name="android:layout_marginTop">1dp</item>
-        <item name="android:shadowColor">#444444</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">25</item>
-    </style>
-
-    <style name="FormTextStyle" parent="@style/FormTextBaseStyle">
-        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingLeft">15dp</item>
         <item name="android:layout_marginRight">10dp</item>
     </style>
-
+    
     <style name="FormInputStyle">
         <item name="android:layout_weight">7</item>
         <item name="android:layout_width">0dp</item>
@@ -308,11 +333,12 @@
 
     <style name="FormButtonLayoutStyle">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:paddingTop">20dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:gravity">center_horizontal|top</item>
+        <item name="android:background">@color/background</item>
     </style>
 
     <style name="SpinnerRowStyle">
@@ -571,8 +597,9 @@
         <item name="android:textColor">@color/section_header_text</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
-    
+
     <style name="SectionContentPanelStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -583,7 +610,7 @@
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
     </style>
-    
+
     <style name="SectionSubContentPanelStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -601,13 +628,21 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="SectionSubContentLabelTextStyle" parent="SectionSubContentTextStyle">
         <item name="android:textColor">@color/text_blue</item>
     </style>
-    
+
     <style name="SectionSubContentInfoTextStyle" parent="SectionSubContentTextStyle">
         <item name="android:textColor">@color/text_default</item>
+    </style>
+
+    <style name="SectionBackButtonStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@drawable/action_back</item>
     </style>
 
 </resources>

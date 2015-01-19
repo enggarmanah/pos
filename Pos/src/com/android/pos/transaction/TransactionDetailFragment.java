@@ -3,10 +3,13 @@ package com.android.pos.transaction;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,10 +31,16 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	
 	private LinearLayout mCustomerPanel;
 	
+	private ImageButton mBackButton;
+	
 	private TextView mDateText;
 	private TextView mTransactionNoText;	
 	private TextView mCashierText;
 	private TextView mCustomerText;
+	
+	private LinearLayout mBelowPanel;
+	private LinearLayout mTaxPanel;
+	private LinearLayout mServiceChargePanel;
 	
 	private TextView mDiscountLabelText;
 	private TextView mDiscountText;
@@ -45,7 +54,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	protected Transactions mTransaction;
 	protected List<TransactionItem> mTransactionItems;
 	
-	//private TransactionActionListener mActionListener;
+	private TransactionActionListener mActionListener;
 	
 	private TransactionDetailArrayAdapter mAdapter;
 	
@@ -75,6 +84,9 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		
 		mCustomerPanel = (LinearLayout) getView().findViewById(R.id.customerPanel);
 		
+		mBackButton = (ImageButton) getView().findViewById(R.id.backButton);
+		mBackButton.setOnClickListener(getBackButtonOnClickListener());
+		
 		mDateText = (TextView) getView().findViewById(R.id.dateText);
 		mTransactionNoText = (TextView) getView().findViewById(R.id.transactionNoText);	
 		mCashierText = (TextView) getView().findViewById(R.id.cashierText);
@@ -96,6 +108,10 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		
 		mTotalOrderText = (TextView) getView().findViewById(R.id.totalOrderText);
 		mTotalOrderText.setText(CommonUtil.formatCurrency(0));
+		
+		mBelowPanel = (LinearLayout) getView().findViewById(R.id.belowPanel);
+		mTaxPanel = (LinearLayout) getView().findViewById(R.id.taxPanel);
+		mServiceChargePanel = (LinearLayout) getView().findViewById(R.id.serviceChargePanel);
 	}
 	
 	public void onStart() {
@@ -105,7 +121,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		updateContent();
 	}
 	
-	/*@Override
+	@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -113,9 +129,9 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
             mActionListener = (TransactionActionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement CashierActionListener");
+                    + " must implement TransactionActionListener");
         }
-    }*/
+    }
 	
 	@Override
 	public void onItemSelected(TransactionItem transactionItem) {
@@ -157,26 +173,15 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 			mCustomerPanel.setVisibility(View.INVISIBLE);
 		}
 		
-		int totalOrder = 0;
-		
-		for (TransactionItem transItem : mTransactionItems) {
-			totalOrder += transItem.getQuantity() * transItem.getPrice();
-		}
-		
-		int discount = 0;
-		
 		if (!CommonUtil.isEmpty(mTransaction.getDiscountName())) {
 			String label = mTransaction.getDiscountName() + " " + CommonUtil.intToStr(mTransaction.getDiscountPercentage()) + "%";
 			mDiscountLabelText.setText(label);
-			discount = mTransaction.getDiscountPercentage() * totalOrder / 100;
-			mDiscountText.setText(CommonUtil.formatCurrency(discount));
+			mDiscountText.setText(CommonUtil.formatCurrency(mTransaction.getDiscountAmount()));
 			
 		} else {
 			mDiscountLabelText.setText("Tanpa Diskon");
 			mDiscountText.setText(Constant.EMPTY_STRING);
 		}
-		
-		totalOrder = totalOrder - discount;
 		
 		int tax = mTransaction.getTaxAmount();
 		int serviceCharge = mTransaction.getServiceChargeAmount();
@@ -184,10 +189,28 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		mTaxText.setText(CommonUtil.formatCurrency(tax));
 		mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));
 		
-		int totalPayable = totalOrder + tax + serviceCharge;
+		mBelowPanel.getLayoutParams().height = 0;
+		
+		int rowCount = 0;
+		
+		if (tax == 0) {
+			mTaxPanel.getLayoutParams().height = 0;
+		} else {
+			mTaxPanel.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+			rowCount++;
+		}
+		
+		if (serviceCharge == 0) {
+			mServiceChargePanel.getLayoutParams().height = 0;
+		} else {
+			mServiceChargePanel.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
+			rowCount++;
+		}
+		
+		mBelowPanel.getLayoutParams().height = (int) Math.round((85 + rowCount * 42.5) * getActivity().getResources().getDisplayMetrics().density);
 		
 		mPaymentTypeText.setText(CodeUtil.getPaymentTypeLabel(mTransaction.getPaymentType()));
-		mTotalOrderText.setText(CommonUtil.formatCurrency(totalPayable));
+		mTotalOrderText.setText(CommonUtil.formatCurrency(mTransaction.getTotalAmount()));
 		
 		mAdapter.notifyDataSetChanged();
 	}
@@ -201,5 +224,17 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		List<TransactionItem> list = q.list();
 		
 		return list;
+	}
+	
+	private View.OnClickListener getBackButtonOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mActionListener.onBackButtonClicked();
+			}
+		};
 	}
 }

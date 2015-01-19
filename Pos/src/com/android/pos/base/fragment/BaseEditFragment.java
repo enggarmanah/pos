@@ -136,54 +136,40 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     
     protected abstract Long getItemId(T item);
     
-    protected View.OnClickListener getOkBtnClickListener() {
+    public void saveEditItem() {
     	
-    	return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				if (!isValidated()) {
-					return;
-				}
-				
-				saveItem();
-		    	
-		    	if (getItemId(mItem) == null) {
-		    		
-		    		addItem();
-		    		
-		            mItemListener.onAddCompleted();
-		            
-		    	} else {
-		    		
-		    		updateItem();
-		    		
-		    		mItemListener.onUpdateCompleted();
-		    	}
-		    	
-		    	showMessage(R.string.msg_product_success);
-		    	
-		    	hideKeyboard();
-			}
-		};
+    	if (!isValidated()) {
+			return;
+		}
+		
+		saveItem();
+    	
+    	if (getItemId(mItem) == null) {
+    		
+    		addItem();
+    		
+            mItemListener.onAddCompleted();
+            
+    	} else {
+    		
+    		updateItem();
+    		
+    		mItemListener.onUpdateCompleted();
+    	}
+    	
+    	showMessage(R.string.msg_product_success);
+    	
+    	hideKeyboard();
     }
     
-    protected View.OnClickListener getCancelBtnClickListener() {
+    public void discardEditItem() {
     	
-    	return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				mItem = null;
-				
-				mItemListener.onItemUnselected();
-				mItemListener.displaySearch();
-				
-				hideKeyboard();
-			}
-		};
+    	/*mItem = null;
+		
+		mItemListener.onItemUnselected();
+		mItemListener.displaySearch();
+		
+		hideKeyboard();*/
     }
     
     protected abstract void addItem();

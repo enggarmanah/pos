@@ -42,9 +42,6 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     EditText mPromoEndDate;
     Spinner mStatusSp;
     
-    Button mOkButton;
-    Button mCancelButton;
-    
     ProductGrpSpinnerArrayAdapter productGrpArrayAdapter;
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
@@ -70,13 +67,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void initViewReference() {
         
-        mOkButton = (Button) getActivity().findViewById(R.id.okBtn);
-        mOkButton.setOnClickListener(getOkBtnClickListener());
-        
-        mCancelButton = (Button) getActivity().findViewById(R.id.cancelBtn);
-        mCancelButton.setOnClickListener(getCancelBtnClickListener());
-        
-    	mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
+        mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
     	mTypeSp = (Spinner) getActivity().findViewById(R.id.typeSp);
     	mProductGrpSp = (Spinner) getActivity().findViewById(R.id.productGrpSp);
     	mPriceText = (EditText) getActivity().findViewById(R.id.priceTxt);

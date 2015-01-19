@@ -14,16 +14,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     
 	EditText mNameText;
-	
-    Button mOkButton;
-    Button mCancelButton;
     
     private ProductGroupDao productGroupDao = DbHelper.getSession().getProductGroupDao();
     
@@ -43,12 +39,6 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     
     @Override
     protected void initViewReference() {
-        
-        mOkButton = (Button) getActivity().findViewById(R.id.okBtn);
-        mOkButton.setOnClickListener(getOkBtnClickListener());
-        
-        mCancelButton = (Button) getActivity().findViewById(R.id.cancelBtn);
-        mCancelButton.setOnClickListener(getCancelBtnClickListener());
         
     	mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
     	

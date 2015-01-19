@@ -30,7 +30,14 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	boolean mIsEnableSearch = true;
 
 	SearchView searchView;
-	MenuItem searchItem;
+	
+	MenuItem mSearchItem;
+	MenuItem mListItem;
+	MenuItem mNewItem;
+	MenuItem mSaveItem;
+	MenuItem mDiscardItem;
+	MenuItem mEditItem;
+	MenuItem mDeleteItem;
 
 	List<T> mItems;
 	T mSelectedItem;
@@ -143,9 +150,17 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.item_mgt_menu, menu);
 
-		searchItem = menu.findItem(R.id.menu_item_search);
-
-		searchView = (SearchView) searchItem.getActionView();
+		mSearchItem = menu.findItem(R.id.menu_item_search);
+		mListItem = menu.findItem(R.id.menu_item_list);
+		mNewItem = menu.findItem(R.id.menu_item_new);
+		mSaveItem = menu.findItem(R.id.menu_item_save);
+		mDiscardItem = menu.findItem(R.id.menu_item_discard);
+		mEditItem = menu.findItem(R.id.menu_item_edit);
+		mDeleteItem = menu.findItem(R.id.menu_item_delete);
+		
+		showNavigationMenu();
+		
+		searchView = (SearchView) mSearchItem.getActionView();
 		searchView.setLayoutParams(new ActionBar.LayoutParams(Gravity.START));
 
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -155,7 +170,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 		searchView.setIconifiedByDefault(false);
 		searchView.setOnQueryTextListener(this);
-
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -207,12 +222,40 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			showAllItems();
 
 			return true;
+			
+		case R.id.menu_item_edit:
+
+			showEditMenu();
+
+			return true;
+			
+		case R.id.menu_item_delete:
+
+			return true;
+			
+		case R.id.menu_item_save:
+			
+			saveItem();
+			
+			return true;
+			
+		case R.id.menu_item_discard:
+			
+			showNavigationAndItemMenu();
+			
+			discardItem();
+			
+			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	
+	protected abstract void saveItem();
+	
+	protected abstract void discardItem();
+	
 	public boolean onQueryTextChange(String query) {
 		
 		boolean isQuerySimilar = query.equals(prevQuery);
@@ -268,12 +311,53 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	protected abstract T updateEditFragmentItem(T item);
 
 	protected abstract void refreshEditView();
+	
+	private void showNavigationMenu() {
+		
+		mSearchItem.setVisible(true);
+		mListItem.setVisible(true);
+		mNewItem.setVisible(true);
+		
+		mEditItem.setVisible(false);
+		mDeleteItem.setVisible(false);
+		
+		mSaveItem.setVisible(false);
+		mDiscardItem.setVisible(false);
+	}
+	
+	private void showNavigationAndItemMenu() {
+		
+		mSearchItem.setVisible(true);
+		mListItem.setVisible(true);
+		mNewItem.setVisible(true);
+		
+		mEditItem.setVisible(true);
+		mDeleteItem.setVisible(true);
+		
+		mSaveItem.setVisible(false);
+		mDiscardItem.setVisible(false);
+	}
+	
+	private void showEditMenu() {
+		
+		mSearchItem.setVisible(false);
+		mListItem.setVisible(false);
+		mNewItem.setVisible(false);
+		
+		mEditItem.setVisible(false);
+		mDeleteItem.setVisible(false);
+		
+		mSaveItem.setVisible(true);
+		mDiscardItem.setVisible(true);
+	}
 
 	@Override
 	public void updateItem(T item) {
-
+		
+		showNavigationAndItemMenu();
+		
 		mIsEnableSearch = false;
-		searchItem.collapseActionView();
+		mSearchItem.collapseActionView();
 		mIsEnableSearch = true;
 
 		if (mIsMultiplesPane) {
@@ -291,9 +375,11 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	@Override
 	public void addItem(T item) {
 		
+		showEditMenu();
+		
 		unSelectItem();
 		
-		searchItem.collapseActionView();
+		mSearchItem.collapseActionView();
 
 		mSelectedItem = item;
 
@@ -311,8 +397,10 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	@Override
 	public void onAddCompleted() {
-
-		if (!searchItem.collapseActionView()) {
+		
+		showNavigationAndItemMenu();
+		
+		if (!mSearchItem.collapseActionView()) {
 			reloadItems();
 		}
 
@@ -331,7 +419,9 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	@Override
 	public void onUpdateCompleted() {
-
+		
+		showNavigationAndItemMenu();
+		
 		for (T item : mItems) {
 			if (getItemId(item) == getItemId(mSelectedItem)) {
 				refreshItem(item);
@@ -340,11 +430,14 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		}
 
 		if (mIsMultiplesPane) {
+			getEditFragmentView().setVisibility(View.INVISIBLE);
 			refreshSearchFragmentItems();
 		} else {
 			replaceFragment(mSearchFragment, searchFragmentTag);
 			refreshSearchFragmentItems();
 		}
+		
+		//unSelectItem();
 	}
 
 	@Override
@@ -355,7 +448,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	@Override
 	public void onItemUnselected() {
-
+		
 		mSelectedItem = null;
 
 		if (mIsMultiplesPane) {
@@ -374,7 +467,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	private void showAllItems() {
 
-		searchItem.collapseActionView();
+		mSearchItem.collapseActionView();
 
 		reloadItems();
 

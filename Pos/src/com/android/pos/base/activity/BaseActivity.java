@@ -158,7 +158,7 @@ public abstract class BaseActivity extends Activity {
 			Intent intent = new Intent(this, CashierActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_today_transaction).equals(menu)) {
+		} else if (getString(R.string.menu_transaction).equals(menu)) {
 
 			Intent intent = new Intent(this, TransactionActivity.class);
 			startActivity(intent);

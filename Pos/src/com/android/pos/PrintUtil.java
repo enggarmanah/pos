@@ -252,6 +252,11 @@ public class PrintUtil {
 		for (TransactionItem item : transactionItems) {
 			
 			String productName = item.getProductName();
+			
+			if (productName.length() > mPrinterLineSize) {
+				productName = productName.substring(0, mPrinterLineSize);
+			}
+			
 			int quantity = item.getQuantity();
 			int price = item.getPrice();
 			int total = quantity * price;

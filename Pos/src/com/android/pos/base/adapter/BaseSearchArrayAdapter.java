@@ -88,10 +88,10 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 			itemName.setTextColor(context.getResources().getColor(R.color.list_row_normal_text));
 		}
 		
-		ImageButton deleteBtn = (ImageButton) rowView.findViewById(R.id.deleteBtn);
+		//ImageButton deleteBtn = (ImageButton) rowView.findViewById(R.id.deleteBtn);
 		
 		rowView.setOnClickListener(getItemOnClickListener(item, itemName));
-		deleteBtn.setOnClickListener(getDeleteBtnClickListener(item));
+		//deleteBtn.setOnClickListener(getDeleteBtnClickListener(item));
 
 		return rowView;
 	}
@@ -145,7 +145,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 
 		AlertDialog myQuittingDialogBox = new AlertDialog.Builder(context)
 
-				.setTitle(getString(R.string.confirmation)).setMessage("Hapus " + getItemName(item) + " ?").setIcon(R.drawable.action_discard_dark)
+				.setTitle(getString(R.string.confirmation)).setMessage("Hapus " + getItemName(item) + " ?").setIcon(R.drawable.action_delete)
 
 				.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
 

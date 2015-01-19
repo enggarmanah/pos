@@ -129,4 +129,16 @@ public class DiscountMgtActivity extends BaseItemMgtActivity<DiscountSearchFragm
 		
 		mSearchFragment.refreshItems();
 	}
+	
+	@Override
+	protected void saveItem() {
+		
+		mEditFragment.saveEditItem();
+	}
+	
+	@Override
+	protected void discardItem() {
+		
+		mEditFragment.discardEditItem();
+	}
 }

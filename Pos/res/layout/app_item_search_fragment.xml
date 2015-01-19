@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LeftFragmentStyle">
-    
-    <ListView 
-	    android:id="@+id/searchResultList"
-	    style="@style/ListViewStyle"/>
-	    
+    style="@style/LeftFragmentStyle" >
+
+    <FrameLayout style="@style/ListViewWrapperStyle" >
+
+        <ListView
+            android:id="@+id/searchResultList"
+            style="@style/ListViewStyle" />
+    </FrameLayout>
+
 </FrameLayout>

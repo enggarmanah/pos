@@ -48,18 +48,6 @@
                 style="@style/FormInputListStyle" />
         </LinearLayout>
 
-        <LinearLayout style="@style/FormButtonLayoutStyle" >
-
-            <Button
-                android:id="@+id/okBtn"
-                style="@style/OkButtonStyle" />
-
-            <View style="@style/ButtonDividerStyle" />
-
-            <Button
-                android:id="@+id/cancelBtn"
-                style="@style/CancelButtonStyle" />
-        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

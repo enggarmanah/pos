@@ -34,4 +34,28 @@
         android:title="@string/product_add"
         android:showAsAction="ifRoom|collapseActionView">
     </item>
+    <item
+        android:id="@+id/menu_item_edit"
+        android:icon="@drawable/action_write"
+        android:title="@string/edit"
+        android:showAsAction="ifRoom|collapseActionView">
+    </item>
+    <item
+        android:id="@+id/menu_item_delete"
+        android:icon="@drawable/action_delete"
+        android:title="@string/delete"
+        android:showAsAction="ifRoom|collapseActionView">
+    </item>
+    <item
+        android:id="@+id/menu_item_save"
+        android:icon="@drawable/action_accept"
+        android:title="@string/save"
+        android:showAsAction="ifRoom|collapseActionView|withText">
+    </item>
+    <item
+        android:id="@+id/menu_item_discard"
+        android:icon="@drawable/action_cancel"
+        android:title="@string/cancel"
+        android:showAsAction="ifRoom|collapseActionView|withText">
+    </item>
 </menu>

@@ -105,4 +105,9 @@ public class DbHelper {
     	
     	return daoSession;
     }
+    
+    public static SQLiteDatabase getDb() {
+    	
+    	return db;
+    }
 }

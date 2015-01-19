@@ -88,6 +88,11 @@ public class CommonUtil {
 		return SimpleDateFormat.getDateInstance(DateFormat.DEFAULT, getLocale());
 	}
 	
+	public static DateFormat getDateFormat(String format) {
+		
+		return new SimpleDateFormat(format, getLocale());
+	}
+	
 	public static DateFormat getDateTimeFormat() {
 		
 		return new SimpleDateFormat("dd MMM yyyy, HH:mm", getLocale());
@@ -111,12 +116,38 @@ public class CommonUtil {
 		return date;
 	}
 	
+	public static Date parseDate(String dateStr, String format) {
+		
+		Date date = null;
+		
+		try {
+			date = getDateFormat(format).parse(dateStr);
+		} catch (ParseException e) {
+			// do nothing
+		}
+		
+		return date;
+	}
+	
 	public static String formatDate(Date inputDate) {
 		
 		String dateStr = Constant.EMPTY_STRING;
 		
 		try {
 			dateStr = getDateFormat().format(inputDate);
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+		return dateStr;
+	}
+	
+	public static String formatDayDate(Date inputDate) {
+		
+		String dateStr = Constant.EMPTY_STRING;
+		
+		try {
+			dateStr = getDateFormat("EEEE, dd MMM yyyy").format(inputDate);
 		} catch (Exception e) {
 			// do nothing
 		}
@@ -184,6 +215,15 @@ public class CommonUtil {
 		}
 	}
 	
+	public static String formatString(Long inputInt) {
+		
+		if (inputInt != null) {
+			return String.valueOf(inputInt);
+		} else {
+			return Constant.EMPTY_STRING;
+		}
+	}
+	
 	public static String formatCurrency(String inputStr) {
 		
 		String formatted = inputStr;
@@ -217,6 +257,11 @@ public class CommonUtil {
 	}
 	
 	public static String formatCurrency(Integer inputInt) {
+		
+		return formatCurrency(formatString(inputInt));
+	}
+	
+	public static String formatCurrency(Long inputInt) {
 		
 		return formatCurrency(formatString(inputInt));
 	}

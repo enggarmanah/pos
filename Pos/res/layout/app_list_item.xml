@@ -6,9 +6,4 @@
         android:id="@+id/nameTxt"
         style="@style/ListViewRowTextStyle"/>
 
-    <ImageButton
-        android:id="@+id/deleteBtn"
-        android:contentDescription="@string/none"
-        style="@style/ListViewRowDeleteButtonStyle"/>
-
 </LinearLayout>

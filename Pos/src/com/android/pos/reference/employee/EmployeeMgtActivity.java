@@ -125,4 +125,16 @@ public class EmployeeMgtActivity extends BaseItemMgtActivity<EmployeeSearchFragm
 		
 		mSearchFragment.refreshItems();
 	}
+	
+	@Override
+	protected void saveItem() {
+		
+		mEditFragment.saveEditItem();
+	}
+	
+	@Override
+	protected void discardItem() {
+		
+		mEditFragment.discardEditItem();
+	}
 }

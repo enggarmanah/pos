@@ -14,46 +14,34 @@
         android:gravity="center">
         
         <Button
-            android:layout_height="50dp"
-            android:layout_width="300dp"
             android:text="@string/module_merchant"
-            android:textSize="17sp"
-            android:onClick="goToModuleMerchant"/>
+            android:onClick="goToModuleMerchant"
+            style="@style/DataManagementMenuStyle"/>
         
         <Button
-            android:layout_height="50dp"
-            android:layout_width="300dp"
             android:text="@string/module_product_group"
-            android:textSize="17sp"
-            android:onClick="goToModuleProductGroup"/>
+            android:onClick="goToModuleProductGroup"
+            style="@style/DataManagementMenuStyle"/>
         
         <Button
-            android:layout_height="50dp"
-            android:layout_width="300dp"
             android:text="@string/module_product"
-            android:textSize="17sp"
-            android:onClick="goToModuleProduct"/>
+            android:onClick="goToModuleProduct"
+            style="@style/DataManagementMenuStyle"/>
         
         <Button
-            android:layout_height="50dp"
-            android:layout_width="300dp"
             android:text="@string/module_employee"
-            android:textSize="17sp"
-            android:onClick="goToModuleEmployee"/>
+            android:onClick="goToModuleEmployee"
+            style="@style/DataManagementMenuStyle"/>
         
         <Button
-            android:layout_height="50dp"
-            android:layout_width="300dp"
             android:text="@string/module_customer"
-            android:textSize="17sp"
-            android:onClick="goToModuleCustomer"/>
+            android:onClick="goToModuleCustomer"
+            style="@style/DataManagementMenuStyle"/>
         
         <Button
-            android:layout_height="50dp"
-            android:layout_width="300dp"
             android:text="@string/module_discount"
-            android:textSize="17sp"
-            android:onClick="goToModuleDiscount"/>
+            android:onClick="goToModuleDiscount"
+            style="@style/DataManagementMenuStyle"/>
         
     </LinearLayout>
 
@@ -65,12 +53,6 @@
          with the content view. -->
     <ListView
         android:id="@+id/left_drawer"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="#111"/>
+        style="@style/MenuDrawerStyle"/>
     
 </android.support.v4.widget.DrawerLayout>

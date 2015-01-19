@@ -19,7 +19,7 @@
     
     <string-array name="app_menus">
         <item>Kasir</item>
-        <item>Transaksi Hari Ini</item>
+        <item>Rekap Transaksi</item>
         <item>Pengeluaran</item>
         <item>Rekap Untung Rugi</item>
         <item>Statistik</item>
@@ -29,7 +29,7 @@
     </string-array>
     
     <string name="menu_cashier">Kasir</string>
-    <string name="menu_today_transaction">Transaksi Hari Ini</string>
+    <string name="menu_transaction">Rekap Transaksi</string>
     <string name="menu_expense">Pengeluaran</string>
     <string name="menu_profit_lost">Rekap Untung Rugi</string>
     <string name="menu_statistic">Statistik</string>
@@ -37,12 +37,12 @@
     <string name="menu_data_management">Manajemen Data</string>
     <string name="menu_logout">Keluar</string> 
     
-    <string name="module_merchant">Data Merchant</string>
-    <string name="module_product_group">Data Group Produk</string>
-    <string name="module_product">Data Produk</string>
-    <string name="module_employee">Data Pegawai</string>
-    <string name="module_customer">Data Pelanggan</string>
-    <string name="module_discount">Data Diskon</string>
+    <string name="module_merchant">Merchant</string>
+    <string name="module_product_group">Group Produk</string>
+    <string name="module_product">Produk</string>
+    <string name="module_employee">Pegawai</string>
+    <string name="module_customer">Pelanggan</string>
+    <string name="module_discount">Diskon</string>
     
     <string name="empty"></string>
     <string name="search">Cari</string>
@@ -50,8 +50,10 @@
     <string name="ok">OK</string>
     <string name="cancel">Batal</string>
     <string name="delete">Hapus</string>
+    <string name="edit">Edit</string>
     <string name="select">Pilih</string>
     <string name="confirmation">Konfirmasi</string>
+    <string name="save">Simpan</string>
     <string name="none"></string>
     
     <string name="product_search">Cari Produk</string>
@@ -62,30 +64,30 @@
     <string name="msg_notification_search_action">Masukkan kata pencarian pada kolom di atas.</string>
     <string name="msg_product_success">Produk telah berhasil disimpan.</string>
     
-    <string name="field_name">Nama</string>
-    <string name="field_type">Tipe</string>
-    <string name="field_group">Kategori</string>
-    <string name="field_price">Harga</string>
-    <string name="field_pic_required">Butuh PIC</string>
-    <string name="field_commision">Komisi</string>
-    <string name="field_promo_price">Harga Promo</string>
-    <string name="field_promo_start">Awal Promo</string>
-    <string name="field_promo_end">Akhir Promo</string>
-    <string name="field_status">Status</string>
-    <string name="field_address">Alamat</string>
-    <string name="field_contact_name">Manajer</string>
-    <string name="field_contact_telephone">Telepon</string>
-    <string name="field_login_id">Login Id</string>
-    <string name="field_password">Password</string>
-    <string name="field_period_start">Awal Akses</string>
-    <string name="field_period_end">Akhir Akses</string>
-    <string name="field_tax_percentage">Pajak (%)</string>
-    <string name="field_service_charge_percentage">Service Charge (%)</string>
-    <string name="field_role">Hak Akses</string>
-    <string name="field_telephone">Telepon</string>
-    <string name="field_email">Email</string>
-    <string name="field_emailStatus">Status Email</string>
-    <string name="field_percentage">Persentase</string>
+    <string name="field_name">Nama :</string>
+    <string name="field_type">Tipe :</string>
+    <string name="field_group">Kategori :</string>
+    <string name="field_price">Harga :</string>
+    <string name="field_pic_required">Butuh PIC :</string>
+    <string name="field_commision">Komisi :</string>
+    <string name="field_promo_price">Harga Promo :</string>
+    <string name="field_promo_start">Awal Promo :</string>
+    <string name="field_promo_end">Akhir Promo :</string>
+    <string name="field_status">Status :</string>
+    <string name="field_address">Alamat :</string>
+    <string name="field_contact_name">Manajer :</string>
+    <string name="field_contact_telephone">Telepon :</string>
+    <string name="field_login_id">Login Id :</string>
+    <string name="field_password">Password :</string>
+    <string name="field_period_start">Awal Akses :</string>
+    <string name="field_period_end">Akhir Akses :</string>
+    <string name="field_tax_percentage">Pajak (%) :</string>
+    <string name="field_service_charge_percentage">Service Charge (%) :</string>
+    <string name="field_role">Hak Akses :</string>
+    <string name="field_telephone">Telepon :</string>
+    <string name="field_email">Email :</string>
+    <string name="field_emailStatus">Status Email :</string>
+    <string name="field_percentage">Persentase :</string>
     
     <string name="count">Jumlah</string>
     <string name="number_0">0</string>
@@ -128,6 +130,7 @@
     <string name="transaction_no">No. Transaksi</string>
     <string name="transaction_cashier">Kasir</string>
     <string name="transaction_list">Daftar Transaksi</string>
+    <string name="transaction_recap">Rekap Transaksi</string>
     
     <string name="none_paired">Tidak ada printer yang terhubung</string>
     <string name="scanning">Melaksanakan scanning printer</string>

@@ -125,4 +125,16 @@ public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, Use
 		
 		mSearchFragment.refreshItems();
 	}
+	
+	@Override
+	protected void saveItem() {
+		
+		mEditFragment.saveEditItem();
+	}
+	
+	@Override
+	protected void discardItem() {
+		
+		mEditFragment.discardEditItem();
+	}
 }

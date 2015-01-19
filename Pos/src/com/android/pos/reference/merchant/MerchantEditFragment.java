@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,9 +37,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     EditText mTaxText;
     EditText mServiceChargeText;
     Spinner mStatusSp;
-    
-    Button mOkButton;
-    Button mCancelButton;
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
@@ -64,13 +60,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     @Override
     protected void initViewReference() {
         
-        mOkButton = (Button) getActivity().findViewById(R.id.okBtn);
-        mOkButton.setOnClickListener(getOkBtnClickListener());
-        
-        mCancelButton = (Button) getActivity().findViewById(R.id.cancelBtn);
-        mCancelButton.setOnClickListener(getCancelBtnClickListener());
-        
-    	mNameText = (EditText) getActivity().findViewById(R.id.nameText);
+        mNameText = (EditText) getActivity().findViewById(R.id.nameText);
     	mTypeSp = (Spinner) getActivity().findViewById(R.id.typeSp);
     	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
     	mContactNameText = (EditText) getActivity().findViewById(R.id.contactNameText);

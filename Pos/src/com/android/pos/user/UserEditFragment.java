@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,9 +29,6 @@ public class UserEditFragment extends BaseEditFragment<User> {
     EditText mPasswordText;
     Spinner mRoleSp;
     Spinner mStatusSp;
-    
-    Button mOkButton;
-    Button mCancelButton;
     
     CodeSpinnerArrayAdapter roleArrayAdapter;
     CodeSpinnerArrayAdapter statusArrayAdapter;
@@ -55,12 +51,6 @@ public class UserEditFragment extends BaseEditFragment<User> {
     
     @Override
     protected void initViewReference() {
-        
-        mOkButton = (Button) getActivity().findViewById(R.id.okBtn);
-        mOkButton.setOnClickListener(getOkBtnClickListener());
-        
-        mCancelButton = (Button) getActivity().findViewById(R.id.cancelBtn);
-        mCancelButton.setOnClickListener(getCancelBtnClickListener());
         
     	mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
     	mUserIdText = (EditText) getActivity().findViewById(R.id.userIdTxt);

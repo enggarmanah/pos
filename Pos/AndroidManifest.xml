@@ -49,7 +49,8 @@
         </activity>
         <activity
             android:name="com.android.pos.reference.MainMenuActivity"
-            android:label="@string/menu_data_management" >
+            android:label="@string/menu_data_management"
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.reference.merchant.MerchantMgtActivity"
@@ -61,7 +62,12 @@
         </activity>
         <activity
             android:name="com.android.pos.reference.product.ProductMgtActivity"
-            android:label="@string/module_product" >
+            android:label="@string/module_product"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.reference.employee.EmployeeMgtActivity"
@@ -77,12 +83,8 @@
         </activity>
         <activity
             android:name="com.android.pos.transaction.TransactionActivity"
-            android:label="@string/menu_today_transaction"
+            android:label="@string/menu_transaction"
             android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

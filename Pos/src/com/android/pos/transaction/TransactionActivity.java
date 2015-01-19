@@ -1,34 +1,34 @@
 package com.android.pos.transaction;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
+import com.android.pos.dao.TransactionSummary;
 import com.android.pos.dao.Transactions;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class TransactionActivity extends BaseActivity 
 	implements TransactionActionListener {
 	
-	protected TransactionTodayFragment mTransactionTodayFragment;
+	protected TransactionSummaryFragment mTransactionSummaryFragment;
 	protected TransactionDetailFragment mTransactionDetailFragment;
-	
 	
 	boolean mIsMultiplesPane = false;
 	
-	Transactions mSelectedTransaction;
-	List<Transactions> mTransactions;
+	private TransactionSummary mSelectedTransactionSummary;
+	private Transactions mSelectedTransaction;
 	
-	private static String TRANSACTIONS = "TRANSACTIONS";
-
-	private String mTransactionTodayFragmentTag = "transactionTodayFragmentTag";
+	private static String SELECTED_TRANSACTION_SUMMARY = "SELECTED_TRANSACTION_SUMMARY";
+	private static String SELECTED_TRANSACTION = "SELECTED_TRANSACTION";
+	
+	private String mTransactionSummaryFragmentTag = "transactionSummaryFragmentTag";
 	private String mTransactionDetailFragmentTag = "transactionDetailFragmentTag";
 	
 	@Override
@@ -43,33 +43,30 @@ public class TransactionActivity extends BaseActivity
 
 		initFragments(savedInstanceState);
 
-		setTitle(getString(R.string.menu_today_transaction));
+		setTitle(getString(R.string.menu_transaction));
 
 		mDrawerList.setItemChecked(Constant.MENU_TODAY_TRANSACTION_POSITION, true);
 		
-		initWaitAfterFragmentRemovedTask(mTransactionTodayFragmentTag);
+		initWaitAfterFragmentRemovedTask(mTransactionSummaryFragmentTag, mTransactionDetailFragmentTag);
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void initFragments(Bundle savedInstanceState) {
-
+		
 		if (savedInstanceState != null) {
-			mTransactions = (List<Transactions>) savedInstanceState.getSerializable(TRANSACTIONS);
-		}
-
-		if (mTransactions == null) {
-			mTransactions = new ArrayList<Transactions>();
+			
+			mSelectedTransactionSummary = (TransactionSummary) savedInstanceState.getSerializable(SELECTED_TRANSACTION_SUMMARY);
+			mSelectedTransaction = (Transactions) savedInstanceState.getSerializable(SELECTED_TRANSACTION);
 		}
 
 		mIsMultiplesPane = getResources().getBoolean(R.bool.has_multiple_panes);
 
-		mTransactionTodayFragment = (TransactionTodayFragment) getFragmentManager().findFragmentByTag(mTransactionTodayFragmentTag);
+		mTransactionSummaryFragment = (TransactionSummaryFragment) getFragmentManager().findFragmentByTag(mTransactionSummaryFragmentTag);
 		
-		if (mTransactionTodayFragment == null) {
-			mTransactionTodayFragment = new TransactionTodayFragment();
+		if (mTransactionSummaryFragment == null) {
+			mTransactionSummaryFragment = new TransactionSummaryFragment();
 
 		} else {
-			removeFragment(mTransactionTodayFragment);
+			removeFragment(mTransactionSummaryFragment);
 		}
 		
 		mTransactionDetailFragment = (TransactionDetailFragment) getFragmentManager().findFragmentByTag(mTransactionDetailFragmentTag);
@@ -83,55 +80,63 @@ public class TransactionActivity extends BaseActivity
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+
+		super.onSaveInstanceState(outState);
+
+		outState.putSerializable(SELECTED_TRANSACTION_SUMMARY, (Serializable) mSelectedTransactionSummary);
+		outState.putSerializable(SELECTED_TRANSACTION, (Serializable) mSelectedTransaction);
+	}
+	
+	@Override
 	protected void afterFragmentRemoved() {
-		
-		System.out.println("afterFragmentRemoved");
 		
 		loadFragments();
 	}
 	
 	private void loadFragments() {
+		
+		mTransactionSummaryFragment.setSelectedTransactionSummary(mSelectedTransactionSummary);
+		mTransactionSummaryFragment.setSelectedTransaction(mSelectedTransaction);
 
 		if (mIsMultiplesPane) {
 
-			addFragment(mTransactionTodayFragment, mTransactionTodayFragmentTag);
+			addFragment(mTransactionSummaryFragment, mTransactionSummaryFragmentTag);
 			addFragment(mTransactionDetailFragment, mTransactionDetailFragmentTag);
+			
+			mTransactionSummaryFragment.setSelectedTransactionSummary(mSelectedTransactionSummary);
+			mTransactionDetailFragment.setTransaction(mSelectedTransaction);
 			
 		} else {
 
 			if (mSelectedTransaction != null) {
+				
 				addFragment(mTransactionDetailFragment, mTransactionDetailFragmentTag);
+				mTransactionDetailFragment.setTransaction(mSelectedTransaction);
 				
 			} else {
-				addFragment(mTransactionTodayFragment, mTransactionTodayFragmentTag);
+				
+				addFragment(mTransactionSummaryFragment, mTransactionSummaryFragmentTag);
+				mTransactionSummaryFragment.setSelectedTransactionSummary(mSelectedTransactionSummary);
 			}
 		}
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-
-		super.onSaveInstanceState(outState);
-
-		outState.putSerializable(TRANSACTIONS, (Serializable) mTransactions);
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		//MenuInflater inflater = getMenuInflater();
-		//inflater.inflate(R.menu.cashier_menu, menu);
-
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.transaction_menu, menu);
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 
-		//boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 
-		//menu.findItem(R.id.menu_item_search).setVisible(!isDrawerOpen);
-		//menu.findItem(R.id.menu_item_list).setVisible(!isDrawerOpen);
+		menu.findItem(R.id.menu_item_list).setVisible(!isDrawerOpen);
 
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -139,11 +144,27 @@ public class TransactionActivity extends BaseActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		return super.onOptionsItemSelected(item);
-	}
+		switch (item.getItemId()) {
 
+			case R.id.menu_item_list:
+				
+				onMenuListSelected();
+
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public void onTransactionSummarySelected(TransactionSummary transactionSummary) {
+		
+		mSelectedTransactionSummary = transactionSummary;
+	}
+	
 	@Override
 	public void onTransactionSelected(Transactions transaction) {
+		
+		mSelectedTransaction = transaction;
 		
 		if (mIsMultiplesPane) {
 
@@ -153,6 +174,40 @@ public class TransactionActivity extends BaseActivity
 
 			replaceFragment(mTransactionDetailFragment, mTransactionDetailFragmentTag);
 			mTransactionDetailFragment.setTransaction(transaction);
+		}
+	}
+	
+	@Override
+	public void onBackButtonClicked() {
+		
+		onMenuListSelected();
+	}
+	
+	private void onMenuListSelected() {
+		
+		if (mIsMultiplesPane) {
+			
+			mSelectedTransaction = null;
+			mSelectedTransactionSummary = null;
+			
+			mTransactionSummaryFragment.displayTransactionSummary();
+			mTransactionDetailFragment.setTransaction(null);
+			
+		} else {
+			
+			if (mSelectedTransaction != null) {
+				mSelectedTransaction = null;
+			} else {
+				mSelectedTransactionSummary = null;
+			}
+			
+			replaceFragment(mTransactionSummaryFragment, mTransactionSummaryFragmentTag);
+			
+			if (mSelectedTransactionSummary != null) {
+				mTransactionSummaryFragment.displayTransactionToday();
+			} else {
+				mTransactionSummaryFragment.displayTransactionSummary();
+			}
 		}
 	}
 }
