@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,7 +45,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	Button number9Btn;
 	
 	Button mActionCBtn;
-	Button mActionXBtn;
+	ImageButton mActionXBtn;
 	
 	Button mOkBtn;
 	Button mCancelBtn;
@@ -118,7 +119,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		number9Btn = (Button) getView().findViewById(R.id.number9Btn);
 		
 		mActionCBtn = (Button) getView().findViewById(R.id.actionCBtn);
-		mActionXBtn = (Button) getView().findViewById(R.id.actionXBtn);
+		mActionXBtn = (ImageButton) getView().findViewById(R.id.actionXBtn);
 		
 		mOkBtn = (Button) getView().findViewById(R.id.okBtn);
 		mCancelBtn = (Button) getView().findViewById(R.id.cancelBtn);

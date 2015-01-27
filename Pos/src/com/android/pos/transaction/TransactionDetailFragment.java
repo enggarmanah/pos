@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,7 +37,6 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	private TextView mCashierText;
 	private TextView mCustomerText;
 	
-	private LinearLayout mBelowPanel;
 	private LinearLayout mTaxPanel;
 	private LinearLayout mServiceChargePanel;
 	
@@ -109,7 +107,6 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		mTotalOrderText = (TextView) getView().findViewById(R.id.totalOrderText);
 		mTotalOrderText.setText(CommonUtil.formatCurrency(0));
 		
-		mBelowPanel = (LinearLayout) getView().findViewById(R.id.belowPanel);
 		mTaxPanel = (LinearLayout) getView().findViewById(R.id.taxPanel);
 		mServiceChargePanel = (LinearLayout) getView().findViewById(R.id.serviceChargePanel);
 	}
@@ -170,7 +167,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 			mCustomerText.setText(mTransaction.getCustomerName());
 			mCustomerPanel.setVisibility(View.VISIBLE);
 		} else {
-			mCustomerPanel.setVisibility(View.INVISIBLE);
+			mCustomerPanel.setVisibility(View.GONE);
 		}
 		
 		if (!CommonUtil.isEmpty(mTransaction.getDiscountName())) {
@@ -189,25 +186,15 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		mTaxText.setText(CommonUtil.formatCurrency(tax));
 		mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));
 		
-		mBelowPanel.getLayoutParams().height = 0;
-		
-		int rowCount = 0;
-		
+		mTaxPanel.setVisibility(View.VISIBLE);
 		if (tax == 0) {
-			mTaxPanel.getLayoutParams().height = 0;
-		} else {
-			mTaxPanel.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-			rowCount++;
+			mTaxPanel.setVisibility(View.GONE);
 		}
 		
+		mServiceChargePanel.setVisibility(View.VISIBLE);
 		if (serviceCharge == 0) {
-			mServiceChargePanel.getLayoutParams().height = 0;
-		} else {
-			mServiceChargePanel.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-			rowCount++;
+			mServiceChargePanel.setVisibility(View.GONE);
 		}
-		
-		mBelowPanel.getLayoutParams().height = (int) Math.round((85 + rowCount * 42.5) * getActivity().getResources().getDisplayMetrics().density);
 		
 		mPaymentTypeText.setText(CodeUtil.getPaymentTypeLabel(mTransaction.getPaymentType()));
 		mTotalOrderText.setText(CommonUtil.formatCurrency(mTransaction.getTotalAmount()));

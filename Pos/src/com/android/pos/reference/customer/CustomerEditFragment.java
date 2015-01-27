@@ -60,6 +60,13 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     	mEmailStatusSp = (Spinner) getActivity().findViewById(R.id.emailStatusSp);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
     	
+    	registerField(mNameText);
+    	registerField(mTelephoneText);
+    	registerField(mEmailText);
+    	registerField(mAddressText);
+    	registerField(mEmailStatusSp);
+    	registerField(mStatusSp);
+    	
     	mandatoryFields = new ArrayList<CustomerEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	

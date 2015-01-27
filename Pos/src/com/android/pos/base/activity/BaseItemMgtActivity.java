@@ -8,6 +8,7 @@ import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
+import com.android.pos.common.ConfirmDeleteDlgFragment;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
@@ -25,6 +26,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	protected S mSearchFragment;
 	protected E mEditFragment;
+	protected ConfirmDeleteDlgFragment<T> mConfirmDeleteFragment;
 
 	boolean mIsMultiplesPane = false;
 	boolean mIsEnableSearch = true;
@@ -33,7 +35,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	MenuItem mSearchItem;
 	MenuItem mListItem;
-	MenuItem mNewItem;
 	MenuItem mSaveItem;
 	MenuItem mDiscardItem;
 	MenuItem mEditItem;
@@ -47,6 +48,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	private String searchFragmentTag = "searchFragment";
 	private String editFragmentTag = "editFragment";
+	private String confirmDeleteFragmentTag = "confirmDeleteFragment";
 	
 	private String prevQuery = Constant.EMPTY_STRING;
 
@@ -63,6 +65,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		initFragments(savedInstanceState);
 
 		initWaitAfterFragmentRemovedTask(searchFragmentTag, editFragmentTag);
+		
+		mConfirmDeleteFragment = new ConfirmDeleteDlgFragment<T>();
 	}
 
 	protected abstract S getSearchFragmentInstance();
@@ -96,28 +100,46 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			mItems = (List<T>) savedInstanceState.getSerializable(LIST);
 			mSelectedItem = (T) savedInstanceState.getSerializable(SELECTED_ITEM);
 		}
-
+		
+		if (mItems == null) {
+			mItems = getItemsInstance();
+		}
+		
 		setSearchFragmentItems(mItems);
 		setSearchFragmentSelectedItem(mSelectedItem);
 
 		setEditFragmentItem(mSelectedItem);
 	}
-
+	
+	protected abstract List<T> getItemsInstance();
+	
 	protected abstract void setSearchFragmentItems(List<T> item);
 
 	protected abstract void setSearchFragmentSelectedItem(T item);
 
 	protected abstract void setEditFragmentItem(T item);
+	
+	protected abstract void enableEditFragmentInputFields(boolean isEnabled);
 
 	@Override
 	protected void afterFragmentRemoved() {
 
 		loadFragments();
 	}
-
+	
+	private boolean isFragmentHasBeenLoaded() {
+		
+		return (getFragmentManager().findFragmentByTag(searchFragmentTag) != null ||
+				getFragmentManager().findFragmentByTag(editFragmentTag) != null);  
+	}
+	
 	private void loadFragments() {
 
-		if (!isInFront) {
+		/*if (!isInFront) {
+			return;
+		}*/
+		
+		if (isFragmentHasBeenLoaded()) {
 			return;
 		}
 
@@ -129,6 +151,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 			if (mSelectedItem == null) {
 				addFragment(mSearchFragment, searchFragmentTag);
+				
 			} else {
 				addFragment(mEditFragment, editFragmentTag);
 			}
@@ -152,7 +175,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 		mSearchItem = menu.findItem(R.id.menu_item_search);
 		mListItem = menu.findItem(R.id.menu_item_list);
-		mNewItem = menu.findItem(R.id.menu_item_new);
 		mSaveItem = menu.findItem(R.id.menu_item_save);
 		mDiscardItem = menu.findItem(R.id.menu_item_discard);
 		mEditItem = menu.findItem(R.id.menu_item_edit);
@@ -171,6 +193,12 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		searchView.setIconifiedByDefault(false);
 		searchView.setOnQueryTextListener(this);
 		
+		if (mSelectedItem == null) {
+			showNavigationMenu();
+		} else {
+			showNavigationAndItemMenu();
+		}
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -178,10 +206,14 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-
-		menu.findItem(R.id.menu_item_search).setVisible(!isDrawerOpen);
-		menu.findItem(R.id.menu_item_list).setVisible(!isDrawerOpen);
-		menu.findItem(R.id.menu_item_new).setVisible(!isDrawerOpen);
+		
+		if (mSearchItem.isVisible()) {
+			mSearchItem.setVisible(!isDrawerOpen);
+		}
+		
+		if (mListItem.isVisible()) {
+			mListItem.setVisible(!isDrawerOpen);
+		}
 
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -200,6 +232,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		switch (item.getItemId()) {
 
 		case R.id.menu_item_search:
+			
+			showNavigationMenu();
 
 			if (getSearchFragmentView() == null) {
 				replaceFragment(mSearchFragment, searchFragmentTag);
@@ -211,15 +245,11 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 			return true;
 
-		case R.id.menu_item_new:
-
-			addItem(getItemInstance());
-
-			return true;
-
 		case R.id.menu_item_list:
 
 			showAllItems();
+			
+			showNavigationMenu();
 
 			return true;
 			
@@ -230,7 +260,9 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			return true;
 			
 		case R.id.menu_item_delete:
-
+			
+			confirmDelete(mSelectedItem);
+			
 			return true;
 			
 		case R.id.menu_item_save:
@@ -241,9 +273,13 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			
 		case R.id.menu_item_discard:
 			
-			showNavigationAndItemMenu();
-			
-			discardItem();
+			if (getItemId(mSelectedItem) == null) { 
+				showNavigationMenu();
+				discardItem();
+				
+			} else {
+				showNavigationAndItemMenu();
+			}
 			
 			return true;
 
@@ -256,6 +292,16 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	protected abstract void discardItem();
 	
+	public abstract void deleteItem(T item);
+	
+	protected abstract String getItemName(T item);
+	
+	private void confirmDelete(final T item) {
+		
+		mConfirmDeleteFragment.show(getFragmentManager(), confirmDeleteFragmentTag);
+		mConfirmDeleteFragment.setItemToBeDeleted(item, getItemName(item));
+	}
+	
 	public boolean onQueryTextChange(String query) {
 		
 		boolean isQuerySimilar = query.equals(prevQuery);
@@ -263,6 +309,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		prevQuery = query;
 		
 		if (mIsEnableSearch && !isQuerySimilar) {
+			
+			showNavigationMenu();
 
 			if (mIsMultiplesPane) {
 				doSearch(query);
@@ -300,10 +348,15 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	@Override
 	public void displaySearch() {
-
+		
+		showNavigationMenu();
+		
 		if (mIsMultiplesPane) {
+			
 			unSelectItem();
+		
 		} else {
+			
 			replaceFragment(mSearchFragment, searchFragmentTag);
 		}
 	}
@@ -315,8 +368,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	private void showNavigationMenu() {
 		
 		mSearchItem.setVisible(true);
-		mListItem.setVisible(true);
-		mNewItem.setVisible(true);
+		mListItem.setVisible(false);
 		
 		mEditItem.setVisible(false);
 		mDeleteItem.setVisible(false);
@@ -327,9 +379,15 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	private void showNavigationAndItemMenu() {
 		
-		mSearchItem.setVisible(true);
-		mListItem.setVisible(true);
-		mNewItem.setVisible(true);
+		enableEditFragmentInputFields(false);
+		
+		if (mIsMultiplesPane) {
+			mSearchItem.setVisible(true);
+			mListItem.setVisible(false);
+		} else {
+			mSearchItem.setVisible(false);
+			mListItem.setVisible(true);
+		}
 		
 		mEditItem.setVisible(true);
 		mDeleteItem.setVisible(true);
@@ -340,9 +398,10 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	private void showEditMenu() {
 		
+		enableEditFragmentInputFields(true);
+		
 		mSearchItem.setVisible(false);
 		mListItem.setVisible(false);
-		mNewItem.setVisible(false);
 		
 		mEditItem.setVisible(false);
 		mDeleteItem.setVisible(false);
@@ -354,26 +413,29 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	@Override
 	public void updateItem(T item) {
 		
+		mSelectedItem = item;
+		
 		showNavigationAndItemMenu();
 		
-		mIsEnableSearch = false;
-		mSearchItem.collapseActionView();
-		mIsEnableSearch = true;
-
 		if (mIsMultiplesPane) {
-			mSelectedItem = updateEditFragmentItem(item);
+			updateEditFragmentItem(item);
 			refreshEditView();
 
 		} else {
+			
+			mIsEnableSearch = false;
+			mSearchItem.collapseActionView();
+			mIsEnableSearch = true;
+			
 			replaceFragment(mEditFragment, editFragmentTag);
-			mSelectedItem = updateEditFragmentItem(item);
+			updateEditFragmentItem(item);
 		}
 	}
 
 	protected abstract void addEditFragmentItem(T item);
 
 	@Override
-	public void addItem(T item) {
+	public void addItem() {
 		
 		showEditMenu();
 		
@@ -381,9 +443,9 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		mSearchItem.collapseActionView();
 
-		mSelectedItem = item;
+		mSelectedItem = getItemInstance();
 
-		addEditFragmentItem(item);
+		addEditFragmentItem(mSelectedItem);
 
 		if (mIsMultiplesPane) {
 			refreshEditView();
@@ -398,7 +460,25 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	@Override
 	public void onAddCompleted() {
 		
-		showNavigationAndItemMenu();
+		showNavigationMenu();
+		
+		if (!mSearchItem.collapseActionView()) {
+			reloadItems();
+		}
+
+		if (mIsMultiplesPane) {
+			getEditFragmentView().setVisibility(View.INVISIBLE);
+		} else {
+			replaceFragment(mSearchFragment, searchFragmentTag);
+		}
+	}
+	
+	@Override
+	public void onDeleteCompleted() {
+		
+		mSelectedItem = null;
+		
+		showNavigationMenu();
 		
 		if (!mSearchItem.collapseActionView()) {
 			reloadItems();
@@ -428,22 +508,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 				break;
 			}
 		}
-
-		if (mIsMultiplesPane) {
-			getEditFragmentView().setVisibility(View.INVISIBLE);
-			refreshSearchFragmentItems();
-		} else {
-			replaceFragment(mSearchFragment, searchFragmentTag);
-			refreshSearchFragmentItems();
-		}
 		
-		//unSelectItem();
-	}
-
-	@Override
-	public void onLoadItems(List<T> items) {
-
-		mItems = items;
+		refreshSearchFragmentItems();
 	}
 
 	@Override
@@ -460,13 +526,16 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			}
 
 		} else {
+			
 			setSearchFragmentSelectedItem(mSelectedItem);
 			refreshSearchFragmentItems();
 		}
 	}
 
 	private void showAllItems() {
-
+		
+		mSelectedItem = null;
+		
 		mSearchItem.collapseActionView();
 
 		reloadItems();

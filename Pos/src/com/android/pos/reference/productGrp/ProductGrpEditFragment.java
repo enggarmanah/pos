@@ -42,6 +42,8 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
         
     	mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
     	
+    	registerField(mNameText);
+    	
     	mandatoryFields = new ArrayList<ProductGrpEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     }

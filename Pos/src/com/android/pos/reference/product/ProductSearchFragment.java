@@ -45,14 +45,18 @@ public class ProductSearchFragment extends BaseSearchFragment<Product> {
 
 		Query<Product> q = qb.build();
 		List<Product> list = q.list();
-		
-		mItemListener.onLoadItems(list);
 
 		return list;
 	}
 
-	public void onItemDeleted(Product product) {
-
-		productDao.load(product.getId()).delete();
+	public void onItemDeleted(Product item) {
+		
+		productDao.load(item.getId()).delete();
+		
+		mItems.remove(item);
+		mAdapter.notifyDataSetChanged();
+		
+		mSelectedItem = null;
+		mItemListener.onDeleteCompleted();
 	}
 }

@@ -8,7 +8,13 @@
     <TextView
         style="@style/PopUpDialogHeaderStyle"
         android:text="@string/transaction_summary" />
-
+	
+    <FrameLayout
+        android:layout_height="40dp"
+        android:layout_width="fill_parent"
+        android:background="@color/background">
+    </FrameLayout>
+    
     <LinearLayout
         android:id="@+id/customerPanel"
         style="@style/PaymentSummaryRowStyle" >
@@ -54,6 +60,18 @@
             android:id="@+id/changeText"
             style="@style/PaymentSummaryRowValueStyle" />
     </LinearLayout>
+    
+    <FrameLayout
+        android:layout_height="1dp"
+        android:layout_width="fill_parent"
+        android:background="@color/border_blue_light">
+    </FrameLayout>
+    
+    <FrameLayout
+        android:layout_height="40dp"
+        android:layout_width="fill_parent"
+        android:background="@color/background">
+    </FrameLayout>
 
     <LinearLayout style="@style/CashierNumberRowStyle" >
 

@@ -55,6 +55,11 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     	mAddressText = (EditText) getActivity().findViewById(R.id.addressTxt);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
     	
+    	registerField(mNameText);
+    	registerField(mTelephoneText);
+    	registerField(mAddressText);
+    	registerField(mStatusSp);
+    	
     	mandatoryFields = new ArrayList<EmployeeEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	

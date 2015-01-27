@@ -5,8 +5,8 @@
     <item android:state_pressed="true" >
         <shape>
             <gradient
-                android:startColor="@color/button_pressed"
-                android:endColor="@color/button_pressed"
+                android:startColor="@color/button_number_pressed"
+                android:endColor="@color/button_number_pressed"
                 android:angle="270" />
             <stroke
                 android:width="0dp"
@@ -18,8 +18,8 @@
     <item android:state_focused="true" >
         <shape>
             <gradient
-                android:startColor="@color/button_focused"
-                android:endColor="@color/button_focused"
+                android:startColor="@color/button_number_focused"
+                android:endColor="@color/button_number_focused"
                 android:angle="270" />
             <stroke
                 android:width="0dp"
@@ -31,8 +31,8 @@
     <item>        
         <shape>
             <gradient
-                android:startColor="@color/button_normal"
-                android:endColor="@color/button_normal"
+                android:startColor="@color/button_number_normal"
+                android:endColor="@color/button_number_normal"
                 android:angle="270" />
             <stroke
                 android:width="0dp"

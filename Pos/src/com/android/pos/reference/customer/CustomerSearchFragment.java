@@ -45,14 +45,18 @@ public class CustomerSearchFragment extends BaseSearchFragment<Customer> {
 
 		Query<Customer> q = qb.build();
 		List<Customer> list = q.list();
-		
-		mItemListener.onLoadItems(list);
 
 		return list;
 	}
 
-	public void onItemDeleted(Customer customer) {
+	public void onItemDeleted(Customer item) {
 
-		customerDao.load(customer.getId()).delete();
+		customerDao.load(item.getId()).delete();
+		
+		mItems.remove(item);
+		mAdapter.notifyDataSetChanged();
+		
+		mSelectedItem = null;
+		mItemListener.onDeleteCompleted();
 	}
 }

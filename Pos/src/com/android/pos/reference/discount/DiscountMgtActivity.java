@@ -1,5 +1,6 @@
 package com.android.pos.reference.discount;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
@@ -68,6 +69,12 @@ public class DiscountMgtActivity extends BaseItemMgtActivity<DiscountSearchFragm
 	protected View getEditFragmentView() {
 		
 		return mEditFragment.getView();
+	}
+	
+	@Override
+	protected void enableEditFragmentInputFields(boolean isEnabled) {
+		
+		mEditFragment.enableInputFields(isEnabled);
 	}
 
 	@Override
@@ -140,5 +147,23 @@ public class DiscountMgtActivity extends BaseItemMgtActivity<DiscountSearchFragm
 	protected void discardItem() {
 		
 		mEditFragment.discardEditItem();
+	}
+	
+	@Override
+	public void deleteItem(Discount item) {
+		
+		mSearchFragment.onItemDeleted(item);
+	}
+	
+	@Override
+	protected String getItemName(Discount item) {
+		
+		return item.getName();
+	}
+	
+	@Override
+	protected List<Discount> getItemsInstance() {
+		
+		return new ArrayList<Discount>();
 	}
 }

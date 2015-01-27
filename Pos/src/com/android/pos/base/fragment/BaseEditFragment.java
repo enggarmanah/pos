@@ -1,5 +1,8 @@
 package com.android.pos.base.fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
 import com.android.pos.R;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public abstract class BaseEditFragment<T> extends BaseFragment {
@@ -23,6 +27,8 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     protected T mItem;
     
     BaseItemListener<T> mItemListener;
+    
+    List<Object> mInputFields = new ArrayList<Object>();
     
     @SuppressWarnings("unchecked")
 	@Override
@@ -55,6 +61,28 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 		
 		saveItem();
 	}
+    
+    protected void registerField(Object field) {
+    	
+    	mInputFields.add(field);
+    }
+    
+    public void enableInputFields(boolean isEnabled) {
+    	
+    	for (Object field : mInputFields) {
+    		
+    		if (field instanceof TextView) {
+    			
+    			TextView textView = (TextView) field;
+    			textView.setEnabled(isEnabled);
+    		
+    		} else if (field instanceof Spinner) {
+    			
+    			Spinner spinner = (Spinner) field;
+    			spinner.setEnabled(isEnabled);
+    		}
+    	}
+    }
     
     protected void linkDatePickerWithInputField(String fragmentTag, TextView inputField) {
     	
@@ -164,12 +192,12 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     
     public void discardEditItem() {
     	
-    	/*mItem = null;
+    	mItem = null;
 		
 		mItemListener.onItemUnselected();
 		mItemListener.displaySearch();
 		
-		hideKeyboard();*/
+		hideKeyboard();
     }
     
     protected abstract void addItem();

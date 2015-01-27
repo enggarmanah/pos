@@ -1,5 +1,6 @@
 package com.android.pos.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
@@ -64,6 +65,12 @@ public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, Use
 	protected View getEditFragmentView() {
 		
 		return mEditFragment.getView();
+	}
+	
+	@Override
+	protected void enableEditFragmentInputFields(boolean isEnabled) {
+		
+		mEditFragment.enableInputFields(isEnabled);
 	}
 
 	@Override
@@ -136,5 +143,23 @@ public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, Use
 	protected void discardItem() {
 		
 		mEditFragment.discardEditItem();
+	}
+	
+	@Override
+	public void deleteItem(User item) {
+		
+		mSearchFragment.onItemDeleted(item);
+	}
+	
+	@Override
+	protected String getItemName(User item) {
+		
+		return item.getName();
+	}
+	
+	@Override
+	protected List<User> getItemsInstance() {
+		
+		return new ArrayList<User>();
 	}
 }

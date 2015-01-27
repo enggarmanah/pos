@@ -18,7 +18,7 @@ public class Constant {
 	public static int LIST_SELECTED_ITEM_GAP = 5;
 	
 	public static int MENU_CASHIER_POSITION = 0;
-	public static int MENU_TODAY_TRANSACTION_POSITION = 1;
+	public static int MENU_TRANSACTION_POSITION = 1;
 	public static int MENU_USER_MANAGEMENT_POSITION = 5;
 	public static int MENU_DATA_MANAGEMENT_POSITION = 6;
 }

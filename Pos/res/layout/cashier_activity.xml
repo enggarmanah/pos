@@ -18,8 +18,7 @@
 <!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    style="@style/MainActivityStyle" >
 
     <!--
          As the main content view, the view below consumes the entire
@@ -33,16 +32,33 @@
         android:baselineAligned="true"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/messageText"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#E3194B"
+            android:background="@color/background_red"
+            android:orientation="horizontal"
             android:gravity="center"
-            android:padding="10dp"
-            android:textColor="#EEE"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+            
+            <ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+                android:src="@drawable/action_alert"
+                android:contentDescription="@string/none">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/messageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/background_red"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textColor="#EEE"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/fragment_container"
@@ -50,7 +66,6 @@
             android:layout_height="fill_parent"
             android:orientation="horizontal" >
         </LinearLayout>
-        
     </LinearLayout>
 
     <!--
@@ -64,6 +79,6 @@
 
     <ListView
         android:id="@+id/left_drawer"
-        style="@style/MenuDrawerStyle"/>
+        style="@style/MenuDrawerStyle" />
 
 </android.support.v4.widget.DrawerLayout>

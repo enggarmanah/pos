@@ -194,12 +194,14 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		mTaxText.setText(CommonUtil.formatCurrency(tax));
 		mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));
 		
+		mTaxPanel.setVisibility(View.VISIBLE);
 		if (taxPercentage == 0) {
-			mTaxPanel.getLayoutParams().height = 0;
+			mTaxPanel.setVisibility(View.GONE);
 		}
 		
+		mServiceChargePanel.setVisibility(View.VISIBLE);
 		if (serviceChargePercentage == 0) {
-			mServiceChargePanel.getLayoutParams().height = 0;
+			mServiceChargePanel.setVisibility(View.GONE);
 		}
 		
 		int totalPayable = totalOrder + tax + serviceCharge;

@@ -5,30 +5,27 @@
     <LinearLayout
         android:id="@+id/topPanel"
         style="@style/SectionTopPanelStyle" >
-        
+
         <ImageButton
             android:id="@+id/backButton"
             style="@style/SectionBackButtonStyle"
-            android:contentDescription="@string/none"/>
+            android:contentDescription="@string/none" />
 
         <TextView
             android:id="@+id/navigationTitle"
             style="@style/SectionTopTextStyle"
-            android:gravity="start"/>
+            android:gravity="start" />
 
         <TextView
             android:id="@+id/navText"
             style="@style/SectionTopTextStyle"
-            android:gravity="end"/>
+            android:gravity="end" />
     </LinearLayout>
 
-    <FrameLayout
-        style="@style/ListViewWrapperStyle"
+    <ListView
+        android:id="@+id/transactionList"
+        style="@style/ListViewStyle"
         android:layout_below="@id/topPanel" >
-
-        <ListView
-            android:id="@+id/transactionList"
-            style="@style/ListViewStyle"/>
-    </FrameLayout>
+    </ListView>
 
 </RelativeLayout>

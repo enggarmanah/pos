@@ -45,15 +45,19 @@ public class DiscountSearchFragment extends BaseSearchFragment<Discount> {
 
 		Query<Discount> q = qb.build();
 		List<Discount> list = q.list();
-		
-		mItemListener.onLoadItems(list);
 
 		return list;
 	}
 
-	public void onItemDeleted(Discount discount) {
+	public void onItemDeleted(Discount item) {
 
-		Discount entity = discountDao.load(discount.getId());
+		Discount entity = discountDao.load(item.getId());
 		discountDao.getSession().delete(entity);
+		
+		mItems.remove(mSelectedItem);
+		mAdapter.notifyDataSetChanged();
+		
+		mSelectedItem = null;
+		mItemListener.onDeleteCompleted();
 	}
 }

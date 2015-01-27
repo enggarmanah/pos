@@ -29,12 +29,6 @@
         android:showAsAction="ifRoom|collapseActionView">
     </item>
     <item
-        android:id="@+id/menu_item_new"
-        android:icon="@drawable/action_new"
-        android:title="@string/product_add"
-        android:showAsAction="ifRoom|collapseActionView">
-    </item>
-    <item
         android:id="@+id/menu_item_edit"
         android:icon="@drawable/action_write"
         android:title="@string/edit"

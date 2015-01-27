@@ -58,6 +58,12 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	mRoleSp = (Spinner) getActivity().findViewById(R.id.roleSp);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
     	
+    	registerField(mNameText);
+    	registerField(mUserIdText);
+    	registerField(mPasswordText);
+    	registerField(mRoleSp);
+    	registerField(mStatusSp);
+    	
     	mandatoryFields = new ArrayList<UserEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mUserIdText, R.string.field_price));

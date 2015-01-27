@@ -1,5 +1,6 @@
 package com.android.pos.reference.merchant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
@@ -64,6 +65,12 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	protected View getEditFragmentView() {
 		
 		return mEditFragment.getView();
+	}
+	
+	@Override
+	protected void enableEditFragmentInputFields(boolean isEnabled) {
+		
+		mEditFragment.enableInputFields(isEnabled);
 	}
 
 	@Override
@@ -136,5 +143,23 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	protected void discardItem() {
 		
 		mEditFragment.discardEditItem();
+	}
+	
+	@Override
+	public void deleteItem(Merchant item) {
+		
+		mSearchFragment.onItemDeleted(item);
+	}
+	
+	@Override
+	protected String getItemName(Merchant item) {
+		
+		return item.getName();
+	}
+	
+	@Override
+	protected List<Merchant> getItemsInstance() {
+		
+		return new ArrayList<Merchant>();
 	}
 }

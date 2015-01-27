@@ -45,14 +45,18 @@ public class MerchantSearchFragment extends BaseSearchFragment<Merchant> {
 
 		Query<Merchant> q = qb.build();
 		List<Merchant> list = q.list();
-		
-		mItemListener.onLoadItems(list);
 
 		return list;
 	}
 
-	public void onItemDeleted(Merchant merchant) {
+	public void onItemDeleted(Merchant item) {
 
-		merchantDao.load(merchant.getId()).delete();
+		merchantDao.load(item.getId()).delete();
+		
+		mItems.remove(item);
+		mAdapter.notifyDataSetChanged();
+		
+		mSelectedItem = null;
+		mItemListener.onDeleteCompleted();
 	}
 }

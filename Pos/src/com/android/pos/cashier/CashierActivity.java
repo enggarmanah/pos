@@ -24,9 +24,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -73,8 +71,6 @@ public class CashierActivity extends BaseActivity
 
 	private String prevQuery = Constant.EMPTY_STRING;
 	
-	int messageTextHeight;
-	
 	private static DaoSession daoSession;
 	
 	private static DaoSession getDaoSession() {
@@ -99,7 +95,6 @@ public class CashierActivity extends BaseActivity
 		initFragments(savedInstanceState);
 
 		setTitle(getString(R.string.menu_cashier));
-
 		mDrawerList.setItemChecked(Constant.MENU_CASHIER_POSITION, true);
 		
 		System.out.println("CashierActivity.onCreate");
@@ -107,7 +102,7 @@ public class CashierActivity extends BaseActivity
 		initWaitAfterFragmentRemovedTask(mProductSearchFragmentTag, mOrderFragmentTag);
 		
 		messageText = (TextView) findViewById(R.id.messageText);
-		messageText.setHeight(0);
+		messageText.setVisibility(View.GONE);
 		
 		messageText.setOnClickListener(getMessageTextOnClickListener());
 		
@@ -116,17 +111,14 @@ public class CashierActivity extends BaseActivity
 	
 	public void setMessage(String message) {
 		
-		Resources r = getResources();
-		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, r.getDisplayMetrics());
-		
-		messageText.setHeight((int) px);
+		messageText.setVisibility(View.VISIBLE);
 		messageText.setText(message);
 	}
 	
 	public void clearMessage() {
 		
 		messageText.setText(Constant.EMPTY_STRING);
-		messageText.setHeight(0);
+		messageText.setVisibility(View.GONE);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -530,7 +522,11 @@ public class CashierActivity extends BaseActivity
 					PrintUtil.setPrinterLineSize(32);
 				}
 				
-				PrintUtil.connectToBluetoothPrinter(address);
+				try {
+					PrintUtil.connectToBluetoothPrinter(address);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			break;
 			

@@ -47,6 +47,7 @@
     <string name="empty"></string>
     <string name="search">Cari</string>
     <string name="add">Tambah</string>
+    <string name="alert">Perhatian</string>
     <string name="ok">OK</string>
     <string name="cancel">Batal</string>
     <string name="delete">Hapus</string>
@@ -82,7 +83,7 @@
     <string name="field_period_start">Awal Akses :</string>
     <string name="field_period_end">Akhir Akses :</string>
     <string name="field_tax_percentage">Pajak (%) :</string>
-    <string name="field_service_charge_percentage">Service Charge (%) :</string>
+    <string name="field_service_charge_percentage">Bea Servis (%) :</string>
     <string name="field_role">Hak Akses :</string>
     <string name="field_telephone">Telepon :</string>
     <string name="field_email">Email :</string>
@@ -133,9 +134,12 @@
     <string name="transaction_recap">Rekap Transaksi</string>
     
     <string name="none_paired">Tidak ada printer yang terhubung</string>
-    <string name="scanning">Melaksanakan scanning printer</string>
-    <string name="select_device">Silahkan pilih printer</string>
+    <string name="scanning">Scanning perangkat printer</string>
+    <string name="select_device">Pilih Printer Bluetooth</string>
     <string name="none_found">Tidak ada printer yang ditemukan</string>
+    <string name="paired_device">Daftar Perangkat Bluetooth</string>
+    <string name="other_device">Perangkat Bluetooth Baru</string>
+    <string name="scan_device">Scan Printer</string>
     
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

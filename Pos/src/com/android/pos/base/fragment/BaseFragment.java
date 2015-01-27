@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
+import com.android.pos.NotificationUtil;
+import com.android.pos.common.AlertDlgFragment;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -34,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
     		
     		if (CommonUtil.isEmpty(value)) {
     			
-    			new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo))
+    			/*new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo))
     			.setTitle("Perhatian!")
     		    .setMessage(getResources().getString(field.getLabel()) + " tidak boleh kosong.")
     		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -43,7 +45,13 @@ public abstract class BaseFragment extends Fragment {
     		        }
     		     })
     		    .setIcon(android.R.drawable.ic_dialog_alert)
-    		     .show();
+    		     .show();*/
+    			
+    			String fieldLabel = getString(field.getLabel()).replace(" :", "");
+    			
+    			AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
+    			alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
+    			alertDialogFragment.setAlertMessage(fieldLabel + " tidak boleh kosong.");
     			
     			input.requestFocus();
     			

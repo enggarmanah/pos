@@ -45,7 +45,7 @@ public class TransactionActivity extends BaseActivity
 
 		setTitle(getString(R.string.menu_transaction));
 
-		mDrawerList.setItemChecked(Constant.MENU_TODAY_TRANSACTION_POSITION, true);
+		mDrawerList.setItemChecked(Constant.MENU_TRANSACTION_POSITION, true);
 		
 		initWaitAfterFragmentRemovedTask(mTransactionSummaryFragmentTag, mTransactionDetailFragmentTag);
 	}

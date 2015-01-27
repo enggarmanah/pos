@@ -45,14 +45,18 @@ public class EmployeeSearchFragment extends BaseSearchFragment<Employee> {
 
 		Query<Employee> q = qb.build();
 		List<Employee> list = q.list();
-		
-		mItemListener.onLoadItems(list);
 
 		return list;
 	}
 
-	public void onItemDeleted(Employee employee) {
+	public void onItemDeleted(Employee item) {
 
-		employeeDao.load(employee.getId()).delete();
+		employeeDao.load(item.getId()).delete();
+		
+		mItems.remove(item);
+		mAdapter.notifyDataSetChanged();
+		
+		mSelectedItem = null;
+		mItemListener.onDeleteCompleted();
 	}
 }

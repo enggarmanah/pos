@@ -45,6 +45,9 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
         mNameText = (EditText) getView().findViewById(R.id.nameTxt);
         mPercentageText = (EditText) getView().findViewById(R.id.percentageTxt);	
     	
+        registerField(mNameText);
+        registerField(mPercentageText);
+        
         mandatoryFields = new ArrayList<DiscountEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mPercentageText, R.string.field_percentage));

@@ -4,14 +4,13 @@
 
     <LinearLayout
         android:id="@+id/topPanel"
-        style="@style/SectionTopPanelStyle">
+        style="@style/SectionTopPanelStyle" >
 
         <TextView
             android:id="@+id/navigationTitle"
+            style="@style/SectionTopTextStyle"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/order"
-            style="@style/SectionTopTextStyle"/>
-        
+            android:text="@string/order" />
     </LinearLayout>
 
     <LinearLayout
@@ -79,33 +78,46 @@
             android:orientation="horizontal"
             android:padding="8dp" >
 
-            <TextView
-                android:id="@+id/paymentText"
-                style="@style/CashierButtonStyle"
-                android:text="@string/payment"
-                android:textColor="@color/payment_btn_text" />
+            <FrameLayout
+                android:id="@+id/paymentPanel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/paymentText"
+                    style="@style/CashierButtonStyle"
+                    android:drawableLeft="@drawable/action_accept"
+                    android:drawableStart="@drawable/action_accept"
+                    android:drawablePadding="10dp"
+                    android:text="@string/payment" />
+            </FrameLayout>
 
             <TextView
                 android:layout_width="1dp"
                 android:layout_height="fill_parent"
                 android:background="@color/payment_btn_text" />
 
-            <TextView
-                android:id="@+id/cancelText"
-                style="@style/CashierButtonStyle"
-                android:text="@string/cancel"
-                android:textColor="@color/payment_btn_text" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/cancelText"
+                    style="@style/CashierButtonStyle"
+                    android:text="@string/cancel"
+                    android:drawableLeft="@drawable/action_cancel"
+                    android:drawableStart="@drawable/action_cancel"
+                    android:drawablePadding="10dp" />
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
-        style="@style/ListViewWrapperStyle"
+    <ListView
+        android:id="@+id/transactionItemList"
+        style="@style/ListViewStyle"
         android:layout_above="@id/belowPanel"
-        android:layout_below="@id/topPanel" >
-
-        <ListView
-            android:id="@+id/transactionItemList"
-            style="@style/ListViewStyle"/>
-    </FrameLayout>
+        android:layout_below="@id/topPanel" />
 
 </RelativeLayout>

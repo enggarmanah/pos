@@ -1,5 +1,6 @@
 package com.android.pos.reference.product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
@@ -64,6 +65,12 @@ public class ProductMgtActivity extends BaseItemMgtActivity<ProductSearchFragmen
 	protected View getEditFragmentView() {
 		
 		return mEditFragment.getView();
+	}
+	
+	@Override
+	protected void enableEditFragmentInputFields(boolean isEnabled) {
+		
+		mEditFragment.enableInputFields(isEnabled);
 	}
 
 	@Override
@@ -136,5 +143,23 @@ public class ProductMgtActivity extends BaseItemMgtActivity<ProductSearchFragmen
 	protected void discardItem() {
 		
 		mEditFragment.discardEditItem();
+	}
+	
+	@Override
+	public void deleteItem(Product item) {
+		
+		mSearchFragment.onItemDeleted(item);
+	}
+	
+	@Override
+	protected String getItemName(Product item) {
+		
+		return item.getName();
+	}
+	
+	@Override
+	protected List<Product> getItemsInstance() {
+		
+		return new ArrayList<Product>();
 	}
 }

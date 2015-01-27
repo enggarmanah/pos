@@ -1,5 +1,6 @@
 package com.android.pos.reference.employee;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
@@ -64,6 +65,12 @@ public class EmployeeMgtActivity extends BaseItemMgtActivity<EmployeeSearchFragm
 	protected View getEditFragmentView() {
 		
 		return mEditFragment.getView();
+	}
+	
+	@Override
+	protected void enableEditFragmentInputFields(boolean isEnabled) {
+		
+		mEditFragment.enableInputFields(isEnabled);
 	}
 
 	@Override
@@ -136,5 +143,23 @@ public class EmployeeMgtActivity extends BaseItemMgtActivity<EmployeeSearchFragm
 	protected void discardItem() {
 		
 		mEditFragment.discardEditItem();
+	}
+	
+	@Override
+	public void deleteItem(Employee item) {
+		
+		mSearchFragment.onItemDeleted(item);
+	}
+	
+	@Override
+	protected String getItemName(Employee item) {
+		
+		return item.getName();
+	}
+	
+	@Override
+	protected List<Employee> getItemsInstance() {
+		
+		return new ArrayList<Employee>();
 	}
 }

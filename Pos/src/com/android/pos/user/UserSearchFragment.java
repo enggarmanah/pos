@@ -45,14 +45,18 @@ public class UserSearchFragment extends BaseSearchFragment<User> {
 
 		Query<User> q = qb.build();
 		List<User> list = q.list();
-		
-		mItemListener.onLoadItems(list);
 
 		return list;
 	}
 
-	public void onItemDeleted(User user) {
+	public void onItemDeleted(User item) {
 
-		userDao.load(user.getId()).delete();
+		userDao.load(item.getId()).delete();
+		
+		mItems.remove(item);
+		mAdapter.notifyDataSetChanged();
+		
+		mSelectedItem = null;
+		mItemListener.onDeleteCompleted();
 	}
 }

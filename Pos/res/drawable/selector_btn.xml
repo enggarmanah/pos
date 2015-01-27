@@ -4,40 +4,19 @@
 
     <item android:state_pressed="true" >
         <shape>
-            <gradient
-                android:startColor="@color/button_pressed"
-                android:endColor="@color/button_pressed"
-                android:angle="270" />
-            <stroke
-                android:width="1dp"
-                android:color="@color/border_white" />
-            <corners android:radius="5dp" />
+            <solid android:color="@color/button_pressed"></solid>
         </shape>
     </item>
 
     <item android:state_focused="true" >
         <shape>
-            <gradient
-                android:startColor="@color/button_focused"
-                android:endColor="@color/button_focused"
-                android:angle="270" />
-            <stroke
-                android:width="1dp"
-                android:color="@color/border_white" />
-            <corners android:radius="5dp" />
+            <solid android:color="@color/button_focused"></solid>
         </shape>
     </item>
 
     <item>        
         <shape>
-            <gradient
-                android:startColor="@color/button_normal"
-                android:endColor="@color/button_normal"
-                android:angle="270" />
-            <stroke
-                android:width="1dp"
-                android:color="@color/border_white" />
-            <corners android:radius="5dp" />
+            <solid android:color="@color/button_normal"></solid>
         </shape>
     </item>
 </selector>

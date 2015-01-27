@@ -20,6 +20,7 @@ import java.util.Set;
 import com.android.pos.R;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -28,7 +29,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -57,12 +60,16 @@ public class CashierPaymentDeviceListActivity extends Activity {
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
+    
+    ProgressDialog mProgressDialog = new ProgressDialog();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Setup the window
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        
+        setTheme(android.R.style.Theme_Holo_Light_Dialog);
         
         setContentView(R.layout.cashier_printer_device_list);
         
@@ -153,6 +160,8 @@ public class CashierPaymentDeviceListActivity extends Activity {
 
         // Request discover from BluetoothAdapter
         mBtAdapter.startDiscovery();
+        
+		mProgressDialog.show(getFragmentManager(), "progressDialogTag");
     }
     
     
@@ -160,11 +169,18 @@ public class CashierPaymentDeviceListActivity extends Activity {
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
         
     	public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
-            // Cancel discovery because it's costly and we're about to connect
-            mBtAdapter.cancelDiscovery();
-
+    		
             // Get the device MAC address, which is the last 17 chars in the View
             String info = ((TextView) v).getText().toString();
+            
+            if (getString(R.string.none_found).equals(info)) {
+            	return;
+            }
+    		
+    		mProgressDialog.dismiss();
+    		
+            // Cancel discovery because it's costly and we're about to connect
+            mBtAdapter.cancelDiscovery();
             
             String printerType = info.substring(0, info.length() - 17);
             String address = info.substring(info.length() - 17);
@@ -187,7 +203,9 @@ public class CashierPaymentDeviceListActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-
+            
+            mProgressDialog.dismiss();
+            
             // When discovery finds a device
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
@@ -199,7 +217,7 @@ public class CashierPaymentDeviceListActivity extends Activity {
             // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 setProgressBarIndeterminateVisibility(false);
-                setTitle(R.string.select_device);
+                //setTitle(R.string.select_device);
                 if (mNewDevicesArrayAdapter.getCount() == 0) {
                     String noDevices = getResources().getText(R.string.none_found).toString();
                     mNewDevicesArrayAdapter.add(noDevices);
@@ -207,6 +225,30 @@ public class CashierPaymentDeviceListActivity extends Activity {
             }
         }
     };
+        
+    private class ProgressDialog extends DialogFragment {
+    	
+    	@Override
+    	public void onCreate(Bundle savedInstanceState) {
+    		super.onCreate(savedInstanceState);
 
+    		setStyle(STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
 
+    		setCancelable(false);
+    	}
+
+    	@Override
+    	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+    		View view = inflater.inflate(R.layout.cashier_printer_search_progress_fragment, container, false);
+
+    		return view;
+    	}
+    	
+    	@Override
+    	public void onStart() {
+
+    		super.onStart();
+    	}
+    }
 }

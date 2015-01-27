@@ -1,5 +1,6 @@
 package com.android.pos.reference.customer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
@@ -64,6 +65,12 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 	protected View getEditFragmentView() {
 		
 		return mEditFragment.getView();
+	}
+	
+	@Override
+	protected void enableEditFragmentInputFields(boolean isEnabled) {
+		
+		mEditFragment.enableInputFields(isEnabled);
 	}
 
 	@Override
@@ -136,5 +143,22 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 	protected void discardItem() {
 		
 		mEditFragment.discardEditItem();
+	}
+	
+	@Override
+	public void deleteItem(Customer item) {
+		
+		mSearchFragment.onItemDeleted(item);
+	}
+	
+	@Override
+	protected String getItemName(Customer customer) {
+		return customer.getName();
+	}
+	
+	@Override
+	protected List<Customer> getItemsInstance() {
+		
+		return new ArrayList<Customer>();
 	}
 }

@@ -1,5 +1,6 @@
 package com.android.pos.reference.productGrp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
@@ -64,6 +65,12 @@ public class ProductGrpMgtActivity extends BaseItemMgtActivity<ProductGrpSearchF
 	protected View getEditFragmentView() {
 		
 		return mEditFragment.getView();
+	}
+	
+	@Override
+	protected void enableEditFragmentInputFields(boolean isEnabled) {
+		
+		mEditFragment.enableInputFields(isEnabled);
 	}
 
 	@Override
@@ -136,5 +143,23 @@ public class ProductGrpMgtActivity extends BaseItemMgtActivity<ProductGrpSearchF
 	protected void discardItem() {
 		
 		mEditFragment.discardEditItem();
+	}
+	
+	@Override
+	public void deleteItem(ProductGroup item) {
+		
+		mSearchFragment.onItemDeleted(item);
+	}
+	
+	@Override
+	protected String getItemName(ProductGroup item) {
+		
+		return item.getName();
+	}
+	
+	@Override
+	protected List<ProductGroup> getItemsInstance() {
+		
+		return new ArrayList<ProductGroup>();
 	}
 }

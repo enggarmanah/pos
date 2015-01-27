@@ -7,7 +7,8 @@
 
     <TextView
         android:id="@+id/productText"
-        style="@style/PopUpDialogHeaderStyle"/>
+        style="@style/PopUpDialogHeaderStyle"
+        android:textSize="20sp"/>
 
     <Spinner
         android:id="@+id/personInChargeSp"
@@ -16,19 +17,26 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#AAA"
-        android:paddingBottom="1dp">
+        android:background="#FFF"
+        android:paddingBottom="1dp" >
 
         <TextView
+            style="@style/CashierNumberValueStyle"
+            android:layout_width="wrap_content"
             android:gravity="center_vertical|start"
             android:text="@string/count"
-            style="@style/CashierNumberValueStyle"/>
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/countText"
-            android:gravity="center_vertical|end"
-            style="@style/CashierNumberValueStyle"/>
+            style="@style/CashierNumberValueStyle"
+            android:gravity="center_vertical|end" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#AAA" />
 
     <LinearLayout
         android:id="@+id/numberBtnPanel"
@@ -102,10 +110,11 @@
                 style="@style/CashierNumberButtonStyle"
                 android:text="@string/number_0" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/actionXBtn"
                 style="@style/CashierNumberButtonStyle"
-                android:text="@string/delete_char" />
+                android:contentDescription="@string/none"
+                android:src="@drawable/backspace" />
         </LinearLayout>
     </LinearLayout>
 
@@ -115,11 +124,11 @@
             android:id="@+id/okBtn"
             style="@style/CashierOkCancelButtonStyle"
             android:text="@string/ok" />
-        
+
         <TextView
-            android:layout_height="fill_parent"
             android:layout_width="1dp"
-            android:background="#AAA"/>
+            android:layout_height="fill_parent"
+            android:background="#AAA" />
 
         <Button
             android:id="@+id/cancelBtn"

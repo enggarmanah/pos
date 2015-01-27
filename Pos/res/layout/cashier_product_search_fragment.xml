@@ -4,28 +4,24 @@
 
     <LinearLayout
         android:id="@+id/topPanel"
-        style="@style/SectionTopPanelStyle">
+        style="@style/SectionTopPanelStyle" >
 
         <TextView
             android:id="@+id/navigationTitle"
+            style="@style/SectionTopTextStyle"
             android:gravity="center_vertical|start"
-            android:text="@string/product"
-            style="@style/SectionTopTextStyle"/>
+            android:text="@string/product" />
 
         <TextView
             android:id="@+id/upButton"
+            style="@style/SectionTopTextStyle"
             android:gravity="center_vertical|end"
-            android:text="@string/product_group_list"
-            style="@style/SectionTopTextStyle"/>
+            android:text="@string/product_group_list" />
     </LinearLayout>
 
-    <FrameLayout
-        style="@style/ListViewWrapperStyle"
-        android:layout_below="@id/topPanel">
-
-        <ListView
-            android:id="@+id/productGroupList"
-            style="@style/ListViewStyle" />
-    </FrameLayout>
+    <ListView
+        android:id="@+id/productGroupList"
+        style="@style/ListViewStyle"
+        android:layout_below="@id/topPanel" />
 
 </RelativeLayout>

@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -67,16 +66,29 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void initViewReference() {
         
-        mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
-    	mTypeSp = (Spinner) getActivity().findViewById(R.id.typeSp);
-    	mProductGrpSp = (Spinner) getActivity().findViewById(R.id.productGrpSp);
-    	mPriceText = (EditText) getActivity().findViewById(R.id.priceTxt);
-    	mPicRequiredSp = (Spinner) getActivity().findViewById(R.id.picRequiredSp);
-    	mCommisionText = (EditText) getActivity().findViewById(R.id.commisionTxt);
-    	mPromoPriceText = (EditText) getActivity().findViewById(R.id.promoPriceTxt);
-    	mPromoStartDate = (EditText) getActivity().findViewById(R.id.promoStartDate);
-    	mPromoEndDate = (EditText) getActivity().findViewById(R.id.promoEndDate);
-    	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
+        mNameText = (EditText) getView().findViewById(R.id.nameTxt);
+    	mTypeSp = (Spinner) getView().findViewById(R.id.typeSp);
+    	mProductGrpSp = (Spinner) getView().findViewById(R.id.productGrpSp);
+    	mPriceText = (EditText) getView().findViewById(R.id.priceTxt);
+    	mPicRequiredSp = (Spinner) getView().findViewById(R.id.picRequiredSp);
+    	mCommisionText = (EditText) getView().findViewById(R.id.commisionTxt);
+    	mPromoPriceText = (EditText) getView().findViewById(R.id.promoPriceTxt);
+    	mPromoStartDate = (EditText) getView().findViewById(R.id.promoStartDate);
+    	mPromoEndDate = (EditText) getView().findViewById(R.id.promoEndDate);
+    	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
+    	
+    	registerField(mNameText);
+    	registerField(mTypeSp);
+    	registerField(mProductGrpSp);
+    	registerField(mPriceText);
+    	registerField(mPicRequiredSp);
+    	registerField(mCommisionText);
+    	registerField(mPromoPriceText);
+    	registerField(mPromoStartDate);
+    	registerField(mPromoEndDate);
+    	registerField(mStatusSp);
+    	
+    	enableInputFields(false);
     	
     	mandatoryFields = new ArrayList<ProductEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));

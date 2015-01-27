@@ -4,14 +4,11 @@ import java.util.List;
 
 import com.android.pos.R;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
@@ -88,10 +85,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 			itemName.setTextColor(context.getResources().getColor(R.color.list_row_normal_text));
 		}
 		
-		//ImageButton deleteBtn = (ImageButton) rowView.findViewById(R.id.deleteBtn);
-		
 		rowView.setOnClickListener(getItemOnClickListener(item, itemName));
-		//deleteBtn.setOnClickListener(getDeleteBtnClickListener(item));
 
 		return rowView;
 	}
@@ -122,52 +116,6 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 				mCallback.onItemSelected(item);
 			}
 		};
-	}
-	
-	private View.OnClickListener getDeleteBtnClickListener(final T item) {
-		
-		return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				AlertDialog diaBox = confirmDelete(item);
-				diaBox.show();
-			}
-		};
-	}
-	
-	private String getString(int resourceId) {
-		return context.getResources().getString(resourceId);
-	}
-	
-	private AlertDialog confirmDelete(final T item) {
-
-		AlertDialog myQuittingDialogBox = new AlertDialog.Builder(context)
-
-				.setTitle(getString(R.string.confirmation)).setMessage("Hapus " + getItemName(item) + " ?").setIcon(R.drawable.action_delete)
-
-				.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int whichButton) {
-
-						mCallback.onItemDeleted(item);
-						items.remove(item);
-						notifyDataSetChanged();
-						dialog.dismiss();
-					}
-
-				})
-
-				.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-
-						dialog.dismiss();
-
-					}
-				}).create();
-
-		return myQuittingDialogBox;
 	}
 
 	public void unSelectItem() {

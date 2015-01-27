@@ -73,6 +73,19 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mServiceChargeText = (EditText) getActivity().findViewById(R.id.serviceChargeText);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
     	
+    	registerField(mNameText);
+    	registerField(mTypeSp);
+    	registerField(mAddressText);
+    	registerField(mContactNameText);
+    	registerField(mContactTelephoneText);
+    	registerField(mLoginIdText);
+    	registerField(mPasswordText);
+    	registerField(mPeriodStartDate);
+    	registerField(mPeriodEndDate);
+    	registerField(mTaxText);
+    	registerField(mServiceChargeText);
+    	registerField(mStatusSp);
+    	
     	mandatoryFields = new ArrayList<MerchantEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mAddressText, R.string.field_address));

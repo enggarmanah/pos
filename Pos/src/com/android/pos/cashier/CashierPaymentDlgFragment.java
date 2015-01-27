@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -38,7 +39,7 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 	Button number9Btn;
 	
 	Button actionCBtn;
-	Button actionXBtn;
+	ImageButton actionXBtn;
 	
 	Button okBtn;
 	Button cancelBtn;
@@ -103,7 +104,7 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 		number9Btn = (Button) getView().findViewById(R.id.number9Btn);
 		
 		actionCBtn = (Button) getView().findViewById(R.id.actionCBtn);
-		actionXBtn = (Button) getView().findViewById(R.id.actionXBtn);
+		actionXBtn = (ImageButton) getView().findViewById(R.id.actionXBtn);
 		
 		okBtn = (Button) getView().findViewById(R.id.okBtn);
 		cancelBtn = (Button) getView().findViewById(R.id.cancelBtn);

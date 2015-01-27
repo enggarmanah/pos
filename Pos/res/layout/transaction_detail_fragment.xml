@@ -28,59 +28,50 @@
                 android:gravity="end" />
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/border_blue"
-            android:paddingBottom="1dp"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp" >
+        <LinearLayout
+            style="@style/SectionContentPanelStyle"
+            android:baselineAligned="false" >
 
             <LinearLayout
-                style="@style/SectionContentPanelStyle"
-                android:baselineAligned="false" >
+                style="@style/SectionSubContentPanelStyle"
+                android:layout_weight="5" >
 
-                <LinearLayout
-                    style="@style/SectionSubContentPanelStyle"
-                    android:layout_weight="5" >
+                <TextView
+                    style="@style/SectionSubContentLabelTextStyle"
+                    android:text="@string/transaction_no" />
 
-                    <TextView
-                        style="@style/SectionSubContentLabelTextStyle"
-                        android:text="@string/transaction_no" />
-
-                    <TextView
-                        android:id="@+id/transactionNoText"
-                        style="@style/SectionSubContentInfoTextStyle" />
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/SectionSubContentPanelStyle"
-                    android:layout_weight="4" >
-
-                    <TextView
-                        style="@style/SectionSubContentLabelTextStyle"
-                        android:text="@string/transaction_cashier" />
-
-                    <TextView
-                        android:id="@+id/cashierText"
-                        style="@style/SectionSubContentInfoTextStyle" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/customerPanel"
-                    style="@style/SectionSubContentPanelStyle"
-                    android:layout_weight="4" >
-
-                    <TextView
-                        style="@style/SectionSubContentLabelTextStyle"
-                        android:text="@string/customer" />
-
-                    <TextView
-                        android:id="@+id/customerText"
-                        style="@style/SectionSubContentInfoTextStyle" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/transactionNoText"
+                    style="@style/SectionSubContentInfoTextStyle" />
             </LinearLayout>
-        </FrameLayout>
+
+            <LinearLayout
+                style="@style/SectionSubContentPanelStyle"
+                android:layout_weight="4" >
+
+                <TextView
+                    style="@style/SectionSubContentLabelTextStyle"
+                    android:text="@string/transaction_cashier" />
+
+                <TextView
+                    android:id="@+id/cashierText"
+                    style="@style/SectionSubContentInfoTextStyle" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/customerPanel"
+                style="@style/SectionSubContentPanelStyle"
+                android:layout_weight="4" >
+
+                <TextView
+                    style="@style/SectionSubContentLabelTextStyle"
+                    android:text="@string/customer" />
+
+                <TextView
+                    android:id="@+id/customerText"
+                    style="@style/SectionSubContentInfoTextStyle" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -142,15 +133,10 @@
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/transactionItemPanel"
-        style="@style/ListViewWrapperStyle"
+    <ListView
+        android:id="@+id/transactionItemList"
+        style="@style/ListViewStyle"
         android:layout_above="@id/belowPanel"
-        android:layout_below="@id/topPanel" >
-
-        <ListView
-            android:id="@+id/transactionItemList"
-            style="@style/ListViewStyle" />
-    </FrameLayout>
+        android:layout_below="@id/topPanel" />
 
 </RelativeLayout>

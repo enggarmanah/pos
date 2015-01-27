@@ -12,11 +12,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 public abstract class BaseSearchFragment<T> extends BaseFragment 
 	implements BaseSearchArrayAdapter.ItemActionListener<T> {
-
+	
+	protected ImageButton mAddButton;
+	
 	protected BaseSearchArrayAdapter<T> mAdapter;
 	protected BaseItemListener<T> mItemListener;
 
@@ -30,8 +33,8 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 		
 		View view = inflater.inflate(R.layout.app_item_search_fragment, container, false);
 
-		if (mItems == null) {
-			mItems = getItems(Constant.EMPTY_STRING);
+		if (mItems != null && mItems.size() == 0) {
+			mItems.addAll(getItems(Constant.EMPTY_STRING));
 		}
 		
 		initAdapter();
@@ -43,15 +46,31 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 	
 	@Override
 	public void onStart() {
+		
 		super.onStart();
 		
-		mSearchResultList = (ListView) getActivity().findViewById(R.id.searchResultList);
+		mAddButton = (ImageButton) getView().findViewById(R.id.addButton);
+		mAddButton.setOnClickListener(getAddButtonOnClickListener());
+		
+		mSearchResultList = (ListView) getView().findViewById(R.id.searchResultList);
 
 		mSearchResultList.setAdapter(mAdapter);
 		mSearchResultList.setItemsCanFocus(true);
 		mSearchResultList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		initWaitAfterStartTask();
+	}
+	
+	private View.OnClickListener getAddButtonOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mItemListener.addItem();
+			}
+		};
 	}
 	
 	@Override
@@ -88,17 +107,15 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 	public void searchItem(String query) {
 		
 		if (!isViewInitialized()) {
-			mItems = null;
 			mSelectedItem = null;
 			return;
 		}
 		
 		unSelectItem();
 		
-		mItems = getItems(query);
+		mItems.clear();
+		mItems.addAll(getItems(query));
 		
-		mAdapter.clear();
-		mAdapter.addAll(mItems);
 		mAdapter.notifyDataSetChanged();
 	}
 	
