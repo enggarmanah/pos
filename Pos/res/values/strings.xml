@@ -57,6 +57,7 @@
     <string name="save">Simpan</string>
     <string name="none"></string>
     
+    <string name="action_sync">Sync</string>
     <string name="product_search">Cari Produk</string>
     <string name="product_list">Daftar Produk</string>
     <string name="product_add">Tambah Produk</string>

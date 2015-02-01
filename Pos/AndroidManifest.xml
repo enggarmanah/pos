@@ -51,6 +51,10 @@
             android:name="com.android.pos.reference.MainMenuActivity"
             android:label="@string/menu_data_management"
             android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.reference.merchant.MerchantMgtActivity"
@@ -58,16 +62,13 @@
         </activity>
         <activity
             android:name="com.android.pos.reference.productGrp.ProductGrpMgtActivity"
-            android:label="@string/module_product_group" >
+            android:label="@string/module_product_group"
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.reference.product.ProductMgtActivity"
             android:label="@string/module_product"
             android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.reference.employee.EmployeeMgtActivity"

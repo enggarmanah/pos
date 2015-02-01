@@ -9,7 +9,6 @@ import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.common.ConfirmDeleteDlgFragment;
-
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
@@ -23,7 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
 public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implements BaseItemListener<T>, SearchView.OnQueryTextListener {
-
+	
 	protected S mSearchFragment;
 	protected E mEditFragment;
 	protected ConfirmDeleteDlgFragment<T> mConfirmDeleteFragment;
