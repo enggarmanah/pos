@@ -1,4 +1,4 @@
-package com.android.pos;
+package com.android.pos.base.fragment;
 
 import android.app.DialogFragment;
 import android.view.Gravity;

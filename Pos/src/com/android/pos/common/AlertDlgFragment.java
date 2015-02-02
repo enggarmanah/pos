@@ -1,7 +1,7 @@
 package com.android.pos.common;
 
-import com.android.pos.BaseDialogFragment;
 import com.android.pos.R;
+import com.android.pos.base.fragment.BaseDialogFragment;
 
 import android.app.Activity;
 import android.os.Bundle;

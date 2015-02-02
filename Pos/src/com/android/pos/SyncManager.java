@@ -20,6 +20,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.pos.model.DeviceBean;
+import com.android.pos.model.RequestBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -27,6 +28,7 @@ public class SyncManager {
 	
 	private Context context;
 	private DataManager dataMgr;
+	private DeviceBean device;
 	
 	public SyncManager(Context context) {
 		
@@ -36,20 +38,29 @@ public class SyncManager {
 	
 	public void sync() {
 		
+		new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC);
+	}
+	
+	private void getProductGroup() {
+		
 		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT_GROUP);
 	}
 	
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
-
+		
+		String task;
+		
 		@Override
 		protected String doInBackground(String... tasks) {
-
+			
+			task = tasks[0];
+			
 			String url = Constant.EMPTY_STRING;
 			Object obj = null;
 			
 			if (Constant.TASK_GET_LAST_SYNC.equals(tasks[0])) {
 				
-				url = Config.SERVER_URL + "/lastSyncServlet";
+				url = Config.SERVER_URL + "/getLastSyncJsonServlet";
 				
 				DeviceBean bean = new DeviceBean();
 				bean.setMerchant_id(MerchantUtil.getMerchant().getId());
@@ -58,31 +69,45 @@ public class SyncManager {
 			
 			} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(tasks[0])) {
 				
-				url = Config.SERVER_URL + "/productGroupServlet";
-				obj = dataMgr.getProductGroups();
+				url = Config.SERVER_URL + "/productGroupGetJsonServlet";
+				
+				RequestBean request = new RequestBean();
+				request.setLastSyncDate(device.getLast_sync_date());
+				obj = request;
 			}
 			
 			return POST(url, obj);
 		}
 
-		// onPostExecute displays the results of the AsyncTask.
 		@Override
 		protected void onPostExecute(String result) {
 			
-			Toast.makeText(context, "Data Sent!", Toast.LENGTH_LONG).show();
+			try {
+				
+				if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
+					
+					ObjectMapper mapper = new ObjectMapper();
+					device = mapper.readValue(result, DeviceBean.class);
+					
+					getProductGroup();
+				
+				} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(task)) {
+					
+					Toast.makeText(context, "Data Sent!", Toast.LENGTH_LONG).show();
 
-			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-			alertDialogBuilder.setTitle("Alert");
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+					alertDialogBuilder.setTitle("Alert");
 
-			alertDialogBuilder.setMessage("Result : " + result);
+					alertDialogBuilder.setMessage("Result : " + result);
 
-			// create alert dialog
-			AlertDialog alertDialog = alertDialogBuilder.create();
+					AlertDialog alertDialog = alertDialogBuilder.create();
 
-			// show it
-			alertDialog.show();
-			
-			
+					alertDialog.show();
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -93,10 +118,8 @@ public class SyncManager {
 
 		try {
 
-			// 1. create HttpClient
 			HttpClient httpclient = new DefaultHttpClient();
 
-			// 2. make POST request to the given URL
 			HttpPost httpPost = new HttpPost(url);
 
 			final OutputStream out = new ByteArrayOutputStream();
@@ -111,27 +134,22 @@ public class SyncManager {
 
 			StringEntity se = new StringEntity(json);
 
-			// 6. set httpPost Entity
 			httpPost.setEntity(se);
 
-			// 7. Set some headers to inform server about the type of the
-			// content
 			httpPost.setHeader("Accept", "application/json");
 			httpPost.setHeader("Content-type", "application/json");
 
-			// 8. Execute POST request to the given URL
 			HttpResponse httpResponse = httpclient.execute(httpPost);
 
-			// 9. receive response as inputStream
 			inputStream = httpResponse.getEntity().getContent();
 
-			// 10. convert inputstream to string
 			if (inputStream != null)
 				result = convertInputStreamToString(inputStream);
 			else
 				result = "Did not work!";
 
 		} catch (Exception e) {
+			
 			Log.d("InputStream", e.getLocalizedMessage());
 		}
 

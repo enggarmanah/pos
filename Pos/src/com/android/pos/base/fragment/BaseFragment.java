@@ -7,11 +7,8 @@ import com.android.pos.Constant;
 import com.android.pos.NotificationUtil;
 import com.android.pos.common.AlertDlgFragment;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -35,17 +32,6 @@ public abstract class BaseFragment extends Fragment {
     		}
     		
     		if (CommonUtil.isEmpty(value)) {
-    			
-    			/*new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo))
-    			.setTitle("Perhatian!")
-    		    .setMessage(getResources().getString(field.getLabel()) + " tidak boleh kosong.")
-    		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-    		        public void onClick(DialogInterface dialog, int which) { 
-    		            // continue with delete
-    		        }
-    		     })
-    		    .setIcon(android.R.drawable.ic_dialog_alert)
-    		     .show();*/
     			
     			String fieldLabel = getString(field.getLabel()).replace(" :", "");
     			
