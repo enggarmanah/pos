@@ -1,5 +1,6 @@
 package com.app.posweb.server.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,6 +22,7 @@ public class ProductGroupDao {
 		}
 		
 		em.persist(productGroup);
+		em.refresh(productGroup);
 		em.detach(productGroup);
 		
 		em.close();
@@ -57,14 +59,16 @@ public class ProductGroupDao {
 		return result;
 	}
 	
-	public List<ProductGroup> getProductGroups() {
+	public List<ProductGroup> getProductGroups(Date lastSyncDate) {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
-		StringBuffer sql = new StringBuffer("SELECT pg FROM ProductGroup pg");
+		
+		StringBuffer sql = new StringBuffer("SELECT pg FROM ProductGroup pg WHERE update_date >= :lastSyncDate");
 		
 		sql.append(" ORDER BY pg.name");
 		
 		TypedQuery<ProductGroup> query = em.createQuery(sql.toString(), ProductGroup.class);
+		query.setParameter("lastSyncDate", lastSyncDate);
 		
 		List<ProductGroup> result = query.getResultList();
 		

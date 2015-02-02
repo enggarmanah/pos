@@ -13,12 +13,11 @@ import com.google.appengine.api.utils.SystemProperty;
 
 public class ServerUtil {
 	
-	public static String redirectUri = "http://www.infoklinik.com";
-	
 	private static SimpleDateFormat dateTimeDtf = new SimpleDateFormat("dd/MM/yyyy kk:mm");
 	
-	public static void main(String[] args) {
-		System.out.println(generateReservationCode());
+	public static Date getStartDate() {
+		
+		return strTodateTime("01/01/2015 00:00");
 	}
 	
 	public static String getCallbackUrl() {
@@ -28,28 +27,6 @@ public class ServerUtil {
 		} else {
 			return Constant.APP_CALLBACK_URL_DEV;
 		}
-	}
-	
-	public static synchronized String generateReservationCode() {
-		
-		String code = "";
-		
-		Calendar cal = Calendar.getInstance();
-		long time = cal.getTimeInMillis();		
-		
-		cal.set(Calendar.MONTH, 0);
-		cal.set(Calendar.DATE, 1);
-		cal.clear(Calendar.HOUR);
-		cal.clear(Calendar.MINUTE);
-		cal.clear(Calendar.SECOND);
-		cal.clear(Calendar.MILLISECOND);
-		
-		time = time - cal.getTimeInMillis();
-		
-		code = Long.toString(time, 32);
-		code = code.toUpperCase();
-		
-		return code;
 	}
 	
 	public static boolean isProductionEnvironment() {
@@ -111,6 +88,17 @@ public class ServerUtil {
 			e.printStackTrace();
 		}
 		return strDate;
+	}
+	
+	public static Date strTodateTime(String strDate) {
+		
+		Date dateTime = null;
+		try {
+			 dateTime = dateTimeDtf.parse(strDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dateTime;
 	}
 	
 	public static int getCurrDay() {

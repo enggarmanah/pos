@@ -6,13 +6,21 @@
 
 	<!-- Servlets -->
 	<servlet>
-		<servlet-name>productGroupServlet</servlet-name>
-		<servlet-class>com.app.posweb.server.servlet.ProductGroupServlet</servlet-class>
+		<servlet-name>getLastSyncJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.GetLastSyncJsonServlet</servlet-class>
 	</servlet>
-
+	<servlet>
+		<servlet-name>productGroupGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.ProductGroupGetJsonServlet</servlet-class>
+	</servlet>
+	
 	<servlet-mapping>
-		<servlet-name>productGroupServlet</servlet-name>
-		<url-pattern>/productGroupServlet</url-pattern>
+		<servlet-name>getLastSyncJsonServlet</servlet-name>
+		<url-pattern>/getLastSyncJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>productGroupGetJsonServlet</servlet-name>
+		<url-pattern>/productGroupGetJsonServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>

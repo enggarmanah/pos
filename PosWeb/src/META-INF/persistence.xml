@@ -6,6 +6,7 @@
 		
 		<provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
 		
+		<class>com.app.posweb.server.model.Device</class>
 		<class>com.app.posweb.server.model.ProductGroup</class>
 		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
