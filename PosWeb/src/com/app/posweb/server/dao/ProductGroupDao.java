@@ -46,11 +46,12 @@ public class ProductGroupDao {
 		
 		try {
 			result = query.getSingleResult();
+			em.detach(result);
+			
 		} catch (NoResultException e) {
 			// do nothing
 		}
 		
-		em.detach(result);
 		em.close();
 
 		return result;

@@ -12,7 +12,8 @@ public class Installation {
 	private static String sID = null;
 	private static final String INSTALLATION = "INSTALLATION";
 
-	public synchronized static String id(Context context) {
+	public synchronized static String getInstallationId(Context context) {
+		
 		if (sID == null) {
 			File installation = new File(context.getFilesDir(), INSTALLATION);
 			try {
@@ -27,6 +28,7 @@ public class Installation {
 	}
 
 	private static String readInstallationFile(File installation) throws IOException {
+		
 		RandomAccessFile f = new RandomAccessFile(installation, "r");
 		byte[] bytes = new byte[(int) f.length()];
 		f.readFully(bytes);
@@ -35,6 +37,7 @@ public class Installation {
 	}
 
 	private static void writeInstallationFile(File installation) throws IOException {
+		
 		FileOutputStream out = new FileOutputStream(installation);
 		String id = UUID.randomUUID().toString();
 		out.write(id.getBytes());
