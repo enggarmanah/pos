@@ -10,8 +10,6 @@ public class BaseBean {
 
 	protected Long remote_id;
 
-	protected String upload_status;
-
 	protected String create_by;
 
 	protected Date create_date;
@@ -42,14 +40,6 @@ public class BaseBean {
 
 	public void setRemote_id(Long remote_id) {
 		this.remote_id = remote_id;
-	}
-
-	public String getUpload_status() {
-		return upload_status;
-	}
-
-	public void setUpload_status(String upload_status) {
-		this.upload_status = upload_status;
 	}
 
 	public String getCreate_by() {

@@ -14,17 +14,42 @@ public class ProductGroupDao {
 	
 	public ProductGroup syncProductGroup(ProductGroup productGroup) {
 		
-		EntityManager em = PersistenceManager.getEntityManager();
 		ProductGroup obj = getProductGroup(productGroup);
 		
 		if (obj != null) {
+			
 			productGroup.setId(obj.getId());
+			productGroup = updateProductGroup(productGroup);
+			
+		} else {
+			
+			productGroup = addProductGroup(productGroup);
 		}
 		
-		em.persist(productGroup);
-		em.refresh(productGroup);
-		em.detach(productGroup);
+		return productGroup;
+	}
+	
+	public ProductGroup addProductGroup(ProductGroup bean) {
+
+		EntityManager em = PersistenceManager.getEntityManager();
 		
+		em.persist(bean);
+		em.refresh(bean);
+		em.detach(bean);
+		
+		em.close();
+
+		return bean;
+	}
+	
+	public ProductGroup updateProductGroup(ProductGroup bean) {
+
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		ProductGroup productGroup = em.find(ProductGroup.class, bean.getId());
+		productGroup.setBean(bean);
+		
+		em.detach(productGroup);
 		em.close();
 		
 		return productGroup;

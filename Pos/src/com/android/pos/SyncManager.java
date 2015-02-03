@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -13,27 +14,29 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.android.pos.model.DeviceBean;
-import com.android.pos.model.RequestBean;
+import com.android.pos.model.ProductGroupBean;
+import com.android.pos.model.SyncRequestBean;
+import com.android.pos.model.SyncStatusBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 public class SyncManager {
 	
 	private Context context;
-	private DataManager dataMgr;
+	private DataManager dataManager;
 	private DeviceBean device;
 	
 	public SyncManager(Context context) {
 		
 		this.context = context;
-		dataMgr = new DataManager();
+		dataManager = new DataManager();
 	}
 	
 	public void sync() {
@@ -44,6 +47,11 @@ public class SyncManager {
 	private void getProductGroup() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT_GROUP);
+	}
+	
+	private void updateProductGroup() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_PRODUCT_GROUP);
 	}
 	
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
@@ -71,9 +79,15 @@ public class SyncManager {
 				
 				url = Config.SERVER_URL + "/productGroupGetJsonServlet";
 				
-				RequestBean request = new RequestBean();
+				SyncRequestBean request = new SyncRequestBean();
 				request.setLastSyncDate(device.getLast_sync_date());
 				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/productGroupUpdateJsonServlet";
+				
+				obj = dataManager.getProductGroupsForUpload();
 			}
 			
 			return POST(url, obj);
@@ -84,25 +98,35 @@ public class SyncManager {
 			
 			try {
 				
+				ObjectMapper mapper = new ObjectMapper();
+				
 				if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
 					
-					ObjectMapper mapper = new ObjectMapper();
-					device = mapper.readValue(result, DeviceBean.class);
+					Toast.makeText(context, "Get last synced!", Toast.LENGTH_LONG).show();
 					
+					device = mapper.readValue(result, DeviceBean.class);
 					getProductGroup();
 				
 				} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(task)) {
 					
-					Toast.makeText(context, "Data Sent!", Toast.LENGTH_LONG).show();
-
-					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-					alertDialogBuilder.setTitle("Alert");
-
-					alertDialogBuilder.setMessage("Result : " + result);
-
-					AlertDialog alertDialog = alertDialogBuilder.create();
-
-					alertDialog.show();
+					Toast.makeText(context, "Product Group Received!", Toast.LENGTH_LONG).show();
+					
+					List<ProductGroupBean> productGroups = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							ProductGroupBean.class));
+					
+					dataManager.updateProductGroups(productGroups);
+					updateProductGroup();
+				
+				} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(task)) {
+					
+					Toast.makeText(context, "Product Group Updated!", Toast.LENGTH_LONG).show();
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					dataManager.updateProductGroupStatus(syncStatusBeans);
 				}
 				
 			} catch (IOException e) {
@@ -153,19 +177,21 @@ public class SyncManager {
 			Log.d("InputStream", e.getLocalizedMessage());
 		}
 
-		// 11. return result
 		return result;
 	}
 
 	private static String convertInputStreamToString(InputStream inputStream) throws IOException {
 
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+		
 		String line = "";
-		String result = "";
-		while ((line = bufferedReader.readLine()) != null)
-			result += line;
+		StringBuffer result = new StringBuffer();
+		
+		while ((line = bufferedReader.readLine()) != null) {
+			result.append(line);
+		}
 
 		inputStream.close();
-		return result;
+		return result.toString();
 	}
 }

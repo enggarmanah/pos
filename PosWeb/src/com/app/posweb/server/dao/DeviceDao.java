@@ -14,20 +14,44 @@ public class DeviceDao {
 	
 	public Device syncDevice(Device device) {
 		
-		EntityManager em = PersistenceManager.getEntityManager();
 		Device obj = getDevice(device);
 		
 		if (obj != null) {
+			
 			device.setId(obj.getId());
-			device.setLast_sync_date(obj.getLast_sync_date());
+			device = updateDevice(device);
+			
 		} else {
-			device.setLast_sync_date(ServerUtil.getStartDate());
+			
+			device = addDevice(device);
 		}
 		
-		em.persist(device);
-		em.refresh(device);
-		em.detach(device);
+		return device;
+	}
+	
+	public Device addDevice(Device bean) {
 		
+		bean.setLast_sync_date(ServerUtil.getStartDate());
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		em.persist(bean);
+		em.refresh(bean);
+		em.detach(bean);
+		
+		em.close();
+
+		return bean;
+	}
+	
+	public Device updateDevice(Device bean) {
+
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		Device device = em.find(Device.class, bean.getId());
+		device.setBean(bean);
+		
+		em.detach(device);
 		em.close();
 		
 		return device;

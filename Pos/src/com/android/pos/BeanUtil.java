@@ -14,4 +14,15 @@ public class BeanUtil {
 		
 		return bean;
 	}
+	
+	public static void updateBean(ProductGroup productGroup, ProductGroupBean bean) {
+		
+		productGroup.setId(bean.getId());
+		productGroup.setName(bean.getName());
+		productGroup.setUploadStatus(Constant.STATUS_NO);
+		productGroup.setCreateBy(bean.getCreate_by());
+		productGroup.setCreateDate(bean.getCreate_date());
+		productGroup.setUpdateBy(bean.getUpdate_by());
+		productGroup.setUpdateDate(bean.getUpdate_date());
+	}
 }

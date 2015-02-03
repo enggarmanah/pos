@@ -17,7 +17,13 @@ public class GetLastSyncJsonServlet extends BaseJsonServlet {
         		
         DeviceDao deviceDao = new DeviceDao();
         
-        deviceDao.syncDevice(device);
+        Device bean = deviceDao.getDevice(device);
+        
+        if (bean == null) {
+        	device = deviceDao.addDevice(device);
+        } else {
+        	device = bean;
+        }
         
         return device;
     }

@@ -18,4 +18,10 @@ public class ProductGroup extends Base {
 		
 		this.name = name;
 	}
+	
+	public void setBean(ProductGroup bean) {
+		
+		super.setBean(bean);
+		this.name = bean.getName();
+	}
 }

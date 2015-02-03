@@ -56,4 +56,12 @@ public class Device{
 	public void setLast_sync_date(Date last_sync_date) {
 		this.last_sync_date = last_sync_date;
 	}
+	
+	public void setBean(Device bean) {
+		
+		this.id = bean.getId();
+		this.merchant_id = bean.getMerchant_id();
+		this.uuid = bean.getUuid();
+		this.last_sync_date = bean.getLast_sync_date();
+	}
 }

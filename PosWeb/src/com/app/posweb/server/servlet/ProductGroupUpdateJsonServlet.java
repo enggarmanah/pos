@@ -1,10 +1,12 @@
 package com.app.posweb.server.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.app.posweb.server.dao.ProductGroupDao;
 import com.app.posweb.server.model.ProductGroup;
+import com.app.posweb.server.model.SyncStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
  
@@ -13,6 +15,7 @@ public class ProductGroupUpdateJsonServlet extends BaseJsonServlet {
  
     protected Object processJsonRequest(String jsonStr) throws IOException {
     	
+    	List<SyncStatus> syncStatusList = new ArrayList<SyncStatus>();
         ObjectMapper mapper = new ObjectMapper();
         
         List<ProductGroup> productGroups = mapper.readValue(jsonStr.toString(),
@@ -22,9 +25,24 @@ public class ProductGroupUpdateJsonServlet extends BaseJsonServlet {
         ProductGroupDao productGroupDao = new ProductGroupDao();
         
         for (ProductGroup productGroup : productGroups) {
-        	productGroupDao.syncProductGroup(productGroup);
+        	
+        	String status = SyncStatus.FAIL;
+        	
+        	try {
+				productGroupDao.syncProductGroup(productGroup);
+				status = SyncStatus.SUCCESS;
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        	
+        	SyncStatus syncStatus = new SyncStatus();
+        	syncStatus.setRemoteId(productGroup.getRemote_id());
+        	syncStatus.setStatus(status);
+        	
+        	syncStatusList.add(syncStatus);
         }
         
-        return productGroups;
+        return syncStatusList;
     }
 }

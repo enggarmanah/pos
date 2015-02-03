@@ -22,8 +22,6 @@ public class Base{
 	
 	protected Long remote_id;
 	
-	protected String upload_status;
-	
 	protected String create_by;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -58,14 +56,6 @@ public class Base{
 		this.remote_id = remote_id;
 	}
 
-	public String getUpload_status() {
-		return upload_status;
-	}
-
-	public void setUpload_status(String upload_status) {
-		this.upload_status = upload_status;
-	}
-
 	public String getCreate_by() {
 		return create_by;
 	}
@@ -96,5 +86,16 @@ public class Base{
 
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
+	}
+	
+	public void setBean(Base bean) {
+		
+		this.id = bean.getId();
+		this.merchant_id = bean.getMerchant_id();
+		this.remote_id = bean.getRemote_id();
+		this.create_by = bean.getCreate_by();
+		this.create_date = bean.getCreate_date();
+		this.update_by = bean.getUpdate_by();
+		this.update_date = bean.getUpdate_date();
 	}
 }

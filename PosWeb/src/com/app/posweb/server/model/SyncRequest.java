@@ -1,8 +1,8 @@
-package com.android.pos.model;
+package com.app.posweb.server.model;
 
 import java.util.Date;
 
-public class RequestBean {
+public class SyncRequest {
 
 	protected Date lastSyncDate;
 
