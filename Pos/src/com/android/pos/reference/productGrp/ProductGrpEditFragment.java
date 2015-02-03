@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.android.pos.Constant;
 import com.android.pos.DbHelper;
+import com.android.pos.MerchantUtil;
 import com.android.pos.R;
 import com.android.pos.UserUtil;
 import com.android.pos.base.fragment.BaseEditFragment;
@@ -73,7 +74,9 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     	if (mItem != null) {
     		
     		String userId = UserUtil.getUser().getUserId();
+    		Long merchantId = MerchantUtil.getMerchant().getId();
     		
+    		mItem.setMerchantId(merchantId);
     		mItem.setName(name);
     		
     		if (mItem.getCreateBy() == null) {

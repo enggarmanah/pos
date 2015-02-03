@@ -31,12 +31,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 public class CashierActivity extends BaseActivity 
 	implements CashierActionListener, SearchView.OnQueryTextListener {
 	
+	LinearLayout messagePanel;
 	TextView messageText;
 
 	protected CashierProductSearchFragment mProductSearchFragment;
@@ -101,8 +103,10 @@ public class CashierActivity extends BaseActivity
 
 		initWaitAfterFragmentRemovedTask(mProductSearchFragmentTag, mOrderFragmentTag);
 		
+		messagePanel = (LinearLayout) findViewById(R.id.messagePanel);
 		messageText = (TextView) findViewById(R.id.messageText);
-		messageText.setVisibility(View.GONE);
+		
+		messagePanel.setVisibility(View.GONE);
 		
 		messageText.setOnClickListener(getMessageTextOnClickListener());
 		
@@ -111,14 +115,14 @@ public class CashierActivity extends BaseActivity
 	
 	public void setMessage(String message) {
 		
-		messageText.setVisibility(View.VISIBLE);
+		messagePanel.setVisibility(View.VISIBLE);
 		messageText.setText(message);
 	}
 	
 	public void clearMessage() {
 		
 		messageText.setText(Constant.EMPTY_STRING);
-		messageText.setVisibility(View.GONE);
+		messagePanel.setVisibility(View.GONE);
 	}
 
 	@SuppressWarnings("unchecked")

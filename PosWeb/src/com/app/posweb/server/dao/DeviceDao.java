@@ -36,8 +36,6 @@ public class DeviceDao {
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		em.persist(bean);
-		em.refresh(bean);
-		em.detach(bean);
 		
 		em.close();
 
@@ -51,7 +49,6 @@ public class DeviceDao {
 		Device device = em.find(Device.class, bean.getId());
 		device.setBean(bean);
 		
-		em.detach(device);
 		em.close();
 		
 		return device;
@@ -75,7 +72,6 @@ public class DeviceDao {
 		
 		try {
 			result = query.getSingleResult();
-			em.detach(result);
 			
 		} catch (NoResultException e) {
 			// do nothing

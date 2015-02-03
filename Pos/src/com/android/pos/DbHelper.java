@@ -55,7 +55,7 @@ public class DbHelper {
             	TransactionItemDao.createTable(db, true);
             }
             
-            // handle version 5 changes
+            // handle version 6 changes
             if (oldVersion < 6) {
             	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'TAX_PERCENTAGE' INTEGER");
             	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'SERVICE_CHARGE_PERCENTAGE' INTEGER");
@@ -71,12 +71,18 @@ public class DbHelper {
             	TransactionsDao.createTable(db, true);
             }
             
-            // handle version 7 changes
+            // handle version 8 changes
             if (oldVersion < 8) {
             	TransactionItemDao.dropTable(db, true);
             	TransactionItemDao.createTable(db, true);
             	TransactionsDao.dropTable(db, true);
             	TransactionsDao.createTable(db, true);
+            }
+            
+            // handle version 9 changes
+            if (oldVersion < 9) {
+            	db.execSQL("ALTER TABLE 'PRODUCT_GROUP' ADD 'MERCHANT_ID' INTEGER");
+            	db.execSQL("ALTER TABLE 'DISCOUNT' ADD 'MERCHANT_ID' INTEGER");
             }
             
             //DaoMaster.dropAllTables(db, true);

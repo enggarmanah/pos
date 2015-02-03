@@ -34,8 +34,6 @@ public class ProductGroupDao {
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		em.persist(bean);
-		em.refresh(bean);
-		em.detach(bean);
 		
 		em.close();
 
@@ -49,7 +47,6 @@ public class ProductGroupDao {
 		ProductGroup productGroup = em.find(ProductGroup.class, bean.getId());
 		productGroup.setBean(bean);
 		
-		em.detach(productGroup);
 		em.close();
 		
 		return productGroup;
@@ -73,7 +70,6 @@ public class ProductGroupDao {
 		
 		try {
 			result = query.getSingleResult();
-			em.detach(result);
 			
 		} catch (NoResultException e) {
 			// do nothing

@@ -54,6 +54,11 @@ public class SyncManager {
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_PRODUCT_GROUP);
 	}
 	
+	private void updateLastSync() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_LAST_SYNC);
+	}
+	
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 		
 		String task;
@@ -88,6 +93,15 @@ public class SyncManager {
 				url = Config.SERVER_URL + "/productGroupUpdateJsonServlet";
 				
 				obj = dataManager.getProductGroupsForUpload();
+			
+			} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
+				
+				DeviceBean bean = new DeviceBean();
+				bean.setMerchant_id(MerchantUtil.getMerchant().getId());
+				bean.setUuid(Installation.getInstallationId(context));
+				obj = bean;
 			}
 			
 			return POST(url, obj);
@@ -127,6 +141,13 @@ public class SyncManager {
 							SyncStatusBean.class));
 					
 					dataManager.updateProductGroupStatus(syncStatusBeans);
+					updateLastSync();
+				
+				} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(task)) {
+					
+					Toast.makeText(context, "Update last synced!", Toast.LENGTH_LONG).show();
+					
+					device = mapper.readValue(result, DeviceBean.class);
 				}
 				
 			} catch (IOException e) {

@@ -1,11 +1,14 @@
 package com.android.pos.dao;
 
+import java.util.List;
+import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
+import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
 
 import com.android.pos.dao.Discount;
@@ -24,15 +27,18 @@ public class DiscountDao extends AbstractDao<Discount, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property Percentage = new Property(2, Integer.class, "percentage", false, "PERCENTAGE");
-        public final static Property Status = new Property(3, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(4, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(5, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(6, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(7, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(8, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
+        public final static Property Percentage = new Property(3, Integer.class, "percentage", false, "PERCENTAGE");
+        public final static Property Status = new Property(4, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(5, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(6, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(7, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(8, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(9, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
+
+    private DaoSession daoSession;
 
 
     public DiscountDao(DaoConfig config) {
@@ -41,6 +47,7 @@ public class DiscountDao extends AbstractDao<Discount, Long> {
     
     public DiscountDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -48,14 +55,15 @@ public class DiscountDao extends AbstractDao<Discount, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'DISCOUNT' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'NAME' TEXT NOT NULL ," + // 1: name
-                "'PERCENTAGE' INTEGER," + // 2: percentage
-                "'STATUS' TEXT," + // 3: status
-                "'UPLOAD_STATUS' TEXT," + // 4: uploadStatus
-                "'CREATE_BY' TEXT," + // 5: createBy
-                "'CREATE_DATE' INTEGER," + // 6: createDate
-                "'UPDATE_BY' TEXT," + // 7: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 8: updateDate
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
+                "'NAME' TEXT NOT NULL ," + // 2: name
+                "'PERCENTAGE' INTEGER," + // 3: percentage
+                "'STATUS' TEXT," + // 4: status
+                "'UPLOAD_STATUS' TEXT," + // 5: uploadStatus
+                "'CREATE_BY' TEXT," + // 6: createBy
+                "'CREATE_DATE' INTEGER," + // 7: createDate
+                "'UPDATE_BY' TEXT," + // 8: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 9: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -73,42 +81,49 @@ public class DiscountDao extends AbstractDao<Discount, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindString(2, entity.getName());
+        stmt.bindLong(2, entity.getMerchantId());
+        stmt.bindString(3, entity.getName());
  
         Integer percentage = entity.getPercentage();
         if (percentage != null) {
-            stmt.bindLong(3, percentage);
+            stmt.bindLong(4, percentage);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(4, status);
+            stmt.bindString(5, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(5, uploadStatus);
+            stmt.bindString(6, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(6, createBy);
+            stmt.bindString(7, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(7, createDate.getTime());
+            stmt.bindLong(8, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(8, updateBy);
+            stmt.bindString(9, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(9, updateDate.getTime());
+            stmt.bindLong(10, updateDate.getTime());
         }
+    }
+
+    @Override
+    protected void attachEntity(Discount entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     /** @inheritdoc */
@@ -122,14 +137,15 @@ public class DiscountDao extends AbstractDao<Discount, Long> {
     public Discount readEntity(Cursor cursor, int offset) {
         Discount entity = new Discount( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // name
-            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // percentage
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // status
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // uploadStatus
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // createBy
-            cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)), // createDate
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // updateBy
-            cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)) // updateDate
+            cursor.getLong(offset + 1), // merchantId
+            cursor.getString(offset + 2), // name
+            cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // percentage
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // status
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // uploadStatus
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // createBy
+            cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)), // createDate
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // updateBy
+            cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)) // updateDate
         );
         return entity;
     }
@@ -138,14 +154,15 @@ public class DiscountDao extends AbstractDao<Discount, Long> {
     @Override
     public void readEntity(Cursor cursor, Discount entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setName(cursor.getString(offset + 1));
-        entity.setPercentage(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
-        entity.setStatus(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUploadStatus(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setCreateBy(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setCreateDate(cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)));
-        entity.setUpdateBy(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setUpdateDate(cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)));
+        entity.setMerchantId(cursor.getLong(offset + 1));
+        entity.setName(cursor.getString(offset + 2));
+        entity.setPercentage(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
+        entity.setStatus(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUploadStatus(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setCreateBy(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setCreateDate(cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)));
+        entity.setUpdateBy(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setUpdateDate(cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)));
      }
     
     /** @inheritdoc */
@@ -171,4 +188,97 @@ public class DiscountDao extends AbstractDao<Discount, Long> {
         return true;
     }
     
+    private String selectDeep;
+
+    protected String getSelectDeep() {
+        if (selectDeep == null) {
+            StringBuilder builder = new StringBuilder("SELECT ");
+            SqlUtils.appendColumns(builder, "T", getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T0", daoSession.getMerchantDao().getAllColumns());
+            builder.append(" FROM DISCOUNT T");
+            builder.append(" LEFT JOIN MERCHANT T0 ON T.'MERCHANT_ID'=T0.'_id'");
+            builder.append(' ');
+            selectDeep = builder.toString();
+        }
+        return selectDeep;
+    }
+    
+    protected Discount loadCurrentDeep(Cursor cursor, boolean lock) {
+        Discount entity = loadCurrent(cursor, 0, lock);
+        int offset = getAllColumns().length;
+
+        Merchant merchant = loadCurrentOther(daoSession.getMerchantDao(), cursor, offset);
+         if(merchant != null) {
+            entity.setMerchant(merchant);
+        }
+
+        return entity;    
+    }
+
+    public Discount loadDeep(Long key) {
+        assertSinglePk();
+        if (key == null) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder(getSelectDeep());
+        builder.append("WHERE ");
+        SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
+        String sql = builder.toString();
+        
+        String[] keyArray = new String[] { key.toString() };
+        Cursor cursor = db.rawQuery(sql, keyArray);
+        
+        try {
+            boolean available = cursor.moveToFirst();
+            if (!available) {
+                return null;
+            } else if (!cursor.isLast()) {
+                throw new IllegalStateException("Expected unique result, but count was " + cursor.getCount());
+            }
+            return loadCurrentDeep(cursor, true);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+    /** Reads all available rows from the given cursor and returns a list of new ImageTO objects. */
+    public List<Discount> loadAllDeepFromCursor(Cursor cursor) {
+        int count = cursor.getCount();
+        List<Discount> list = new ArrayList<Discount>(count);
+        
+        if (cursor.moveToFirst()) {
+            if (identityScope != null) {
+                identityScope.lock();
+                identityScope.reserveRoom(count);
+            }
+            try {
+                do {
+                    list.add(loadCurrentDeep(cursor, false));
+                } while (cursor.moveToNext());
+            } finally {
+                if (identityScope != null) {
+                    identityScope.unlock();
+                }
+            }
+        }
+        return list;
+    }
+    
+    protected List<Discount> loadDeepAllAndCloseCursor(Cursor cursor) {
+        try {
+            return loadAllDeepFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+
+    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    public List<Discount> queryDeep(String where, String... selectionArg) {
+        Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
+        return loadDeepAllAndCloseCursor(cursor);
+    }
+ 
 }

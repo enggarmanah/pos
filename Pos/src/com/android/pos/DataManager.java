@@ -18,7 +18,7 @@ public class DataManager {
 	public List<ProductGroupBean> getProductGroupsForUpload() {
 
 		QueryBuilder<ProductGroup> qb = productGroupDao.queryBuilder();
-		qb.orderAsc(ProductGroupDao.Properties.Name);
+		qb.where(ProductGroupDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(ProductGroupDao.Properties.Name);
 		
 		Query<ProductGroup> q = qb.build();
 		
@@ -54,6 +54,7 @@ public class DataManager {
 			
 			if (SyncStatusBean.SUCCESS.equals(bean.getStatus())) {
 				productGroup.setUploadStatus(Constant.STATUS_NO);
+				productGroupDao.update(productGroup);
 			}
 		} 
 	}

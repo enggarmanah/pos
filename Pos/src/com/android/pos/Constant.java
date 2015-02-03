@@ -23,6 +23,7 @@ public class Constant {
 	public static int MENU_DATA_MANAGEMENT_POSITION = 6;
 	
 	public static String TASK_GET_LAST_SYNC = "TASK_GET_LAST_SYNC";
+	public static String TASK_UPDATE_LAST_SYNC = "TASK_UPDATE_LAST_SYNC";
 	
 	public static String TASK_GET_PRODUCT_GROUP = "TASK_GET_PRODUCT_GROUP";
 	public static String TASK_UPDATE_PRODUCT_GROUP = "TASK_UPDATE_PRODUCT_GROUP";

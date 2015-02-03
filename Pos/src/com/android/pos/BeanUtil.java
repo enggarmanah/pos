@@ -5,19 +5,25 @@ import com.android.pos.model.ProductGroupBean;
 
 public class BeanUtil {
 	
-	public static ProductGroupBean getBean(ProductGroup prdGroup) {
+	public static ProductGroupBean getBean(ProductGroup productGroup) {
 		
 		ProductGroupBean bean = new ProductGroupBean();
 		
-		bean.setRemote_id(prdGroup.getId());
-		bean.setName(prdGroup.getName());
+		bean.setMerchant_id(productGroup.getMerchantId());
+		bean.setRemote_id(productGroup.getId());
+		bean.setName(productGroup.getName());
+		bean.setCreate_by(productGroup.getCreateBy());
+		bean.setCreate_date(productGroup.getCreateDate());
+		bean.setUpdate_by(productGroup.getUpdateBy());
+		bean.setUpdate_date(productGroup.getUpdateDate());
 		
 		return bean;
 	}
 	
 	public static void updateBean(ProductGroup productGroup, ProductGroupBean bean) {
 		
-		productGroup.setId(bean.getId());
+		productGroup.setMerchantId(bean.getMerchant_id());
+		productGroup.setId(bean.getRemote_id());
 		productGroup.setName(bean.getName());
 		productGroup.setUploadStatus(Constant.STATUS_NO);
 		productGroup.setCreateBy(bean.getCreate_by());

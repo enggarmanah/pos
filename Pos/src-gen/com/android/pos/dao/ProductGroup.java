@@ -15,6 +15,7 @@ import de.greenrobot.dao.DaoException;
 public class ProductGroup implements Serializable {
 
     private Long id;
+    private long merchantId;
     /** Not-null value. */
     private String name;
     private String uploadStatus;
@@ -29,6 +30,9 @@ public class ProductGroup implements Serializable {
     /** Used for active entity operations. */
     private transient ProductGroupDao myDao;
 
+    private Merchant merchant;
+    private Long merchant__resolvedKey;
+
     private List<Product> productList;
 
     public ProductGroup() {
@@ -38,8 +42,9 @@ public class ProductGroup implements Serializable {
         this.id = id;
     }
 
-    public ProductGroup(Long id, String name, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public ProductGroup(Long id, long merchantId, String name, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.merchantId = merchantId;
         this.name = name;
         this.uploadStatus = uploadStatus;
         this.createBy = createBy;
@@ -60,6 +65,14 @@ public class ProductGroup implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public long getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(long merchantId) {
+        this.merchantId = merchantId;
     }
 
     /** Not-null value. */
@@ -110,6 +123,34 @@ public class ProductGroup implements Serializable {
 
     public void setUpdateDate(java.util.Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Merchant getMerchant() {
+        long __key = this.merchantId;
+        if (merchant__resolvedKey == null || !merchant__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            MerchantDao targetDao = daoSession.getMerchantDao();
+            Merchant merchantNew = targetDao.load(__key);
+            synchronized (this) {
+                merchant = merchantNew;
+            	merchant__resolvedKey = __key;
+            }
+        }
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        if (merchant == null) {
+            throw new DaoException("To-one property 'merchantId' has not-null constraint; cannot set to-one to null");
+        }
+        synchronized (this) {
+            this.merchant = merchant;
+            merchantId = merchant.getId();
+            merchant__resolvedKey = merchantId;
+        }
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */

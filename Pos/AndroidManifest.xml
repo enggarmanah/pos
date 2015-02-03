@@ -36,6 +36,10 @@
             android:name="com.android.pos.cashier.CashierActivity"
             android:label="@string/menu_cashier"
             android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.cashier.CashierPaymentDeviceListActivity"
@@ -51,10 +55,6 @@
             android:name="com.android.pos.reference.MainMenuActivity"
             android:label="@string/menu_data_management"
             android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.reference.merchant.MerchantMgtActivity"

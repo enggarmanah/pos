@@ -126,7 +126,6 @@ public class CashierPaymentDeviceListActivity extends Activity {
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -177,7 +176,7 @@ public class CashierPaymentDeviceListActivity extends Activity {
             	return;
             }
     		
-    		mProgressDialog.dismiss();
+    		//mProgressDialog.dismiss();
     		
             // Cancel discovery because it's costly and we're about to connect
             mBtAdapter.cancelDiscovery();
