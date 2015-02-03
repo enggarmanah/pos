@@ -64,6 +64,10 @@ public class PosDaoGenerator {
         Entity productGroup = schema.addEntity("ProductGroup");
         
         productGroup.addIdProperty();
+        
+        Property merchantId = productGroup.addLongProperty("merchantId").notNull().getProperty();
+        productGroup.addToOne(merchant, merchantId);
+        
         productGroup.addStringProperty("name").notNull();
         productGroup.addStringProperty("uploadStatus");
         productGroup.addStringProperty("createBy");
@@ -75,7 +79,7 @@ public class PosDaoGenerator {
     	
     	product.addIdProperty();
     	
-    	Property merchantId = product.addLongProperty("merchantId").notNull().getProperty();
+    	merchantId = product.addLongProperty("merchantId").notNull().getProperty();
     	product.addToOne(merchant, merchantId);
     	
     	Property productGroupId = product.addLongProperty("productGroupId").getProperty();
@@ -230,6 +234,10 @@ public class PosDaoGenerator {
         Entity discount = schema.addEntity("Discount");
         
         discount.addIdProperty();
+        
+        merchantId = discount.addLongProperty("merchantId").notNull().getProperty();
+        discount.addToOne(merchant, merchantId);
+        
         discount.addStringProperty("name").notNull();
         discount.addIntProperty("percentage");
         discount.addStringProperty("status");

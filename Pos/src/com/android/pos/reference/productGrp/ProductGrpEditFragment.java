@@ -1,10 +1,12 @@
 package com.android.pos.reference.productGrp;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.android.pos.Constant;
 import com.android.pos.DbHelper;
 import com.android.pos.R;
+import com.android.pos.UserUtil;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDao;
@@ -70,7 +72,17 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     	
     	if (mItem != null) {
     		
+    		String userId = UserUtil.getUser().getUserId();
+    		
     		mItem.setName(name);
+    		
+    		if (mItem.getCreateBy() == null) {
+    			mItem.setCreateBy(userId);
+    			mItem.setCreateDate(new Date());
+    		}
+    		
+    		mItem.setUpdateBy(userId);
+    		mItem.setUpdateDate(new Date());
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
     	}
