@@ -27,4 +27,7 @@ public class Constant {
 	
 	public static String TASK_GET_PRODUCT_GROUP = "TASK_GET_PRODUCT_GROUP";
 	public static String TASK_UPDATE_PRODUCT_GROUP = "TASK_UPDATE_PRODUCT_GROUP";
+	
+	public static String TASK_GET_DISCOUNT = "TASK_GET_DISCOUNT";
+	public static String TASK_UPDATE_DISCOUNT = "TASK_UPDATE_DISCOUNT";
 }

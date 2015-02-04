@@ -1,6 +1,7 @@
 package com.android.pos.reference.discount;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
@@ -9,6 +10,8 @@ import com.android.pos.dao.Discount;
 import com.android.pos.dao.DiscountDao;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
+import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -77,8 +80,21 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     	
     	if (mItem != null) {
     		
+    		String userId = UserUtil.getUser().getUserId();
+    		Long merchantId = MerchantUtil.getMerchant().getId();
+    		
+    		mItem.setMerchantId(merchantId);
     		mItem.setName(name);
     		mItem.setPercentage(percentage);
+    		mItem.setStatus(Constant.STATUS_ACTIVE);
+    		
+    		if (mItem.getCreateBy() == null) {
+    			mItem.setCreateBy(userId);
+    			mItem.setCreateDate(new Date());
+    		}
+    		
+    		mItem.setUpdateBy(userId);
+    		mItem.setUpdateDate(new Date());
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
     	}

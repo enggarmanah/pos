@@ -22,7 +22,13 @@ public abstract class BaseJsonServlet extends HttpServlet {
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
- 
+    	
+    	try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
         BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
         
         StringBuffer json = new StringBuffer();

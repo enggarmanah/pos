@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.22)
 # Database: pos
-# Generation Time: 2015-02-03 16:57:42 +0000
+# Generation Time: 2015-02-04 18:14:11 +0000
 # ************************************************************
 
 
@@ -40,9 +40,41 @@ LOCK TABLES `device` WRITE;
 INSERT INTO `device` (`id`, `merchant_id`, `uuid`, `last_sync_date`)
 VALUES
 	(4,1,'3c7b8eab-9ceb-4eaa-a281-30fce94e7f2d','2015-01-01 00:00:00'),
-	(9,1,'ec8b83e7-7431-43c9-b9b0-7d03d433bcba','2015-02-03 16:25:52');
+	(9,1,'ec8b83e7-7431-43c9-b9b0-7d03d433bcba','2015-02-04 18:11:17');
 
 /*!40000 ALTER TABLE `device` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table discount
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `discount`;
+
+CREATE TABLE `discount` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `merchant_id` int(11) DEFAULT NULL,
+  `remote_id` int(11) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `percentage` int(11) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `create_by` varchar(50) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `discount` WRITE;
+/*!40000 ALTER TABLE `discount` DISABLE KEYS */;
+
+INSERT INTO `discount` (`id`, `merchant_id`, `remote_id`, `name`, `percentage`, `status`, `create_by`, `create_date`, `update_by`, `update_date`)
+VALUES
+	(17,1,3,'Diskon Family',100,'A','retno','2015-02-04 15:50:56','retno','2015-02-04 15:50:56'),
+	(18,1,2,'Diskon Kerabat',20,'A','retno','2015-02-04 15:51:00','retno','2015-02-04 15:51:00'),
+	(19,1,1,'Diskon Member',10,'A','retno','2015-02-04 15:51:04','retno','2015-02-04 15:51:04');
+
+/*!40000 ALTER TABLE `discount` ENABLE KEYS */;
 UNLOCK TABLES;
 
 

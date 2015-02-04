@@ -1,12 +1,17 @@
 package com.android.pos.reference;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
@@ -17,13 +22,16 @@ import com.android.pos.reference.employee.EmployeeMgtActivity;
 import com.android.pos.reference.merchant.MerchantMgtActivity;
 import com.android.pos.reference.product.ProductMgtActivity;
 import com.android.pos.reference.productGrp.ProductGrpMgtActivity;
+import com.android.pos.sync.SyncListener;
 import com.android.pos.sync.SyncManager;
 import com.android.pos.util.DbUtil;
 
-public class MainMenuActivity extends BaseActivity {
+public class MainMenuActivity extends BaseActivity implements SyncListener {
 
 	final Context context = this;
 	private SyncManager syncManager;
+	
+	ProgressDialog mProgressDialog = new ProgressDialog();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +66,10 @@ public class MainMenuActivity extends BaseActivity {
 
 		case R.id.menu_item_sync:
 			
+			mProgressDialog.show(getFragmentManager(), "progressDialogTag");
+			
 			syncManager.sync(); 
-
+			
 			return true;
 
 		default:
@@ -103,4 +113,71 @@ public class MainMenuActivity extends BaseActivity {
 		Intent intent = new Intent(this, DiscountMgtActivity.class);
 		startActivity(intent);
 	}
+	
+	public void setSyncProgress(int progress) {
+		
+		if (mProgressDialog != null) {
+			
+			mProgressDialog.setProgress(progress);
+			
+			if (progress == 100) {
+				
+				mProgressDialog.dismiss();
+			}
+		}
+	}
+	
+	public void setSyncMessage(String message) {
+		
+		if (mProgressDialog != null) {
+			
+			mProgressDialog.setMessage(message);
+		}
+	}
+	
+	private class ProgressDialog extends DialogFragment {
+    	
+		ProgressBar mDataSyncPb;
+		TextView mSyncMessage;
+		
+    	@Override
+    	public void onCreate(Bundle savedInstanceState) {
+    		super.onCreate(savedInstanceState);
+
+    		setStyle(STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+
+    		setCancelable(false);
+    	}
+
+    	@Override
+    	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+    		View view = inflater.inflate(R.layout.ref_sync_progress_fragment, container, false);
+    		
+    		return view;
+    	}
+    	
+    	@Override
+    	public void onStart() {
+
+    		super.onStart();
+    		
+    		mDataSyncPb = (ProgressBar) getView().findViewById(R.id.dataSyncPb);
+    		mSyncMessage = (TextView) getView().findViewById(R.id.syncMessageText);
+    	}
+    	
+    	public void setProgress(int progress) {
+    		
+    		if (mDataSyncPb != null) {
+    			mDataSyncPb.setProgress(progress);
+    		}
+    	}
+    	
+    	public void setMessage(String message) {
+    		
+    		if (mSyncMessage != null) {
+    			mSyncMessage.setText(message);
+    		}
+    	}
+    }
 }

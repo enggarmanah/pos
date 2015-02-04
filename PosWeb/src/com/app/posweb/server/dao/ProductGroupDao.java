@@ -34,7 +34,6 @@ public class ProductGroupDao {
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		em.persist(bean);
-		
 		em.close();
 
 		return bean;

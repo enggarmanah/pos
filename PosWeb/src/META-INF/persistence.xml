@@ -8,6 +8,7 @@
 		
 		<class>com.app.posweb.server.model.Device</class>
 		<class>com.app.posweb.server.model.ProductGroup</class>
+		<class>com.app.posweb.server.model.Discount</class>
 		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		

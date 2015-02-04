@@ -25,14 +25,14 @@ public class DiscountDataProvider {
 		
 		Query<Discount> q = qb.build();
 		
-		ArrayList<DiscountBean> prodGroupBeans = new ArrayList<DiscountBean>();
+		ArrayList<DiscountBean> discountBeans = new ArrayList<DiscountBean>();
 		
 		for (Discount prdGroup : q.list()) {
 			
-			//prodGroupBeans.add(BeanUtil.getBean(prdGroup));
+			discountBeans.add(BeanUtil.getBean(prdGroup));
 		}
 		
-		return prodGroupBeans;
+		return discountBeans;
 	}
 	
 	public void updateDiscounts(List<DiscountBean> discounts) {
@@ -45,7 +45,7 @@ public class DiscountDataProvider {
 				discount = new Discount();
 			}
 			
-			//BeanUtil.updateBean(discount, bean);
+			BeanUtil.updateBean(discount, bean);
 		} 
 	}
 	

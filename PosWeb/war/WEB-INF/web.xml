@@ -21,6 +21,14 @@
 		<servlet-name>productGroupUpdateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.ProductGroupUpdateJsonServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>discountGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.DiscountGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>discountUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.DiscountUpdateJsonServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>getLastSyncJsonServlet</servlet-name>
@@ -37,6 +45,14 @@
 	<servlet-mapping>
 		<servlet-name>productGroupUpdateJsonServlet</servlet-name>
 		<url-pattern>/productGroupUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>discountGetJsonServlet</servlet-name>
+		<url-pattern>/discountGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>discountUpdateJsonServlet</servlet-name>
+		<url-pattern>/discountUpdateJsonServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>

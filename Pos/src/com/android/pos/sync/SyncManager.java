@@ -17,12 +17,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.Installation;
 import com.android.pos.model.DeviceBean;
+import com.android.pos.model.DiscountBean;
 import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SyncRequestBean;
 import com.android.pos.model.SyncStatusBean;
@@ -34,33 +34,75 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 public class SyncManager {
 	
 	private Context context;
-	private ProductGroupDataProvider productGroupDataProvider;
 	private DeviceBean device;
+	
+	private ProductGroupDataProvider productGroupDataProvider;
+	private DiscountDataProvider discountDataProvider;
+	
+	private SyncListener listener;
+	
+	private final int totalTask = 6;
 	
 	public SyncManager(Context context) {
 		
 		this.context = context;
+		listener = (SyncListener) context;
+		
 		productGroupDataProvider = new ProductGroupDataProvider();
+		discountDataProvider = new DiscountDataProvider();
 	}
 	
 	public void sync() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC);
+		
+		listener.setSyncProgress(0 * 100 / totalTask);
+		listener.setSyncMessage("Cek waktu terakhir melaksanan sync up data.");
 	}
 	
 	private void getProductGroup() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT_GROUP);
+		
+		listener.setSyncProgress(1 * 100 / totalTask);
+		listener.setSyncMessage("Update data group produk dari server.");
 	}
 	
 	private void updateProductGroup() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_PRODUCT_GROUP);
+		
+		listener.setSyncProgress(2 * 100 / totalTask);
+		listener.setSyncMessage("Upload data group produk ke server.");
+	}
+	
+	private void getDiscount() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_DISCOUNT);
+		
+		listener.setSyncProgress(3 * 100 / totalTask);
+		listener.setSyncMessage("Update data diskon dari server.");
+	}
+	
+	private void updateDiscount() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_DISCOUNT);
+		
+		listener.setSyncProgress(4 * 100 / totalTask);
+		listener.setSyncMessage("Upload data diskon ke server.");
 	}
 	
 	private void updateLastSync() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_LAST_SYNC);
+		
+		listener.setSyncProgress(5 * 100 / totalTask);
+		listener.setSyncMessage("Update waktu terakhir sync up data ke server.");
+	}
+	
+	private void syncCompleted() {
+		
+		listener.setSyncProgress(100);
 	}
 	
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
@@ -98,6 +140,20 @@ public class SyncManager {
 				
 				obj = productGroupDataProvider.getProductGroupsForUpload();
 			
+			} else if (Constant.TASK_GET_DISCOUNT.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/discountGetJsonServlet";
+				
+				SyncRequestBean request = new SyncRequestBean();
+				request.setLastSyncDate(device.getLast_sync_date());
+				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_DISCOUNT.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/discountUpdateJsonServlet";
+				
+				obj = discountDataProvider.getDiscountsForUpload();
+			
 			} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(tasks[0])) {
 				
 				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
@@ -120,14 +176,10 @@ public class SyncManager {
 				
 				if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
 					
-					Toast.makeText(context, "Get last synced!", Toast.LENGTH_LONG).show();
-					
 					device = mapper.readValue(result, DeviceBean.class);
 					getProductGroup();
 				
 				} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(task)) {
-					
-					Toast.makeText(context, "Product Group Received!", Toast.LENGTH_LONG).show();
 					
 					List<ProductGroupBean> productGroups = mapper.readValue(result,
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
@@ -138,20 +190,36 @@ public class SyncManager {
 				
 				} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(task)) {
 					
-					Toast.makeText(context, "Product Group Updated!", Toast.LENGTH_LONG).show();
-					
 					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							SyncStatusBean.class));
 					
 					productGroupDataProvider.updateProductGroupStatus(syncStatusBeans);
+					getDiscount();
+				
+				} else if (Constant.TASK_GET_DISCOUNT.equals(task)) {
+					
+					List<DiscountBean> discounts = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							DiscountBean.class));
+					
+					discountDataProvider.updateDiscounts(discounts);
+					updateDiscount();
+				
+				} else if (Constant.TASK_UPDATE_DISCOUNT.equals(task)) {
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					discountDataProvider.updateDiscountStatus(syncStatusBeans);
 					updateLastSync();
 				
 				} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(task)) {
 					
-					Toast.makeText(context, "Update last synced!", Toast.LENGTH_LONG).show();
-					
 					device = mapper.readValue(result, DeviceBean.class);
+					
+					syncCompleted();
 				}
 				
 			} catch (IOException e) {
