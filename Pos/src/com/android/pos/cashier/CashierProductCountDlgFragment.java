@@ -3,11 +3,11 @@ package com.android.pos.cashier;
 import java.util.List;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.EmployeeDao;
 import com.android.pos.dao.Product;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -62,7 +62,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	
 	private static int defaultBtnPanelHeight = 0;
 	
-	private EmployeeDao mEmployeeDao = DbHelper.getSession().getEmployeeDao();
+	private EmployeeDao mEmployeeDao = DbUtil.getSession().getEmployeeDao();
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {

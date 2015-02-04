@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.DiscountDao;
+import com.android.pos.util.DbUtil;
 
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +18,7 @@ public class DiscountMgtActivity extends BaseItemMgtActivity<DiscountSearchFragm
 	List<Discount> mDiscounts;
 	Discount mSelectedDiscount;
 	
-	DiscountDao discountDao = DbHelper.getSession().getDiscountDao();
+	DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

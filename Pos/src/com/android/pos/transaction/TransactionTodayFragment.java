@@ -3,11 +3,11 @@ package com.android.pos.transaction;
 import java.io.Serializable;
 import java.util.List;
 
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -33,7 +33,7 @@ public class TransactionTodayFragment extends BaseFragment
 	
 	private TransactionActionListener mActionListener;
 	
-	private TransactionsDao transactionDao = DbHelper.getSession().getTransactionsDao();
+	private TransactionsDao transactionDao = DbUtil.getSession().getTransactionsDao();
 	
 	private static String TRANSACTIONS = "TRANSACTIONS";
 	

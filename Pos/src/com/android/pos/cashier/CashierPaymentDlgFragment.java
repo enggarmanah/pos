@@ -3,11 +3,11 @@ package com.android.pos.cashier;
 import java.io.Serializable;
 
 import com.android.pos.CodeBean;
-import com.android.pos.CodeUtil;
-import com.android.pos.CommonUtil;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.dao.Customer;
+import com.android.pos.util.CodeUtil;
+import com.android.pos.util.CommonUtil;
 
 import android.app.Activity;
 import android.app.DialogFragment;

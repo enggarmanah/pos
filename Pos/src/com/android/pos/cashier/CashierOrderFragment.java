@@ -11,15 +11,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
-import com.android.pos.MerchantUtil;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.TransactionItem;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 
 public class CashierOrderFragment extends BaseFragment implements CashierOrderArrayAdapter.ItemActionListener {
 	

@@ -3,11 +3,11 @@ package com.android.pos.base.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.base.listener.BaseItemListener;
+import com.android.pos.util.CommonUtil;
 
 import android.app.Activity;
 import android.content.Context;

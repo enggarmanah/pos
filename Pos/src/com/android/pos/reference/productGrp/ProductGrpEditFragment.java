@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
-import com.android.pos.MerchantUtil;
 import com.android.pos.R;
-import com.android.pos.UserUtil;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDao;
+import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
+import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     
 	EditText mNameText;
     
-    private ProductGroupDao productGroupDao = DbHelper.getSession().getProductGroupDao();
+    private ProductGroupDao productGroupDao = DbUtil.getSession().getProductGroupDao();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 

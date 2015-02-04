@@ -3,11 +3,11 @@ package com.android.pos.transaction;
 import java.io.Serializable;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.TransactionSummary;
 import com.android.pos.dao.Transactions;
+import com.android.pos.util.DbUtil;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,7 +37,7 @@ public class TransactionActivity extends BaseActivity
 
 		setContentView(R.layout.transaction_activity);
 
-		DbHelper.initDb(this);
+		DbUtil.initDb(this);
 
 		initDrawerMenu();
 

@@ -1,4 +1,4 @@
-package com.android.pos;
+package com.android.pos.sync;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -19,10 +19,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.pos.Config;
+import com.android.pos.Constant;
+import com.android.pos.Installation;
 import com.android.pos.model.DeviceBean;
 import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SyncRequestBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.util.MerchantUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -30,13 +34,13 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 public class SyncManager {
 	
 	private Context context;
-	private DataManager dataManager;
+	private ProductGroupDataProvider productGroupDataProvider;
 	private DeviceBean device;
 	
 	public SyncManager(Context context) {
 		
 		this.context = context;
-		dataManager = new DataManager();
+		productGroupDataProvider = new ProductGroupDataProvider();
 	}
 	
 	public void sync() {
@@ -92,7 +96,7 @@ public class SyncManager {
 				
 				url = Config.SERVER_URL + "/productGroupUpdateJsonServlet";
 				
-				obj = dataManager.getProductGroupsForUpload();
+				obj = productGroupDataProvider.getProductGroupsForUpload();
 			
 			} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(tasks[0])) {
 				
@@ -129,7 +133,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							ProductGroupBean.class));
 					
-					dataManager.updateProductGroups(productGroups);
+					productGroupDataProvider.updateProductGroups(productGroups);
 					updateProductGroup();
 				
 				} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(task)) {
@@ -140,7 +144,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							SyncStatusBean.class));
 					
-					dataManager.updateProductGroupStatus(syncStatusBeans);
+					productGroupDataProvider.updateProductGroupStatus(syncStatusBeans);
 					updateLastSync();
 				
 				} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(task)) {

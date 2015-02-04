@@ -5,17 +5,17 @@ import java.util.Date;
 import java.util.List;
 
 import com.android.pos.CodeBean;
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
-import com.android.pos.CodeUtil;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDao;
+import com.android.pos.util.CodeUtil;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -46,8 +46,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     CodeSpinnerArrayAdapter typeArrayAdapter;
     CodeSpinnerArrayAdapter picRequiredArrayAdapter;
     
-    private ProductDao productDao = DbHelper.getSession().getProductDao();
-    private ProductGroupDao productGrpDao = DbHelper.getSession().getProductGroupDao();
+    private ProductDao productDao = DbUtil.getSession().getProductDao();
+    private ProductGroupDao productGrpDao = DbUtil.getSession().getProductGroupDao();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 

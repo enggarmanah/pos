@@ -1,5 +1,6 @@
-package com.android.pos;
+package com.android.pos.util;
 
+import com.android.pos.Constant;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.model.ProductGroupBean;
 

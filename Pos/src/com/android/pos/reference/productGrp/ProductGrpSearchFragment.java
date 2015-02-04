@@ -2,11 +2,11 @@ package com.android.pos.reference.productGrp;
 
 import java.util.List;
 
-import com.android.pos.DbHelper;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -14,7 +14,7 @@ import android.app.Activity;
 
 public class ProductGrpSearchFragment extends BaseSearchFragment<ProductGroup> {
 
-	private ProductGroupDao productGroupDao = DbHelper.getSession().getProductGroupDao();
+	private ProductGroupDao productGroupDao = DbUtil.getSession().getProductGroupDao();
 
 	public void initAdapter() {
 		

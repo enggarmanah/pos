@@ -3,15 +3,15 @@ package com.android.pos.cashier;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.android.pos.CodeUtil;
-import com.android.pos.CommonUtil;
 import com.android.pos.R;
-import com.android.pos.UserUtil;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseDialogFragment;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.User;
+import com.android.pos.util.CodeUtil;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
 import android.os.Bundle;

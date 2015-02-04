@@ -4,9 +4,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
 import com.android.pos.R;
+import com.android.pos.util.CommonUtil;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

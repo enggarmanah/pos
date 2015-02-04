@@ -1,4 +1,7 @@
-package com.android.pos;
+package com.android.pos.util;
+
+import com.android.pos.CodeBean;
+import com.android.pos.Constant;
 
 public class CodeUtil {
 	

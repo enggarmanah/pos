@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -40,8 +40,8 @@ public class CashierProductSearchFragment extends BaseFragment
 	
 	private CashierActionListener mActionListener;
 	
-	private ProductGroupDao productGroupDao = DbHelper.getSession().getProductGroupDao();
-	private ProductDao productDao = DbHelper.getSession().getProductDao();
+	private ProductGroupDao productGroupDao = DbUtil.getSession().getProductGroupDao();
+	private ProductDao productDao = DbUtil.getSession().getProductDao();
 	
 	private static String PRODUCT_GROUPS = "PRODUCT_GROUPS";
 	private static String SELECTED_PRODUCT_GROUP = "SELECTED_PRODUCT_GROUP";

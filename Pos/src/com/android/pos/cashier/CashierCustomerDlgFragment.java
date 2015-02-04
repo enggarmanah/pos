@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.CustomerDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -37,7 +37,7 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
 	
 	List<Customer> mCustomers;
 	
-	private CustomerDao mCustomerDao = DbHelper.getSession().getCustomerDao();
+	private CustomerDao mCustomerDao = DbUtil.getSession().getCustomerDao();
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {

@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.common.ConfirmDeleteDlgFragment;
+import com.android.pos.util.DbUtil;
+
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
@@ -57,7 +58,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 		setContentView(R.layout.ref_item_mgt_layout);
 
-		DbHelper.initDb(this);
+		DbUtil.initDb(this);
 
 		initDrawerMenu();
 

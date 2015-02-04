@@ -2,10 +2,10 @@ package com.android.pos.cashier;
 
 import java.util.List;
 
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.DiscountDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -28,7 +28,7 @@ public class CashierDiscountDlgFragment extends DialogFragment implements Cashie
 	
 	CashierDiscountArrayAdapter discountArrayAdapter;
 	
-	private DiscountDao mDiscountDao = DbHelper.getSession().getDiscountDao();
+	private DiscountDao mDiscountDao = DbUtil.getSession().getDiscountDao();
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {

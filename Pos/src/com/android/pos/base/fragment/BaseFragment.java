@@ -2,10 +2,10 @@ package com.android.pos.base.fragment;
 
 import java.util.List;
 
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
-import com.android.pos.NotificationUtil;
 import com.android.pos.common.AlertDlgFragment;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.NotificationUtil;
 
 import android.app.Fragment;
 import android.os.AsyncTask;

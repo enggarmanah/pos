@@ -2,11 +2,11 @@ package com.android.pos.reference.product;
 
 import java.util.List;
 
-import com.android.pos.DbHelper;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -14,7 +14,7 @@ import android.app.Activity;
 
 public class ProductSearchFragment extends BaseSearchFragment<Product> {
 
-	private ProductDao productDao = DbHelper.getSession().getProductDao();
+	private ProductDao productDao = DbUtil.getSession().getProductDao();
 
 	public void initAdapter() {
 		

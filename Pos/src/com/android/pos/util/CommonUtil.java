@@ -1,4 +1,4 @@
-package com.android.pos;
+package com.android.pos.util;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -6,7 +6,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import android.annotation.SuppressLint;
+
+import com.android.pos.Constant;
 import com.android.pos.dao.ProductGroup;
 
 @SuppressLint("SimpleDateFormat")

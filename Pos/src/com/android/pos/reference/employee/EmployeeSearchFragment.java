@@ -2,11 +2,11 @@ package com.android.pos.reference.employee;
 
 import java.util.List;
 
-import com.android.pos.DbHelper;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.EmployeeDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -14,7 +14,7 @@ import android.app.Activity;
 
 public class EmployeeSearchFragment extends BaseSearchFragment<Employee> {
 
-	private EmployeeDao employeeDao = DbHelper.getSession().getEmployeeDao();
+	private EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
 
 	public void initAdapter() {
 		

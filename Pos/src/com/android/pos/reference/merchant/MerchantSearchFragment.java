@@ -2,11 +2,11 @@ package com.android.pos.reference.merchant;
 
 import java.util.List;
 
-import com.android.pos.DbHelper;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -14,7 +14,7 @@ import android.app.Activity;
 
 public class MerchantSearchFragment extends BaseSearchFragment<Merchant> {
 
-	private MerchantDao merchantDao = DbHelper.getSession().getMerchantDao();
+	private MerchantDao merchantDao = DbUtil.getSession().getMerchantDao();
 
 	public void initAdapter() {
 		

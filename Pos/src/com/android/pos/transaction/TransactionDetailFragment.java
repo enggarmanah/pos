@@ -13,15 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.pos.CodeUtil;
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.TransactionItemDao;
 import com.android.pos.dao.Transactions;
+import com.android.pos.util.CodeUtil;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -56,7 +56,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	
 	private TransactionDetailArrayAdapter mAdapter;
 	
-	private TransactionItemDao transactionItemDao = DbHelper.getSession().getTransactionItemDao();
+	private TransactionItemDao transactionItemDao = DbUtil.getSession().getTransactionItemDao();
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
-import com.android.pos.MerchantUtil;
-import com.android.pos.PrintUtil;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Customer;
@@ -18,6 +15,9 @@ import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
+import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
+import com.android.pos.util.PrintUtil;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -78,7 +78,7 @@ public class CashierActivity extends BaseActivity
 	private static DaoSession getDaoSession() {
 		
 		if (daoSession == null) {
-			daoSession = DbHelper.getSession();
+			daoSession = DbUtil.getSession();
 		}
 		
 		return daoSession;
@@ -90,7 +90,7 @@ public class CashierActivity extends BaseActivity
 
 		setContentView(R.layout.cashier_activity);
 
-		DbHelper.initDb(this);
+		DbUtil.initDb(this);
 
 		initDrawerMenu();
 

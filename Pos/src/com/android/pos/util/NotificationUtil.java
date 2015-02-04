@@ -1,4 +1,4 @@
-package com.android.pos;
+package com.android.pos.util;
 
 import com.android.pos.common.AlertDlgFragment;
 

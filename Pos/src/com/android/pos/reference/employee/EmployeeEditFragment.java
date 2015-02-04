@@ -3,15 +3,15 @@ package com.android.pos.reference.employee;
 import java.util.ArrayList;
 
 import com.android.pos.CodeBean;
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
-import com.android.pos.CodeUtil;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.EmployeeDao;
+import com.android.pos.util.CodeUtil;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.DbUtil;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
     
-    private EmployeeDao employeeDao = DbHelper.getSession().getEmployeeDao();
+    private EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 

@@ -2,11 +2,11 @@ package com.android.pos.reference.discount;
 
 import java.util.List;
 
-import com.android.pos.DbHelper;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.DiscountDao;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -14,7 +14,7 @@ import android.app.Activity;
 
 public class DiscountSearchFragment extends BaseSearchFragment<Discount> {
 
-	private DiscountDao discountDao = DbHelper.getSession().getDiscountDao();
+	private DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
 
 	public void initAdapter() {
 		

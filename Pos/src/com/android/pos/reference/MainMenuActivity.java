@@ -9,9 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
-import com.android.pos.SyncManager;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.reference.customer.CustomerMgtActivity;
 import com.android.pos.reference.discount.DiscountMgtActivity;
@@ -19,6 +17,8 @@ import com.android.pos.reference.employee.EmployeeMgtActivity;
 import com.android.pos.reference.merchant.MerchantMgtActivity;
 import com.android.pos.reference.product.ProductMgtActivity;
 import com.android.pos.reference.productGrp.ProductGrpMgtActivity;
+import com.android.pos.sync.SyncManager;
+import com.android.pos.util.DbUtil;
 
 public class MainMenuActivity extends BaseActivity {
 
@@ -31,7 +31,7 @@ public class MainMenuActivity extends BaseActivity {
     	
 		setContentView(R.layout.ref_main_menu_activity);
 		
-		DbHelper.initDb(this);
+		DbUtil.initDb(this);
 		
 		syncManager = new SyncManager(this);
 		

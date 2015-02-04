@@ -1,4 +1,4 @@
-package com.android.pos;
+package com.android.pos.util;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,7 +13,7 @@ import com.android.pos.dao.DaoMaster.DevOpenHelper;
 import com.android.pos.dao.ProductGroupDao;
 import com.android.pos.dao.TransactionItemDao;
 
-public class DbHelper {
+public class DbUtil {
 	
 	private static SQLiteDatabase db;
     private static DaoMaster daoMaster;

@@ -1,19 +1,22 @@
-package com.android.pos;
+package com.android.pos.sync;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDao;
 import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.util.BeanUtil;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class DataManager {
+public class ProductGroupDataProvider {
 	
-	private ProductGroupDao productGroupDao = DbHelper.getSession().getProductGroupDao();
+	private ProductGroupDao productGroupDao = DbUtil.getSession().getProductGroupDao();
 	
 	public List<ProductGroupBean> getProductGroupsForUpload() {
 

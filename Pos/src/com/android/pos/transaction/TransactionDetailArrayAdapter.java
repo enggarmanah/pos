@@ -2,9 +2,9 @@ package com.android.pos.transaction;
 
 import java.util.List;
 
-import com.android.pos.CommonUtil;
 import com.android.pos.R;
 import com.android.pos.dao.TransactionItem;
+import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;

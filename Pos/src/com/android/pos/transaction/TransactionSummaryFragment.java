@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.TransactionSummary;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDao;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -48,7 +48,7 @@ public class TransactionSummaryFragment extends BaseFragment
 	
 	private TransactionActionListener mActionListener;
 	
-	private TransactionsDao transactionDao = DbHelper.getSession().getTransactionsDao();
+	private TransactionsDao transactionDao = DbUtil.getSession().getTransactionsDao();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -149,7 +149,7 @@ public class TransactionSummaryFragment extends BaseFragment
 		
 		ArrayList<TransactionSummary> transactionSummaries = new ArrayList<TransactionSummary>();
 		
-		SQLiteDatabase db = DbHelper.getDb();
+		SQLiteDatabase db = DbUtil.getDb();
 		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount) total_amount "
 				+ " FROM transactions "
 				+ " GROUP BY strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);

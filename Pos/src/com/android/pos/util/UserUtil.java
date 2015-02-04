@@ -1,11 +1,11 @@
-package com.android.pos;
+package com.android.pos.util;
 
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserDao;
 
 public class UserUtil {
 	
-	private static UserDao userDao = DbHelper.getSession().getUserDao();
+	private static UserDao userDao = DbUtil.getSession().getUserDao();
 	
 	public static User getUser() {
 		

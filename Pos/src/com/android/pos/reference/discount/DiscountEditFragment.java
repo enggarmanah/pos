@@ -2,13 +2,13 @@ package com.android.pos.reference.discount;
 
 import java.util.ArrayList;
 
-import com.android.pos.CommonUtil;
 import com.android.pos.Constant;
-import com.android.pos.DbHelper;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.DiscountDao;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.DbUtil;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
 	EditText mNameText;
 	EditText mPercentageText;
 	
-    private DiscountDao discountDao = DbHelper.getSession().getDiscountDao();
+    private DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
