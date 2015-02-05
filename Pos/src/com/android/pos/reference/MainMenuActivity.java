@@ -164,6 +164,9 @@ public class MainMenuActivity extends BaseActivity implements SyncListener {
     		
     		mDataSyncPb = (ProgressBar) getView().findViewById(R.id.dataSyncPb);
     		mSyncMessage = (TextView) getView().findViewById(R.id.syncMessageText);
+    		
+    		setProgress(0);
+    		setMessage("Melaksanakan sync up data!");
     	}
     	
     	public void setProgress(int progress) {

@@ -54,10 +54,10 @@ public class SyncManager {
 	
 	public void sync() {
 		
-		new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC);
-		
 		listener.setSyncProgress(0 * 100 / totalTask);
-		listener.setSyncMessage("Cek waktu terakhir melaksanan sync up data.");
+		listener.setSyncMessage("Cek waktu terakhir sync up data.");
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC);
 	}
 	
 	private void getProductGroup() {
