@@ -30,4 +30,7 @@ public class Constant {
 	
 	public static String TASK_GET_DISCOUNT = "TASK_GET_DISCOUNT";
 	public static String TASK_UPDATE_DISCOUNT = "TASK_UPDATE_DISCOUNT";
+	
+	public static String TASK_GET_MERCHANT = "TASK_GET_MERCHANT";
+	public static String TASK_UPDATE_MERCHANT = "TASK_UPDATE_MERCHANT";
 }

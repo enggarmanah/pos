@@ -29,6 +29,14 @@
 		<servlet-name>discountUpdateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.DiscountUpdateJsonServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>merchantGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>merchantUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantUpdateJsonServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>getLastSyncJsonServlet</servlet-name>
@@ -53,6 +61,14 @@
 	<servlet-mapping>
 		<servlet-name>discountUpdateJsonServlet</servlet-name>
 		<url-pattern>/discountUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantGetJsonServlet</servlet-name>
+		<url-pattern>/merchantGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantUpdateJsonServlet</servlet-name>
+		<url-pattern>/merchantUpdateJsonServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>

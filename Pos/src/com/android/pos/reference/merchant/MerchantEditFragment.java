@@ -86,6 +86,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mServiceChargeText);
     	registerField(mStatusSp);
     	
+    	enableInputFields(false);
+    	
     	mandatoryFields = new ArrayList<MerchantEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mAddressText, R.string.field_address));

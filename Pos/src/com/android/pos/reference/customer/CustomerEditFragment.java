@@ -67,6 +67,8 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     	registerField(mEmailStatusSp);
     	registerField(mStatusSp);
     	
+    	enableInputFields(false);
+    	
     	mandatoryFields = new ArrayList<CustomerEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	

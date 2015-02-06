@@ -47,6 +47,8 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     	
     	registerField(mNameText);
     	
+    	enableInputFields(false);
+    	
     	mandatoryFields = new ArrayList<ProductGrpEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     }

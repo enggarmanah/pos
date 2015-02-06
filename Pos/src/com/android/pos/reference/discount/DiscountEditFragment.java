@@ -51,6 +51,8 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
         registerField(mNameText);
         registerField(mPercentageText);
         
+        enableInputFields(false);
+        
         mandatoryFields = new ArrayList<DiscountEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mPercentageText, R.string.field_percentage));

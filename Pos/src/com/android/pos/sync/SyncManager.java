@@ -23,6 +23,7 @@ import com.android.pos.Constant;
 import com.android.pos.Installation;
 import com.android.pos.model.DeviceBean;
 import com.android.pos.model.DiscountBean;
+import com.android.pos.model.MerchantBean;
 import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SyncRequestBean;
 import com.android.pos.model.SyncStatusBean;
@@ -36,20 +37,22 @@ public class SyncManager {
 	private Context context;
 	private DeviceBean device;
 	
-	private ProductGroupDataProvider productGroupDataProvider;
-	private DiscountDataProvider discountDataProvider;
+	private SyncProductGroupDao mSyncProductGroupDao;
+	private SyncDiscountDao mSyncDiscountDao;
+	private SyncMerchantDao mSyncMerchantDao;
 	
 	private SyncListener listener;
 	
-	private final int totalTask = 6;
+	private final int totalTask = 8;
 	
 	public SyncManager(Context context) {
 		
 		this.context = context;
 		listener = (SyncListener) context;
 		
-		productGroupDataProvider = new ProductGroupDataProvider();
-		discountDataProvider = new DiscountDataProvider();
+		mSyncProductGroupDao = new SyncProductGroupDao();
+		mSyncDiscountDao = new SyncDiscountDao();
+		mSyncMerchantDao = new SyncMerchantDao();
 	}
 	
 	public void sync() {
@@ -92,11 +95,27 @@ public class SyncManager {
 		listener.setSyncMessage("Upload data diskon ke server.");
 	}
 	
+	private void getMerchant() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_MERCHANT);
+		
+		listener.setSyncProgress(5 * 100 / totalTask);
+		listener.setSyncMessage("Update data merchant dari server.");
+	}
+	
+	private void updateMerchant() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_MERCHANT);
+		
+		listener.setSyncProgress(6 * 100 / totalTask);
+		listener.setSyncMessage("Upload data merchant ke server.");
+	}
+	
 	private void updateLastSync() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_LAST_SYNC);
 		
-		listener.setSyncProgress(5 * 100 / totalTask);
+		listener.setSyncProgress(7 * 100 / totalTask);
 		listener.setSyncMessage("Update waktu terakhir sync up data ke server.");
 	}
 	
@@ -138,7 +157,7 @@ public class SyncManager {
 				
 				url = Config.SERVER_URL + "/productGroupUpdateJsonServlet";
 				
-				obj = productGroupDataProvider.getProductGroupsForUpload();
+				obj = mSyncProductGroupDao.getProductGroupsForUpload();
 			
 			} else if (Constant.TASK_GET_DISCOUNT.equals(tasks[0])) {
 				
@@ -152,7 +171,21 @@ public class SyncManager {
 				
 				url = Config.SERVER_URL + "/discountUpdateJsonServlet";
 				
-				obj = discountDataProvider.getDiscountsForUpload();
+				obj = mSyncDiscountDao.getDiscountsForUpload();
+			
+			} else if (Constant.TASK_GET_MERCHANT.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/merchantGetJsonServlet";
+				
+				SyncRequestBean request = new SyncRequestBean();
+				request.setLastSyncDate(device.getLast_sync_date());
+				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_MERCHANT.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/merchantUpdateJsonServlet";
+				
+				obj = mSyncMerchantDao.getMerchantsForUpload();
 			
 			} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(tasks[0])) {
 				
@@ -185,7 +218,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							ProductGroupBean.class));
 					
-					productGroupDataProvider.updateProductGroups(productGroups);
+					mSyncProductGroupDao.updateProductGroups(productGroups);
 					updateProductGroup();
 				
 				} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(task)) {
@@ -194,7 +227,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							SyncStatusBean.class));
 					
-					productGroupDataProvider.updateProductGroupStatus(syncStatusBeans);
+					mSyncProductGroupDao.updateProductGroupStatus(syncStatusBeans);
 					getDiscount();
 				
 				} else if (Constant.TASK_GET_DISCOUNT.equals(task)) {
@@ -203,7 +236,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							DiscountBean.class));
 					
-					discountDataProvider.updateDiscounts(discounts);
+					mSyncDiscountDao.updateDiscounts(discounts);
 					updateDiscount();
 				
 				} else if (Constant.TASK_UPDATE_DISCOUNT.equals(task)) {
@@ -212,7 +245,25 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							SyncStatusBean.class));
 					
-					discountDataProvider.updateDiscountStatus(syncStatusBeans);
+					mSyncDiscountDao.updateDiscountStatus(syncStatusBeans);
+					getMerchant();
+				
+				} else if (Constant.TASK_GET_MERCHANT.equals(task)) {
+					
+					List<MerchantBean> merchants = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							MerchantBean.class));
+					
+					mSyncMerchantDao.updateMerchants(merchants);
+					updateMerchant();
+				
+				} else if (Constant.TASK_UPDATE_MERCHANT.equals(task)) {
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					mSyncMerchantDao.updateMerchantStatus(syncStatusBeans);
 					updateLastSync();
 				
 				} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(task)) {

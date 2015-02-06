@@ -14,7 +14,7 @@ import com.android.pos.util.DbUtil;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class ProductGroupDataProvider {
+public class SyncProductGroupDao {
 	
 	private ProductGroupDao productGroupDao = DbUtil.getSession().getProductGroupDao();
 	

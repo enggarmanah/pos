@@ -60,6 +60,8 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     	registerField(mAddressText);
     	registerField(mStatusSp);
     	
+    	enableInputFields(false);
+    	
     	mandatoryFields = new ArrayList<EmployeeEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	

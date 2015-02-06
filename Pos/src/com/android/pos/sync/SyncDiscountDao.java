@@ -14,7 +14,7 @@ import com.android.pos.util.DbUtil;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class DiscountDataProvider {
+public class SyncDiscountDao {
 	
 	private DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
 	
@@ -46,6 +46,10 @@ public class DiscountDataProvider {
 			}
 			
 			BeanUtil.updateBean(discount, bean);
+			
+			if (discount.getId() == null) {
+				discountDao.insert(discount);
+			}
 		} 
 	}
 	

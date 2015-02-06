@@ -2,8 +2,10 @@ package com.android.pos.util;
 
 import com.android.pos.Constant;
 import com.android.pos.dao.Discount;
+import com.android.pos.dao.Merchant;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.model.DiscountBean;
+import com.android.pos.model.MerchantBean;
 import com.android.pos.model.ProductGroupBean;
 
 public class BeanUtil {
@@ -64,5 +66,52 @@ public class BeanUtil {
 		discount.setCreateDate(bean.getCreate_date());
 		discount.setUpdateBy(bean.getUpdate_by());
 		discount.setUpdateDate(bean.getUpdate_date());
+	}
+	
+public static MerchantBean getBean(Merchant merchant) {
+		
+		MerchantBean bean = new MerchantBean();
+		
+		bean.setRemote_id(merchant.getId());
+		bean.setName(merchant.getName());
+		bean.setType(merchant.getType());
+		bean.setAddress(merchant.getAddress());
+		bean.setContact_name(merchant.getContactName());
+		bean.setContact_telephone(merchant.getContactTelephone());
+		bean.setLogin_id(merchant.getLoginId());
+		bean.setPassword(merchant.getPassword());
+		bean.setPeriod_start(merchant.getPeriodStart());
+		bean.setPeriod_end(merchant.getPeriodEnd());
+		bean.setTax_percentage(merchant.getTaxPercentage());
+		bean.setService_charge_percentage(merchant.getServiceChargePercentage());
+		bean.setStatus(merchant.getStatus());
+		bean.setCreate_by(merchant.getCreateBy());
+		bean.setCreate_date(merchant.getCreateDate());
+		bean.setUpdate_by(merchant.getUpdateBy());
+		bean.setUpdate_date(merchant.getUpdateDate());
+		
+		return bean;
+	}
+	
+	public static void updateBean(Merchant merchant, MerchantBean bean) {
+		
+		merchant.setId(bean.getRemote_id());
+		merchant.setName(bean.getName());
+		merchant.setType(bean.getType());
+		merchant.setAddress(bean.getAddress());
+		merchant.setContactName(bean.getContact_name());
+		merchant.setContactTelephone(bean.getContact_telephone());
+		merchant.setLoginId(bean.getLogin_id());
+		merchant.setPassword(bean.getPassword());
+		merchant.setPeriodStart(bean.getPeriod_start());
+		merchant.setPeriodEnd(bean.getPeriod_end());
+		merchant.setTaxPercentage(bean.getTax_percentage());
+		merchant.setServiceChargePercentage(bean.getService_charge_percentage());
+		merchant.setStatus(bean.getStatus());
+		merchant.setUploadStatus(Constant.STATUS_NO);
+		merchant.setCreateBy(bean.getCreate_by());
+		merchant.setCreateDate(bean.getCreate_date());
+		merchant.setUpdateBy(bean.getUpdate_by());
+		merchant.setUpdateDate(bean.getUpdate_date());
 	}
 }

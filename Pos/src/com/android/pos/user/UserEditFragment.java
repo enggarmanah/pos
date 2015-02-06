@@ -64,6 +64,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	registerField(mRoleSp);
     	registerField(mStatusSp);
     	
+    	enableInputFields(false);
+    	
     	mandatoryFields = new ArrayList<UserEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mUserIdText, R.string.field_price));

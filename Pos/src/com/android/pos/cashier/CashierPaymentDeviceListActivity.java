@@ -20,7 +20,6 @@ import java.util.Set;
 import com.android.pos.R;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -29,9 +28,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -61,7 +58,7 @@ public class CashierPaymentDeviceListActivity extends Activity {
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
     
-    ProgressDialog mProgressDialog = new ProgressDialog();
+    private CashierPrinterConnectProgressDlgFragment mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +120,12 @@ public class CashierPaymentDeviceListActivity extends Activity {
         } else {
             String noDevices = getResources().getText(R.string.none_paired).toString();
             mPairedDevicesArrayAdapter.add(noDevices);
+        }
+        
+        mProgressDialog = (CashierPrinterConnectProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
+        
+        if (mProgressDialog == null) {
+        	mProgressDialog = new CashierPrinterConnectProgressDlgFragment();
         }
     }
 
@@ -224,30 +227,4 @@ public class CashierPaymentDeviceListActivity extends Activity {
             }
         }
     };
-        
-    private class ProgressDialog extends DialogFragment {
-    	
-    	@Override
-    	public void onCreate(Bundle savedInstanceState) {
-    		super.onCreate(savedInstanceState);
-
-    		setStyle(STYLE_NO_TITLE, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
-
-    		setCancelable(false);
-    	}
-
-    	@Override
-    	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-    		View view = inflater.inflate(R.layout.cashier_printer_search_progress_fragment, container, false);
-
-    		return view;
-    	}
-    	
-    	@Override
-    	public void onStart() {
-
-    		super.onStart();
-    	}
-    }
 }
