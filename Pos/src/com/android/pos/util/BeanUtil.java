@@ -2,9 +2,11 @@ package com.android.pos.util;
 
 import com.android.pos.Constant;
 import com.android.pos.dao.Discount;
+import com.android.pos.dao.Employee;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.model.DiscountBean;
+import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.MerchantBean;
 import com.android.pos.model.ProductGroupBean;
 
@@ -113,5 +115,38 @@ public static MerchantBean getBean(Merchant merchant) {
 		merchant.setCreateDate(bean.getCreate_date());
 		merchant.setUpdateBy(bean.getUpdate_by());
 		merchant.setUpdateDate(bean.getUpdate_date());
+	}
+	
+	public static EmployeeBean getBean(Employee employee) {
+		
+		EmployeeBean bean = new EmployeeBean();
+		
+		bean.setMerchant_id(employee.getMerchantId());
+		bean.setRemote_id(employee.getId());
+		bean.setName(employee.getName());
+		bean.setTelephone(employee.getTelephone());
+		bean.setAddress(employee.getAddress());
+		bean.setStatus(employee.getStatus());
+		bean.setCreate_by(employee.getCreateBy());
+		bean.setCreate_date(employee.getCreateDate());
+		bean.setUpdate_by(employee.getUpdateBy());
+		bean.setUpdate_date(employee.getUpdateDate());
+		
+		return bean;
+	}
+	
+	public static void updateBean(Employee employee, EmployeeBean bean) {
+		
+		employee.setMerchantId(bean.getMerchant_id());
+		employee.setId(bean.getRemote_id());
+		employee.setName(bean.getName());
+		employee.setTelephone(bean.getTelephone());
+		employee.setAddress(bean.getAddress());
+		employee.setStatus(bean.getStatus());
+		employee.setUploadStatus(Constant.STATUS_NO);
+		employee.setCreateBy(bean.getCreate_by());
+		employee.setCreateDate(bean.getCreate_date());
+		employee.setUpdateBy(bean.getUpdate_by());
+		employee.setUpdateDate(bean.getUpdate_date());
 	}
 }

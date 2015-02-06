@@ -40,6 +40,7 @@ public class SyncManager {
 	private SyncProductGroupDao mSyncProductGroupDao;
 	private SyncDiscountDao mSyncDiscountDao;
 	private SyncMerchantDao mSyncMerchantDao;
+	private SyncEmployeeDao mSyncEmployeeDao;
 	
 	private SyncListener listener;
 	
