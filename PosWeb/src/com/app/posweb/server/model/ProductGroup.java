@@ -8,6 +8,7 @@ import javax.persistence.Table;
 public class ProductGroup extends Base {
 	
 	private String name;
+	private String status;
 	
 	public String getName() {
 
@@ -19,9 +20,18 @@ public class ProductGroup extends Base {
 		this.name = name;
 	}
 	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	public void setBean(ProductGroup bean) {
 		
 		super.setBean(bean);
 		this.name = bean.getName();
+		this.status = bean.getStatus();
 	}
 }

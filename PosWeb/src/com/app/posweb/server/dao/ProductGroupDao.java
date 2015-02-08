@@ -1,6 +1,5 @@
 package com.app.posweb.server.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,6 +8,7 @@ import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
 import com.app.posweb.server.model.ProductGroup;
+import com.app.posweb.server.model.SyncRequest;
 
 public class ProductGroupDao {
 	
@@ -79,16 +79,18 @@ public class ProductGroupDao {
 		return result;
 	}
 	
-	public List<ProductGroup> getProductGroups(Date lastSyncDate) {
+	public List<ProductGroup> getProductGroups(SyncRequest syncRequest) {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT pg FROM ProductGroup pg WHERE update_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT pg FROM ProductGroup pg WHERE merchant_id = :merchantId AND update_date >= :lastSyncDate");
 		
 		sql.append(" ORDER BY pg.name");
 		
 		TypedQuery<ProductGroup> query = em.createQuery(sql.toString(), ProductGroup.class);
-		query.setParameter("lastSyncDate", lastSyncDate);
+
+		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
 		
 		List<ProductGroup> result = query.getResultList();
 		

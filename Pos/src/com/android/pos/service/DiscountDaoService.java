@@ -1,4 +1,4 @@
-package com.android.pos.sync;
+package com.android.pos.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,44 @@ import com.android.pos.util.DbUtil;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class SyncDiscountDao {
+public class DiscountDaoService {
 	
 	private DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
+	
+	public void addDiscount(Discount discount) {
+		
+		discountDao.insert(discount);
+	}
+	
+	public void updateDiscount(Discount discount) {
+		
+		discountDao.update(discount);
+	}
+	
+	public void deleteDiscount(Discount discount) {
+
+		Discount entity = discountDao.load(discount.getId());
+		entity.setStatus(Constant.STATUS_DELETED);
+		entity.setUploadStatus(Constant.STATUS_YES);
+		discountDao.update(entity);
+	}
+	
+	public Discount getDiscount(Long id) {
+		
+		return discountDao.load(id);
+	}
+	
+	public List<Discount> getDiscounts(String query) {
+
+		QueryBuilder<Discount> qb = discountDao.queryBuilder();
+		qb.where(DiscountDao.Properties.Name.like("%" + query + "%"), 
+				DiscountDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(DiscountDao.Properties.Name);
+
+		Query<Discount> q = qb.build();
+		List<Discount> list = q.list();
+
+		return list;
+	}
 	
 	public List<DiscountBean> getDiscountsForUpload() {
 
@@ -39,16 +74,21 @@ public class SyncDiscountDao {
 		
 		for (DiscountBean bean : discounts) {
 			
+			boolean isAdd = false;
+			
 			Discount discount = discountDao.load(bean.getRemote_id());
 			
 			if (discount == null) {
 				discount = new Discount();
+				isAdd = true;
 			}
 			
 			BeanUtil.updateBean(discount, bean);
 			
-			if (discount.getId() == null) {
+			if (isAdd) {
 				discountDao.insert(discount);
+			} else {
+				discountDao.update(discount);
 			}
 		} 
 	}

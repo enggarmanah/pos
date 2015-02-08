@@ -7,9 +7,8 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Discount;
-import com.android.pos.dao.DiscountDao;
+import com.android.pos.service.DiscountDaoService;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
@@ -26,7 +25,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
 	EditText mNameText;
 	EditText mPercentageText;
 	
-    private DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
+    private DiscountDaoService mDiscountDaoService = new DiscountDaoService();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -82,13 +81,16 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     	
     	if (mItem != null) {
     		
-    		String userId = UserUtil.getUser().getUserId();
     		Long merchantId = MerchantUtil.getMerchant().getId();
     		
     		mItem.setMerchantId(merchantId);
     		mItem.setName(name);
     		mItem.setPercentage(percentage);
     		mItem.setStatus(Constant.STATUS_ACTIVE);
+    		
+    		mItem.setUploadStatus(Constant.STATUS_YES);
+    		
+    		String userId = UserUtil.getUser().getUserId();
     		
     		if (mItem.getCreateBy() == null) {
     			mItem.setCreateBy(userId);
@@ -97,8 +99,6 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     		
     		mItem.setUpdateBy(userId);
     		mItem.setUpdateDate(new Date());
-    		
-    		mItem.setUploadStatus(Constant.STATUS_YES);
     	}
     }
     
@@ -111,7 +111,8 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     @Override
     protected void addItem() {
     	
-        discountDao.insert(mItem);
+    	mDiscountDaoService.addDiscount(mItem);
+    	
         mNameText.getText().clear();
         
         mItem = null;
@@ -120,7 +121,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     @Override
     protected void updateItem() {
     	
-    	discountDao.update(mItem);
+    	mDiscountDaoService.updateDiscount(mItem);
     }
     
     @Override
@@ -132,9 +133,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     @Override
     public Discount updateItem(Discount discount) {
 
-    	discountDao.detach(discount);
-    	discount = discountDao.load(discount.getId());
-    	discountDao.detach(discount);
+    	discount = mDiscountDaoService.getDiscount(discount.getId());
     	
     	this.mItem = discount;
     	

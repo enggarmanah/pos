@@ -1,6 +1,7 @@
 package com.android.pos.user;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.android.pos.CodeBean;
 import com.android.pos.Constant;
@@ -8,10 +9,10 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.User;
-import com.android.pos.dao.UserDao;
+import com.android.pos.service.UserDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
+import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
     CodeSpinnerArrayAdapter roleArrayAdapter;
     CodeSpinnerArrayAdapter statusArrayAdapter;
     
-    private UserDao userDao = DbUtil.getSession().getUserDao();
+    private UserDaoService mUserDaoService = new UserDaoService();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -121,6 +122,16 @@ public class UserEditFragment extends BaseEditFragment<User> {
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
+    		
+    		String loginId = UserUtil.getUser().getUserId();
+    		
+    		if (mItem.getCreateBy() == null) {
+    			mItem.setCreateBy(loginId);
+    			mItem.setCreateDate(new Date());
+    		}
+    		
+    		mItem.setUpdateBy(loginId);
+    		mItem.setUpdateDate(new Date());
     	}
     }
     
@@ -133,7 +144,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     @Override
     protected void addItem() {
     	
-        userDao.insert(mItem);
+        mUserDaoService.addUser(mItem);
+        
         mNameText.getText().clear();
         mUserIdText.getText().clear();
         
@@ -143,7 +155,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
     @Override
     protected void updateItem() {
     	
-    	userDao.update(mItem);
+    	mUserDaoService.updateUser(mItem);
     }
     
     @Override
@@ -155,9 +167,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
     @Override
     public User updateItem(User user) {
 
-    	userDao.detach(user);
-    	user = userDao.load(user.getId());
-    	userDao.detach(user);
+    	user = mUserDaoService.getUser(user.getId());
     	
     	this.mItem = user;
     	

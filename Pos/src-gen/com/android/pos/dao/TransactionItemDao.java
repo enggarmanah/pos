@@ -29,13 +29,15 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property TransactionId = new Property(1, long.class, "transactionId", false, "TRANSACTION_ID");
-        public final static Property ProductId = new Property(2, long.class, "productId", false, "PRODUCT_ID");
-        public final static Property ProductName = new Property(3, String.class, "productName", false, "PRODUCT_NAME");
-        public final static Property ProductType = new Property(4, String.class, "productType", false, "PRODUCT_TYPE");
-        public final static Property Price = new Property(5, Integer.class, "price", false, "PRICE");
-        public final static Property Quantity = new Property(6, Integer.class, "quantity", false, "QUANTITY");
-        public final static Property EmployeeId = new Property(7, long.class, "employeeId", false, "EMPLOYEE_ID");
+        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property TransactionId = new Property(2, long.class, "transactionId", false, "TRANSACTION_ID");
+        public final static Property ProductId = new Property(3, long.class, "productId", false, "PRODUCT_ID");
+        public final static Property ProductName = new Property(4, String.class, "productName", false, "PRODUCT_NAME");
+        public final static Property ProductType = new Property(5, String.class, "productType", false, "PRODUCT_TYPE");
+        public final static Property Price = new Property(6, Integer.class, "price", false, "PRICE");
+        public final static Property Quantity = new Property(7, Integer.class, "quantity", false, "QUANTITY");
+        public final static Property EmployeeId = new Property(8, long.class, "employeeId", false, "EMPLOYEE_ID");
+        public final static Property UploadStatus = new Property(9, String.class, "uploadStatus", false, "UPLOAD_STATUS");
     };
 
     private DaoSession daoSession;
@@ -57,13 +59,15 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'TRANSACTION_ITEM' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'TRANSACTION_ID' INTEGER NOT NULL ," + // 1: transactionId
-                "'PRODUCT_ID' INTEGER NOT NULL ," + // 2: productId
-                "'PRODUCT_NAME' TEXT," + // 3: productName
-                "'PRODUCT_TYPE' TEXT," + // 4: productType
-                "'PRICE' INTEGER," + // 5: price
-                "'QUANTITY' INTEGER," + // 6: quantity
-                "'EMPLOYEE_ID' INTEGER NOT NULL );"); // 7: employeeId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
+                "'TRANSACTION_ID' INTEGER NOT NULL ," + // 2: transactionId
+                "'PRODUCT_ID' INTEGER NOT NULL ," + // 3: productId
+                "'PRODUCT_NAME' TEXT," + // 4: productName
+                "'PRODUCT_TYPE' TEXT," + // 5: productType
+                "'PRICE' INTEGER," + // 6: price
+                "'QUANTITY' INTEGER," + // 7: quantity
+                "'EMPLOYEE_ID' INTEGER NOT NULL ," + // 8: employeeId
+                "'UPLOAD_STATUS' TEXT);"); // 9: uploadStatus
     }
 
     /** Drops the underlying database table. */
@@ -81,29 +85,35 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getTransactionId());
-        stmt.bindLong(3, entity.getProductId());
+        stmt.bindLong(2, entity.getMerchantId());
+        stmt.bindLong(3, entity.getTransactionId());
+        stmt.bindLong(4, entity.getProductId());
  
         String productName = entity.getProductName();
         if (productName != null) {
-            stmt.bindString(4, productName);
+            stmt.bindString(5, productName);
         }
  
         String productType = entity.getProductType();
         if (productType != null) {
-            stmt.bindString(5, productType);
+            stmt.bindString(6, productType);
         }
  
         Integer price = entity.getPrice();
         if (price != null) {
-            stmt.bindLong(6, price);
+            stmt.bindLong(7, price);
         }
  
         Integer quantity = entity.getQuantity();
         if (quantity != null) {
-            stmt.bindLong(7, quantity);
+            stmt.bindLong(8, quantity);
         }
-        stmt.bindLong(8, entity.getEmployeeId());
+        stmt.bindLong(9, entity.getEmployeeId());
+ 
+        String uploadStatus = entity.getUploadStatus();
+        if (uploadStatus != null) {
+            stmt.bindString(10, uploadStatus);
+        }
     }
 
     @Override
@@ -123,13 +133,15 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
     public TransactionItem readEntity(Cursor cursor, int offset) {
         TransactionItem entity = new TransactionItem( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // transactionId
-            cursor.getLong(offset + 2), // productId
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // productName
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // productType
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // price
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // quantity
-            cursor.getLong(offset + 7) // employeeId
+            cursor.getLong(offset + 1), // merchantId
+            cursor.getLong(offset + 2), // transactionId
+            cursor.getLong(offset + 3), // productId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // productName
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // productType
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // price
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // quantity
+            cursor.getLong(offset + 8), // employeeId
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // uploadStatus
         );
         return entity;
     }
@@ -138,13 +150,15 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
     @Override
     public void readEntity(Cursor cursor, TransactionItem entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setTransactionId(cursor.getLong(offset + 1));
-        entity.setProductId(cursor.getLong(offset + 2));
-        entity.setProductName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setProductType(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setPrice(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setQuantity(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setEmployeeId(cursor.getLong(offset + 7));
+        entity.setMerchantId(cursor.getLong(offset + 1));
+        entity.setTransactionId(cursor.getLong(offset + 2));
+        entity.setProductId(cursor.getLong(offset + 3));
+        entity.setProductName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setProductType(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setPrice(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setQuantity(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setEmployeeId(cursor.getLong(offset + 8));
+        entity.setUploadStatus(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
      }
     
     /** @inheritdoc */
@@ -207,15 +221,18 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
             StringBuilder builder = new StringBuilder("SELECT ");
             SqlUtils.appendColumns(builder, "T", getAllColumns());
             builder.append(',');
-            SqlUtils.appendColumns(builder, "T0", daoSession.getTransactionsDao().getAllColumns());
+            SqlUtils.appendColumns(builder, "T0", daoSession.getMerchantDao().getAllColumns());
             builder.append(',');
-            SqlUtils.appendColumns(builder, "T1", daoSession.getProductDao().getAllColumns());
+            SqlUtils.appendColumns(builder, "T1", daoSession.getTransactionsDao().getAllColumns());
             builder.append(',');
-            SqlUtils.appendColumns(builder, "T2", daoSession.getEmployeeDao().getAllColumns());
+            SqlUtils.appendColumns(builder, "T2", daoSession.getProductDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T3", daoSession.getEmployeeDao().getAllColumns());
             builder.append(" FROM TRANSACTION_ITEM T");
-            builder.append(" LEFT JOIN TRANSACTIONS T0 ON T.'TRANSACTION_ID'=T0.'_id'");
-            builder.append(" LEFT JOIN PRODUCT T1 ON T.'PRODUCT_ID'=T1.'_id'");
-            builder.append(" LEFT JOIN EMPLOYEE T2 ON T.'EMPLOYEE_ID'=T2.'_id'");
+            builder.append(" LEFT JOIN MERCHANT T0 ON T.'MERCHANT_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN TRANSACTIONS T1 ON T.'TRANSACTION_ID'=T1.'_id'");
+            builder.append(" LEFT JOIN PRODUCT T2 ON T.'PRODUCT_ID'=T2.'_id'");
+            builder.append(" LEFT JOIN EMPLOYEE T3 ON T.'EMPLOYEE_ID'=T3.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -225,6 +242,12 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
     protected TransactionItem loadCurrentDeep(Cursor cursor, boolean lock) {
         TransactionItem entity = loadCurrent(cursor, 0, lock);
         int offset = getAllColumns().length;
+
+        Merchant merchant = loadCurrentOther(daoSession.getMerchantDao(), cursor, offset);
+         if(merchant != null) {
+            entity.setMerchant(merchant);
+        }
+        offset += daoSession.getMerchantDao().getAllColumns().length;
 
         Transactions transactions = loadCurrentOther(daoSession.getTransactionsDao(), cursor, offset);
          if(transactions != null) {

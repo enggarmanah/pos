@@ -5,16 +5,13 @@ import java.util.List;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Product;
-import com.android.pos.dao.ProductDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.ProductDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 
 public class ProductSearchFragment extends BaseSearchFragment<Product> {
 
-	private ProductDao productDao = DbUtil.getSession().getProductDao();
+	private ProductDaoService mProductDaoService = new ProductDaoService();
 
 	public void initAdapter() {
 		
@@ -40,18 +37,12 @@ public class ProductSearchFragment extends BaseSearchFragment<Product> {
 	
 	public List<Product> getItems(String query) {
 
-		QueryBuilder<Product> qb = productDao.queryBuilder();
-		qb.where(ProductDao.Properties.Name.like("%" + query + "%")).orderAsc(ProductDao.Properties.Name);
-
-		Query<Product> q = qb.build();
-		List<Product> list = q.list();
-
-		return list;
+		return mProductDaoService.getProducts(query);
 	}
 
 	public void onItemDeleted(Product item) {
 		
-		productDao.load(item.getId()).delete();
+		mProductDaoService.deleteProduct(item);
 		
 		mItems.remove(item);
 		mAdapter.notifyDataSetChanged();

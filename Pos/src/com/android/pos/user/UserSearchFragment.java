@@ -5,16 +5,13 @@ import java.util.List;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.User;
-import com.android.pos.dao.UserDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.UserDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 
 public class UserSearchFragment extends BaseSearchFragment<User> {
 
-	private UserDao userDao = DbUtil.getSession().getUserDao();
+	private UserDaoService mUserDaoService = new UserDaoService();
 
 	public void initAdapter() {
 		
@@ -40,18 +37,12 @@ public class UserSearchFragment extends BaseSearchFragment<User> {
 	
 	public List<User> getItems(String query) {
 
-		QueryBuilder<User> qb = userDao.queryBuilder();
-		qb.where(UserDao.Properties.Name.like("%" + query + "%")).orderAsc(UserDao.Properties.Name);
-
-		Query<User> q = qb.build();
-		List<User> list = q.list();
-
-		return list;
+		return mUserDaoService.getUsers(query);
 	}
 
 	public void onItemDeleted(User item) {
 
-		userDao.load(item.getId()).delete();
+		mUserDaoService.deleteUser(item);
 		
 		mItems.remove(item);
 		mAdapter.notifyDataSetChanged();

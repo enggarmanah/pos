@@ -5,16 +5,13 @@ import java.util.List;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Discount;
-import com.android.pos.dao.DiscountDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.DiscountDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 
 public class DiscountSearchFragment extends BaseSearchFragment<Discount> {
 
-	private DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
+	private DiscountDaoService mDiscountDaoService = new DiscountDaoService();
 
 	public void initAdapter() {
 		
@@ -40,19 +37,12 @@ public class DiscountSearchFragment extends BaseSearchFragment<Discount> {
 	
 	public List<Discount> getItems(String query) {
 
-		QueryBuilder<Discount> qb = discountDao.queryBuilder();
-		qb.where(DiscountDao.Properties.Name.like("%" + query + "%")).orderAsc(DiscountDao.Properties.Name);
-
-		Query<Discount> q = qb.build();
-		List<Discount> list = q.list();
-
-		return list;
+		return mDiscountDaoService.getDiscounts(query);
 	}
 
 	public void onItemDeleted(Discount item) {
 
-		Discount entity = discountDao.load(item.getId());
-		discountDao.getSession().delete(entity);
+		mDiscountDaoService.deleteDiscount(item);
 		
 		mItems.remove(mSelectedItem);
 		mAdapter.notifyDataSetChanged();

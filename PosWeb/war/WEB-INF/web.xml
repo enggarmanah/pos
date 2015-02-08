@@ -37,6 +37,54 @@
 		<servlet-name>merchantUpdateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.MerchantUpdateJsonServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>employeeGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.EmployeeGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>employeeUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.EmployeeUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>customerGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.CustomerGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>customerUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.CustomerUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>productGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.ProductGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>productUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.ProductUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>userGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.UserGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>userUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.UserUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>transactionsGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.TransactionsGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>transactionsUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.TransactionsUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>transactionItemGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.TransactionItemGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>transactionItemUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.TransactionItemUpdateJsonServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>getLastSyncJsonServlet</servlet-name>
@@ -69,6 +117,54 @@
 	<servlet-mapping>
 		<servlet-name>merchantUpdateJsonServlet</servlet-name>
 		<url-pattern>/merchantUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>employeeGetJsonServlet</servlet-name>
+		<url-pattern>/employeeGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>employeeUpdateJsonServlet</servlet-name>
+		<url-pattern>/employeeUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>customerGetJsonServlet</servlet-name>
+		<url-pattern>/customerGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>customerUpdateJsonServlet</servlet-name>
+		<url-pattern>/customerUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>productGetJsonServlet</servlet-name>
+		<url-pattern>/productGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>productUpdateJsonServlet</servlet-name>
+		<url-pattern>/productUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>userGetJsonServlet</servlet-name>
+		<url-pattern>/userGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>userUpdateJsonServlet</servlet-name>
+		<url-pattern>/userUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>transactionsGetJsonServlet</servlet-name>
+		<url-pattern>/transactionsGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>transactionsUpdateJsonServlet</servlet-name>
+		<url-pattern>/transactionsUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>transactionItemGetJsonServlet</servlet-name>
+		<url-pattern>/transactionItemGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>transactionItemUpdateJsonServlet</servlet-name>
+		<url-pattern>/transactionItemUpdateJsonServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>

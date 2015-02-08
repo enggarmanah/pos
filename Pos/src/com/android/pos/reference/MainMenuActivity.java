@@ -3,6 +3,7 @@ package com.android.pos.reference;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -124,7 +125,13 @@ public class MainMenuActivity extends BaseActivity implements SyncListener {
 			
 			if (progress == 100) {
 				
-				mProgressDialog.dismiss();
+				new Handler().postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						mProgressDialog.dismiss();
+					}
+				}, 500);
 			}
 		}
 	}

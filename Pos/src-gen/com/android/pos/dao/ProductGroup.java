@@ -18,6 +18,7 @@ public class ProductGroup implements Serializable {
     private long merchantId;
     /** Not-null value. */
     private String name;
+    private String status;
     private String uploadStatus;
     private String createBy;
     private java.util.Date createDate;
@@ -42,10 +43,11 @@ public class ProductGroup implements Serializable {
         this.id = id;
     }
 
-    public ProductGroup(Long id, long merchantId, String name, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public ProductGroup(Long id, long merchantId, String name, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.name = name;
+        this.status = status;
         this.uploadStatus = uploadStatus;
         this.createBy = createBy;
         this.createDate = createDate;
@@ -83,6 +85,14 @@ public class ProductGroup implements Serializable {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getUploadStatus() {

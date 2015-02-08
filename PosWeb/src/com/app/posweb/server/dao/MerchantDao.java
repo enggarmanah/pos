@@ -1,6 +1,5 @@
 package com.app.posweb.server.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,6 +8,7 @@ import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
 import com.app.posweb.server.model.Merchant;
+import com.app.posweb.server.model.SyncRequest;
 
 public class MerchantDao {
 	
@@ -77,7 +77,7 @@ public class MerchantDao {
 		return result;
 	}
 	
-	public List<Merchant> getMerchants(Date lastSyncDate) {
+	public List<Merchant> getMerchants(SyncRequest syncRequest) {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
@@ -86,7 +86,8 @@ public class MerchantDao {
 		sql.append(" ORDER BY m.name");
 		
 		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
-		query.setParameter("lastSyncDate", lastSyncDate);
+
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
 		
 		List<Merchant> result = query.getResultList();
 		

@@ -17,6 +17,6 @@ public class ProductGroupGetJsonServlet extends BaseJsonServlet {
         
         ProductGroupDao productGroupDao = new ProductGroupDao();
         
-        return productGroupDao.getProductGroups(request.getLastSyncDate());
+        return productGroupDao.getProductGroups(request);
     }
 }

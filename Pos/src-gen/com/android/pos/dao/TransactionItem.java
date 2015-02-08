@@ -10,10 +10,12 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table TRANSACTION_ITEM.
  */
+
 @SuppressWarnings("serial")
 public class TransactionItem implements Serializable {
 
     private Long id;
+    private long merchantId;
     private long transactionId;
     private long productId;
     private String productName;
@@ -21,12 +23,16 @@ public class TransactionItem implements Serializable {
     private Integer price;
     private Integer quantity;
     private long employeeId;
+    private String uploadStatus;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
     private transient TransactionItemDao myDao;
+
+    private Merchant merchant;
+    private Long merchant__resolvedKey;
 
     private Transactions transactions;
     private Long transactions__resolvedKey;
@@ -45,8 +51,9 @@ public class TransactionItem implements Serializable {
         this.id = id;
     }
 
-    public TransactionItem(Long id, long transactionId, long productId, String productName, String productType, Integer price, Integer quantity, long employeeId) {
+    public TransactionItem(Long id, long merchantId, long transactionId, long productId, String productName, String productType, Integer price, Integer quantity, long employeeId, String uploadStatus) {
         this.id = id;
+        this.merchantId = merchantId;
         this.transactionId = transactionId;
         this.productId = productId;
         this.productName = productName;
@@ -54,6 +61,7 @@ public class TransactionItem implements Serializable {
         this.price = price;
         this.quantity = quantity;
         this.employeeId = employeeId;
+        this.uploadStatus = uploadStatus;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -68,6 +76,14 @@ public class TransactionItem implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public long getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(long merchantId) {
+        this.merchantId = merchantId;
     }
 
     public long getTransactionId() {
@@ -124,6 +140,42 @@ public class TransactionItem implements Serializable {
 
     public void setEmployeeId(long employeeId) {
         this.employeeId = employeeId;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Merchant getMerchant() {
+        long __key = this.merchantId;
+        if (merchant__resolvedKey == null || !merchant__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            MerchantDao targetDao = daoSession.getMerchantDao();
+            Merchant merchantNew = targetDao.load(__key);
+            synchronized (this) {
+                merchant = merchantNew;
+            	merchant__resolvedKey = __key;
+            }
+        }
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        if (merchant == null) {
+            throw new DaoException("To-one property 'merchantId' has not-null constraint; cannot set to-one to null");
+        }
+        synchronized (this) {
+            this.merchant = merchant;
+            merchantId = merchant.getId();
+            merchant__resolvedKey = merchantId;
+        }
     }
 
     /** To-one relationship, resolved on first access. */

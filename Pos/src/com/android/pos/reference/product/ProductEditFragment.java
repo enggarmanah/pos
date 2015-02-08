@@ -10,15 +10,13 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Product;
-import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
-import com.android.pos.dao.ProductGroupDao;
+import com.android.pos.service.ProductDaoService;
+import com.android.pos.service.ProductGroupDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
+import com.android.pos.util.UserUtil;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,8 +44,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     CodeSpinnerArrayAdapter typeArrayAdapter;
     CodeSpinnerArrayAdapter picRequiredArrayAdapter;
     
-    private ProductDao productDao = DbUtil.getSession().getProductDao();
-    private ProductGroupDao productGrpDao = DbUtil.getSession().getProductGroupDao();
+    private ProductDaoService mProductDaoService = new ProductDaoService();
+    private ProductGroupDaoService mProductGroupDaoService = new ProductGroupDaoService();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -177,6 +175,16 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
+    		
+    		String userId = UserUtil.getUser().getUserId();
+    		
+    		if (mItem.getCreateBy() == null) {
+    			mItem.setCreateBy(userId);
+    			mItem.setCreateDate(new Date());
+    		}
+    		
+    		mItem.setUpdateBy(userId);
+    		mItem.setUpdateDate(new Date());
     	}
     }
     
@@ -189,7 +197,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void addItem() {
     	
-        productDao.insert(mItem);
+        mProductDaoService.addProduct(mItem);
         
         mNameText.getText().clear();
         mPriceText.getText().clear();
@@ -204,7 +212,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void updateItem() {
     	
-    	productDao.update(mItem);
+    	mProductDaoService.updateProduct(mItem);
     }
     
     @Override
@@ -216,9 +224,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     public Product updateItem(Product product) {
 
-    	productDao.detach(product);
-    	product = productDao.load(product.getId());
-    	productDao.detach(product);
+    	product = mProductDaoService.getProduct(product.getId());
     	
     	this.mItem = product;
     	
@@ -227,11 +233,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     
     private ProductGroup[] getProductGroups() {
 
-		QueryBuilder<ProductGroup> qb = productGrpDao.queryBuilder();
-		qb.orderAsc(ProductGroupDao.Properties.Name);
-
-		Query<ProductGroup> q = qb.build();
-		List<ProductGroup> list = q.list();
+		List<ProductGroup> list = mProductGroupDaoService.getProductGroups();
 
 		return list.toArray(new ProductGroup[list.size()]);
 	}

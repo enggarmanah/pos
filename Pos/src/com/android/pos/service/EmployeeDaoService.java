@@ -1,4 +1,4 @@
-package com.android.pos.sync;
+package com.android.pos.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,44 @@ import com.android.pos.util.DbUtil;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class SyncEmployeeDao {
+public class EmployeeDaoService {
 	
 	private EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
+	
+	public void addEmployee(Employee employee) {
+		
+		employeeDao.insert(employee);
+	}
+	
+	public void updateEmployee(Employee employee) {
+		
+		employeeDao.update(employee);
+	}
+	
+	public void deleteEmployee(Employee employee) {
+
+		Employee entity = employeeDao.load(employee.getId());
+		entity.setStatus(Constant.STATUS_DELETED);
+		entity.setUploadStatus(Constant.STATUS_YES);
+		employeeDao.update(entity);
+	}
+	
+	public Employee getEmployee(Long id) {
+		
+		return employeeDao.load(id);
+	}
+	
+	public List<Employee> getEmployees(String query) {
+
+		QueryBuilder<Employee> qb = employeeDao.queryBuilder();
+		qb.where(EmployeeDao.Properties.Name.like("%" + query + "%"), 
+				EmployeeDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(EmployeeDao.Properties.Name);
+
+		Query<Employee> q = qb.build();
+		List<Employee> list = q.list();
+
+		return list;
+	}
 	
 	public List<EmployeeBean> getEmployeesForUpload() {
 
@@ -25,27 +60,36 @@ public class SyncEmployeeDao {
 		
 		Query<Employee> q = qb.build();
 		
-		ArrayList<EmployeeBean> prodGroupBeans = new ArrayList<EmployeeBean>();
+		ArrayList<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
 		
 		for (Employee prdGroup : q.list()) {
 			
-			prodGroupBeans.add(BeanUtil.getBean(prdGroup));
+			employeeBeans.add(BeanUtil.getBean(prdGroup));
 		}
 		
-		return prodGroupBeans;
+		return employeeBeans;
 	}
 	
 	public void updateEmployees(List<EmployeeBean> employees) {
 		
 		for (EmployeeBean bean : employees) {
 			
+			boolean isAdd = false;
+			
 			Employee employee = employeeDao.load(bean.getRemote_id());
 			
 			if (employee == null) {
 				employee = new Employee();
+				isAdd = true;
 			}
 			
 			BeanUtil.updateBean(employee, bean);
+			
+			if (isAdd) {
+				employeeDao.insert(employee);
+			} else {
+				employeeDao.update(employee);
+			}
 		} 
 	}
 	

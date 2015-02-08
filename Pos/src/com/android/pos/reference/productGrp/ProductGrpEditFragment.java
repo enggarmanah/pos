@@ -7,8 +7,7 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.ProductGroup;
-import com.android.pos.dao.ProductGroupDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.ProductGroupDaoService;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
@@ -24,8 +23,8 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     
 	EditText mNameText;
     
-    private ProductGroupDao productGroupDao = DbUtil.getSession().getProductGroupDao();
-    
+    private ProductGroupDaoService mProductGroupDaoService = new ProductGroupDaoService();
+	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
@@ -75,11 +74,15 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     	
     	if (mItem != null) {
     		
-    		String userId = UserUtil.getUser().getUserId();
     		Long merchantId = MerchantUtil.getMerchant().getId();
     		
     		mItem.setMerchantId(merchantId);
     		mItem.setName(name);
+    		mItem.setStatus(Constant.STATUS_ACTIVE);
+    		
+    		mItem.setUploadStatus(Constant.STATUS_YES);
+    		
+    		String userId = UserUtil.getUser().getUserId();
     		
     		if (mItem.getCreateBy() == null) {
     			mItem.setCreateBy(userId);
@@ -88,8 +91,6 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     		
     		mItem.setUpdateBy(userId);
     		mItem.setUpdateDate(new Date());
-    		
-    		mItem.setUploadStatus(Constant.STATUS_YES);
     	}
     }
     
@@ -102,7 +103,8 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     @Override
     protected void addItem() {
     	
-        productGroupDao.insert(mItem);
+        mProductGroupDaoService.addProductGroup(mItem);
+        
         mNameText.getText().clear();
         
         mItem = null;
@@ -111,7 +113,7 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     @Override
     protected void updateItem() {
     	
-    	productGroupDao.update(mItem);
+    	mProductGroupDaoService.updateProductGroup(mItem);
     }
     
     @Override
@@ -123,10 +125,8 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     @Override
     public ProductGroup updateItem(ProductGroup productGroup) {
 
-    	productGroupDao.detach(productGroup);
-    	productGroup = productGroupDao.load(productGroup.getId());
-    	productGroupDao.detach(productGroup);
-    	
+    	productGroup = mProductGroupDaoService.getProductGroup(productGroup.getId()); 
+    			
     	this.mItem = productGroup;
     	
     	return productGroup;

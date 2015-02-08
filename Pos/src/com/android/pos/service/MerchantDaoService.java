@@ -1,4 +1,4 @@
-package com.android.pos.sync;
+package com.android.pos.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,44 @@ import com.android.pos.util.DbUtil;
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
-public class SyncMerchantDao {
+public class MerchantDaoService {
 	
 	private MerchantDao merchantDao = DbUtil.getSession().getMerchantDao();
+	
+	public void addMerchant(Merchant merchant) {
+		
+		merchantDao.insert(merchant);
+	}
+	
+	public void updateMerchant(Merchant merchant) {
+		
+		merchantDao.update(merchant);
+	}
+	
+	public void deleteMerchant(Merchant merchant) {
+
+		Merchant entity = merchantDao.load(merchant.getId());
+		entity.setStatus(Constant.STATUS_DELETED);
+		entity.setUploadStatus(Constant.STATUS_YES);
+		merchantDao.update(entity);
+	}
+	
+	public Merchant getMerchant(Long id) {
+		
+		return merchantDao.load(id);
+	}
+	
+	public List<Merchant> getMerchants(String query) {
+
+		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();
+		qb.where(MerchantDao.Properties.Name.like("%" + query + "%"), 
+				MerchantDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(MerchantDao.Properties.Name);
+
+		Query<Merchant> q = qb.build();
+		List<Merchant> list = q.list();
+
+		return list;
+	}
 	
 	public List<MerchantBean> getMerchantsForUpload() {
 
@@ -39,13 +74,22 @@ public class SyncMerchantDao {
 		
 		for (MerchantBean bean : merchants) {
 			
+			boolean isAdd = false;
+			
 			Merchant merchant = merchantDao.load(bean.getRemote_id());
 			
 			if (merchant == null) {
 				merchant = new Merchant();
+				isAdd = true;
 			}
 			
 			BeanUtil.updateBean(merchant, bean);
+			
+			if (isAdd) {
+				merchantDao.insert(merchant);
+			} else {
+				merchantDao.update(merchant);
+			}
 		} 
 	}
 	

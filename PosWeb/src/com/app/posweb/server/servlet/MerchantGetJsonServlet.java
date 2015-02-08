@@ -17,6 +17,6 @@ public class MerchantGetJsonServlet extends BaseJsonServlet {
         
         MerchantDao merchantDao = new MerchantDao();
         
-        return merchantDao.getMerchants(request.getLastSyncDate());
+        return merchantDao.getMerchants(request);
     }
 }

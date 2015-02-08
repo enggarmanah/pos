@@ -17,6 +17,6 @@ public class DiscountGetJsonServlet extends BaseJsonServlet {
         
         DiscountDao discountDao = new DiscountDao();
         
-        return discountDao.getDiscounts(request.getLastSyncDate());
+        return discountDao.getDiscounts(request);
     }
 }

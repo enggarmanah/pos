@@ -48,6 +48,8 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         public final static Property CashierName = new Property(17, String.class, "cashierName", false, "CASHIER_NAME");
         public final static Property CustomerId = new Property(18, long.class, "customerId", false, "CUSTOMER_ID");
         public final static Property CustomerName = new Property(19, String.class, "customerName", false, "CUSTOMER_NAME");
+        public final static Property UploadStatus = new Property(20, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property Status = new Property(21, String.class, "status", false, "STATUS");
     };
 
     private DaoSession daoSession;
@@ -87,7 +89,9 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
                 "'CASHIER_ID' INTEGER NOT NULL ," + // 16: cashierId
                 "'CASHIER_NAME' TEXT," + // 17: cashierName
                 "'CUSTOMER_ID' INTEGER NOT NULL ," + // 18: customerId
-                "'CUSTOMER_NAME' TEXT);"); // 19: customerName
+                "'CUSTOMER_NAME' TEXT," + // 19: customerName
+                "'UPLOAD_STATUS' TEXT," + // 20: uploadStatus
+                "'STATUS' TEXT);"); // 21: status
     }
 
     /** Drops the underlying database table. */
@@ -184,6 +188,16 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         if (customerName != null) {
             stmt.bindString(20, customerName);
         }
+ 
+        String uploadStatus = entity.getUploadStatus();
+        if (uploadStatus != null) {
+            stmt.bindString(21, uploadStatus);
+        }
+ 
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(22, status);
+        }
     }
 
     @Override
@@ -221,7 +235,9 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
             cursor.getLong(offset + 16), // cashierId
             cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // cashierName
             cursor.getLong(offset + 18), // customerId
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19) // customerName
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // customerName
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // uploadStatus
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21) // status
         );
         return entity;
     }
@@ -249,6 +265,8 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         entity.setCashierName(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
         entity.setCustomerId(cursor.getLong(offset + 18));
         entity.setCustomerName(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setUploadStatus(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setStatus(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
      }
     
     /** @inheritdoc */

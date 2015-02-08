@@ -5,16 +5,13 @@ import java.util.List;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Merchant;
-import com.android.pos.dao.MerchantDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.MerchantDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 
 public class MerchantSearchFragment extends BaseSearchFragment<Merchant> {
 
-	private MerchantDao merchantDao = DbUtil.getSession().getMerchantDao();
+	private MerchantDaoService mMerchantDaoService = new MerchantDaoService();
 
 	public void initAdapter() {
 		
@@ -40,18 +37,12 @@ public class MerchantSearchFragment extends BaseSearchFragment<Merchant> {
 	
 	public List<Merchant> getItems(String query) {
 
-		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();
-		qb.where(MerchantDao.Properties.Name.like("%" + query + "%")).orderAsc(MerchantDao.Properties.Name);
-
-		Query<Merchant> q = qb.build();
-		List<Merchant> list = q.list();
-
-		return list;
+		return mMerchantDaoService.getMerchants(query);
 	}
 
 	public void onItemDeleted(Merchant item) {
 
-		merchantDao.load(item.getId()).delete();
+		mMerchantDaoService.deleteMerchant(item);
 		
 		mItems.remove(item);
 		mAdapter.notifyDataSetChanged();

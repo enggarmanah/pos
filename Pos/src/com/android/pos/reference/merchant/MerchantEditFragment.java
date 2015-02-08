@@ -9,10 +9,10 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Merchant;
-import com.android.pos.dao.MerchantDao;
+import com.android.pos.service.MerchantDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
+import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -41,7 +41,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
     
-    private MerchantDao merchantDao = DbUtil.getSession().getMerchantDao();
+    private MerchantDaoService mMerchantDaoService = new MerchantDaoService();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -174,6 +174,16 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
+    		
+    		String userId = UserUtil.getUser().getUserId();
+    		
+    		if (mItem.getCreateBy() == null) {
+    			mItem.setCreateBy(userId);
+    			mItem.setCreateDate(new Date());
+    		}
+    		
+    		mItem.setUpdateBy(userId);
+    		mItem.setUpdateDate(new Date());
     	}
     }
     
@@ -186,7 +196,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     @Override
     protected void addItem() {
     	
-        merchantDao.insert(mItem);
+        mMerchantDaoService.addMerchant(mItem);
+        
         mNameText.getText().clear();
         mAddressText.getText().clear();
         
@@ -196,7 +207,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     @Override
     protected void updateItem() {
     	
-    	merchantDao.update(mItem);
+    	mMerchantDaoService.updateMerchant(mItem);
     }
     
     @Override
@@ -208,9 +219,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     @Override
     public Merchant updateItem(Merchant merchant) {
 
-    	merchantDao.detach(merchant);
-    	merchant = merchantDao.load(merchant.getId());
-    	merchantDao.detach(merchant);
+    	merchant = mMerchantDaoService.getMerchant(merchant.getId());
     	
     	this.mItem = merchant;
     	

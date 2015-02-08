@@ -9,6 +9,7 @@ public class Constant {
 	
 	public static String STATUS_ACTIVE = "A";
 	public static String STATUS_INACTIVE = "I";
+	public static String STATUS_DELETED = "D";
 	
 	public static String PRODUCT_TYPE_GOODS = "P"; 
 	public static String PRODUCT_TYPE_SERVICE = "S"; 
@@ -33,4 +34,22 @@ public class Constant {
 	
 	public static String TASK_GET_MERCHANT = "TASK_GET_MERCHANT";
 	public static String TASK_UPDATE_MERCHANT = "TASK_UPDATE_MERCHANT";
+	
+	public static String TASK_GET_EMPLOYEE = "TASK_GET_EMPLOYEE";
+	public static String TASK_UPDATE_EMPLOYEE = "TASK_UPDATE_EMPLOYEE";
+	
+	public static String TASK_GET_CUSTOMER = "TASK_GET_CUSTOMER";
+	public static String TASK_UPDATE_CUSTOMER = "TASK_UPDATE_CUSTOMER";
+	
+	public static String TASK_GET_PRODUCT = "TASK_GET_PRODUCT";
+	public static String TASK_UPDATE_PRODUCT = "TASK_UPDATE_PRODUCT";
+	
+	public static String TASK_GET_USER = "TASK_GET_USER";
+	public static String TASK_UPDATE_USER = "TASK_UPDATE_USER";
+	
+	public static String TASK_GET_TRANSACTIONS = "TASK_GET_TRANSACTIONS";
+	public static String TASK_UPDATE_TRANSACTIONS = "TASK_UPDATE_TRANSACTIONS";
+
+	public static String TASK_GET_TRANSACTION_ITEM = "TASK_GET_TRANSACTION_ITEM";
+	public static String TASK_UPDATE_TRANSACTION_ITEM = "TASK_UPDATE_TRANSACTION_ITEM";
 }

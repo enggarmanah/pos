@@ -390,6 +390,7 @@ public class CashierActivity extends BaseActivity
 		transItem.setProduct(product);
 		transItem.setProductId(product.getId());
 		transItem.setProductName(product.getName());
+		transItem.setProductType(product.getType());
 		
 		if (personInCharge != null) {
 			transItem.setEmployeeId(personInCharge.getId());
@@ -424,13 +425,18 @@ public class CashierActivity extends BaseActivity
 	public void onPaymentCompleted(Transactions transaction) {
 		
 		transaction.setMerchant(MerchantUtil.getMerchant());
+		transaction.setUploadStatus(Constant.STATUS_YES);
 		
 		getDaoSession().insert(transaction);
 		
 		System.out.println("Trasaction ID : " + transaction.getId());
 		
 		for (TransactionItem transactionItem : mTransactionItems) {
+			
 			transactionItem.setTransactionId(transaction.getId());
+			transactionItem.setMerchant(MerchantUtil.getMerchant());
+			transactionItem.setUploadStatus(Constant.STATUS_YES);
+			
 			getDaoSession().insert(transactionItem);
 			
 			System.out.println("Trasaction Item ID : " + transactionItem.getId());

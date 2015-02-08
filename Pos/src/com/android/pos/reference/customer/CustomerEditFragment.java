@@ -1,6 +1,7 @@
 package com.android.pos.reference.customer;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.android.pos.CodeBean;
 import com.android.pos.Constant;
@@ -8,10 +9,10 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Customer;
-import com.android.pos.dao.CustomerDao;
+import com.android.pos.service.CustomerDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
+import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     CodeSpinnerArrayAdapter emailStatusArrayAdapter;
     CodeSpinnerArrayAdapter statusArrayAdapter;
     
-    private CustomerDao customerDao = DbUtil.getSession().getCustomerDao();
+    private CustomerDaoService mCustomerDaoService = new CustomerDaoService();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -125,6 +126,16 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
+    		
+    		String userId = UserUtil.getUser().getUserId();
+    		
+    		if (mItem.getCreateBy() == null) {
+    			mItem.setCreateBy(userId);
+    			mItem.setCreateDate(new Date());
+    		}
+    		
+    		mItem.setUpdateBy(userId);
+    		mItem.setUpdateDate(new Date());
     	}
     }
     
@@ -137,7 +148,8 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     @Override
     protected void addItem() {
     	
-        customerDao.insert(mItem);
+        mCustomerDaoService.addCustomer(mItem);
+        
         mNameText.getText().clear();
         mTelephoneText.getText().clear();
         
@@ -147,7 +159,7 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     @Override
     protected void updateItem() {
     	
-    	customerDao.update(mItem);
+    	mCustomerDaoService.updateCustomer(mItem);
     }
     
     @Override
@@ -159,9 +171,7 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     @Override
     public Customer updateItem(Customer customer) {
 
-    	customerDao.detach(customer);
-    	customer = customerDao.load(customer.getId());
-    	customerDao.detach(customer);
+    	customer = mCustomerDaoService.getCustomer(customer.getId());
     	
     	this.mItem = customer;
     	

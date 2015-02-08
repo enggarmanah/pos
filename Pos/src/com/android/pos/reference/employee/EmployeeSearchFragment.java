@@ -5,16 +5,13 @@ import java.util.List;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Employee;
-import com.android.pos.dao.EmployeeDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.EmployeeDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 
 public class EmployeeSearchFragment extends BaseSearchFragment<Employee> {
 
-	private EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
+	private EmployeeDaoService mEmployeeDaoService = new EmployeeDaoService();
 
 	public void initAdapter() {
 		
@@ -40,18 +37,12 @@ public class EmployeeSearchFragment extends BaseSearchFragment<Employee> {
 	
 	public List<Employee> getItems(String query) {
 
-		QueryBuilder<Employee> qb = employeeDao.queryBuilder();
-		qb.where(EmployeeDao.Properties.Name.like("%" + query + "%")).orderAsc(EmployeeDao.Properties.Name);
-
-		Query<Employee> q = qb.build();
-		List<Employee> list = q.list();
-
-		return list;
+		return mEmployeeDaoService.getEmployees(query);
 	}
 
 	public void onItemDeleted(Employee item) {
 
-		employeeDao.load(item.getId()).delete();
+		mEmployeeDaoService.deleteEmployee(item);
 		
 		mItems.remove(item);
 		mAdapter.notifyDataSetChanged();

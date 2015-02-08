@@ -85,6 +85,27 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'DISCOUNT' ADD 'MERCHANT_ID' INTEGER");
             }
             
+            // handle version 10 changes
+            if (oldVersion < 10) {
+            	db.execSQL("ALTER TABLE 'PRODUCT_GROUP' ADD 'STATUS' TEXT");
+            }
+            
+            // handle version 11 changes
+            if (oldVersion < 11) {
+            	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'STATUS' TEXT");
+            }
+            
+            // handle version 12 changes
+            if (oldVersion < 12) {
+            	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'UPLOAD_STATUS' TEXT");
+            }
+            
+            // handle version 12 changes
+            if (oldVersion < 13) {
+            	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'MERCHANT_ID' INTEGER");
+            	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'UPLOAD_STATUS' TEXT");
+            }
+
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

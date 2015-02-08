@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(9, "com.android.pos.dao");
+        Schema schema = new Schema(13, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -69,6 +69,7 @@ public class PosDaoGenerator {
         productGroup.addToOne(merchant, merchantId);
         
         productGroup.addStringProperty("name").notNull();
+        productGroup.addStringProperty("status");
         productGroup.addStringProperty("uploadStatus");
         productGroup.addStringProperty("createBy");
         productGroup.addDateProperty("createDate");
@@ -200,6 +201,8 @@ public class PosDaoGenerator {
         transactions.addToOne(customer, customerId);
         
         transactions.addStringProperty("customerName");
+        transactions.addStringProperty("uploadStatus");
+        transactions.addStringProperty("status");
         
         ToMany cashierToTransaction = user.addToMany(transactions, cashierId);
         cashierToTransaction.orderAsc(trxDate);
@@ -211,6 +214,9 @@ public class PosDaoGenerator {
     	
         Property transactionItemId = transactionItem.addIdProperty().getProperty();
     	
+        merchantId = transactionItem.addLongProperty("merchantId").notNull().getProperty();
+        transactionItem.addToOne(merchant, merchantId);
+        
     	Property transactionId = transactionItem.addLongProperty("transactionId").notNull().getProperty();
     	transactionItem.addToOne(transactions, transactionId);
     	
@@ -227,6 +233,8 @@ public class PosDaoGenerator {
         
         ToMany transactionToItem = transactions.addToMany(transactionItem, transactionId);
         transactionToItem.orderAsc(productName);
+        
+        transactionItem.addStringProperty("uploadStatus");
         
         ToMany employeeToItem = employee.addToMany(transactionItem, transactionId);
         employeeToItem.orderAsc(transactionItemId);

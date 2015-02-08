@@ -21,12 +21,27 @@ import android.util.Log;
 import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.Installation;
+import com.android.pos.model.CustomerBean;
 import com.android.pos.model.DeviceBean;
 import com.android.pos.model.DiscountBean;
+import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.MerchantBean;
+import com.android.pos.model.ProductBean;
 import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SyncRequestBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.model.TransactionItemBean;
+import com.android.pos.model.TransactionsBean;
+import com.android.pos.model.UserBean;
+import com.android.pos.service.CustomerDaoService;
+import com.android.pos.service.DiscountDaoService;
+import com.android.pos.service.EmployeeDaoService;
+import com.android.pos.service.MerchantDaoService;
+import com.android.pos.service.ProductDaoService;
+import com.android.pos.service.ProductGroupDaoService;
+import com.android.pos.service.TransactionItemDaoService;
+import com.android.pos.service.TransactionsDaoService;
+import com.android.pos.service.UserDaoService;
 import com.android.pos.util.MerchantUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -34,32 +49,43 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 public class SyncManager {
 	
-	private Context context;
-	private DeviceBean device;
+	private Context mContext;
+	private DeviceBean mDevice;
 	
-	private SyncProductGroupDao mSyncProductGroupDao;
-	private SyncDiscountDao mSyncDiscountDao;
-	private SyncMerchantDao mSyncMerchantDao;
-	private SyncEmployeeDao mSyncEmployeeDao;
+	private ProductGroupDaoService mProductGroupDaoService;
+	private DiscountDaoService mDiscountDaoService;
+	private MerchantDaoService mMerchantDaoService;
+	private EmployeeDaoService mEmployeeDaoService;
+	private CustomerDaoService mCustomerDaoService;
+	private ProductDaoService mProductDaoService;
+	private UserDaoService mUserDaoService;
+	private TransactionsDaoService mTransactionsDaoService;
+	private TransactionItemDaoService mTransactionItemDaoService;
 	
-	private SyncListener listener;
+	private SyncListener mListener;
 	
-	private final int totalTask = 8;
+	private final int TOTAL_TASK = 20;
 	
 	public SyncManager(Context context) {
 		
-		this.context = context;
-		listener = (SyncListener) context;
+		this.mContext = context;
+		mListener = (SyncListener) context;
 		
-		mSyncProductGroupDao = new SyncProductGroupDao();
-		mSyncDiscountDao = new SyncDiscountDao();
-		mSyncMerchantDao = new SyncMerchantDao();
+		mProductGroupDaoService = new ProductGroupDaoService();
+		mDiscountDaoService = new DiscountDaoService();
+		mMerchantDaoService = new MerchantDaoService();
+		mEmployeeDaoService = new EmployeeDaoService();
+		mCustomerDaoService = new CustomerDaoService();
+		mProductDaoService = new ProductDaoService();
+		mUserDaoService = new UserDaoService();
+		mTransactionsDaoService = new TransactionsDaoService();
+		mTransactionItemDaoService = new TransactionItemDaoService();
 	}
 	
 	public void sync() {
 		
-		listener.setSyncProgress(0 * 100 / totalTask);
-		listener.setSyncMessage("Cek waktu terakhir sync up data.");
+		mListener.setSyncProgress(0 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Cek waktu terakhir sync up data.");
 		
 		new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC);
 	}
@@ -68,61 +94,157 @@ public class SyncManager {
 		
 		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT_GROUP);
 		
-		listener.setSyncProgress(1 * 100 / totalTask);
-		listener.setSyncMessage("Update data group produk dari server.");
+		mListener.setSyncProgress(1 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data group produk dari server.");
 	}
 	
 	private void updateProductGroup() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_PRODUCT_GROUP);
 		
-		listener.setSyncProgress(2 * 100 / totalTask);
-		listener.setSyncMessage("Upload data group produk ke server.");
+		mListener.setSyncProgress(2 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data group produk ke server.");
 	}
 	
 	private void getDiscount() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_GET_DISCOUNT);
 		
-		listener.setSyncProgress(3 * 100 / totalTask);
-		listener.setSyncMessage("Update data diskon dari server.");
+		mListener.setSyncProgress(3 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data diskon dari server.");
 	}
 	
 	private void updateDiscount() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_DISCOUNT);
 		
-		listener.setSyncProgress(4 * 100 / totalTask);
-		listener.setSyncMessage("Upload data diskon ke server.");
+		mListener.setSyncProgress(4 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data diskon ke server.");
 	}
 	
 	private void getMerchant() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_GET_MERCHANT);
 		
-		listener.setSyncProgress(5 * 100 / totalTask);
-		listener.setSyncMessage("Update data merchant dari server.");
+		mListener.setSyncProgress(5 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data merchant dari server.");
 	}
 	
 	private void updateMerchant() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_MERCHANT);
 		
-		listener.setSyncProgress(6 * 100 / totalTask);
-		listener.setSyncMessage("Upload data merchant ke server.");
+		mListener.setSyncProgress(6 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data merchant ke server.");
+	}
+	
+	private void getEmployee() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_EMPLOYEE);
+		
+		mListener.setSyncProgress(7 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data pegawai dari server.");
+	}
+	
+	private void updateEmployee() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_EMPLOYEE);
+		
+		mListener.setSyncProgress(8 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data pegawai ke server.");
+	}
+	
+	private void getCustomer() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_CUSTOMER);
+		
+		mListener.setSyncProgress(9 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data pelanggan dari server.");
+	}
+	
+	private void updateCustomer() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_CUSTOMER);
+		
+		mListener.setSyncProgress(10 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data pelanggan ke server.");
+	}
+	
+	private void getProduct() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT);
+		
+		mListener.setSyncProgress(11 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data produk dari server.");
+	}
+	
+	private void updateProduct() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_PRODUCT);
+		
+		mListener.setSyncProgress(12 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data produk ke server.");
+	}
+	
+	private void getUser() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_USER);
+		
+		mListener.setSyncProgress(13 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data user dari server.");
+	}
+	
+	private void updateUser() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_USER);
+		
+		mListener.setSyncProgress(14 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data user ke server.");
+	}
+	
+	private void getTransactions() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_TRANSACTIONS);
+		
+		mListener.setSyncProgress(15 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data transaksi dari server.");
+	}
+	
+	private void updateTransactions() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_TRANSACTIONS);
+		
+		mListener.setSyncProgress(16 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data transaksi ke server.");
+	}
+	
+	private void getTransactionItem() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_TRANSACTION_ITEM);
+		
+		mListener.setSyncProgress(17 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update data item transaksi dari server.");
+	}
+	
+	private void updateTransactionItem() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_TRANSACTION_ITEM);
+		
+		mListener.setSyncProgress(18 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Upload data item transaksi ke server.");
 	}
 	
 	private void updateLastSync() {
 		
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_LAST_SYNC);
 		
-		listener.setSyncProgress(7 * 100 / totalTask);
-		listener.setSyncMessage("Update waktu terakhir sync up data ke server.");
+		mListener.setSyncProgress(19 * 100 / TOTAL_TASK);
+		mListener.setSyncMessage("Update waktu terakhir sync up data ke server.");
 	}
 	
 	private void syncCompleted() {
 		
-		listener.setSyncProgress(100);
+		mListener.setSyncProgress(100);
 	}
 	
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
@@ -134,6 +256,7 @@ public class SyncManager {
 			
 			task = tasks[0];
 			
+			Long merchantId = MerchantUtil.getMerchant().getId();
 			String url = Constant.EMPTY_STRING;
 			Object obj = null;
 			
@@ -143,7 +266,7 @@ public class SyncManager {
 				
 				DeviceBean bean = new DeviceBean();
 				bean.setMerchant_id(MerchantUtil.getMerchant().getId());
-				bean.setUuid(Installation.getInstallationId(context));
+				bean.setUuid(Installation.getInstallationId(mContext));
 				obj = bean;
 			
 			} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(tasks[0])) {
@@ -151,42 +274,152 @@ public class SyncManager {
 				url = Config.SERVER_URL + "/productGroupGetJsonServlet";
 				
 				SyncRequestBean request = new SyncRequestBean();
-				request.setLastSyncDate(device.getLast_sync_date());
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
 				obj = request;
 				
 			} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(tasks[0])) {
 				
 				url = Config.SERVER_URL + "/productGroupUpdateJsonServlet";
 				
-				obj = mSyncProductGroupDao.getProductGroupsForUpload();
+				obj = mProductGroupDaoService.getProductGroupsForUpload();
 			
 			} else if (Constant.TASK_GET_DISCOUNT.equals(tasks[0])) {
 				
 				url = Config.SERVER_URL + "/discountGetJsonServlet";
 				
 				SyncRequestBean request = new SyncRequestBean();
-				request.setLastSyncDate(device.getLast_sync_date());
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
 				obj = request;
 				
 			} else if (Constant.TASK_UPDATE_DISCOUNT.equals(tasks[0])) {
 				
 				url = Config.SERVER_URL + "/discountUpdateJsonServlet";
 				
-				obj = mSyncDiscountDao.getDiscountsForUpload();
+				obj = mDiscountDaoService.getDiscountsForUpload();
 			
 			} else if (Constant.TASK_GET_MERCHANT.equals(tasks[0])) {
 				
 				url = Config.SERVER_URL + "/merchantGetJsonServlet";
 				
 				SyncRequestBean request = new SyncRequestBean();
-				request.setLastSyncDate(device.getLast_sync_date());
+				
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
 				obj = request;
 				
 			} else if (Constant.TASK_UPDATE_MERCHANT.equals(tasks[0])) {
 				
 				url = Config.SERVER_URL + "/merchantUpdateJsonServlet";
 				
-				obj = mSyncMerchantDao.getMerchantsForUpload();
+				obj = mMerchantDaoService.getMerchantsForUpload();
+			
+			} else if (Constant.TASK_GET_EMPLOYEE.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/employeeGetJsonServlet";
+				
+				SyncRequestBean request = new SyncRequestBean();
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
+				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_EMPLOYEE.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/employeeUpdateJsonServlet";
+				
+				obj = mEmployeeDaoService.getEmployeesForUpload();
+			
+			} else if (Constant.TASK_GET_CUSTOMER.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/customerGetJsonServlet";
+				
+				SyncRequestBean request = new SyncRequestBean();
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
+				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_CUSTOMER.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/customerUpdateJsonServlet";
+				
+				obj = mCustomerDaoService.getCustomersForUpload();
+			
+			} else if (Constant.TASK_GET_PRODUCT.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/productGetJsonServlet";
+				
+				SyncRequestBean request = new SyncRequestBean();
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
+				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_PRODUCT.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/productUpdateJsonServlet";
+				
+				obj = mProductDaoService.getProductsForUpload();
+			
+			} else if (Constant.TASK_GET_USER.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/userGetJsonServlet";
+				
+				SyncRequestBean request = new SyncRequestBean();
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
+				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_USER.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/userUpdateJsonServlet";
+				
+				obj = mUserDaoService.getUsersForUpload();
+			
+			} else if (Constant.TASK_GET_TRANSACTIONS.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/transactionsGetJsonServlet";
+				
+				SyncRequestBean request = new SyncRequestBean();
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
+				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_TRANSACTIONS.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/transactionsUpdateJsonServlet";
+				
+				obj = mTransactionsDaoService.getTransactionsForUpload();
+			
+			} else if (Constant.TASK_GET_TRANSACTION_ITEM.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/transactionItemGetJsonServlet";
+				
+				SyncRequestBean request = new SyncRequestBean();
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
+				obj = request;
+				
+			} else if (Constant.TASK_UPDATE_TRANSACTION_ITEM.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/transactionItemUpdateJsonServlet";
+				
+				obj = mTransactionItemDaoService.getTransactionItemsForUpload();
 			
 			} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(tasks[0])) {
 				
@@ -194,7 +427,7 @@ public class SyncManager {
 				
 				DeviceBean bean = new DeviceBean();
 				bean.setMerchant_id(MerchantUtil.getMerchant().getId());
-				bean.setUuid(Installation.getInstallationId(context));
+				bean.setUuid(Installation.getInstallationId(mContext));
 				obj = bean;
 			}
 			
@@ -210,7 +443,7 @@ public class SyncManager {
 				
 				if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
 					
-					device = mapper.readValue(result, DeviceBean.class);
+					mDevice = mapper.readValue(result, DeviceBean.class);
 					getProductGroup();
 				
 				} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(task)) {
@@ -219,7 +452,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							ProductGroupBean.class));
 					
-					mSyncProductGroupDao.updateProductGroups(productGroups);
+					mProductGroupDaoService.updateProductGroups(productGroups);
 					updateProductGroup();
 				
 				} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(task)) {
@@ -228,7 +461,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							SyncStatusBean.class));
 					
-					mSyncProductGroupDao.updateProductGroupStatus(syncStatusBeans);
+					mProductGroupDaoService.updateProductGroupStatus(syncStatusBeans);
 					getDiscount();
 				
 				} else if (Constant.TASK_GET_DISCOUNT.equals(task)) {
@@ -237,7 +470,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							DiscountBean.class));
 					
-					mSyncDiscountDao.updateDiscounts(discounts);
+					mDiscountDaoService.updateDiscounts(discounts);
 					updateDiscount();
 				
 				} else if (Constant.TASK_UPDATE_DISCOUNT.equals(task)) {
@@ -246,7 +479,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							SyncStatusBean.class));
 					
-					mSyncDiscountDao.updateDiscountStatus(syncStatusBeans);
+					mDiscountDaoService.updateDiscountStatus(syncStatusBeans);
 					getMerchant();
 				
 				} else if (Constant.TASK_GET_MERCHANT.equals(task)) {
@@ -255,7 +488,7 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							MerchantBean.class));
 					
-					mSyncMerchantDao.updateMerchants(merchants);
+					mMerchantDaoService.updateMerchants(merchants);
 					updateMerchant();
 				
 				} else if (Constant.TASK_UPDATE_MERCHANT.equals(task)) {
@@ -264,13 +497,120 @@ public class SyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class,  
 							SyncStatusBean.class));
 					
-					mSyncMerchantDao.updateMerchantStatus(syncStatusBeans);
+					mMerchantDaoService.updateMerchantStatus(syncStatusBeans);
+					getEmployee();
+				
+				} else if (Constant.TASK_GET_EMPLOYEE.equals(task)) {
+					
+					List<EmployeeBean> employees = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							EmployeeBean.class));
+					
+					mEmployeeDaoService.updateEmployees(employees);
+					updateEmployee();
+				
+				} else if (Constant.TASK_UPDATE_EMPLOYEE.equals(task)) {
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					mEmployeeDaoService.updateEmployeeStatus(syncStatusBeans);
+					getCustomer();
+				
+				} else if (Constant.TASK_GET_CUSTOMER.equals(task)) {
+					
+					List<CustomerBean> customers = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							CustomerBean.class));
+					
+					mCustomerDaoService.updateCustomers(customers);
+					updateCustomer();
+				
+				} else if (Constant.TASK_UPDATE_CUSTOMER.equals(task)) {
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					mCustomerDaoService.updateCustomerStatus(syncStatusBeans);
+					getProduct();
+				
+				} else if (Constant.TASK_GET_PRODUCT.equals(task)) {
+					
+					List<ProductBean> products = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							ProductBean.class));
+					
+					mProductDaoService.updateProducts(products);
+					updateProduct();
+				
+				} else if (Constant.TASK_UPDATE_PRODUCT.equals(task)) {
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					mProductDaoService.updateProductStatus(syncStatusBeans);
+					getUser();
+				
+				} else if (Constant.TASK_GET_USER.equals(task)) {
+					
+					List<UserBean> users = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							UserBean.class));
+					
+					mUserDaoService.updateUsers(users);
+					updateUser();
+				
+				} else if (Constant.TASK_UPDATE_USER.equals(task)) {
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					mUserDaoService.updateUserStatus(syncStatusBeans);
+					getTransactions();
+				
+				} else if (Constant.TASK_GET_TRANSACTIONS.equals(task)) {
+					
+					List<TransactionsBean> transactions = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							TransactionsBean.class));
+					
+					mTransactionsDaoService.updateTransactions(transactions);
+					updateTransactions();
+				
+				} else if (Constant.TASK_UPDATE_TRANSACTIONS.equals(task)) {
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					mTransactionsDaoService.updateTransactionsStatus(syncStatusBeans);
+					getTransactionItem();
+				
+				} else if (Constant.TASK_GET_TRANSACTION_ITEM.equals(task)) {
+					
+					List<TransactionItemBean> transactionItems = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							TransactionItemBean.class));
+					
+					mTransactionItemDaoService.updateTransactionItems(transactionItems);
+					updateTransactionItem();
+				
+				} else if (Constant.TASK_UPDATE_TRANSACTION_ITEM.equals(task)) {
+					
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class,  
+							SyncStatusBean.class));
+					
+					mTransactionItemDaoService.updateTransactionItemStatus(syncStatusBeans);
 					updateLastSync();
 				
 				} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(task)) {
 					
-					device = mapper.readValue(result, DeviceBean.class);
-					
+					mDevice = mapper.readValue(result, DeviceBean.class);
 					syncCompleted();
 				}
 				

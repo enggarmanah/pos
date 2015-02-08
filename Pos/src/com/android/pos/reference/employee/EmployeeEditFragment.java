@@ -1,6 +1,7 @@
 package com.android.pos.reference.employee;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.android.pos.CodeBean;
 import com.android.pos.Constant;
@@ -8,10 +9,10 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Employee;
-import com.android.pos.dao.EmployeeDao;
+import com.android.pos.service.EmployeeDaoService;
 import com.android.pos.util.CodeUtil;
-import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
+import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
     
-    private EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
+    private EmployeeDaoService mEmployeeDaoService = new EmployeeDaoService();
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -100,14 +101,25 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     	
     	if (mItem != null) {
     		
-    		mItem.setMerchantId(CommonUtil.getMerchantId());
+    		Long merchantId = MerchantUtil.getMerchant().getId();
     		
+    		mItem.setMerchantId(merchantId);
     		mItem.setName(name);
     		mItem.setTelephone(telephone);
     		mItem.setAddress(address);
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
+    		
+    		String userId = UserUtil.getUser().getUserId();
+    		
+    		if (mItem.getCreateBy() == null) {
+    			mItem.setCreateBy(userId);
+    			mItem.setCreateDate(new Date());
+    		}
+    		
+    		mItem.setUpdateBy(userId);
+    		mItem.setUpdateDate(new Date());
     	}
     }
     
@@ -120,7 +132,8 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     @Override
     protected void addItem() {
     	
-        employeeDao.insert(mItem);
+    	mEmployeeDaoService.addEmployee(mItem);
+    	
         mNameText.getText().clear();
         mTelephoneText.getText().clear();
         
@@ -130,7 +143,7 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     @Override
     protected void updateItem() {
     	
-    	employeeDao.update(mItem);
+    	mEmployeeDaoService.updateEmployee(mItem);
     }
     
     @Override
@@ -142,9 +155,7 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     @Override
     public Employee updateItem(Employee employee) {
 
-    	employeeDao.detach(employee);
-    	employee = employeeDao.load(employee.getId());
-    	employeeDao.detach(employee);
+    	employee = mEmployeeDaoService.getEmployee(employee.getId());
     	
     	this.mItem = employee;
     	

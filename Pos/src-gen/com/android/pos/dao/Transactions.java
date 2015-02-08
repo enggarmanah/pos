@@ -35,6 +35,8 @@ public class Transactions implements Serializable {
     private String cashierName;
     private long customerId;
     private String customerName;
+    private String uploadStatus;
+    private String status;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -60,7 +62,7 @@ public class Transactions implements Serializable {
         this.id = id;
     }
 
-    public Transactions(Long id, long merchantId, String transactionNo, java.util.Date transactionDate, Integer billAmount, String discountName, Integer discountPercentage, Integer discountAmount, Integer taxPercentage, Integer taxAmount, Integer serviceChargePercentage, Integer serviceChargeAmount, Integer totalAmount, Integer paymentAmount, Integer returnAmount, String paymentType, long cashierId, String cashierName, long customerId, String customerName) {
+    public Transactions(Long id, long merchantId, String transactionNo, java.util.Date transactionDate, Integer billAmount, String discountName, Integer discountPercentage, Integer discountAmount, Integer taxPercentage, Integer taxAmount, Integer serviceChargePercentage, Integer serviceChargeAmount, Integer totalAmount, Integer paymentAmount, Integer returnAmount, String paymentType, long cashierId, String cashierName, long customerId, String customerName, String uploadStatus, String status) {
         this.id = id;
         this.merchantId = merchantId;
         this.transactionNo = transactionNo;
@@ -81,6 +83,8 @@ public class Transactions implements Serializable {
         this.cashierName = cashierName;
         this.customerId = customerId;
         this.customerName = customerName;
+        this.uploadStatus = uploadStatus;
+        this.status = status;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -249,6 +253,22 @@ public class Transactions implements Serializable {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /** To-one relationship, resolved on first access. */
