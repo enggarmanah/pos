@@ -12,12 +12,11 @@ import java.util.zip.GZIPOutputStream;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Base64;
 import android.util.Log;
 
 import com.android.pos.Config;
@@ -623,13 +622,11 @@ public class SyncManager {
 			ow.writeValue(out, object);
 			json = out.toString();
 			
-			json = compressString(json);
+			byte[] bytes = compressString(json);
+			
+			ByteArrayEntity be = new ByteArrayEntity(bytes);
 
-			result = json;
-
-			StringEntity se = new StringEntity(json);
-
-			httpPost.setEntity(se);
+			httpPost.setEntity(be);
 
 			httpPost.setHeader("Accept", "application/json");
 			httpPost.setHeader("Content-type", "application/json");
@@ -637,7 +634,7 @@ public class SyncManager {
 			HttpResponse httpResponse = httpclient.execute(httpPost);
 
 			inputStream = httpResponse.getEntity().getContent();
-
+			
 			if (inputStream != null)
 				result = convertInputStreamToString(inputStream);
 			else
@@ -666,16 +663,18 @@ public class SyncManager {
 		return result.toString();
 	}
 
-	public static String compressString(String srcTxt) throws IOException {
+	public static byte[] compressString(String inputStr) throws IOException {
 
 		ByteArrayOutputStream rstBao = new ByteArrayOutputStream();
 		GZIPOutputStream zos = new GZIPOutputStream(rstBao);
 		
-		zos.write(srcTxt.getBytes());
+		byte[] input = inputStr.getBytes();
+		
+		zos.write(input);
 		zos.close();
 
-		byte[] bytes = rstBao.toByteArray();
+		byte[] output = rstBao.toByteArray();
 		
-		return Base64.encodeToString(bytes, Base64.DEFAULT);
+		return output;
 	}
 }
