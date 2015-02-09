@@ -1,10 +1,10 @@
 package com.app.posweb.server.servlet;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,32 +27,22 @@ public abstract class BaseJsonServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		BufferedInputStream bis = new BufferedInputStream(request.getInputStream());
-		
-		StringBuffer sb = new StringBuffer();
-		
-		int size = -1;
-		byte[] bytes = new byte[1024];
-		
-		while ((size = bis.read(bytes)) != -1) {
-			
-			byte[] input = Arrays.copyOf(bytes, size);
-			sb.append(uncompressString(input));
-		}
-		
-		Object output = processJsonRequest(sb.toString());
+		Object output = processJsonRequest(uncompress(request.getInputStream()));
 
 		response.setContentType("application/json");
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		mapper.writeValue(response.getOutputStream(), output);
+		byte[] bytes = mapper.writeValueAsBytes(output);
+		bytes = compress(bytes);
+		
+		response.getOutputStream().write(bytes);
 	}
 
 	protected abstract Object processJsonRequest(String jsonStr)
 			throws IOException;
 
-	public static String uncompressString(byte[] bytes)
+	public static String uncompress(InputStream inputStream)
 			throws IOException {
 		
 		String result = null;
@@ -61,8 +51,11 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		
 		try {
 			
-			zi = new GZIPInputStream(new ByteArrayInputStream(bytes));
+			zi = new GZIPInputStream(inputStream);
 			result = IOUtils.toString(zi);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
 			
 		} finally {
 			if (zi != null) {
@@ -71,5 +64,18 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		}
 		
 		return result;
+	}
+	
+	public static byte[] compress(byte[] bytes) throws IOException {
+
+		ByteArrayOutputStream rstBao = new ByteArrayOutputStream();
+		GZIPOutputStream zos = new GZIPOutputStream(rstBao);
+		
+		zos.write(bytes);
+		zos.close();
+
+		byte[] output = rstBao.toByteArray();
+		
+		return output;
 	}
 }

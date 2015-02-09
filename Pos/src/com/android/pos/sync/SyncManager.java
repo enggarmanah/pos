@@ -1,14 +1,14 @@
 package com.android.pos.sync;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -615,14 +615,13 @@ public class SyncManager {
 			HttpPost httpPost = new HttpPost(url);
 
 			final OutputStream out = new ByteArrayOutputStream();
-			final ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+			final ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-			String json = "";
-
-			ow.writeValue(out, object);
-			json = out.toString();
+			writer.writeValue(out, object);
 			
-			byte[] bytes = compressString(json);
+			String json = out.toString();
+			
+			byte[] bytes = compress(json.getBytes());
 			
 			ByteArrayEntity be = new ByteArrayEntity(bytes);
 
@@ -636,7 +635,7 @@ public class SyncManager {
 			inputStream = httpResponse.getEntity().getContent();
 			
 			if (inputStream != null)
-				result = convertInputStreamToString(inputStream);
+				result = uncompress(inputStream);
 			else
 				result = "Did not work!";
 
@@ -648,33 +647,40 @@ public class SyncManager {
 		return result;
 	}
 
-	private static String convertInputStreamToString(InputStream inputStream) throws IOException {
-
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-		String line = "";
-		StringBuffer result = new StringBuffer();
-
-		while ((line = bufferedReader.readLine()) != null) {
-			result.append(line);
-		}
-
-		inputStream.close();
-		return result.toString();
-	}
-
-	public static byte[] compressString(String inputStr) throws IOException {
+	public static byte[] compress(byte[] bytes) throws IOException {
 
 		ByteArrayOutputStream rstBao = new ByteArrayOutputStream();
 		GZIPOutputStream zos = new GZIPOutputStream(rstBao);
 		
-		byte[] input = inputStr.getBytes();
-		
-		zos.write(input);
+		zos.write(bytes);
 		zos.close();
 
 		byte[] output = rstBao.toByteArray();
 		
 		return output;
+	}
+	
+	public static String uncompress(InputStream inputStream)
+			throws IOException {
+		
+		String result = null;
+		
+		GZIPInputStream zi = null;
+		
+		try {
+			
+			zi = new GZIPInputStream(inputStream);
+			result = IOUtils.toString(zi);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			if (zi != null) {
+				zi.close();
+			}
+		}
+		
+		return result;
 	}
 }
