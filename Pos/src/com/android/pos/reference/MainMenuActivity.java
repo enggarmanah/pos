@@ -117,6 +117,7 @@ public class MainMenuActivity extends BaseActivity implements SyncListener {
 		startActivity(intent);
 	}
 	
+	@Override
 	public void setSyncProgress(int progress) {
 		
 		if (mProgressDialog != null) {
@@ -136,6 +137,7 @@ public class MainMenuActivity extends BaseActivity implements SyncListener {
 		}
 	}
 	
+	@Override
 	public void setSyncMessage(String message) {
 		
 		if (mProgressDialog != null) {

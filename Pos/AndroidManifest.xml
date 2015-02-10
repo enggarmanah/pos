@@ -33,13 +33,18 @@
         android:label="@string/app_name"
         android:theme="@style/app_theme" >
         <activity
-            android:name="com.android.pos.cashier.CashierActivity"
-            android:label="@string/menu_cashier"
+            android:name="com.android.pos.auth.MerchantLoginActivity"
+            android:label="@string/app_name"
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.pos.cashier.CashierActivity"
+            android:label="@string/menu_cashier"
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.cashier.CashierPaymentDeviceListActivity"

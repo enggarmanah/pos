@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">POS Waroeng 1.0</string>
+    <string name="app_name">Sistem Informasi TokoKu</string>
     
     <string-array name="app_menus">
         <item>Kasir</item>
@@ -27,6 +27,11 @@
         <item>Manajemen Data</item>
         <item>Keluar</item>
     </string-array>
+    
+    <string name="login">SI TokoKu Login :</string>
+    
+    <string name="merchant_id">ID Merchant</string>
+    <string name="password">Password</string>
     
     <string name="menu_cashier">Kasir</string>
     <string name="menu_transaction">Rekap Transaksi</string>
