@@ -26,6 +26,8 @@ public interface CashierActionListener {
 	
 	public void onSelectDiscount();
 	
+	public void onSelectDiscountAmount();
+	
 	public void onDiscountSelected(Discount discount);
 	
 	public void onSelectCustomer();

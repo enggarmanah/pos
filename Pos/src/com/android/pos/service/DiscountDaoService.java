@@ -41,6 +41,17 @@ public class DiscountDaoService {
 		return discountDao.load(id);
 	}
 	
+	public List<Discount> getDiscounts() {
+
+		QueryBuilder<Discount> qb = discountDao.queryBuilder();
+		qb.where(DiscountDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(DiscountDao.Properties.Percentage);
+
+		Query<Discount> q = qb.build();
+		List<Discount> list = q.list();
+
+		return list;
+	}
+	
 	public List<Discount> getDiscounts(String query) {
 
 		QueryBuilder<Discount> qb = discountDao.queryBuilder();

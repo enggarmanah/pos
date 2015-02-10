@@ -1,16 +1,11 @@
 package com.android.pos.cashier;
 
-import java.util.List;
-
-import com.android.pos.Constant;
 import com.android.pos.R;
-import com.android.pos.dao.Employee;
-import com.android.pos.dao.EmployeeDao;
-import com.android.pos.dao.Product;
-import com.android.pos.util.DbUtil;
+import com.android.pos.common.AlertDlgFragment;
+import com.android.pos.dao.Discount;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.NotificationUtil;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -20,14 +15,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-public class CashierProductCountDlgFragment extends DialogFragment {
+public class CashierDiscountAmountDlgFragment extends DialogFragment {
 	
-	TextView mProductText;
-	Spinner mPersonInChargeSp;
-	TextView mQuantityText;
+	TextView mDiscountText;
+	TextView mAmountText;
 	
 	LinearLayout mNumberBtnPanel;
 	
@@ -48,17 +41,13 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	Button mOkBtn;
 	Button mCancelBtn;
 	
-	Product mProduct;
-	int mQuantity;
+	Discount mDiscount;
+	int mAmount;
 	
 	CashierActionListener mActionListener;
 	
-	CashierProductCountPicSpinnerArrayAdapter mPicArrayAdapter;
-	
-	private static String PRODUCT = "PRODUCT";
-	private static String QUANTITY = "QUANTITY";
-	
-	private EmployeeDao mEmployeeDao = DbUtil.getSession().getEmployeeDao();
+	private static String DISCOUNT = "DISCOUNT";
+	private static String AMOUNT = "AMOUNT";
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,8 +57,8 @@ public class CashierProductCountDlgFragment extends DialogFragment {
         
         if (savedInstanceState != null) {
         	
-        	mProduct = (Product) savedInstanceState.get(PRODUCT);
-        	mQuantity = (Integer) savedInstanceState.get(QUANTITY);
+        	mDiscount = (Discount) savedInstanceState.get(DISCOUNT);
+        	mAmount = (Integer) savedInstanceState.get(AMOUNT);
         }
         
         setCancelable(false);
@@ -78,16 +67,16 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		
-		mQuantity = Integer.valueOf(mQuantityText.getText().toString());
+		mAmount = Integer.valueOf(mAmountText.getText().toString());
 		
-		outState.putSerializable(PRODUCT, mProduct);
-		outState.putSerializable(QUANTITY, mQuantity);
+		outState.putSerializable(DISCOUNT, mDiscount);
+		outState.putSerializable(AMOUNT, mAmount);
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.cashier_product_count_fragment, container, false);
+		View view = inflater.inflate(R.layout.cashier_discount_amount_fragment, container, false);
 
 		return view;
 	}
@@ -97,9 +86,8 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		
 		super.onStart();
 		
-		mProductText = (TextView) getView().findViewById(R.id.productText);
-		mPersonInChargeSp = (Spinner) getView().findViewById(R.id.personInChargeSp);
-		mQuantityText = (TextView) getView().findViewById(R.id.countText);
+		mDiscountText = (TextView) getView().findViewById(R.id.discountText);
+		mAmountText = (TextView) getView().findViewById(R.id.amountText);
 		
 		mNumberBtnPanel = (LinearLayout) getView().findViewById(R.id.numberBtnPanel);
 		
@@ -137,10 +125,6 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		mOkBtn.setOnClickListener(getOkBtnOnClickListener());
 		mCancelBtn.setOnClickListener(getCancelBtnOnClickListener());
 		
-		mPicArrayAdapter = new CashierProductCountPicSpinnerArrayAdapter(mPersonInChargeSp, getActivity(), getPersonInCharge());
-
-		mPersonInChargeSp.setAdapter(mPicArrayAdapter);
-		
 		refreshDisplay();
 	}
 	
@@ -162,34 +146,10 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			return;
 		}
 		
-		if (Constant.PRODUCT_TYPE_SERVICE.equals(mProduct.getType())) {
-			
-			mQuantity = 1;
-			
-			mPersonInChargeSp.setVisibility(View.VISIBLE);
-			mNumberBtnPanel.setVisibility(View.GONE);
-		
-		} else {
-			
-			mPersonInChargeSp.setVisibility(View.GONE);
-			mNumberBtnPanel.setVisibility(View.VISIBLE);
-		}
-		
-		mProductText.setText(mProduct.getName());
-		mQuantityText.setText(String.valueOf(mQuantity));
+		mDiscountText.setText(mDiscount.getName());
+		mAmountText.setText(CommonUtil.formatCurrencyUnsigned(mAmount));
 	}
-	
-	private Employee[] getPersonInCharge() {
-
-		QueryBuilder<Employee> qb = mEmployeeDao.queryBuilder();
-		qb.orderAsc(EmployeeDao.Properties.Name);
-
-		Query<Employee> q = qb.build();
-		List<Employee> list = q.list();
 		
-		return list.toArray(new Employee[list.size()]);
-	}
-	
 	private View.OnClickListener getNumberBtnOnClickListener(final String numberText) {
 		
 		return new View.OnClickListener() {
@@ -197,12 +157,14 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				String number = mQuantityText.getText().toString();
+				int payment = CommonUtil.parseCurrency(mAmountText.getText().toString());
+				String number = String.valueOf(payment);
 				
 				if (number.equals("0")) {
-					mQuantityText.setText(numberText);
+					mAmountText.setText(numberText);
 				} else {
-					mQuantityText.setText(number + numberText);
+					number = CommonUtil.formatCurrencyUnsigned(number + numberText);
+					mAmountText.setText(number);
 				}
 			}
 		};
@@ -215,7 +177,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mQuantityText.setText("0");
+				mAmountText.setText("0");
 			}
 		};
 	}
@@ -227,12 +189,14 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				String number = mQuantityText.getText().toString(); 
+				int payment = CommonUtil.parseCurrency(mAmountText.getText().toString());
+				String number = String.valueOf(payment);
 				
 				if (number.length() == 1) {
-					mQuantityText.setText("0");
+					mAmountText.setText("0");
 				} else {
-					mQuantityText.setText(number.substring(0, number.length()-1));
+					number = CommonUtil.formatCurrencyUnsigned(number.substring(0, number.length()-1));
+					mAmountText.setText(number);
 				}
 			}
 		};
@@ -244,15 +208,21 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			
 			@Override
 			public void onClick(View v) {
+
+				mAmount = CommonUtil.parseCurrency(mAmountText.getText().toString());
 				
-				Employee personInCharge = null;
-				
-				if (Constant.STATUS_YES.equals(mProduct.getPicRequired())) {
-					personInCharge = (Employee) mPersonInChargeSp.getSelectedItem();
+				if (mAmount == 0) {
+					
+					AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
+	    			alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
+	    			alertDialogFragment.setAlertMessage("Nominal diskon tidak boleh kosong.");
+	    			
+	    			return;
 				}
+	    			
+				mDiscount.setAmount(mAmount);
 				
-				mQuantity = Integer.valueOf(mQuantityText.getText().toString());
-				mActionListener.onProductQuantitySelected(mProduct, personInCharge, mQuantity);
+				mActionListener.onDiscountSelected(mDiscount);
 				dismiss();
 			}
 		};
@@ -270,10 +240,9 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		};
 	}
 	
-	public void setProduct(Product product, int quantity) {
+	public void setDiscount(Discount discount) {
 		
-		this.mProduct = product;
-		this.mQuantity = quantity;
+		this.mDiscount = discount;
 		
 		refreshDisplay();
 	}

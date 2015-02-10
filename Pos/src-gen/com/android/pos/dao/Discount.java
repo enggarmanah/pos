@@ -18,6 +18,7 @@ public class Discount implements Serializable {
     /** Not-null value. */
     private String name;
     private Integer percentage;
+    private Integer amount;
     private String status;
     private String uploadStatus;
     private String createBy;
@@ -42,11 +43,12 @@ public class Discount implements Serializable {
         this.id = id;
     }
 
-    public Discount(Long id, long merchantId, String name, Integer percentage, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Discount(Long id, long merchantId, String name, Integer percentage, Integer amount, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.name = name;
         this.percentage = percentage;
+        this.amount = amount;
         this.status = status;
         this.uploadStatus = uploadStatus;
         this.createBy = createBy;
@@ -93,6 +95,14 @@ public class Discount implements Serializable {
 
     public void setPercentage(Integer percentage) {
         this.percentage = percentage;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public String getStatus() {

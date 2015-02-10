@@ -4,11 +4,8 @@ import java.util.List;
 
 import com.android.pos.R;
 import com.android.pos.dao.Discount;
-import com.android.pos.dao.DiscountDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.DiscountDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -28,7 +25,7 @@ public class CashierDiscountDlgFragment extends DialogFragment implements Cashie
 	
 	CashierDiscountArrayAdapter discountArrayAdapter;
 	
-	private DiscountDao mDiscountDao = DbUtil.getSession().getDiscountDao();
+	private DiscountDaoService mDiscountDaoService = new DiscountDaoService();
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,21 +76,15 @@ public class CashierDiscountDlgFragment extends DialogFragment implements Cashie
 		super.onSaveInstanceState(outState);
 	}
 	
+	@Override
 	public void onDiscountSelected(Discount discount) {
 		
 		mActionListener.onDiscountSelected(discount);
-		dismiss();
 	}
 	
 	private List<Discount> getDiscounts() {
 
-		QueryBuilder<Discount> qb = mDiscountDao.queryBuilder();
-		qb.orderAsc(DiscountDao.Properties.Name);
-
-		Query<Discount> q = qb.build();
-		List<Discount> list = q.list();
-		
-		return list;
+		return mDiscountDaoService.getDiscounts();
 	}
 	
 	private View.OnClickListener getNoDiscountTextOnClickListener() {

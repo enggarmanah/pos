@@ -100,12 +100,17 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'UPLOAD_STATUS' TEXT");
             }
             
-            // handle version 12 changes
+            // handle version 13 changes
             if (oldVersion < 13) {
             	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'MERCHANT_ID' INTEGER");
             	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'UPLOAD_STATUS' TEXT");
             }
-
+            
+            // handle version 14 changes
+            if (oldVersion < 14) {
+            	db.execSQL("ALTER TABLE 'DISCOUNT' ADD 'AMOUNT' INTEGER");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

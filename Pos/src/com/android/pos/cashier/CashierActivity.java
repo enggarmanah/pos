@@ -47,6 +47,7 @@ public class CashierActivity extends BaseActivity
 	private CashierPaymentDlgFragment mPaymentDlgFragment;
 	private CashierPaymentSummaryDlgFragment mPaymentSummaryDlgFragment;
 	private CashierDiscountDlgFragment mDiscountDlgFragment;
+	private CashierDiscountAmountDlgFragment mDiscountAmountDlgFragment;
 	private CashierCustomerDlgFragment mCustomerDlgFragment;
 	
 	boolean mIsMultiplesPane = false;
@@ -69,6 +70,7 @@ public class CashierActivity extends BaseActivity
 	private String mPaymentDlgFragmentTag = "paymentDlgFragmentTag";
 	private String mPaymentSummaryDlgFragmentTag = "paymentSummaryDlgFragmentTag";
 	private String mDiscountDlgFragmentTag = "discountDlgFragmentTag";
+	private String mDiscountAmountDlgFragmentTag = "discountAmountDlgFragmentTag";
 	private String mCustomerDlgFragmentTag = "customerDlgFragmentTag";
 
 	private String prevQuery = Constant.EMPTY_STRING;
@@ -173,6 +175,10 @@ public class CashierActivity extends BaseActivity
 		
 		if (mDiscountDlgFragment == null) {
 			mDiscountDlgFragment = new CashierDiscountDlgFragment();
+		}
+		
+		if (mDiscountAmountDlgFragment == null) {
+			mDiscountAmountDlgFragment = new CashierDiscountAmountDlgFragment();
 		}
 		
 		if (mCustomerDlgFragment == null) {
@@ -491,10 +497,28 @@ public class CashierActivity extends BaseActivity
 	}
 	
 	@Override
+	public void onSelectDiscountAmount() {
+		
+		mDiscountAmountDlgFragment.setDiscount(mDiscount);
+		mDiscountAmountDlgFragment.show(getFragmentManager(), mDiscountAmountDlgFragmentTag);
+	}
+	
+	@Override
 	public void onDiscountSelected(Discount discount) {
 		
 		mDiscount = discount;
-		mOrderFragment.setDiscount(discount);
+		
+		if (mDiscount != null && 
+			mDiscount.getPercentage() == 0 &&
+			mDiscount.getAmount() == 0) {
+			
+			onSelectDiscountAmount();
+		
+		} else {
+			
+			mOrderFragment.setDiscount(discount);
+			mDiscountDlgFragment.dismiss();
+		}
 	}
 	
 	public void onSelectCustomer() {

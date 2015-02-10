@@ -86,6 +86,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     		mItem.setMerchantId(merchantId);
     		mItem.setName(name);
     		mItem.setPercentage(percentage);
+    		mItem.setAmount(0);
     		mItem.setStatus(Constant.STATUS_ACTIVE);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);

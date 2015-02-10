@@ -44,27 +44,34 @@ public class CashierDiscountArrayAdapter extends ArrayAdapter<Discount> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView = convertView;
-		TextView prdGroupName = null;
+		TextView discountName = null;
 		
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.cashier_discount_list_item, parent, false);
-			prdGroupName = (TextView) rowView.findViewById(R.id.nameTxt);
+			discountName = (TextView) rowView.findViewById(R.id.nameTxt);
 
 			ViewHolder viewHolder = new ViewHolder();
-			viewHolder.itemText = prdGroupName;
+			viewHolder.itemText = discountName;
 
 			rowView.setTag(viewHolder);
 
 		} else {
 
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
-			prdGroupName = viewHolder.itemText;
+			discountName = viewHolder.itemText;
 		}
 		
-		prdGroupName.setText(discount.getName());
+		String discountLabel = discount.getName(); 
+		int percentage = discount.getPercentage(); 
+		
+		if (percentage != 0) {
+			discountLabel = discountLabel + " - " + percentage + "%";
+		}
+		
+		discountName.setText(discountLabel);
 
-		rowView.setOnClickListener(getItemOnClickListener(discount, prdGroupName));
+		rowView.setOnClickListener(getItemOnClickListener(discount, discountName));
 
 		return rowView;
 	}

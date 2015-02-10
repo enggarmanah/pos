@@ -171,10 +171,22 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		int discount = 0;
 		
 		if (mDiscount != null) {
-			String label = mDiscount.getName() + " " + CommonUtil.intToStr(mDiscount.getPercentage()) + "%";
+			
+			String label = mDiscount.getName();
+			
+			if (mDiscount.getPercentage() != 0) {
+				label = label + " " + CommonUtil.intToStr(mDiscount.getPercentage()) + "%";
+			}
+			
 			mDiscountLabelText.setText(label);
-			discount = mDiscount.getPercentage() * totalOrder / 100;
-			mDiscountText.setText(CommonUtil.formatCurrency(discount));
+			
+			if (mDiscount.getPercentage() != 0) {
+				discount = mDiscount.getPercentage() * totalOrder / 100;
+			} else {
+				discount = mDiscount.getAmount();
+			}
+			
+			mDiscountText.setText("- " + CommonUtil.formatCurrency(discount));
 			
 		} else {
 			mDiscountLabelText.setText("Tanpa Diskon");
