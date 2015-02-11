@@ -41,6 +41,40 @@ public class MerchantDaoService {
 		return merchantDao.load(id);
 	}
 	
+	public Merchant validateMerchant(String loginId, String password) {
+		
+		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();
+		qb.where(MerchantDao.Properties.LoginId.eq(loginId), MerchantDao.Properties.Password.eq(password));
+
+		Query<Merchant> q = qb.build();
+		Merchant merchant = q.unique();
+		
+		if (merchant != null) {
+			
+			merchant.setIsLogin(true);
+			merchantDao.update(merchant);
+		}
+		
+		return merchant;
+	}
+	
+	public Merchant getActiveMerchant() {
+		
+		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();
+		qb.where(MerchantDao.Properties.IsLogin.eq(true));
+
+		Query<Merchant> q = qb.build();
+		Merchant merchant = q.unique();
+
+		return merchant;
+	}
+	
+	public void logoutMerchant(Merchant merchant) {
+		
+		merchant.setIsLogin(false);
+		merchantDao.update(merchant);
+	}
+	
 	public List<Merchant> getMerchants(String query) {
 
 		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();

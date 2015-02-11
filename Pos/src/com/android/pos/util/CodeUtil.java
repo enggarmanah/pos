@@ -84,12 +84,12 @@ public class CodeUtil {
 		roles = new CodeBean[2];
 		
 		code = new CodeBean();
-		code.setCode("C");
+		code.setCode(Constant.USER_ROLE_CASHIER);
 		code.setLabel("Kasir");
 		roles[0] = code;
 		
 		code = new CodeBean();
-		code.setCode("A");
+		code.setCode(Constant.USER_ROLE_ADMIN);
 		code.setLabel("Admin");
 		roles[1] = code;
 		

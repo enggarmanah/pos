@@ -1,15 +1,25 @@
 package com.android.pos.util;
 
 import com.android.pos.dao.User;
-import com.android.pos.dao.UserDao;
+import com.android.pos.service.UserDaoService;
 
 public class UserUtil {
 	
-	private static UserDao userDao = DbUtil.getSession().getUserDao();
+	private static UserDaoService mUserDaoService = new UserDaoService();
+	private static User mUser;
 	
 	public static User getUser() {
 		
-		return userDao.load(Long.valueOf(1));
+		if (mUser == null) {
+			mUserDaoService.getUser(Long.valueOf(1));
+		}
+		
+		return mUser;
+	}
+	
+	public static void setUser(User user) {
+		
+		mUser = user;
 	}
 	
 	public static int getTaxPercentage() {

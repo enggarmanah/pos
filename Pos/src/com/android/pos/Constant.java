@@ -12,7 +12,10 @@ public class Constant {
 	public static String STATUS_DELETED = "D";
 	
 	public static String PRODUCT_TYPE_GOODS = "P"; 
-	public static String PRODUCT_TYPE_SERVICE = "S"; 
+	public static String PRODUCT_TYPE_SERVICE = "S";
+	
+	public static String USER_ROLE_CASHIER = "C";
+	public static String USER_ROLE_ADMIN = "A";
 	
 	public static int WAIT_ON_LOAD_PERIOD = 250;
 	

@@ -23,7 +23,7 @@ import com.android.pos.sync.SyncListener;
 import com.android.pos.sync.SyncManager;
 import com.android.pos.util.DbUtil;
 
-public class MainMenuActivity extends BaseActivity implements SyncListener {
+public class DataMgtActivity extends BaseActivity implements SyncListener {
 
 	final Context context = this;
 	private SyncManager syncManager;

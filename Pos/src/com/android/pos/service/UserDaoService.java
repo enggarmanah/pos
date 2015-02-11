@@ -41,6 +41,20 @@ public class UserDaoService {
 		return userDao.load(id);
 	}
 	
+	public User validateUser(Long merchantId, String loginId, String password) {
+		
+		QueryBuilder<User> qb = userDao.queryBuilder();
+		
+		qb.where(UserDao.Properties.MerchantId.eq(merchantId),
+				UserDao.Properties.UserId.eq(loginId), 
+				UserDao.Properties.Password.eq(password));
+
+		Query<User> q = qb.build();
+		User user = q.unique();
+		
+		return user;
+	}
+	
 	public List<User> getUsers(String query) {
 
 		QueryBuilder<User> qb = userDao.queryBuilder();

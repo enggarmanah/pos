@@ -111,6 +111,11 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'DISCOUNT' ADD 'AMOUNT' INTEGER");
             }
             
+            // handle version 14 changes
+            if (oldVersion < 15) {
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'IS_LOGIN' INTEGER");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

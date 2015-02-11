@@ -28,10 +28,14 @@
         <item>Keluar</item>
     </string-array>
     
-    <string name="login">SI TokoKu Login :</string>
+    <string name="login_merchant">Login ke TokoKu :</string>
+    <string name="login_user">Login :</string>
     
     <string name="merchant_id">ID Merchant</string>
     <string name="password">Password</string>
+    
+    <string name="user_id">ID Pengguna</string>
+    <string name="pin">PIN</string>
     
     <string name="menu_cashier">Kasir</string>
     <string name="menu_transaction">Rekap Transaksi</string>
@@ -62,7 +66,10 @@
     <string name="save">Simpan</string>
     <string name="none"></string>
     
-    <string name="action_sync">Sync</string>
+    <string name="sync">Sync</string>
+    <string name="exit">Keluar</string>
+    
+    
     <string name="product_search">Cari Produk</string>
     <string name="product_list">Daftar Produk</string>
     <string name="product_add">Tambah Produk</string>

@@ -27,6 +27,7 @@ public class Merchant implements Serializable {
     private java.util.Date periodEnd;
     private Integer taxPercentage;
     private Integer serviceChargePercentage;
+    private Boolean isLogin;
     private String status;
     private String uploadStatus;
     private String createBy;
@@ -52,7 +53,7 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String name, String type, String address, String contactName, String contactTelephone, String loginId, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String name, String type, String address, String contactName, String contactTelephone, String loginId, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -65,6 +66,7 @@ public class Merchant implements Serializable {
         this.periodEnd = periodEnd;
         this.taxPercentage = taxPercentage;
         this.serviceChargePercentage = serviceChargePercentage;
+        this.isLogin = isLogin;
         this.status = status;
         this.uploadStatus = uploadStatus;
         this.createBy = createBy;
@@ -175,6 +177,14 @@ public class Merchant implements Serializable {
 
     public void setServiceChargePercentage(Integer serviceChargePercentage) {
         this.serviceChargePercentage = serviceChargePercentage;
+    }
+
+    public Boolean getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(Boolean isLogin) {
+        this.isLogin = isLogin;
     }
 
     public String getStatus() {

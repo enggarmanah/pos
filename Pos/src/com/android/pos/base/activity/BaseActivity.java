@@ -2,7 +2,7 @@ package com.android.pos.base.activity;
 
 import com.android.pos.R;
 import com.android.pos.cashier.CashierActivity;
-import com.android.pos.reference.MainMenuActivity;
+import com.android.pos.reference.DataMgtActivity;
 import com.android.pos.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
 
@@ -170,7 +170,7 @@ public abstract class BaseActivity extends Activity {
 
 		} else if (getString(R.string.menu_data_management).equals(menu)) {
 
-			Intent intent = new Intent(this, MainMenuActivity.class);
+			Intent intent = new Intent(this, DataMgtActivity.class);
 			startActivity(intent);
 		}
 	}

@@ -22,6 +22,7 @@
     <color name="text_default">#4f5460</color>
     <color name="text_dark">#484c56</color>
     <color name="text_blue">#5e98c7</color>
+    <color name="text_blue_dark">#285275</color>
     
     <color name="input_text">#484c56</color>
     

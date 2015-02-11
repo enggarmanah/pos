@@ -1,14 +1,24 @@
 package com.android.pos.util;
 
 import com.android.pos.dao.Merchant;
-import com.android.pos.dao.MerchantDao;
+import com.android.pos.service.MerchantDaoService;
 
 public class MerchantUtil {
 	
-	private static MerchantDao merchantDao = DbUtil.getSession().getMerchantDao();
+	private static MerchantDaoService merchantDaoService = new MerchantDaoService();
+	private static Merchant mMerchant;
 	
 	public static Merchant getMerchant() {
 		
-		return merchantDao.load(Long.valueOf(1));
+		if (mMerchant == null) {
+			mMerchant = merchantDaoService.getMerchant(Long.valueOf(1));
+		}
+		
+		return mMerchant;
+	}
+	
+	public static void setMerchant(Merchant merchant) {
+		
+		mMerchant = merchant;
 	}
 }
