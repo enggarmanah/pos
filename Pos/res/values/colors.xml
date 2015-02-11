@@ -23,12 +23,14 @@
     <color name="text_dark">#484c56</color>
     <color name="text_blue">#5e98c7</color>
     <color name="text_blue_dark">#285275</color>
+    <color name="text_red">#d2232a</color>
     
     <color name="input_text">#484c56</color>
     
     <color name="background">#FFF</color>
     <color name="background_grey">#FBFBFB</color>
     <color name="background_red">#d2232a</color>
+    <color name="background_red_light">#fbe8e8</color>
     <color name="background_blue">#aac8e1</color>
     <color name="background_blue_light">#f5f9fc</color>
     <color name="background_blue_dark">#285275</color>

@@ -23,6 +23,7 @@ import com.android.pos.service.MerchantDaoService;
 import com.android.pos.service.UserDaoService;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
+import com.android.pos.util.UserUtil;
 
 public class UserLoginActivity extends Activity {
 
@@ -80,6 +81,8 @@ public class UserLoginActivity extends Activity {
 				User user = mUserDaoService.validateUser(mMerchant.getId(), loginId, password);
 				
 				if (user != null) {
+					
+					UserUtil.setUser(user);
 					
 					if (Constant.USER_ROLE_CASHIER.equals(user.getRole())) {
 						

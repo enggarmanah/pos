@@ -1,6 +1,6 @@
-package com.android.pos.sync;
+package com.android.pos.http;
 
-public interface SyncListener {
+public interface HttpAsyncListener {
 	
 	public void setSyncProgress(int progress);
 	

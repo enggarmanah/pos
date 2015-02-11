@@ -12,23 +12,23 @@ import android.view.View;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
+import com.android.pos.http.HttpAsyncListener;
+import com.android.pos.http.HttpAsyncManager;
+import com.android.pos.http.HttpAsyncProgressDlgFragment;
 import com.android.pos.reference.customer.CustomerMgtActivity;
 import com.android.pos.reference.discount.DiscountMgtActivity;
 import com.android.pos.reference.employee.EmployeeMgtActivity;
 import com.android.pos.reference.merchant.MerchantMgtActivity;
 import com.android.pos.reference.product.ProductMgtActivity;
 import com.android.pos.reference.productGrp.ProductGrpMgtActivity;
-import com.android.pos.sync.SyncProgressDlgFragment;
-import com.android.pos.sync.SyncListener;
-import com.android.pos.sync.SyncManager;
 import com.android.pos.util.DbUtil;
 
-public class DataMgtActivity extends BaseActivity implements SyncListener {
+public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 
 	final Context context = this;
-	private SyncManager syncManager;
+	private HttpAsyncManager mHttpAsyncManager;
 	
-	private SyncProgressDlgFragment mProgressDialog;
+	private HttpAsyncProgressDlgFragment mProgressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class DataMgtActivity extends BaseActivity implements SyncListener {
 		
 		DbUtil.initDb(this);
 		
-		syncManager = new SyncManager(this);
+		mHttpAsyncManager = new HttpAsyncManager(this);
 		
 		initDrawerMenu();
 		
@@ -46,10 +46,10 @@ public class DataMgtActivity extends BaseActivity implements SyncListener {
 		
 		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);
 		
-		mProgressDialog = (SyncProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
+		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
 		
 		if (mProgressDialog == null) {
-			mProgressDialog = new SyncProgressDlgFragment();
+			mProgressDialog = new HttpAsyncProgressDlgFragment();
 		}
     }
 	
@@ -71,7 +71,7 @@ public class DataMgtActivity extends BaseActivity implements SyncListener {
 			
 			mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 			
-			syncManager.sync(); 
+			mHttpAsyncManager.sync(); 
 			
 			return true;
 

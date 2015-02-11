@@ -21,14 +21,4 @@ public class UserUtil {
 		
 		mUser = user;
 	}
-	
-	public static int getTaxPercentage() {
-		
-		return 10;
-	}
-	
-	public static int getServiceChargePercentage() {
-		
-		return 5;
-	}
 }

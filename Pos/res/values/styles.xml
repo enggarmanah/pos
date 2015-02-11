@@ -503,7 +503,7 @@
         <item name="android:background">@color/dialog_button_background</item>
     </style>
 
-    <style name="CashierOkCancelButtonStyle">
+    <style name="OkCancelButtonStyle">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_width">0dp</item>
@@ -714,6 +714,10 @@
         <item name="android:drawablePadding">10dp</item>
         <item name="android:paddingLeft">20dp</item>
     </style>
+    
+    <style name="InfoDialogHeaderStyle" parent="AlertDialogHeaderStyle">
+        <item name="android:background">@color/background_blue_dark</item>
+    </style>
 
     <style name="ConfirmTextStyle">
         <item name="android:minWidth">350dp</item>
@@ -728,6 +732,10 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@color/background</item>
+    </style>
+    
+    <style name="AlertTextStyle" parent="ConfirmTextStyle">
+        <item name="android:background">@color/background_red_light</item>
     </style>
 
 </resources>

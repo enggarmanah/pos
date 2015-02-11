@@ -6,6 +6,10 @@
 
 	<!-- Servlets -->
 	<servlet>
+		<servlet-name>merchantValidateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantValidateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>getLastSyncJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.GetLastSyncJsonServlet</servlet-class>
 	</servlet>
@@ -86,6 +90,10 @@
 		<servlet-class>com.app.posweb.server.servlet.TransactionItemUpdateJsonServlet</servlet-class>
 	</servlet>
 	
+	<servlet-mapping>
+		<servlet-name>merchantValidateJsonServlet</servlet-name>
+		<url-pattern>/merchantValidateJsonServlet</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>getLastSyncJsonServlet</servlet-name>
 		<url-pattern>/getLastSyncJsonServlet</url-pattern>

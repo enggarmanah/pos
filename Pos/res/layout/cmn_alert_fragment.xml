@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 	
     <TextView
-        style="@style/AlertDialogHeaderStyle"
+        style="@style/InfoDialogHeaderStyle"
         android:text="@string/alert" />
 
     <TextView
@@ -17,7 +17,7 @@
 
         <Button
             android:id="@+id/okBtn"
-            style="@style/OkCancelRedButtonStyle"
+            style="@style/OkCancelButtonStyle"
             android:text="@string/ok" />
         
     </LinearLayout>

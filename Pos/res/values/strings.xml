@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">Sistem Informasi TokoKu</string>
+    <string name="app_name">TokoKu</string>
     
     <string-array name="app_menus">
         <item>Kasir</item>

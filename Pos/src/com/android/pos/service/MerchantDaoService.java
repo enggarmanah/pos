@@ -58,6 +58,17 @@ public class MerchantDaoService {
 		return merchant;
 	}
 	
+	public Merchant getMerchantByLoginId(String loginId) {
+		
+		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();
+		qb.where(MerchantDao.Properties.LoginId.eq(loginId));
+
+		Query<Merchant> q = qb.build();
+		Merchant merchant = q.unique();
+
+		return merchant;
+	}
+	
 	public Merchant getActiveMerchant() {
 		
 		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();

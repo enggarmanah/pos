@@ -1,4 +1,4 @@
-package com.android.pos.sync;
+package com.android.pos.http;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 import com.android.pos.R;
 
-public class SyncProgressDlgFragment extends DialogFragment {
+public class HttpAsyncProgressDlgFragment extends DialogFragment {
 	
 	ProgressBar mDataSyncPb;
 	TextView mSyncMessage;
+	
+	String mMessage;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,17 +43,21 @@ public class SyncProgressDlgFragment extends DialogFragment {
 		mSyncMessage = (TextView) getView().findViewById(R.id.syncMessageText);
 		
 		setProgress(0);
-		setMessage("Melaksanakan sync up data!");
+		mSyncMessage.setText(mMessage);
 	}
 	
 	public void setProgress(int progress) {
 		
 		if (mDataSyncPb != null) {
+			
+			mDataSyncPb.setIndeterminate(progress == 0);
 			mDataSyncPb.setProgress(progress);
 		}
 	}
 	
 	public void setMessage(String message) {
+		
+		mMessage = message;
 		
 		if (mSyncMessage != null) {
 			mSyncMessage.setText(message);

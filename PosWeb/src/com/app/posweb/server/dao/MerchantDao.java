@@ -77,6 +77,33 @@ public class MerchantDao {
 		return result;
 	}
 	
+	public Merchant validateMerchant(Merchant merchant) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT m FROM Merchant m ");
+		sql.append(" WHERE login_id = :loginId AND password = :password");
+		
+		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
+		
+		query.setParameter("loginId", merchant.getLogin_id());
+		query.setParameter("password", merchant.getPassword());
+		
+		Merchant result = null;
+		
+		try {
+			result = query.getSingleResult();
+			
+		} catch (NoResultException e) {
+			// do nothing
+		}
+		
+		em.close();
+
+		return result;
+	}
+	
 	public List<Merchant> getMerchants(SyncRequest syncRequest) {
 		
 		EntityManager em = PersistenceManager.getEntityManager();

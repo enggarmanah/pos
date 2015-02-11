@@ -1,4 +1,4 @@
-package com.android.pos.sync;
+package com.android.pos.http;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,6 +22,8 @@ import android.util.Log;
 import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.Installation;
+import com.android.pos.auth.LoginListener;
+import com.android.pos.dao.Merchant;
 import com.android.pos.model.CustomerBean;
 import com.android.pos.model.DeviceBean;
 import com.android.pos.model.DiscountBean;
@@ -43,15 +45,18 @@ import com.android.pos.service.ProductGroupDaoService;
 import com.android.pos.service.TransactionItemDaoService;
 import com.android.pos.service.TransactionsDaoService;
 import com.android.pos.service.UserDaoService;
+import com.android.pos.util.BeanUtil;
 import com.android.pos.util.MerchantUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
-public class SyncManager {
+public class HttpAsyncManager {
 
 	private Context mContext;
 	private DeviceBean mDevice;
+	private String mLoginId;
+	private String mPassword;
 
 	private ProductGroupDaoService mProductGroupDaoService;
 	private DiscountDaoService mDiscountDaoService;
@@ -63,14 +68,15 @@ public class SyncManager {
 	private TransactionsDaoService mTransactionsDaoService;
 	private TransactionItemDaoService mTransactionItemDaoService;
 
-	private SyncListener mListener;
+	private HttpAsyncListener mListener;
 
 	private final int TOTAL_TASK = 20;
 
-	public SyncManager(Context context) {
+	public HttpAsyncManager(Context context) {
 
 		this.mContext = context;
-		mListener = (SyncListener) context;
+		
+		mListener = (HttpAsyncListener) context;
 
 		mProductGroupDaoService = new ProductGroupDaoService();
 		mDiscountDaoService = new DiscountDaoService();
@@ -82,7 +88,18 @@ public class SyncManager {
 		mTransactionsDaoService = new TransactionsDaoService();
 		mTransactionItemDaoService = new TransactionItemDaoService();
 	}
+	
+	public void validateMerchant(String loginId, String password) {
+		
+		mLoginId = loginId;
+		mPassword = password;
+		
+		mListener.setSyncProgress(0);
+		mListener.setSyncMessage("Melaksanakan validasi ke server.");
 
+		new HttpAsyncTask().execute(Constant.TASK_VALIDATE_MERCHANT);
+	}
+	
 	public void sync() {
 
 		mListener.setSyncProgress(0 * 100 / TOTAL_TASK);
@@ -256,12 +273,30 @@ public class SyncManager {
 		protected String doInBackground(String... tasks) {
 
 			task = tasks[0];
-
-			Long merchantId = MerchantUtil.getMerchant().getId();
+			
+			Merchant merchant = MerchantUtil.getMerchant();
+			Long merchantId = null;
+			
+			if (merchant != null) {
+				
+				merchantId = merchant.getId();
+			}
+			
 			String url = Constant.EMPTY_STRING;
 			Object obj = null;
 
-			if (Constant.TASK_GET_LAST_SYNC.equals(tasks[0])) {
+			if (Constant.TASK_VALIDATE_MERCHANT.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/merchantValidateJsonServlet";
+
+				MerchantBean bean = new MerchantBean();
+				
+				bean.setLogin_id(mLoginId);
+				bean.setPassword(mPassword);
+				
+				obj = bean;
+
+			} else if (Constant.TASK_GET_LAST_SYNC.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/getLastSyncJsonServlet";
 
@@ -442,7 +477,22 @@ public class SyncManager {
 
 				ObjectMapper mapper = new ObjectMapper();
 
-				if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
+				if (Constant.TASK_VALIDATE_MERCHANT.equals(task)) {
+
+					MerchantBean bean = mapper.readValue(result, MerchantBean.class);
+					LoginListener listener = (LoginListener) mContext;
+					
+					Merchant merchant = null;
+					
+					if (bean != null) {
+						
+						merchant = new Merchant();
+						BeanUtil.updateBean(merchant, bean);
+					}
+					
+					listener.onMerchantValidated(merchant);
+					
+				} else if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
 
 					mDevice = mapper.readValue(result, DeviceBean.class);
 					getProductGroup();

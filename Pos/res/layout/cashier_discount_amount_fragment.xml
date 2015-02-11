@@ -118,7 +118,7 @@
 
         <Button
             android:id="@+id/okBtn"
-            style="@style/CashierOkCancelButtonStyle"
+            style="@style/OkCancelButtonStyle"
             android:text="@string/ok" />
 
         <TextView
@@ -128,7 +128,7 @@
 
         <Button
             android:id="@+id/cancelBtn"
-            style="@style/CashierOkCancelButtonStyle"
+            style="@style/OkCancelButtonStyle"
             android:text="@string/cancel" />
     </LinearLayout>
 

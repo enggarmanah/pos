@@ -26,6 +26,8 @@ public class Constant {
 	public static int MENU_USER_MANAGEMENT_POSITION = 5;
 	public static int MENU_DATA_MANAGEMENT_POSITION = 6;
 	
+	public static String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
+	
 	public static String TASK_GET_LAST_SYNC = "TASK_GET_LAST_SYNC";
 	public static String TASK_UPDATE_LAST_SYNC = "TASK_UPDATE_LAST_SYNC";
 	
