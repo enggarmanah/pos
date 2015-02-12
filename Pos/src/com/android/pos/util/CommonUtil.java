@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -106,6 +107,36 @@ public class CommonUtil {
 		return new SimpleDateFormat("EEEE, dd MMM yyyy, HH:mm", getLocale());
 	}
 	
+	public static Date getFirstDayOfMonth(Date date) {
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(date);
+		cal.set(Calendar.DATE, 1);
+		
+		return cal.getTime();
+	}
+	
+	public static Date getLastDayOfMonth(Date date) {
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(date);
+		cal.set(Calendar.DATE, 1);
+		cal.add(Calendar.MONTH, 1);
+		cal.add(Calendar.DATE, -1);
+		
+		return cal.getTime();
+	}
+	
+	public static Date getCurrentMonth() {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DATE, 1);
+		
+		return cal.getTime();
+	}
+	
 	public static Date parseDate(String dateStr) {
 		
 		Date date = null;
@@ -151,6 +182,19 @@ public class CommonUtil {
 		
 		try {
 			dateStr = getDateFormat("EEEE, dd MMM yyyy").format(inputDate);
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+		return dateStr;
+	}
+	
+	public static String formatMonthDate(Date inputDate) {
+		
+		String dateStr = Constant.EMPTY_STRING;
+		
+		try {
+			dateStr = getDateFormat("MMMM yyyy").format(inputDate);
 		} catch (Exception e) {
 			// do nothing
 		}

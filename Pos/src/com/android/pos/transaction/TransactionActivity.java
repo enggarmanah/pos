@@ -5,8 +5,10 @@ import java.io.Serializable;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
-import com.android.pos.dao.TransactionSummary;
+import com.android.pos.dao.TransactionDay;
+import com.android.pos.dao.TransactionMonth;
 import com.android.pos.dao.Transactions;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 
 import android.os.Bundle;
@@ -17,18 +19,19 @@ import android.view.MenuItem;
 public class TransactionActivity extends BaseActivity 
 	implements TransactionActionListener {
 	
-	protected TransactionSummaryFragment mTransactionSummaryFragment;
+	protected TransactionListFragment mTransactionListFragment;
 	protected TransactionDetailFragment mTransactionDetailFragment;
 	
 	boolean mIsMultiplesPane = false;
 	
-	private TransactionSummary mSelectedTransactionSummary;
+	private TransactionMonth mSelectedTransactionMonth;
+	private TransactionDay mSelectedTransactionDay;
 	private Transactions mSelectedTransaction;
 	
-	private static String SELECTED_TRANSACTION_SUMMARY = "SELECTED_TRANSACTION_SUMMARY";
+	private static String SELECTED_TRANSACTION_DAY = "SELECTED_TRANSACTION_DAY";
 	private static String SELECTED_TRANSACTION = "SELECTED_TRANSACTION";
 	
-	private String mTransactionSummaryFragmentTag = "transactionSummaryFragmentTag";
+	private String mTransactionListFragmentTag = "transactionListFragmentTag";
 	private String mTransactionDetailFragmentTag = "transactionDetailFragmentTag";
 	
 	@Override
@@ -47,26 +50,32 @@ public class TransactionActivity extends BaseActivity
 
 		mDrawerList.setItemChecked(Constant.MENU_TRANSACTION_POSITION, true);
 		
-		initWaitAfterFragmentRemovedTask(mTransactionSummaryFragmentTag, mTransactionDetailFragmentTag);
+		initWaitAfterFragmentRemovedTask(mTransactionListFragmentTag, mTransactionDetailFragmentTag);
+		
+		if (mSelectedTransactionMonth == null) {
+			
+			mSelectedTransactionMonth = new TransactionMonth();
+			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
+		}
 	}
 	
 	private void initFragments(Bundle savedInstanceState) {
 		
 		if (savedInstanceState != null) {
 			
-			mSelectedTransactionSummary = (TransactionSummary) savedInstanceState.getSerializable(SELECTED_TRANSACTION_SUMMARY);
+			mSelectedTransactionDay = (TransactionDay) savedInstanceState.getSerializable(SELECTED_TRANSACTION_DAY);
 			mSelectedTransaction = (Transactions) savedInstanceState.getSerializable(SELECTED_TRANSACTION);
 		}
 
 		mIsMultiplesPane = getResources().getBoolean(R.bool.has_multiple_panes);
 
-		mTransactionSummaryFragment = (TransactionSummaryFragment) getFragmentManager().findFragmentByTag(mTransactionSummaryFragmentTag);
+		mTransactionListFragment = (TransactionListFragment) getFragmentManager().findFragmentByTag(mTransactionListFragmentTag);
 		
-		if (mTransactionSummaryFragment == null) {
-			mTransactionSummaryFragment = new TransactionSummaryFragment();
+		if (mTransactionListFragment == null) {
+			mTransactionListFragment = new TransactionListFragment();
 
 		} else {
-			removeFragment(mTransactionSummaryFragment);
+			removeFragment(mTransactionListFragment);
 		}
 		
 		mTransactionDetailFragment = (TransactionDetailFragment) getFragmentManager().findFragmentByTag(mTransactionDetailFragmentTag);
@@ -84,7 +93,7 @@ public class TransactionActivity extends BaseActivity
 
 		super.onSaveInstanceState(outState);
 
-		outState.putSerializable(SELECTED_TRANSACTION_SUMMARY, (Serializable) mSelectedTransactionSummary);
+		outState.putSerializable(SELECTED_TRANSACTION_DAY, (Serializable) mSelectedTransactionDay);
 		outState.putSerializable(SELECTED_TRANSACTION, (Serializable) mSelectedTransaction);
 	}
 	
@@ -96,15 +105,15 @@ public class TransactionActivity extends BaseActivity
 	
 	private void loadFragments() {
 		
-		mTransactionSummaryFragment.setSelectedTransactionSummary(mSelectedTransactionSummary);
-		mTransactionSummaryFragment.setSelectedTransaction(mSelectedTransaction);
+		mTransactionListFragment.setSelectedTransactionSummary(mSelectedTransactionDay);
+		mTransactionListFragment.setSelectedTransaction(mSelectedTransaction);
 
 		if (mIsMultiplesPane) {
 
-			addFragment(mTransactionSummaryFragment, mTransactionSummaryFragmentTag);
+			addFragment(mTransactionListFragment, mTransactionListFragmentTag);
 			addFragment(mTransactionDetailFragment, mTransactionDetailFragmentTag);
 			
-			mTransactionSummaryFragment.setSelectedTransactionSummary(mSelectedTransactionSummary);
+			mTransactionListFragment.setSelectedTransactionSummary(mSelectedTransactionDay);
 			mTransactionDetailFragment.setTransaction(mSelectedTransaction);
 			
 		} else {
@@ -116,8 +125,8 @@ public class TransactionActivity extends BaseActivity
 				
 			} else {
 				
-				addFragment(mTransactionSummaryFragment, mTransactionSummaryFragmentTag);
-				mTransactionSummaryFragment.setSelectedTransactionSummary(mSelectedTransactionSummary);
+				addFragment(mTransactionListFragment, mTransactionListFragmentTag);
+				mTransactionListFragment.setSelectedTransactionSummary(mSelectedTransactionDay);
 			}
 		}
 	}
@@ -156,9 +165,9 @@ public class TransactionActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onTransactionSummarySelected(TransactionSummary transactionSummary) {
+	public void onTransactionSummarySelected(TransactionDay transactionSummary) {
 		
-		mSelectedTransactionSummary = transactionSummary;
+		mSelectedTransactionDay = transactionSummary;
 	}
 	
 	@Override
@@ -188,9 +197,9 @@ public class TransactionActivity extends BaseActivity
 		if (mIsMultiplesPane) {
 			
 			mSelectedTransaction = null;
-			mSelectedTransactionSummary = null;
+			mSelectedTransactionDay = null;
 			
-			mTransactionSummaryFragment.displayTransactionSummary();
+			mTransactionListFragment.displayTransactionByMonth(mSelectedTransactionMonth);
 			mTransactionDetailFragment.setTransaction(null);
 			
 		} else {
@@ -198,15 +207,15 @@ public class TransactionActivity extends BaseActivity
 			if (mSelectedTransaction != null) {
 				mSelectedTransaction = null;
 			} else {
-				mSelectedTransactionSummary = null;
+				mSelectedTransactionDay = null;
 			}
 			
-			replaceFragment(mTransactionSummaryFragment, mTransactionSummaryFragmentTag);
+			replaceFragment(mTransactionListFragment, mTransactionListFragmentTag);
 			
-			if (mSelectedTransactionSummary != null) {
-				mTransactionSummaryFragment.displayTransactionToday();
+			if (mSelectedTransactionDay != null) {
+				mTransactionListFragment.displayTransactionToday();
 			} else {
-				mTransactionSummaryFragment.displayTransactionSummary();
+				mTransactionListFragment.displayTransactionByMonth(mSelectedTransactionMonth);
 			}
 		}
 	}

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TransactionTodayArrayAdapter extends ArrayAdapter<Transactions> {
+public class TransactionDayArrayAdapter extends ArrayAdapter<Transactions> {
 
 	private Context context;
 	private List<Transactions> transactions;
@@ -31,7 +31,7 @@ public class TransactionTodayArrayAdapter extends ArrayAdapter<Transactions> {
 		TextView totalAmountText;
 	}
 
-	public TransactionTodayArrayAdapter(Context context, List<Transactions> transactions, ItemActionListener listener) {
+	public TransactionDayArrayAdapter(Context context, List<Transactions> transactions, ItemActionListener listener) {
 
 		super(context, R.layout.transaction_summary_list_item, transactions);
 		

@@ -3,7 +3,7 @@ package com.android.pos.transaction;
 import java.util.List;
 
 import com.android.pos.R;
-import com.android.pos.dao.TransactionSummary;
+import com.android.pos.dao.TransactionDay;
 import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -13,17 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TransactionSummaryArrayAdapter extends ArrayAdapter<TransactionSummary> {
+public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionDay> {
 
 	private Context context;
-	private List<TransactionSummary> transactionSummaries;
+	private List<TransactionDay> transactionSummaries;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onTransactionSummarySelected(TransactionSummary item);
+		public void onTransactionSummarySelected(TransactionDay item);
 		
-		public TransactionSummary getSelectedTransactionSummary();
+		public TransactionDay getSelectedTransactionSummary();
 	}
 
 	class ViewHolder {
@@ -31,7 +31,7 @@ public class TransactionSummaryArrayAdapter extends ArrayAdapter<TransactionSumm
 		TextView totalAmountText;
 	}
 
-	public TransactionSummaryArrayAdapter(Context context, List<TransactionSummary> transactions, ItemActionListener listener) {
+	public TransactionMonthArrayAdapter(Context context, List<TransactionDay> transactions, ItemActionListener listener) {
 
 		super(context, R.layout.transaction_summary_list_item, transactions);
 		
@@ -43,7 +43,7 @@ public class TransactionSummaryArrayAdapter extends ArrayAdapter<TransactionSumm
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final TransactionSummary transaction = transactionSummaries.get(position);
+		final TransactionDay transaction = transactionSummaries.get(position);
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -79,7 +79,7 @@ public class TransactionSummaryArrayAdapter extends ArrayAdapter<TransactionSumm
 
 		rowView.setOnClickListener(getItemOnClickListener(transaction, transDate));
 		
-		TransactionSummary selectedTransactionSummary = mCallback.getSelectedTransactionSummary();
+		TransactionDay selectedTransactionSummary = mCallback.getSelectedTransactionSummary();
 		
 		if (selectedTransactionSummary != null && selectedTransactionSummary.getDate() == transaction.getDate()) {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
@@ -90,7 +90,7 @@ public class TransactionSummaryArrayAdapter extends ArrayAdapter<TransactionSumm
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final TransactionSummary item, final TextView itemNameView) {
+	private View.OnClickListener getItemOnClickListener(final TransactionDay item, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			

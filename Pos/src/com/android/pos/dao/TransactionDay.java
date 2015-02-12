@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class TransactionSummary implements Serializable {
+public class TransactionDay implements Serializable {
 
 	private Date date;
 	private Long amount;
