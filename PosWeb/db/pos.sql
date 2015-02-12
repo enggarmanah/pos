@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.22)
 # Database: pos
-# Generation Time: 2015-02-11 17:37:44 +0000
+# Generation Time: 2015-02-12 18:08:33 +0000
 # ************************************************************
 
 
@@ -76,7 +76,10 @@ LOCK TABLES `device` WRITE;
 INSERT INTO `device` (`id`, `merchant_id`, `uuid`, `last_sync_date`)
 VALUES
 	(28,1,'38793d11-daf4-410b-8ca1-9f234e68e304','2015-02-11 17:36:09'),
-	(29,1,'4b8f6fa1-80f3-4e2c-a82a-678c6cf2f5c4','2015-02-11 17:37:05');
+	(29,1,'4b8f6fa1-80f3-4e2c-a82a-678c6cf2f5c4','2015-02-11 17:37:05'),
+	(30,1,'9efb1a21-3bdc-4a79-b3cc-caba93bec554','2015-02-12 00:07:50'),
+	(31,1,'03f957db-b0c6-44e8-b33d-a72b88a2ec08','2015-02-12 00:38:38'),
+	(32,1,'ea6ef24a-2fd1-40b8-b009-d8ba0e957c24','2015-02-12 18:07:47');
 
 /*!40000 ALTER TABLE `device` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -299,22 +302,11 @@ LOCK TABLES `transaction_item` WRITE;
 
 INSERT INTO `transaction_item` (`id`, `merchant_id`, `remote_id`, `transaction_id`, `product_id`, `product_name`, `product_type`, `price`, `quantity`, `employee_id`)
 VALUES
-	(15,1,27,14,16,'Tongseng Kambing',NULL,25000,1,0),
-	(16,1,28,15,5,'Sate Kambing Muda','P',5000,1,0),
-	(17,1,29,16,19,'Ayam Bakar Spesial','P',10000,1,0),
-	(18,1,30,16,10,'Ayam Balado Sambal Pete','P',5000,1,0),
-	(19,1,31,16,2,'Bakso Sapi Spesial Jamur Merang','P',5000,1,0),
-	(20,1,32,16,7,'Bakso Urat Spesial','P',5000,1,0),
-	(21,1,33,16,1,'Daging Sapi Asap Spesial','P',10000,1,0),
-	(22,1,34,16,18,'Sambal Goreng Ati','P',5000,1,0),
-	(23,1,35,16,11,'Soto Ayam','P',5000,1,0),
-	(24,1,36,17,19,'Ayam Bakar Spesial','P',10000,1,0),
-	(25,1,37,17,15,'Cah Kangkung','P',7500,1,0),
-	(26,1,38,17,8,'Gado-gado','P',5000,1,0),
-	(27,1,39,17,11,'Soto Ayam','P',5000,1,0),
-	(28,1,40,17,16,'Tongseng Kambing','P',25000,1,0),
-	(29,1,41,17,6,'Udang Bakar Madu','P',15000,1,0),
-	(30,1,42,17,10,'Ayam Balado Sambal Pete','P',5000,1,0);
+	(1,1,1,1,19,'Ayam Bakar Spesial','P',10000,1,0),
+	(2,1,2,1,15,'Cah Kangkung','P',7500,1,0),
+	(3,1,3,2,6,'Udang Bakar Madu','P',15000,1,0),
+	(4,1,4,2,16,'Tongseng Kambing','P',25000,1,0),
+	(5,1,5,2,5,'Sate Kambing Muda','P',5000,1,0);
 
 /*!40000 ALTER TABLE `transaction_item` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -356,13 +348,8 @@ LOCK TABLES `transactions` WRITE;
 
 INSERT INTO `transactions` (`id`, `merchant_id`, `remote_id`, `transaction_no`, `transaction_date`, `bill_amount`, `discount_name`, `discount_percentage`, `discount_amount`, `tax_percentage`, `tax_amount`, `service_charge_percentage`, `service_charge_amount`, `total_amount`, `payment_amount`, `return_amount`, `payment_type`, `cashier_id`, `cashier_name`, `customer_id`, `customer_name`, `status`)
 VALUES
-	(15,1,11,'20150208024637457','2015-02-07 18:46:37',25000,'Diskon Member',15,NULL,0,0,0,0,21250,30000,8750,'CASH',1,'Retno',0,NULL,NULL),
-	(16,1,12,'20150208025159896','2015-02-07 18:52:00',15000,'Diskon Member',15,2250,0,0,0,0,12750,15000,2250,'CASH',1,'Retno',0,NULL,NULL),
-	(17,1,13,'20150208181912336','2015-02-08 10:19:12',15000,'Diskon Member',15,2250,0,0,0,0,12750,15000,2250,'CASH',1,'Retno',0,NULL,NULL),
-	(18,1,14,'20150208182539519','2015-02-08 10:25:40',25000,'Diskon Member',15,3750,0,0,0,0,21250,25000,3750,'CASH',1,'Retno',0,NULL,NULL),
-	(19,1,15,'20150208183852021','2015-02-08 10:38:52',5000,'Diskon Member',15,750,0,0,0,0,4250,5000,750,'CASH',1,'Retno',0,NULL,NULL),
-	(20,1,16,'20150209010732506','2015-02-08 17:07:33',45000,'Diskon Member',15,6750,0,0,0,0,38250,50000,11750,'CASH',1,'Retno',0,NULL,NULL),
-	(21,1,17,'20150209014350270','2015-02-08 17:43:50',72500,'Diskon Member',15,10875,0,0,0,0,61625,70000,8375,'CASH',1,'Retno',0,NULL,NULL);
+	(1,1,1,'20150213020027454','2015-02-12 18:00:27',17500,'Diskon Member',15,2625,0,0,0,0,14875,15000,125,'CASH',3,'Bram',0,NULL,NULL),
+	(2,1,2,'20150213020117754','2015-02-12 18:01:18',45000,'Diskon Member',15,6750,0,0,0,0,38250,50000,11750,'CASH',3,'Bram',0,NULL,NULL);
 
 /*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
 UNLOCK TABLES;
