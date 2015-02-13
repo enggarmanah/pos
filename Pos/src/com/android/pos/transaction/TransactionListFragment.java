@@ -100,7 +100,7 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		if (mSelectedTransactionDay != null) {
-			onTransactionSummarySelected(mSelectedTransactionDay);
+			onTransactionDaySelected(mSelectedTransactionDay);
 		} else {
 			displayTransactionByMonth(mSelectedTransactionMonth);
 		}
@@ -158,7 +158,7 @@ public class TransactionListFragment extends BaseFragment
 			return;
 		}
 		
-		onTransactionSummarySelected(mSelectedTransactionDay);
+		onTransactionDaySelected(mSelectedTransactionDay);
 	}
 	
 	public void displayTransactionByMonth(TransactionMonth transactionMonth) {
@@ -196,24 +196,24 @@ public class TransactionListFragment extends BaseFragment
 	}
 	
 	@Override
-	public void onTransactionSummarySelected(TransactionDay transactionSummary) {
+	public void onTransactionDaySelected(TransactionDay transactionDay) {
 		
 		setBackButtonVisible(true);
 		
-		mSelectedTransactionDay = transactionSummary;
-		mActionListener.onTransactionSummarySelected(transactionSummary);
+		mSelectedTransactionDay = transactionDay;
+		mActionListener.onTransactionDaySelected(transactionDay);
 		
 		mTransactions.clear();
-		mTransactions.addAll(mTransactionDaoService.getTransactions(transactionSummary.getDate()));
+		mTransactions.addAll(mTransactionDaoService.getTransactions(transactionDay.getDate()));
 		
-		mNavigationTitle.setText(CommonUtil.formatDayDate(transactionSummary.getDate()));
+		mNavigationTitle.setText(CommonUtil.formatDayDate(transactionDay.getDate()));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionsTotalAmount(mTransactions)));
 		
 		mTransactionList.setAdapter(mTransactionDayAdapter);
 	}
 	
 	@Override
-	public TransactionDay getSelectedTransactionSummary() {
+	public TransactionDay getSelectedTransactionDay() {
 		
 		return mSelectedTransactionDay;
 	}

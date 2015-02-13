@@ -5,7 +5,7 @@ import com.android.pos.dao.Transactions;
 
 public interface TransactionActionListener {
 	
-	public void onTransactionSummarySelected(TransactionDay transactionSummary);
+	public void onTransactionDaySelected(TransactionDay transactionDay);
 	
 	public void onTransactionSelected(Transactions transaction);
 	

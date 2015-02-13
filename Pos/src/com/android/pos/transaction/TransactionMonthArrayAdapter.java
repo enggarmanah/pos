@@ -21,9 +21,9 @@ public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionDay> {
 
 	public interface ItemActionListener {
 
-		public void onTransactionSummarySelected(TransactionDay item);
+		public void onTransactionDaySelected(TransactionDay item);
 		
-		public TransactionDay getSelectedTransactionSummary();
+		public TransactionDay getSelectedTransactionDay();
 	}
 
 	class ViewHolder {
@@ -79,7 +79,7 @@ public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionDay> {
 
 		rowView.setOnClickListener(getItemOnClickListener(transaction, transDate));
 		
-		TransactionDay selectedTransactionSummary = mCallback.getSelectedTransactionSummary();
+		TransactionDay selectedTransactionSummary = mCallback.getSelectedTransactionDay();
 		
 		if (selectedTransactionSummary != null && selectedTransactionSummary.getDate() == transaction.getDate()) {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
@@ -99,7 +99,7 @@ public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionDay> {
 				
 				v.setSelected(true);
 
-				mCallback.onTransactionSummarySelected(item);
+				mCallback.onTransactionDaySelected(item);
 			}
 		};
 	}

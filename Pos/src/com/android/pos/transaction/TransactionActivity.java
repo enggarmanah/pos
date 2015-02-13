@@ -165,9 +165,9 @@ public class TransactionActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onTransactionSummarySelected(TransactionDay transactionSummary) {
+	public void onTransactionDaySelected(TransactionDay transactionDay) {
 		
-		mSelectedTransactionDay = transactionSummary;
+		mSelectedTransactionDay = transactionDay;
 	}
 	
 	@Override
