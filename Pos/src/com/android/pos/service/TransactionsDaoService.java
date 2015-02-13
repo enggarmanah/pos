@@ -101,9 +101,9 @@ public class TransactionsDaoService {
 		} 
 	}
 	
-	public List<TransactionDay> getTransactionSummary(TransactionMonth transactionMonth) {
+	public List<TransactionDay> getTransactionDays(TransactionMonth transactionMonth) {
 		
-		ArrayList<TransactionDay> transactionSummaries = new ArrayList<TransactionDay>();
+		ArrayList<TransactionDay> transactionDays = new ArrayList<TransactionDay>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
@@ -122,10 +122,10 @@ public class TransactionsDaoService {
 			TransactionDay summary = new TransactionDay();
 			summary.setDate(date);
 			summary.setAmount(amount);
-			transactionSummaries.add(summary);
+			transactionDays.add(summary);
 		}
 		
-		return transactionSummaries;
+		return transactionDays;
 	}
 	
 	public List<Transactions> getTransactions(Date transactionDate) {

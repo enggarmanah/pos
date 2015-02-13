@@ -1,9 +1,12 @@
 package com.android.pos.transaction;
 
 import com.android.pos.dao.TransactionDay;
+import com.android.pos.dao.TransactionMonth;
 import com.android.pos.dao.Transactions;
 
 public interface TransactionActionListener {
+	
+	public void onTransactionMonthSelected(TransactionMonth transactionMonth);
 	
 	public void onTransactionDaySelected(TransactionDay transactionDay);
 	

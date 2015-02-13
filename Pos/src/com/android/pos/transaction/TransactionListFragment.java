@@ -21,7 +21,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class TransactionListFragment extends BaseFragment 
-	implements TransactionDayArrayAdapter.ItemActionListener, TransactionMonthArrayAdapter.ItemActionListener {
+	implements TransactionArrayAdapter.ItemActionListener, 
+		TransactionDayArrayAdapter.ItemActionListener, 
+		TransactionMonthArrayAdapter.ItemActionListener {
 	
 	private ImageButton mBackButton;
 	
@@ -30,6 +32,7 @@ public class TransactionListFragment extends BaseFragment
 	
 	private ListView mTransactionList;
 	
+	private List<TransactionMonth> mTransactionMonths;
 	private List<TransactionDay> mTransactionDays;
 	private List<Transactions> mTransactions;
 	
@@ -39,6 +42,7 @@ public class TransactionListFragment extends BaseFragment
 	
 	private TransactionMonthArrayAdapter mTransactionMonthAdapter;
 	private TransactionDayArrayAdapter mTransactionDayAdapter;
+	private TransactionArrayAdapter mTransactionAdapter;
 	
 	private TransactionActionListener mActionListener;
 	
@@ -64,6 +68,10 @@ public class TransactionListFragment extends BaseFragment
 		
 		View view = inflater.inflate(R.layout.transaction_summary_fragment, container, false);
 		
+		if (mTransactionMonths == null) {
+			mTransactionMonths = new ArrayList<TransactionMonth>();
+		}
+		
 		if (mTransactionDays == null) {
 			mTransactionDays = new ArrayList<TransactionDay>();
 		}
@@ -72,8 +80,9 @@ public class TransactionListFragment extends BaseFragment
 			mTransactions = new ArrayList<Transactions>();
 		}
 		
-		mTransactionMonthAdapter = new TransactionMonthArrayAdapter(getActivity(), mTransactionDays, this);
-		mTransactionDayAdapter = new TransactionDayArrayAdapter(getActivity(), mTransactions, this);
+		mTransactionMonthAdapter = new TransactionMonthArrayAdapter(getActivity(), mTransactionMonths, this);
+		mTransactionDayAdapter = new TransactionDayArrayAdapter(getActivity(), mTransactionDays, this);
+		mTransactionAdapter = new TransactionArrayAdapter(getActivity(), mTransactions, this);
 		
 		return view;
 	}
@@ -91,9 +100,9 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionList = (ListView) getActivity().findViewById(R.id.transactionList);
 		
 		if (mSelectedTransactionDay != null) {
-			mTransactionList.setAdapter(mTransactionDayAdapter);
+			mTransactionList.setAdapter(mTransactionAdapter);
 		} else {
-			mTransactionList.setAdapter(mTransactionMonthAdapter);
+			mTransactionList.setAdapter(mTransactionDayAdapter);
 		}
 		
 		mTransactionList.setItemsCanFocus(true);
@@ -102,7 +111,7 @@ public class TransactionListFragment extends BaseFragment
 		if (mSelectedTransactionDay != null) {
 			onTransactionDaySelected(mSelectedTransactionDay);
 		} else {
-			displayTransactionByMonth(mSelectedTransactionMonth);
+			displayTransactionOnMonth(mSelectedTransactionMonth);
 		}
 	}
 	
@@ -118,9 +127,9 @@ public class TransactionListFragment extends BaseFragment
         }
     }
 	
-	public void setSelectedTransactionSummary(TransactionDay transactionSummary) {
+	public void setSelectedTransactionDay(TransactionDay transactionDay) {
 		
-		mSelectedTransactionDay = transactionSummary;
+		mSelectedTransactionDay = transactionDay;
 	}
 	
 	public void setSelectedTransaction(Transactions transaction) {
@@ -150,7 +159,7 @@ public class TransactionListFragment extends BaseFragment
 		return totalAmount;
 	}
 	
-	public void displayTransactionToday() {
+	public void displayTransactionOnDay(TransactionDay transactionDay) {
 		
 		mSelectedTransaction = null;
 		
@@ -158,16 +167,16 @@ public class TransactionListFragment extends BaseFragment
 			return;
 		}
 		
-		onTransactionDaySelected(mSelectedTransactionDay);
+		onTransactionDaySelected(transactionDay);
 	}
 	
-	public void displayTransactionByMonth(TransactionMonth transactionMonth) {
+	public void displayTransactionOnMonth(TransactionMonth transactionMonth) {
 		
 		mSelectedTransaction = null;
 		mSelectedTransactionDay = null;
 		
 		mTransactionDays.clear();
-		mTransactionDays.addAll(mTransactionDaoService.getTransactionSummary(transactionMonth));
+		mTransactionDays.addAll(mTransactionDaoService.getTransactionDays(transactionMonth));
 		
 		if (!isViewInitialized()) {
 			return;
@@ -178,7 +187,7 @@ public class TransactionListFragment extends BaseFragment
 		mNavigationTitle.setText(CommonUtil.formatMonthDate(transactionMonth.getMonth()));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionDaysTotalAmount(mTransactionDays)));
 		
-		mTransactionList.setAdapter(mTransactionMonthAdapter);
+		mTransactionList.setAdapter(mTransactionDayAdapter);
 	}
 	
 	@Override
@@ -186,13 +195,36 @@ public class TransactionListFragment extends BaseFragment
 		
 		mSelectedTransaction = transaction;
 		mActionListener.onTransactionSelected(transaction);
-		mTransactionDayAdapter.notifyDataSetChanged();
+		mTransactionAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
 	public Transactions getSelectedTransaction() {
 		
 		return mSelectedTransaction;
+	}
+	
+	@Override
+	public void onTransactionMonthSelected(TransactionMonth transactionMonth) {
+		
+		setBackButtonVisible(true);
+		
+		mSelectedTransactionMonth = transactionMonth;
+		mActionListener.onTransactionMonthSelected(transactionMonth);
+		
+		mTransactionDays.clear();
+		mTransactionDays.addAll(mTransactionDaoService.getTransactionDays(transactionMonth));
+		
+		mNavigationTitle.setText(CommonUtil.formatMonthDate(transactionMonth.getMonth()));
+		mNavText.setText(CommonUtil.formatCurrency(getTransactionDaysTotalAmount(mTransactionDays)));
+		
+		mTransactionList.setAdapter(mTransactionDayAdapter);
+	}
+	
+	@Override
+	public TransactionMonth getSelectedTransactionMonth() {
+		
+		return mSelectedTransactionMonth;
 	}
 	
 	@Override
@@ -209,7 +241,7 @@ public class TransactionListFragment extends BaseFragment
 		mNavigationTitle.setText(CommonUtil.formatDayDate(transactionDay.getDate()));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionsTotalAmount(mTransactions)));
 		
-		mTransactionList.setAdapter(mTransactionDayAdapter);
+		mTransactionList.setAdapter(mTransactionAdapter);
 	}
 	
 	@Override

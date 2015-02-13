@@ -34,6 +34,10 @@ public class TransactionActivity extends BaseActivity
 	private String mTransactionListFragmentTag = "transactionListFragmentTag";
 	private String mTransactionDetailFragmentTag = "transactionDetailFragmentTag";
 	
+	private boolean mIsDisplayTransactionMonth = false;
+	private boolean mIsDisplayTransactionDay = false;
+	private boolean mIsDisplayTransaction = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,7 +109,7 @@ public class TransactionActivity extends BaseActivity
 	
 	private void loadFragments() {
 		
-		mTransactionListFragment.setSelectedTransactionSummary(mSelectedTransactionDay);
+		mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
 		mTransactionListFragment.setSelectedTransaction(mSelectedTransaction);
 
 		if (mIsMultiplesPane) {
@@ -113,7 +117,7 @@ public class TransactionActivity extends BaseActivity
 			addFragment(mTransactionListFragment, mTransactionListFragmentTag);
 			addFragment(mTransactionDetailFragment, mTransactionDetailFragmentTag);
 			
-			mTransactionListFragment.setSelectedTransactionSummary(mSelectedTransactionDay);
+			mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
 			mTransactionDetailFragment.setTransaction(mSelectedTransaction);
 			
 		} else {
@@ -126,7 +130,7 @@ public class TransactionActivity extends BaseActivity
 			} else {
 				
 				addFragment(mTransactionListFragment, mTransactionListFragmentTag);
-				mTransactionListFragment.setSelectedTransactionSummary(mSelectedTransactionDay);
+				mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
 			}
 		}
 	}
@@ -157,7 +161,7 @@ public class TransactionActivity extends BaseActivity
 
 			case R.id.menu_item_list:
 				
-				onMenuListSelected();
+				onBackToParent();
 
 			default:
 				return super.onOptionsItemSelected(item);
@@ -165,15 +169,30 @@ public class TransactionActivity extends BaseActivity
 	}
 	
 	@Override
+	public void onTransactionMonthSelected(TransactionMonth transactionMonth) {
+		
+		mSelectedTransactionMonth = transactionMonth;
+		
+		resetDisplayStatus();
+		mIsDisplayTransactionMonth = true;
+	}
+	
+	@Override
 	public void onTransactionDaySelected(TransactionDay transactionDay) {
 		
 		mSelectedTransactionDay = transactionDay;
+		
+		resetDisplayStatus();
+		mIsDisplayTransactionDay = true;
 	}
 	
 	@Override
 	public void onTransactionSelected(Transactions transaction) {
 		
 		mSelectedTransaction = transaction;
+		
+		resetDisplayStatus();
+		mIsDisplayTransaction = true;
 		
 		if (mIsMultiplesPane) {
 
@@ -189,34 +208,64 @@ public class TransactionActivity extends BaseActivity
 	@Override
 	public void onBackButtonClicked() {
 		
-		onMenuListSelected();
+		onBackToParent();
 	}
 	
-	private void onMenuListSelected() {
+	private void onBackToParent() {
+		
+		setDisplayStatusToParent();
 		
 		if (mIsMultiplesPane) {
 			
-			mSelectedTransaction = null;
-			mSelectedTransactionDay = null;
+			/*mSelectedTransaction = null;
+			mSelectedTransactionDay = null;*/
 			
-			mTransactionListFragment.displayTransactionByMonth(mSelectedTransactionMonth);
+			if (mIsDisplayTransactionMonth) {
+				mTransactionListFragment.displayTransactionOnMonth(mSelectedTransactionMonth);
+				
+			} else if (mIsDisplayTransactionDay) {
+				mTransactionListFragment.displayTransactionOnDay(mSelectedTransactionDay);
+			}
+			
 			mTransactionDetailFragment.setTransaction(null);
 			
 		} else {
 			
-			if (mSelectedTransaction != null) {
+			/*if (mSelectedTransaction != null) {
 				mSelectedTransaction = null;
 			} else {
 				mSelectedTransactionDay = null;
-			}
+			}*/
 			
 			replaceFragment(mTransactionListFragment, mTransactionListFragmentTag);
 			
-			if (mSelectedTransactionDay != null) {
-				mTransactionListFragment.displayTransactionToday();
-			} else {
-				mTransactionListFragment.displayTransactionByMonth(mSelectedTransactionMonth);
+			if (mIsDisplayTransactionMonth) {
+				mTransactionListFragment.displayTransactionOnMonth(mSelectedTransactionMonth);
+				
+			} else if (mIsDisplayTransactionDay) {
+				mTransactionListFragment.displayTransactionOnDay(mSelectedTransactionDay);
 			}
+		}
+	}
+	
+	private void resetDisplayStatus() {
+		
+		mIsDisplayTransactionMonth = false;
+		mIsDisplayTransactionDay = false;
+		mIsDisplayTransaction = false;
+	}
+	
+	private void setDisplayStatusToParent() {
+		
+		if (mIsDisplayTransactionDay) {
+		
+			mIsDisplayTransactionMonth = true;
+			mIsDisplayTransactionDay = false;
+		
+		} else if (mIsDisplayTransaction) {
+			
+			mIsDisplayTransactionDay = true;
+			mIsDisplayTransaction = false;
 		}
 	}
 }

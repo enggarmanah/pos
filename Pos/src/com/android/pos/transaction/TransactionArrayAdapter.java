@@ -3,7 +3,7 @@ package com.android.pos.transaction;
 import java.util.List;
 
 import com.android.pos.R;
-import com.android.pos.dao.TransactionMonth;
+import com.android.pos.dao.Transactions;
 import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -13,17 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionMonth> {
+public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 
 	private Context context;
-	private List<TransactionMonth> transactioMonths;
+	private List<Transactions> transactions;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onTransactionMonthSelected(TransactionMonth item);
+		public void onTransactionSelected(Transactions item);
 		
-		public TransactionMonth getSelectedTransactionMonth();
+		public Transactions getSelectedTransaction();
 	}
 
 	class ViewHolder {
@@ -31,19 +31,19 @@ public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionMonth>
 		TextView totalAmountText;
 	}
 
-	public TransactionMonthArrayAdapter(Context context, List<TransactionMonth> transactionMonths, ItemActionListener listener) {
+	public TransactionArrayAdapter(Context context, List<Transactions> transactions, ItemActionListener listener) {
 
-		super(context, R.layout.transaction_summary_list_item, transactionMonths);
+		super(context, R.layout.transaction_summary_list_item, transactions);
 		
 		this.context = context;
-		this.transactioMonths = transactionMonths;
+		this.transactions = transactions;
 		this.mCallback = listener;
 	}
 	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final TransactionMonth transactionMonth = transactioMonths.get(position);
+		final Transactions transaction = transactions.get(position);
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -74,14 +74,14 @@ public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionMonth>
 			totalAmount = viewHolder.totalAmountText;
 		}
 		
-		transDate.setText(CommonUtil.formatDate(transactionMonth.getMonth()));
-		totalAmount.setText(CommonUtil.formatCurrency(transactionMonth.getAmount()));
+		transDate.setText(CommonUtil.formatDateTime(transaction.getTransactionDate()));
+		totalAmount.setText(CommonUtil.formatCurrency(transaction.getTotalAmount()));
 
-		rowView.setOnClickListener(getItemOnClickListener(transactionMonth, transDate));
+		rowView.setOnClickListener(getItemOnClickListener(transaction, transDate));
 		
-		TransactionMonth selectedTransactionMonth = mCallback.getSelectedTransactionMonth();
+		Transactions selectedTransaction = mCallback.getSelectedTransaction();
 		
-		if (selectedTransactionMonth != null && selectedTransactionMonth.getMonth() == transactionMonth.getMonth()) {
+		if (selectedTransaction != null && selectedTransaction.getId() == transaction.getId()) {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
 		} else {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
@@ -90,7 +90,7 @@ public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionMonth>
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final TransactionMonth item, final TextView itemNameView) {
+	private View.OnClickListener getItemOnClickListener(final Transactions item, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			
@@ -99,7 +99,7 @@ public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionMonth>
 				
 				v.setSelected(true);
 
-				mCallback.onTransactionMonthSelected(item);
+				mCallback.onTransactionSelected(item);
 			}
 		};
 	}
