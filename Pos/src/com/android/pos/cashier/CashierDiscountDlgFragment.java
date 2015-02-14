@@ -1,7 +1,5 @@
 package com.android.pos.cashier;
 
-import java.util.List;
-
 import com.android.pos.R;
 import com.android.pos.dao.Discount;
 import com.android.pos.service.DiscountDaoService;
@@ -35,7 +33,7 @@ public class CashierDiscountDlgFragment extends DialogFragment implements Cashie
         
         setCancelable(false);
         
-        discountArrayAdapter = new CashierDiscountArrayAdapter(getActivity(), getDiscounts(), this);
+        discountArrayAdapter = new CashierDiscountArrayAdapter(getActivity(), mDiscountDaoService.getDiscounts(), this);
 	}
 	
 	@Override
@@ -80,11 +78,6 @@ public class CashierDiscountDlgFragment extends DialogFragment implements Cashie
 	public void onDiscountSelected(Discount discount) {
 		
 		mActionListener.onDiscountSelected(discount);
-	}
-	
-	private List<Discount> getDiscounts() {
-
-		return mDiscountDaoService.getDiscounts();
 	}
 	
 	private View.OnClickListener getNoDiscountTextOnClickListener() {

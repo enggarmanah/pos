@@ -6,6 +6,7 @@ import java.util.List;
 import com.android.pos.Constant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDao;
+import com.android.pos.dao.ProductGroup;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
@@ -50,6 +51,25 @@ public class ProductDaoService {
 		Query<Product> q = qb.build();
 		List<Product> list = q.list();
 
+		return list;
+	}
+	
+	public List<Product> getProducts(String query, ProductGroup productGroup) {
+
+		QueryBuilder<Product> qb = productDao.queryBuilder();
+		
+		if (productGroup == null) {
+			qb.where(ProductDao.Properties.Name.like("%" + query + "%"),
+					ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
+		} else {
+			qb.where(ProductDao.Properties.Name.like("%" + query + "%"), 
+					ProductDao.Properties.ProductGroupId.eq(productGroup.getId()),
+					ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
+		}
+
+		Query<Product> q = qb.build();
+		List<Product> list = q.list();
+		
 		return list;
 	}
 	

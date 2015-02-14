@@ -11,6 +11,7 @@ public class Product extends Base {
 	private String name;
 	private String type;
 	private Integer price;
+	private Integer cost_price;
 	private String pic_required;
 	private Integer commision;
 	private Integer promo_price;
@@ -25,6 +26,7 @@ public class Product extends Base {
 		this.name = bean.getName();
 		this.type = bean.getType();
 		this.price = bean.getPrice();
+		this.cost_price = bean.getCost_price();
 		this.pic_required = bean.getPic_required();
 		this.commision = bean.getCommision();
 		this.promo_price = bean.getPromo_price();
@@ -63,6 +65,14 @@ public class Product extends Base {
 
 	public void setPrice(Integer price) {
 		this.price = price;
+	}
+
+	public Integer getCost_price() {
+		return cost_price;
+	}
+
+	public void setCost_price(Integer cost_price) {
+		this.cost_price = cost_price;
 	}
 
 	public String getPic_required() {

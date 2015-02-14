@@ -170,6 +170,8 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 			return;
 		}
 		
+    	getFirstField().requestFocus();
+    	
 		saveItem();
     	
     	if (getItemId(mItem) == null) {

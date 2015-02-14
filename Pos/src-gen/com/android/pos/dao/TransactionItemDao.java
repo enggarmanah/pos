@@ -35,9 +35,11 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         public final static Property ProductName = new Property(4, String.class, "productName", false, "PRODUCT_NAME");
         public final static Property ProductType = new Property(5, String.class, "productType", false, "PRODUCT_TYPE");
         public final static Property Price = new Property(6, Integer.class, "price", false, "PRICE");
-        public final static Property Quantity = new Property(7, Integer.class, "quantity", false, "QUANTITY");
-        public final static Property EmployeeId = new Property(8, long.class, "employeeId", false, "EMPLOYEE_ID");
-        public final static Property UploadStatus = new Property(9, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CostPrice = new Property(7, Integer.class, "costPrice", false, "COST_PRICE");
+        public final static Property Discount = new Property(8, Integer.class, "discount", false, "DISCOUNT");
+        public final static Property Quantity = new Property(9, Integer.class, "quantity", false, "QUANTITY");
+        public final static Property EmployeeId = new Property(10, long.class, "employeeId", false, "EMPLOYEE_ID");
+        public final static Property UploadStatus = new Property(11, String.class, "uploadStatus", false, "UPLOAD_STATUS");
     };
 
     private DaoSession daoSession;
@@ -65,9 +67,11 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
                 "'PRODUCT_NAME' TEXT," + // 4: productName
                 "'PRODUCT_TYPE' TEXT," + // 5: productType
                 "'PRICE' INTEGER," + // 6: price
-                "'QUANTITY' INTEGER," + // 7: quantity
-                "'EMPLOYEE_ID' INTEGER NOT NULL ," + // 8: employeeId
-                "'UPLOAD_STATUS' TEXT);"); // 9: uploadStatus
+                "'COST_PRICE' INTEGER," + // 7: costPrice
+                "'DISCOUNT' INTEGER," + // 8: discount
+                "'QUANTITY' INTEGER," + // 9: quantity
+                "'EMPLOYEE_ID' INTEGER NOT NULL ," + // 10: employeeId
+                "'UPLOAD_STATUS' TEXT);"); // 11: uploadStatus
     }
 
     /** Drops the underlying database table. */
@@ -104,15 +108,25 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
             stmt.bindLong(7, price);
         }
  
+        Integer costPrice = entity.getCostPrice();
+        if (costPrice != null) {
+            stmt.bindLong(8, costPrice);
+        }
+ 
+        Integer discount = entity.getDiscount();
+        if (discount != null) {
+            stmt.bindLong(9, discount);
+        }
+ 
         Integer quantity = entity.getQuantity();
         if (quantity != null) {
-            stmt.bindLong(8, quantity);
+            stmt.bindLong(10, quantity);
         }
-        stmt.bindLong(9, entity.getEmployeeId());
+        stmt.bindLong(11, entity.getEmployeeId());
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(10, uploadStatus);
+            stmt.bindString(12, uploadStatus);
         }
     }
 
@@ -139,9 +153,11 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // productName
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // productType
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // price
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // quantity
-            cursor.getLong(offset + 8), // employeeId
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // uploadStatus
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // costPrice
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // discount
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // quantity
+            cursor.getLong(offset + 10), // employeeId
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // uploadStatus
         );
         return entity;
     }
@@ -156,9 +172,11 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         entity.setProductName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setProductType(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setPrice(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setQuantity(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setEmployeeId(cursor.getLong(offset + 8));
-        entity.setUploadStatus(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setCostPrice(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setDiscount(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setQuantity(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setEmployeeId(cursor.getLong(offset + 10));
+        entity.setUploadStatus(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
      }
     
     /** @inheritdoc */

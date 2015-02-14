@@ -47,6 +47,17 @@
                 android:id="@+id/priceTxt"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
+        
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_cost_price" />
+
+            <EditText
+                android:id="@+id/costPriceTxt"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
 
         <LinearLayout style="@style/FormRowStyle" >
 

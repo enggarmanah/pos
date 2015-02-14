@@ -8,13 +8,14 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Customer;
-import com.android.pos.dao.DaoSession;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
+import com.android.pos.service.TransactionItemDaoService;
+import com.android.pos.service.TransactionsDaoService;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.PrintUtil;
@@ -75,16 +76,8 @@ public class CashierActivity extends BaseActivity
 
 	private String prevQuery = Constant.EMPTY_STRING;
 	
-	private static DaoSession daoSession;
-	
-	private static DaoSession getDaoSession() {
-		
-		if (daoSession == null) {
-			daoSession = DbUtil.getSession();
-		}
-		
-		return daoSession;
-	}
+	private TransactionsDaoService mTransactionDaoService = new TransactionsDaoService();
+	private TransactionItemDaoService mTransactionItemDaoService = new TransactionItemDaoService();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -403,8 +396,21 @@ public class CashierActivity extends BaseActivity
 			transItem.setEmployee(personInCharge);
 		}
 		
+		int costPrice = product.getCostPrice() == null ? product.getPrice() : product.getCostPrice();
+		
 		transItem.setPrice(product.getPrice());
-
+		transItem.setCostPrice(costPrice);
+		
+		int discountAmount = 0;
+		
+		if (mDiscount != null) {
+			
+			int discountPercentage = mDiscount.getPercentage();
+			discountAmount = discountPercentage * transItem.getPrice() / 100;
+		}
+		
+		transItem.setDiscount(discountAmount);
+		
 		if (mIsMultiplesPane) {
 			mOrderFragment.addTransactionItem(transItem);
 		} else {
@@ -433,7 +439,7 @@ public class CashierActivity extends BaseActivity
 		transaction.setMerchant(MerchantUtil.getMerchant());
 		transaction.setUploadStatus(Constant.STATUS_YES);
 		
-		getDaoSession().insert(transaction);
+		mTransactionDaoService.addTransactions(transaction);
 		
 		System.out.println("Trasaction ID : " + transaction.getId());
 		
@@ -443,7 +449,7 @@ public class CashierActivity extends BaseActivity
 			transactionItem.setMerchant(MerchantUtil.getMerchant());
 			transactionItem.setUploadStatus(Constant.STATUS_YES);
 			
-			getDaoSession().insert(transactionItem);
+			mTransactionItemDaoService.addTransactionItem(transactionItem);
 			
 			System.out.println("Trasaction Item ID : " + transactionItem.getId());
 		}
@@ -517,7 +523,19 @@ public class CashierActivity extends BaseActivity
 		} else {
 			
 			mOrderFragment.setDiscount(discount);
+			updateTransactionItemsDiscount();
 			mDiscountDlgFragment.dismiss();
+		}
+	}
+	
+	private void updateTransactionItemsDiscount() {
+		
+		for (TransactionItem transactionItem : mTransactionItems) {
+			
+			int discountPercentage = mDiscount.getPercentage();
+			int discountAmount = discountPercentage * transactionItem.getPrice() / 100;
+			
+			transactionItem.setDiscount(discountAmount);
 		}
 	}
 	

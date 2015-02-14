@@ -6,11 +6,8 @@ import java.util.List;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Customer;
-import com.android.pos.dao.CustomerDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.CustomerDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -37,7 +34,7 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
 	
 	List<Customer> mCustomers;
 	
-	private CustomerDao mCustomerDao = DbUtil.getSession().getCustomerDao();
+	private CustomerDaoService mCustomerDaoService = new CustomerDaoService();
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +74,7 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
 				System.out.println("Search Customer : " + s.toString());
 				
 				mCustomers.clear();
-				mCustomers.addAll(getCustomers(s.toString()));
+				mCustomers.addAll(mCustomerDaoService.getCustomers(s.toString()));
 				customerArrayAdapter.notifyDataSetChanged();
 			}
 			
@@ -123,18 +120,6 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
 		
 		dismiss();
 		mActionListener.onCustomerSelected(customer);
-	}
-	
-	private List<Customer> getCustomers(String name) {
-
-		QueryBuilder<Customer> qb = mCustomerDao.queryBuilder();
-		qb.where(CustomerDao.Properties.Name.like("%" + name + "%")).orderAsc(CustomerDao.Properties.Name);
-
-
-		Query<Customer> q = qb.build();
-		List<Customer> list = q.list();
-		
-		return list;
 	}
 	
 	private View.OnClickListener getNoCustomerTextOnClickListener() {

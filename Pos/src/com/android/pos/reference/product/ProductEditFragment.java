@@ -32,6 +32,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
 	Spinner mTypeSp;
 	Spinner mProductGrpSp;
     EditText mPriceText;
+    EditText mCostPriceText;
     Spinner mPicRequiredSp;
     EditText mCommisionText;
     EditText mPromoPriceText;
@@ -68,6 +69,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	mTypeSp = (Spinner) getView().findViewById(R.id.typeSp);
     	mProductGrpSp = (Spinner) getView().findViewById(R.id.productGrpSp);
     	mPriceText = (EditText) getView().findViewById(R.id.priceTxt);
+    	mCostPriceText = (EditText) getView().findViewById(R.id.costPriceTxt);
     	mPicRequiredSp = (Spinner) getView().findViewById(R.id.picRequiredSp);
     	mCommisionText = (EditText) getView().findViewById(R.id.commisionTxt);
     	mPromoPriceText = (EditText) getView().findViewById(R.id.promoPriceTxt);
@@ -79,6 +81,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	registerField(mTypeSp);
     	registerField(mProductGrpSp);
     	registerField(mPriceText);
+    	registerField(mCostPriceText);
     	registerField(mPicRequiredSp);
     	registerField(mCommisionText);
     	registerField(mPromoPriceText);
@@ -93,6 +96,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	mandatoryFields.add(new FormField(mPriceText, R.string.field_price));
     	
     	mPriceText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mPriceText));
+    	mCostPriceText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mCostPriceText));
     	mCommisionText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mCommisionText));
     	mPromoPriceText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mPromoPriceText));
     	
@@ -127,6 +131,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		
     		mNameText.setText(product.getName());
     		mPriceText.setText(CommonUtil.formatCurrency(product.getPrice()));
+    		mCostPriceText.setText(CommonUtil.formatCurrency(product.getCostPrice()));
     		mCommisionText.setText(CommonUtil.formatCurrency(product.getCommision()));
     		mPromoPriceText.setText(CommonUtil.formatCurrency(product.getPromoPrice()));
     		mPromoStartDate.setText(CommonUtil.formatDate(product.getPromoStart()));
@@ -152,6 +157,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	String type = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
     	Long prodGrpId = CommonUtil.getNvlId((ProductGroup) mProductGrpSp.getSelectedItem());
     	Integer price = CommonUtil.parseCurrency(mPriceText.getText().toString());
+    	Integer costPrice = CommonUtil.parseCurrency(mCostPriceText.getText().toString());
     	String picRequired = CodeBean.getNvlCode((CodeBean) mPicRequiredSp.getSelectedItem());
     	Integer commision = CommonUtil.parseCurrency(mCommisionText.getText().toString());
     	Integer promoPrice = CommonUtil.parseCurrency(mPromoPriceText.getText().toString());
@@ -167,6 +173,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		mItem.setType(type);
     		mItem.setProductGroupId(prodGrpId);
     		mItem.setPrice(price);
+    		mItem.setCostPrice(costPrice);
     		mItem.setPicRequired(picRequired);
     		mItem.setCommision(commision);
     		mItem.setPromoPrice(promoPrice);
@@ -201,6 +208,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
         
         mNameText.getText().clear();
         mPriceText.getText().clear();
+        mCostPriceText.getText().clear();
         mCommisionText.getText().clear();
         mPromoPriceText.getText().clear();
         mPromoStartDate.getText().clear();

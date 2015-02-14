@@ -34,17 +34,18 @@ public class ProductDao extends AbstractDao<Product, Long> {
         public final static Property Name = new Property(3, String.class, "name", false, "NAME");
         public final static Property Type = new Property(4, String.class, "type", false, "TYPE");
         public final static Property Price = new Property(5, Integer.class, "price", false, "PRICE");
-        public final static Property PicRequired = new Property(6, String.class, "picRequired", false, "PIC_REQUIRED");
-        public final static Property Commision = new Property(7, Integer.class, "commision", false, "COMMISION");
-        public final static Property PromoPrice = new Property(8, Integer.class, "promoPrice", false, "PROMO_PRICE");
-        public final static Property PromoStart = new Property(9, java.util.Date.class, "promoStart", false, "PROMO_START");
-        public final static Property PromoEnd = new Property(10, java.util.Date.class, "promoEnd", false, "PROMO_END");
-        public final static Property Status = new Property(11, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(12, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(13, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(14, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(15, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(16, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property CostPrice = new Property(6, Integer.class, "costPrice", false, "COST_PRICE");
+        public final static Property PicRequired = new Property(7, String.class, "picRequired", false, "PIC_REQUIRED");
+        public final static Property Commision = new Property(8, Integer.class, "commision", false, "COMMISION");
+        public final static Property PromoPrice = new Property(9, Integer.class, "promoPrice", false, "PROMO_PRICE");
+        public final static Property PromoStart = new Property(10, java.util.Date.class, "promoStart", false, "PROMO_START");
+        public final static Property PromoEnd = new Property(11, java.util.Date.class, "promoEnd", false, "PROMO_END");
+        public final static Property Status = new Property(12, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(13, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(14, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(15, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(16, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(17, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
 
     private DaoSession daoSession;
@@ -71,17 +72,18 @@ public class ProductDao extends AbstractDao<Product, Long> {
                 "'NAME' TEXT," + // 3: name
                 "'TYPE' TEXT," + // 4: type
                 "'PRICE' INTEGER," + // 5: price
-                "'PIC_REQUIRED' TEXT," + // 6: picRequired
-                "'COMMISION' INTEGER," + // 7: commision
-                "'PROMO_PRICE' INTEGER," + // 8: promoPrice
-                "'PROMO_START' INTEGER," + // 9: promoStart
-                "'PROMO_END' INTEGER," + // 10: promoEnd
-                "'STATUS' TEXT," + // 11: status
-                "'UPLOAD_STATUS' TEXT," + // 12: uploadStatus
-                "'CREATE_BY' TEXT," + // 13: createBy
-                "'CREATE_DATE' INTEGER," + // 14: createDate
-                "'UPDATE_BY' TEXT," + // 15: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 16: updateDate
+                "'COST_PRICE' INTEGER," + // 6: costPrice
+                "'PIC_REQUIRED' TEXT," + // 7: picRequired
+                "'COMMISION' INTEGER," + // 8: commision
+                "'PROMO_PRICE' INTEGER," + // 9: promoPrice
+                "'PROMO_START' INTEGER," + // 10: promoStart
+                "'PROMO_END' INTEGER," + // 11: promoEnd
+                "'STATUS' TEXT," + // 12: status
+                "'UPLOAD_STATUS' TEXT," + // 13: uploadStatus
+                "'CREATE_BY' TEXT," + // 14: createBy
+                "'CREATE_DATE' INTEGER," + // 15: createDate
+                "'UPDATE_BY' TEXT," + // 16: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 17: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -121,59 +123,64 @@ public class ProductDao extends AbstractDao<Product, Long> {
             stmt.bindLong(6, price);
         }
  
+        Integer costPrice = entity.getCostPrice();
+        if (costPrice != null) {
+            stmt.bindLong(7, costPrice);
+        }
+ 
         String picRequired = entity.getPicRequired();
         if (picRequired != null) {
-            stmt.bindString(7, picRequired);
+            stmt.bindString(8, picRequired);
         }
  
         Integer commision = entity.getCommision();
         if (commision != null) {
-            stmt.bindLong(8, commision);
+            stmt.bindLong(9, commision);
         }
  
         Integer promoPrice = entity.getPromoPrice();
         if (promoPrice != null) {
-            stmt.bindLong(9, promoPrice);
+            stmt.bindLong(10, promoPrice);
         }
  
         java.util.Date promoStart = entity.getPromoStart();
         if (promoStart != null) {
-            stmt.bindLong(10, promoStart.getTime());
+            stmt.bindLong(11, promoStart.getTime());
         }
  
         java.util.Date promoEnd = entity.getPromoEnd();
         if (promoEnd != null) {
-            stmt.bindLong(11, promoEnd.getTime());
+            stmt.bindLong(12, promoEnd.getTime());
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(12, status);
+            stmt.bindString(13, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(13, uploadStatus);
+            stmt.bindString(14, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(14, createBy);
+            stmt.bindString(15, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(15, createDate.getTime());
+            stmt.bindLong(16, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(16, updateBy);
+            stmt.bindString(17, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(17, updateDate.getTime());
+            stmt.bindLong(18, updateDate.getTime());
         }
     }
 
@@ -199,17 +206,18 @@ public class ProductDao extends AbstractDao<Product, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // type
             cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // price
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // picRequired
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // commision
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // promoPrice
-            cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)), // promoStart
-            cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)), // promoEnd
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // status
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // uploadStatus
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // createBy
-            cursor.isNull(offset + 14) ? null : new java.util.Date(cursor.getLong(offset + 14)), // createDate
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // updateBy
-            cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)) // updateDate
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // costPrice
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // picRequired
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // commision
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // promoPrice
+            cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)), // promoStart
+            cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)), // promoEnd
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // status
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // uploadStatus
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // createBy
+            cursor.isNull(offset + 15) ? null : new java.util.Date(cursor.getLong(offset + 15)), // createDate
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // updateBy
+            cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)) // updateDate
         );
         return entity;
     }
@@ -223,17 +231,18 @@ public class ProductDao extends AbstractDao<Product, Long> {
         entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setType(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setPrice(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setPicRequired(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setCommision(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setPromoPrice(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setPromoStart(cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)));
-        entity.setPromoEnd(cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)));
-        entity.setStatus(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setUploadStatus(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setCreateBy(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setCreateDate(cursor.isNull(offset + 14) ? null : new java.util.Date(cursor.getLong(offset + 14)));
-        entity.setUpdateBy(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setUpdateDate(cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)));
+        entity.setCostPrice(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setPicRequired(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setCommision(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setPromoPrice(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setPromoStart(cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)));
+        entity.setPromoEnd(cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)));
+        entity.setStatus(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setUploadStatus(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setCreateBy(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setCreateDate(cursor.isNull(offset + 15) ? null : new java.util.Date(cursor.getLong(offset + 15)));
+        entity.setUpdateBy(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setUpdateDate(cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)));
      }
     
     /** @inheritdoc */

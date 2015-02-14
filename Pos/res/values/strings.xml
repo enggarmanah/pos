@@ -81,7 +81,8 @@
     <string name="field_name">Nama :</string>
     <string name="field_type">Tipe :</string>
     <string name="field_group">Kategori :</string>
-    <string name="field_price">Harga :</string>
+    <string name="field_price">Harga Jual :</string>
+    <string name="field_cost_price">Harga Beli :</string>
     <string name="field_pic_required">Butuh PIC :</string>
     <string name="field_commision">Komisi :</string>
     <string name="field_promo_price">Harga Promo :</string>

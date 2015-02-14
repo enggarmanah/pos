@@ -10,7 +10,6 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table TRANSACTION_ITEM.
  */
-
 @SuppressWarnings("serial")
 public class TransactionItem implements Serializable {
 
@@ -21,6 +20,8 @@ public class TransactionItem implements Serializable {
     private String productName;
     private String productType;
     private Integer price;
+    private Integer costPrice;
+    private Integer discount;
     private Integer quantity;
     private long employeeId;
     private String uploadStatus;
@@ -51,7 +52,7 @@ public class TransactionItem implements Serializable {
         this.id = id;
     }
 
-    public TransactionItem(Long id, long merchantId, long transactionId, long productId, String productName, String productType, Integer price, Integer quantity, long employeeId, String uploadStatus) {
+    public TransactionItem(Long id, long merchantId, long transactionId, long productId, String productName, String productType, Integer price, Integer costPrice, Integer discount, Integer quantity, long employeeId, String uploadStatus) {
         this.id = id;
         this.merchantId = merchantId;
         this.transactionId = transactionId;
@@ -59,6 +60,8 @@ public class TransactionItem implements Serializable {
         this.productName = productName;
         this.productType = productType;
         this.price = price;
+        this.costPrice = costPrice;
+        this.discount = discount;
         this.quantity = quantity;
         this.employeeId = employeeId;
         this.uploadStatus = uploadStatus;
@@ -124,6 +127,22 @@ public class TransactionItem implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Integer getCostPrice() {
+        return costPrice;
+    }
+
+    public void setCostPrice(Integer costPrice) {
+        this.costPrice = costPrice;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 
     public Integer getQuantity() {

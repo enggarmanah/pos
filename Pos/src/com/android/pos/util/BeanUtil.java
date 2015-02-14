@@ -209,6 +209,7 @@ public class BeanUtil {
 		bean.setName(product.getName());
 		bean.setType(product.getType());
 		bean.setPrice(product.getPrice());
+		bean.setCost_price(product.getCostPrice());
 		bean.setPic_required(product.getPicRequired());
 		bean.setCommision(product.getCommision());
 		bean.setPromo_price(product.getPromoPrice());
@@ -231,6 +232,7 @@ public class BeanUtil {
 		product.setName(bean.getName());
 		product.setType(bean.getType());
 		product.setPrice(bean.getPrice());
+		product.setCostPrice(bean.getCost_price());
 		product.setPicRequired(bean.getPic_required());
 		product.setCommision(bean.getCommision());
 		product.setPromoPrice(bean.getPromo_price());
@@ -345,6 +347,8 @@ public class BeanUtil {
 		bean.setProduct_name(transactionItem.getProductName());
 		bean.setProduct_type(transactionItem.getProductType());
 		bean.setPrice(transactionItem.getPrice());
+		bean.setCost_price(transactionItem.getCostPrice());
+		bean.setDiscount(transactionItem.getDiscount());
 		bean.setQuantity(transactionItem.getQuantity());
 		bean.setEmployee_id(transactionItem.getEmployeeId());
 		
@@ -360,6 +364,8 @@ public class BeanUtil {
 		transactionItem.setProductName(bean.getProduct_name());
 		transactionItem.setProductType(bean.getProduct_type());
 		transactionItem.setPrice(bean.getPrice());
+		transactionItem.setCostPrice(bean.getCost_price());
+		transactionItem.setDiscount(bean.getDiscount());
 		transactionItem.setQuantity(bean.getQuantity());
 		transactionItem.setEmployeeId(bean.getEmployee_id());
 		transactionItem.setUploadStatus(Constant.STATUS_NO);

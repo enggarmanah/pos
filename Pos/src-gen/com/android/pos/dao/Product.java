@@ -2,7 +2,6 @@ package com.android.pos.dao;
 
 import java.io.Serializable;
 
-import com.android.pos.Constant;
 import com.android.pos.dao.DaoSession;
 
 import de.greenrobot.dao.DaoException;
@@ -20,7 +19,8 @@ public class Product implements Serializable {
     private String name;
     private String type;
     private Integer price;
-    private String picRequired = Constant.STATUS_NO;
+    private Integer costPrice;
+    private String picRequired;
     private Integer commision;
     private Integer promoPrice;
     private java.util.Date promoStart;
@@ -52,13 +52,14 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(Long id, long merchantId, Long productGroupId, String name, String type, Integer price, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Product(Long id, long merchantId, Long productGroupId, String name, String type, Integer price, Integer costPrice, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.productGroupId = productGroupId;
         this.name = name;
         this.type = type;
         this.price = price;
+        this.costPrice = costPrice;
         this.picRequired = picRequired;
         this.commision = commision;
         this.promoPrice = promoPrice;
@@ -124,6 +125,14 @@ public class Product implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Integer getCostPrice() {
+        return costPrice;
+    }
+
+    public void setCostPrice(Integer costPrice) {
+        this.costPrice = costPrice;
     }
 
     public String getPicRequired() {

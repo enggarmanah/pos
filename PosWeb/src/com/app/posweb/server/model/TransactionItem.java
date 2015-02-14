@@ -21,6 +21,8 @@ public class TransactionItem {
 	private String product_name;
 	private String product_type;
 	private Integer price;
+	private Integer cost_price;
+	private Integer discount;
 	private Integer quantity;
 	private long employee_id;
 
@@ -34,6 +36,8 @@ public class TransactionItem {
 		this.product_name = bean.getProduct_name();
 		this.product_type = bean.getProduct_type();
 		this.price = bean.getPrice();
+		this.cost_price = bean.getCost_price();
+		this.discount = bean.getDiscount();
 		this.quantity = bean.getQuantity();
 		this.employee_id = bean.getEmployee_id();
 	}
@@ -100,6 +104,22 @@ public class TransactionItem {
 
 	public void setPrice(Integer price) {
 		this.price = price;
+	}
+
+	public Integer getCost_price() {
+		return cost_price;
+	}
+
+	public void setCost_price(Integer cost_price) {
+		this.cost_price = cost_price;
+	}
+
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
 	}
 
 	public Integer getQuantity() {

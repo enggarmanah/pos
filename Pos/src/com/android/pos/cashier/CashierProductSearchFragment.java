@@ -8,13 +8,10 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.Product;
-import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
-import com.android.pos.dao.ProductGroupDao;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.ProductDaoService;
+import com.android.pos.service.ProductGroupDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,8 +37,8 @@ public class CashierProductSearchFragment extends BaseFragment
 	
 	private CashierActionListener mActionListener;
 	
-	private ProductGroupDao productGroupDao = DbUtil.getSession().getProductGroupDao();
-	private ProductDao productDao = DbUtil.getSession().getProductDao();
+	private ProductGroupDaoService mProductGroupDaoService = new ProductGroupDaoService();
+	private ProductDaoService mProductDaoService = new ProductDaoService();
 	
 	private static String PRODUCT_GROUPS = "PRODUCT_GROUPS";
 	private static String SELECTED_PRODUCT_GROUP = "SELECTED_PRODUCT_GROUP";
@@ -77,11 +74,11 @@ public class CashierProductSearchFragment extends BaseFragment
 		View view = inflater.inflate(R.layout.cashier_product_search_fragment, container, false);
 		
 		if (mProductGroups == null) {
-			mProductGroups = getProductGroups(Constant.EMPTY_STRING);
+			mProductGroups = mProductGroupDaoService.getProductGroups();
 		}
 		
 		if (mSearchQuery != null) {
-			mProducts = getProducts(mSearchQuery);
+			mProducts = mProductDaoService.getProducts(mSearchQuery, mSelectedPrdGroup);
 		}
 		
 		if (mProducts == null) {
@@ -144,18 +141,6 @@ public class CashierProductSearchFragment extends BaseFragment
 		}
 	}
 	
-	
-	public List<ProductGroup> getProductGroups(String query) {
-
-		QueryBuilder<ProductGroup> qb = productGroupDao.queryBuilder();
-		qb.where(ProductGroupDao.Properties.Name.like("%" + query + "%")).orderAsc(ProductGroupDao.Properties.Name);
-
-		Query<ProductGroup> q = qb.build();
-		List<ProductGroup> list = q.list();
-		
-		return list;
-	}
-	
 	public void searchProducts(String query) {
 		
 		mSearchQuery = query;
@@ -167,29 +152,11 @@ public class CashierProductSearchFragment extends BaseFragment
 		mSelectedPrdGroup = null;
 		
 		mProducts.clear();
-		mProducts.addAll(getProducts(query));
+		mProducts.addAll(mProductDaoService.getProducts(query, mSelectedPrdGroup));
 		
 		mProductGroupList.setAdapter(mProductAdapter);
 		
 		refreshNavigationPanel(); 
-	}
-	
-	public List<Product> getProducts(String query) {
-		
-		mSearchQuery = query;
-
-		QueryBuilder<Product> qb = productDao.queryBuilder();
-		
-		if (mSelectedPrdGroup == null) {
-			qb.where(ProductDao.Properties.Name.like("%" + query + "%")).orderAsc(ProductDao.Properties.Name);
-		} else {
-			qb.where(ProductDao.Properties.Name.like("%" + query + "%"), ProductDao.Properties.ProductGroupId.eq(mSelectedPrdGroup.getId())).orderAsc(ProductDao.Properties.Name);
-		}
-
-		Query<Product> q = qb.build();
-		List<Product> list = q.list();
-		
-		return list;
 	}
 	
 	public void showProductGroups() {
@@ -213,8 +180,10 @@ public class CashierProductSearchFragment extends BaseFragment
 		
 		mSelectedPrdGroup = prdGroup;
 		
+		mSearchQuery = Constant.EMPTY_STRING;
+		
 		mProducts.clear();
-		mProducts.addAll(getProducts(Constant.EMPTY_STRING));
+		mProducts.addAll(mProductDaoService.getProducts(mSearchQuery, mSelectedPrdGroup));
 		
 		mProductGroupList.setAdapter(mProductAdapter);
 		

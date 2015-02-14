@@ -5,12 +5,9 @@ import java.util.List;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Employee;
-import com.android.pos.dao.EmployeeDao;
 import com.android.pos.dao.Product;
-import com.android.pos.util.DbUtil;
+import com.android.pos.service.EmployeeDaoService;
 
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -58,7 +55,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	private static String PRODUCT = "PRODUCT";
 	private static String QUANTITY = "QUANTITY";
 	
-	private EmployeeDao mEmployeeDao = DbUtil.getSession().getEmployeeDao();
+	private EmployeeDaoService mEmployeeDaoService = new EmployeeDaoService();
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -181,11 +178,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	
 	private Employee[] getPersonInCharge() {
 
-		QueryBuilder<Employee> qb = mEmployeeDao.queryBuilder();
-		qb.orderAsc(EmployeeDao.Properties.Name);
-
-		Query<Employee> q = qb.build();
-		List<Employee> list = q.list();
+		List<Employee> list = mEmployeeDaoService.getEmployees(Constant.EMPTY_STRING);
 		
 		return list.toArray(new Employee[list.size()]);
 	}
