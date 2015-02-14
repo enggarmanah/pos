@@ -33,7 +33,7 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 
 	public TransactionArrayAdapter(Context context, List<Transactions> transactions, ItemActionListener listener) {
 
-		super(context, R.layout.transaction_summary_list_item, transactions);
+		super(context, R.layout.transaction_list_item, transactions);
 		
 		this.context = context;
 		this.transactions = transactions;
@@ -54,7 +54,7 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.transaction_summary_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.transaction_list_item, parent, false);
 			
 			transDate = (TextView) rowView.findViewById(R.id.transactionDateText);
 			totalAmount = (TextView) rowView.findViewById(R.id.totalAmountText);

@@ -84,7 +84,7 @@ public class TransactionItemDao {
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT ti FROM Transactions AS t, TransactionItem AS ti WHERE  "
-				+ "	ti.merchant_id = :merchantId AND ti.transaction_id = t.id AND ti.merchant_id = t.merchant_id AND t.transaction_date >= :lastSyncDate");
+				+ "	ti.merchant_id = :merchantId AND ti.transaction_id = t.remote_id AND ti.merchant_id = t.merchant_id AND t.transaction_date >= :lastSyncDate");
 		
 		sql.append(" ORDER BY ti.id");
 		

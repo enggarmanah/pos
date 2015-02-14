@@ -11,7 +11,7 @@ public class UserUtil {
 	public static User getUser() {
 		
 		if (mUser == null) {
-			mUserDaoService.getUser(Long.valueOf(1));
+			mUser = mUserDaoService.getUser(Long.valueOf(1));
 		}
 		
 		return mUser;

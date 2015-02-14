@@ -11,10 +11,10 @@ import android.view.View;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
+import com.android.pos.async.HttpAsyncListener;
+import com.android.pos.async.HttpAsyncManager;
+import com.android.pos.async.HttpAsyncProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
-import com.android.pos.http.HttpAsyncListener;
-import com.android.pos.http.HttpAsyncManager;
-import com.android.pos.http.HttpAsyncProgressDlgFragment;
 import com.android.pos.reference.customer.CustomerMgtActivity;
 import com.android.pos.reference.discount.DiscountMgtActivity;
 import com.android.pos.reference.employee.EmployeeMgtActivity;

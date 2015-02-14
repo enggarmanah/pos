@@ -10,11 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.pos.R;
+import com.android.pos.async.HttpAsyncListener;
+import com.android.pos.async.HttpAsyncManager;
+import com.android.pos.async.HttpAsyncProgressDlgFragment;
 import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.dao.Merchant;
-import com.android.pos.http.HttpAsyncListener;
-import com.android.pos.http.HttpAsyncManager;
-import com.android.pos.http.HttpAsyncProgressDlgFragment;
 import com.android.pos.service.MerchantDaoService;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;

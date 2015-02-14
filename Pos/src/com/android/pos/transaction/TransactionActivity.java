@@ -7,6 +7,7 @@ import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.TransactionDay;
 import com.android.pos.dao.TransactionMonth;
+import com.android.pos.dao.TransactionYear;
 import com.android.pos.dao.Transactions;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
@@ -24,16 +25,21 @@ public class TransactionActivity extends BaseActivity
 	
 	boolean mIsMultiplesPane = false;
 	
+	private TransactionYear mSelectedTransactionYear;
 	private TransactionMonth mSelectedTransactionMonth;
 	private TransactionDay mSelectedTransactionDay;
 	private Transactions mSelectedTransaction;
 	
+	private static String SELECTED_TRANSACTION_YEAR = "SELECTED_TRANSACTION_YEAR";
+	private static String SELECTED_TRANSACTION_MONTH = "SELECTED_TRANSACTION_MONTH";
 	private static String SELECTED_TRANSACTION_DAY = "SELECTED_TRANSACTION_DAY";
 	private static String SELECTED_TRANSACTION = "SELECTED_TRANSACTION";
 	
 	private String mTransactionListFragmentTag = "transactionListFragmentTag";
 	private String mTransactionDetailFragmentTag = "transactionDetailFragmentTag";
 	
+	private boolean mIsDisplayTransactionAllYears = false;
+	private boolean mIsDisplayTransactionYear = false;
 	private boolean mIsDisplayTransactionMonth = false;
 	private boolean mIsDisplayTransactionDay = false;
 	private boolean mIsDisplayTransaction = false;
@@ -47,8 +53,10 @@ public class TransactionActivity extends BaseActivity
 		DbUtil.initDb(this);
 
 		initDrawerMenu();
-
-		initFragments(savedInstanceState);
+		
+		initInstanceState(savedInstanceState);
+		
+		initFragments();
 
 		setTitle(getString(R.string.menu_transaction));
 
@@ -56,21 +64,29 @@ public class TransactionActivity extends BaseActivity
 		
 		initWaitAfterFragmentRemovedTask(mTransactionListFragmentTag, mTransactionDetailFragmentTag);
 		
-		if (mSelectedTransactionMonth == null) {
+		if (savedInstanceState == null) {
 			
 			mSelectedTransactionMonth = new TransactionMonth();
 			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
+			
+			mSelectedTransactionYear = new TransactionYear();
+			mSelectedTransactionYear.setYear(CommonUtil.getCurrentYear());
 		}
 	}
 	
-	private void initFragments(Bundle savedInstanceState) {
+	private void initInstanceState(Bundle savedInstanceState) {
 		
 		if (savedInstanceState != null) {
 			
+			mSelectedTransactionYear = (TransactionYear) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
+			mSelectedTransactionMonth = (TransactionMonth) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
 			mSelectedTransactionDay = (TransactionDay) savedInstanceState.getSerializable(SELECTED_TRANSACTION_DAY);
 			mSelectedTransaction = (Transactions) savedInstanceState.getSerializable(SELECTED_TRANSACTION);
 		}
-
+	}
+	
+	private void initFragments() {
+		
 		mIsMultiplesPane = getResources().getBoolean(R.bool.has_multiple_panes);
 
 		mTransactionListFragment = (TransactionListFragment) getFragmentManager().findFragmentByTag(mTransactionListFragmentTag);
@@ -96,7 +112,9 @@ public class TransactionActivity extends BaseActivity
 	public void onSaveInstanceState(Bundle outState) {
 
 		super.onSaveInstanceState(outState);
-
+		
+		outState.putSerializable(SELECTED_TRANSACTION_YEAR, (Serializable) mSelectedTransactionYear);
+		outState.putSerializable(SELECTED_TRANSACTION_MONTH, (Serializable) mSelectedTransactionMonth);
 		outState.putSerializable(SELECTED_TRANSACTION_DAY, (Serializable) mSelectedTransactionDay);
 		outState.putSerializable(SELECTED_TRANSACTION, (Serializable) mSelectedTransaction);
 	}
@@ -109,6 +127,8 @@ public class TransactionActivity extends BaseActivity
 	
 	private void loadFragments() {
 		
+		mTransactionListFragment.setSelectedTransactionYear(mSelectedTransactionYear);
+		mTransactionListFragment.setSelectedTransactionMonth(mSelectedTransactionMonth);
 		mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
 		mTransactionListFragment.setSelectedTransaction(mSelectedTransaction);
 
@@ -117,7 +137,7 @@ public class TransactionActivity extends BaseActivity
 			addFragment(mTransactionListFragment, mTransactionListFragmentTag);
 			addFragment(mTransactionDetailFragment, mTransactionDetailFragmentTag);
 			
-			mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
+			//mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
 			mTransactionDetailFragment.setTransaction(mSelectedTransaction);
 			
 		} else {
@@ -130,7 +150,6 @@ public class TransactionActivity extends BaseActivity
 			} else {
 				
 				addFragment(mTransactionListFragment, mTransactionListFragmentTag);
-				mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
 			}
 		}
 	}
@@ -166,6 +185,15 @@ public class TransactionActivity extends BaseActivity
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public void onTransactionYearSelected(TransactionYear transactionYear) {
+		
+		mSelectedTransactionYear = transactionYear;
+		
+		resetDisplayStatus();
+		mIsDisplayTransactionYear = true;
 	}
 	
 	@Override
@@ -217,39 +245,38 @@ public class TransactionActivity extends BaseActivity
 		
 		if (mIsMultiplesPane) {
 			
-			/*mSelectedTransaction = null;
-			mSelectedTransactionDay = null;*/
-			
-			if (mIsDisplayTransactionMonth) {
-				mTransactionListFragment.displayTransactionOnMonth(mSelectedTransactionMonth);
-				
-			} else if (mIsDisplayTransactionDay) {
-				mTransactionListFragment.displayTransactionOnDay(mSelectedTransactionDay);
-			}
+			initFragment();
 			
 			mTransactionDetailFragment.setTransaction(null);
 			
 		} else {
 			
-			/*if (mSelectedTransaction != null) {
-				mSelectedTransaction = null;
-			} else {
-				mSelectedTransactionDay = null;
-			}*/
-			
 			replaceFragment(mTransactionListFragment, mTransactionListFragmentTag);
 			
-			if (mIsDisplayTransactionMonth) {
-				mTransactionListFragment.displayTransactionOnMonth(mSelectedTransactionMonth);
-				
-			} else if (mIsDisplayTransactionDay) {
-				mTransactionListFragment.displayTransactionOnDay(mSelectedTransactionDay);
-			}
+			initFragment();
+		}
+	}
+	
+	private void initFragment() {
+		
+		if (mIsDisplayTransactionAllYears) {
+			mTransactionListFragment.displayTransactionAllYears();
+			
+		} else if (mIsDisplayTransactionYear) {
+			mTransactionListFragment.displayTransactionOnYear(mSelectedTransactionYear);
+			
+		} else if (mIsDisplayTransactionMonth) {
+			mTransactionListFragment.displayTransactionOnMonth(mSelectedTransactionMonth);
+			
+		} else if (mIsDisplayTransactionDay) {
+			mTransactionListFragment.displayTransactionOnDay(mSelectedTransactionDay);
 		}
 	}
 	
 	private void resetDisplayStatus() {
 		
+		mIsDisplayTransactionAllYears = false;
+		mIsDisplayTransactionYear = false;
 		mIsDisplayTransactionMonth = false;
 		mIsDisplayTransactionDay = false;
 		mIsDisplayTransaction = false;
@@ -257,15 +284,37 @@ public class TransactionActivity extends BaseActivity
 	
 	private void setDisplayStatusToParent() {
 		
-		if (mIsDisplayTransactionDay) {
-		
-			mIsDisplayTransactionMonth = true;
+		if (mIsDisplayTransactionYear) {
+			
+			mIsDisplayTransactionYear = false;
+			mSelectedTransactionYear = null;
+			
+			mIsDisplayTransactionAllYears = true;
+			
+		} else if (mIsDisplayTransactionMonth) {
+			
+			mIsDisplayTransactionMonth = false;
+			mSelectedTransactionMonth = null;
+			
+			mIsDisplayTransactionYear = true;
+			
+		} else if (mIsDisplayTransactionDay) {
+			
 			mIsDisplayTransactionDay = false;
+			mSelectedTransactionDay = null;
+			
+			mIsDisplayTransactionMonth = true;
 		
 		} else if (mIsDisplayTransaction) {
-			
-			mIsDisplayTransactionDay = true;
+					
 			mIsDisplayTransaction = false;
+			mSelectedTransaction = null;
+			
+			if (mIsMultiplesPane) {
+				mIsDisplayTransactionMonth = true;
+			} else {
+				mIsDisplayTransactionDay = true;
+			}
 		}
 	}
 }

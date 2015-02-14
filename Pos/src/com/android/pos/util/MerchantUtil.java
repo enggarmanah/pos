@@ -17,6 +17,11 @@ public class MerchantUtil {
 		return mMerchant;
 	}
 	
+	public static Long getMerchantId() {
+		
+		return getMerchant().getId();
+	}
+	
 	public static void setMerchant(Merchant merchant) {
 		
 		mMerchant = merchant;

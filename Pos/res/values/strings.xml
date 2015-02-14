@@ -145,6 +145,7 @@
     <string name="transaction_cashier">Kasir</string>
     <string name="transaction_list">Daftar Transaksi</string>
     <string name="transaction_recap">Rekap Transaksi</string>
+    <string name="transaction_total">Total Transaksi</string>
     
     <string name="none_paired">Tidak ada printer yang terhubung</string>
     <string name="scanning">Scanning perangkat printer</string>

@@ -1,4 +1,4 @@
-package com.android.pos.http;
+package com.android.pos.async;
 
 public interface HttpAsyncListener {
 	

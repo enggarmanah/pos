@@ -67,6 +67,7 @@ public class CashierPaymentDlgFragment extends DialogFragment {
         setCancelable(false);
         
         if (savedInstanceState != null) {
+        	
 			mTotalBill = (Integer) savedInstanceState.getSerializable(TOTAL_BILL);
 			mPaymentType = (String) savedInstanceState.getSerializable(PAYMENT_TYPE);
 			mCustomer = (Customer) savedInstanceState.getSerializable(CUSTOMER);
@@ -271,6 +272,9 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 				mPaymentType = CodeBean.getNvlCode((CodeBean) mPaymentTypeSp.getSelectedItem());
 						
 				mActionListener.onPaymentInfoProvided(mCustomer, mPaymentType, mTotalBill, mPayment);
+				
+				mPayment = 0;
+				
 				dismiss();
 			}
 		};
@@ -282,6 +286,8 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 			
 			@Override
 			public void onClick(View v) {
+				
+				mPayment = 0;
 				
 				dismiss();
 			}

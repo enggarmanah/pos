@@ -107,6 +107,30 @@ public class CommonUtil {
 		return new SimpleDateFormat("EEEE, dd MMM yyyy, HH:mm", getLocale());
 	}
 	
+	public static Date getFirstDayOfYear(Date date) {
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(date);
+		cal.set(Calendar.DATE, 1);
+		cal.set(Calendar.MONTH, 0);
+		
+		return cal.getTime();
+	}
+	
+	public static Date getLastDayOfYear(Date date) {
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(date);
+		cal.set(Calendar.DATE, 1);
+		cal.set(Calendar.MONTH, 0);
+		cal.add(Calendar.YEAR, 1);
+		cal.add(Calendar.DATE, -1);
+		
+		return cal.getTime();
+	}
+	
 	public static Date getFirstDayOfMonth(Date date) {
 		
 		Calendar cal = Calendar.getInstance();
@@ -125,6 +149,15 @@ public class CommonUtil {
 		cal.set(Calendar.DATE, 1);
 		cal.add(Calendar.MONTH, 1);
 		cal.add(Calendar.DATE, -1);
+		
+		return cal.getTime();
+	}
+	
+	public static Date getCurrentYear() {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DATE, 1);
+		cal.set(Calendar.MONTH, 0);
 		
 		return cal.getTime();
 	}
@@ -189,7 +222,20 @@ public class CommonUtil {
 		return dateStr;
 	}
 	
-	public static String formatMonthDate(Date inputDate) {
+	public static String formatYear(Date inputDate) {
+		
+		String dateStr = Constant.EMPTY_STRING;
+		
+		try {
+			dateStr = getDateFormat("yyyy").format(inputDate);
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+		return dateStr;
+	}
+	
+	public static String formatMonth(Date inputDate) {
 		
 		String dateStr = Constant.EMPTY_STRING;
 		

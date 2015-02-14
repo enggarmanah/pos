@@ -7,6 +7,7 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.TransactionDay;
 import com.android.pos.dao.TransactionMonth;
+import com.android.pos.dao.TransactionYear;
 import com.android.pos.dao.Transactions;
 import com.android.pos.service.TransactionsDaoService;
 import com.android.pos.util.CommonUtil;
@@ -23,7 +24,8 @@ import android.widget.TextView;
 public class TransactionListFragment extends BaseFragment 
 	implements TransactionArrayAdapter.ItemActionListener, 
 		TransactionDayArrayAdapter.ItemActionListener, 
-		TransactionMonthArrayAdapter.ItemActionListener {
+		TransactionMonthArrayAdapter.ItemActionListener,
+		TransactionYearArrayAdapter.ItemActionListener {
 	
 	private ImageButton mBackButton;
 	
@@ -32,14 +34,17 @@ public class TransactionListFragment extends BaseFragment
 	
 	private ListView mTransactionList;
 	
+	private List<TransactionYear> mTransactionYears;
 	private List<TransactionMonth> mTransactionMonths;
 	private List<TransactionDay> mTransactionDays;
 	private List<Transactions> mTransactions;
 	
+	private TransactionYear mSelectedTransactionYear;
 	private TransactionMonth mSelectedTransactionMonth;
 	private TransactionDay mSelectedTransactionDay;
 	private Transactions mSelectedTransaction;
 	
+	private TransactionYearArrayAdapter mTransactionYearAdapter;
 	private TransactionMonthArrayAdapter mTransactionMonthAdapter;
 	private TransactionDayArrayAdapter mTransactionDayAdapter;
 	private TransactionArrayAdapter mTransactionAdapter;
@@ -52,9 +57,6 @@ public class TransactionListFragment extends BaseFragment
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		
-		mSelectedTransactionMonth = new TransactionMonth();
-		mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
 	}
 	
 	@Override
@@ -66,7 +68,11 @@ public class TransactionListFragment extends BaseFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.transaction_summary_fragment, container, false);
+		View view = inflater.inflate(R.layout.transaction_list_fragment, container, false);
+		
+		if (mTransactionYears == null) {
+			mTransactionYears = new ArrayList<TransactionYear>();
+		}
 		
 		if (mTransactionMonths == null) {
 			mTransactionMonths = new ArrayList<TransactionMonth>();
@@ -80,6 +86,7 @@ public class TransactionListFragment extends BaseFragment
 			mTransactions = new ArrayList<Transactions>();
 		}
 		
+		mTransactionYearAdapter = new TransactionYearArrayAdapter(getActivity(), mTransactionYears, this);
 		mTransactionMonthAdapter = new TransactionMonthArrayAdapter(getActivity(), mTransactionMonths, this);
 		mTransactionDayAdapter = new TransactionDayArrayAdapter(getActivity(), mTransactionDays, this);
 		mTransactionAdapter = new TransactionArrayAdapter(getActivity(), mTransactions, this);
@@ -99,19 +106,20 @@ public class TransactionListFragment extends BaseFragment
 		
 		mTransactionList = (ListView) getActivity().findViewById(R.id.transactionList);
 		
-		if (mSelectedTransactionDay != null) {
-			mTransactionList.setAdapter(mTransactionAdapter);
-		} else {
-			mTransactionList.setAdapter(mTransactionDayAdapter);
-		}
-		
 		mTransactionList.setItemsCanFocus(true);
 		mTransactionList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		if (mSelectedTransactionDay != null) {
 			onTransactionDaySelected(mSelectedTransactionDay);
+			
+		} else if (mSelectedTransactionMonth != null) {
+			onTransactionMonthSelected(mSelectedTransactionMonth);
+			
+		} else if (mSelectedTransactionYear != null) {
+			onTransactionYearSelected(mSelectedTransactionYear);
+			
 		} else {
-			displayTransactionOnMonth(mSelectedTransactionMonth);
+			displayTransactionAllYears();
 		}
 	}
 	
@@ -127,6 +135,16 @@ public class TransactionListFragment extends BaseFragment
         }
     }
 	
+	public void setSelectedTransactionYear(TransactionYear transactionYear) {
+		
+		mSelectedTransactionYear = transactionYear;
+	}
+	
+	public void setSelectedTransactionMonth(TransactionMonth transactionMonth) {
+		
+		mSelectedTransactionMonth = transactionMonth;
+	}
+	
 	public void setSelectedTransactionDay(TransactionDay transactionDay) {
 		
 		mSelectedTransactionDay = transactionDay;
@@ -135,6 +153,28 @@ public class TransactionListFragment extends BaseFragment
 	public void setSelectedTransaction(Transactions transaction) {
 		
 		mSelectedTransaction = transaction;
+	}
+	
+	private int getTransactionYearsTotalAmount(List<TransactionYear> transactionYears) {
+		
+		int totalAmount = 0;
+		
+		for (TransactionYear transactionYear : transactionYears) {
+			totalAmount += transactionYear.getAmount();
+		}
+		
+		return totalAmount;
+	}
+	
+	private int getTransactionMonthsTotalAmount(List<TransactionMonth> transactionMonths) {
+		
+		int totalAmount = 0;
+		
+		for (TransactionMonth transactionMonth : transactionMonths) {
+			totalAmount += transactionMonth.getAmount();
+		}
+		
+		return totalAmount;
 	}
 	
 	private int getTransactionDaysTotalAmount(List<TransactionDay> transactionDays) {
@@ -159,21 +199,41 @@ public class TransactionListFragment extends BaseFragment
 		return totalAmount;
 	}
 	
-	public void displayTransactionOnDay(TransactionDay transactionDay) {
+	public void displayTransactionAllYears() {
 		
-		mSelectedTransaction = null;
+		mTransactionYears.clear();
+		mTransactionYears.addAll(mTransactionDaoService.getTransactionYears());
 		
 		if (!isViewInitialized()) {
 			return;
 		}
 		
-		onTransactionDaySelected(transactionDay);
+		setBackButtonVisible(false);
+		
+		mNavigationTitle.setText(getString(R.string.transaction_total));
+		mNavText.setText(CommonUtil.formatCurrency(getTransactionYearsTotalAmount(mTransactionYears)));
+		
+		mTransactionList.setAdapter(mTransactionYearAdapter);
+	}
+	
+	public void displayTransactionOnYear(TransactionYear transactionYear) {
+		
+		mTransactionMonths.clear();
+		mTransactionMonths.addAll(mTransactionDaoService.getTransactionMonths(transactionYear));
+		
+		if (!isViewInitialized()) {
+			return;
+		}
+		
+		setBackButtonVisible(true);
+		
+		mNavigationTitle.setText(CommonUtil.formatYear(transactionYear.getYear()));
+		mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
+		
+		mTransactionList.setAdapter(mTransactionMonthAdapter);
 	}
 	
 	public void displayTransactionOnMonth(TransactionMonth transactionMonth) {
-		
-		mSelectedTransaction = null;
-		mSelectedTransactionDay = null;
 		
 		mTransactionDays.clear();
 		mTransactionDays.addAll(mTransactionDaoService.getTransactionDays(transactionMonth));
@@ -184,10 +244,21 @@ public class TransactionListFragment extends BaseFragment
 		
 		setBackButtonVisible(true);
 		
-		mNavigationTitle.setText(CommonUtil.formatMonthDate(transactionMonth.getMonth()));
+		mNavigationTitle.setText(CommonUtil.formatMonth(transactionMonth.getMonth()));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionDaysTotalAmount(mTransactionDays)));
 		
 		mTransactionList.setAdapter(mTransactionDayAdapter);
+	}
+	
+	public void displayTransactionOnDay(TransactionDay transactionDay) {
+		
+		mSelectedTransaction = null;
+		
+		if (!isViewInitialized()) {
+			return;
+		}
+		
+		onTransactionDaySelected(transactionDay);
 	}
 	
 	@Override
@@ -205,17 +276,44 @@ public class TransactionListFragment extends BaseFragment
 	}
 	
 	@Override
+	public void onTransactionYearSelected(TransactionYear transactionYear) {
+		
+		setBackButtonVisible(true);
+		
+		mSelectedTransactionYear = transactionYear;
+		mSelectedTransactionMonth = null;
+		
+		mActionListener.onTransactionYearSelected(transactionYear);
+		
+		mTransactionMonths.clear();
+		mTransactionMonths.addAll(mTransactionDaoService.getTransactionMonths(transactionYear));
+		
+		mNavigationTitle.setText(CommonUtil.formatYear(transactionYear.getYear()));
+		mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
+		
+		mTransactionList.setAdapter(mTransactionMonthAdapter);
+	}
+	
+	@Override
+	public TransactionYear getSelectedTransactionYear() {
+		
+		return mSelectedTransactionYear;
+	}
+	
+	@Override
 	public void onTransactionMonthSelected(TransactionMonth transactionMonth) {
 		
 		setBackButtonVisible(true);
 		
 		mSelectedTransactionMonth = transactionMonth;
+		mSelectedTransactionDay = null;
+		
 		mActionListener.onTransactionMonthSelected(transactionMonth);
 		
 		mTransactionDays.clear();
 		mTransactionDays.addAll(mTransactionDaoService.getTransactionDays(transactionMonth));
 		
-		mNavigationTitle.setText(CommonUtil.formatMonthDate(transactionMonth.getMonth()));
+		mNavigationTitle.setText(CommonUtil.formatMonth(transactionMonth.getMonth()));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionDaysTotalAmount(mTransactionDays)));
 		
 		mTransactionList.setAdapter(mTransactionDayAdapter);
@@ -233,6 +331,8 @@ public class TransactionListFragment extends BaseFragment
 		setBackButtonVisible(true);
 		
 		mSelectedTransactionDay = transactionDay;
+		mSelectedTransaction = null;
+		
 		mActionListener.onTransactionDaySelected(transactionDay);
 		
 		mTransactions.clear();

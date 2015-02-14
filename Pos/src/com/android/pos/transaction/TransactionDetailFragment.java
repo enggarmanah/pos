@@ -85,6 +85,14 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		mBackButton = (ImageButton) getView().findViewById(R.id.backButton);
 		mBackButton.setOnClickListener(getBackButtonOnClickListener());
 		
+		boolean isMultiplesPane = getResources().getBoolean(R.bool.has_multiple_panes);
+		
+		if (isMultiplesPane) {
+			mBackButton.setVisibility(View.GONE);
+		} else {
+			mBackButton.setVisibility(View.VISIBLE);
+		}
+		
 		mDateText = (TextView) getView().findViewById(R.id.dateText);
 		mTransactionNoText = (TextView) getView().findViewById(R.id.transactionNoText);	
 		mCashierText = (TextView) getView().findViewById(R.id.cashierText);
