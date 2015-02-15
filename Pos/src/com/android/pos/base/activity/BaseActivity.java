@@ -248,8 +248,6 @@ public abstract class BaseActivity extends Activity {
 			
 			while (!isRemoved) {
 				
-				System.out.println("WaitAfterFragmentRemovedTask : " + i++);
-				
 				isRemoved = true;
 				for (String fragmentTag : params) {
 					if (getFragmentManager().findFragmentByTag(fragmentTag) != null) {

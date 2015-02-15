@@ -51,15 +51,6 @@ public class ProductStatisticActivity extends BaseActivity
 		initFragments();
 		
 		initWaitAfterFragmentRemovedTask(mProductStatisticListFragmentTag, mProductStatisticDetailFragmentTag);
-		
-		if (savedInstanceState == null) {
-
-			mSelectedTransactionMonth = new TransactionMonth();
-			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
-			
-			mSelectedTransactionYear = new TransactionYear();
-			mSelectedTransactionYear.setYear(CommonUtil.getCurrentYear());
-		}
 	}
 	
 	@Override
@@ -78,7 +69,15 @@ public class ProductStatisticActivity extends BaseActivity
 			
 			mSelectedTransactionYear = (TransactionYear) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
 			mSelectedTransactionMonth = (TransactionMonth) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
-		}
+		
+		} else {
+			
+			mSelectedTransactionMonth = new TransactionMonth();
+			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
+			
+			mSelectedTransactionYear = new TransactionYear();
+			mSelectedTransactionYear.setYear(CommonUtil.getCurrentYear());
+		} 
 	}
 	
 	private void initFragments() {

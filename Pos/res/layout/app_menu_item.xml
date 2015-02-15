@@ -9,5 +9,5 @@
     android:textSize="16sp"
     android:textColor="@color/text_dark"
     android:textStyle="bold"
-    android:background="?android:attr/activatedBackgroundIndicator"
+    android:background="@drawable/selector_menu"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
