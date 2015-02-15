@@ -65,7 +65,8 @@
         </activity>
         <activity
             android:name="com.android.pos.reference.merchant.MerchantMgtActivity"
-            android:label="@string/module_merchant" >
+            android:label="@string/module_merchant" 
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.reference.productGrp.ProductGrpMgtActivity"
@@ -79,19 +80,27 @@
         </activity>
         <activity
             android:name="com.android.pos.reference.employee.EmployeeMgtActivity"
-            android:label="@string/module_employee" >
+            android:label="@string/module_employee" 
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.reference.customer.CustomerMgtActivity"
-            android:label="@string/module_customer" >
+            android:label="@string/module_customer" 
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.reference.discount.DiscountMgtActivity"
-            android:label="@string/module_discount" >
+            android:label="@string/module_discount" 
+            android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name="com.android.pos.transaction.TransactionActivity"
+            android:name="com.android.pos.report.transaction.TransactionActivity"
             android:label="@string/menu_transaction"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.report.product.ProductStatisticActivity"
+            android:label="@string/menu_statistic_product"
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -19,7 +19,13 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onStart() {
 		
+		super.onStart();
+
 		setTitle(getString(R.string.module_merchant));
 		
 		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);

@@ -19,7 +19,13 @@ public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, Use
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onStart() {
 		
+		super.onStart();
+
 		setTitle(getString(R.string.menu_user_management));
 		
 		mDrawerList.setItemChecked(Constant.MENU_USER_MANAGEMENT_POSITION, true);

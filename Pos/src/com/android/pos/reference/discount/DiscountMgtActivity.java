@@ -23,8 +23,14 @@ public class DiscountMgtActivity extends BaseItemMgtActivity<DiscountSearchFragm
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onStart() {
 		
-		setTitle(getString(R.string.module_product_group));
+		super.onStart();
+
+		setTitle(getString(R.string.module_discount));
 		
 		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);
 	}

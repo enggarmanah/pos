@@ -42,16 +42,22 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		
 		initDrawerMenu();
 		
-		setTitle(getString(R.string.menu_data_management));
-		
-		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);
-		
 		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
 		
 		if (mProgressDialog == null) {
 			mProgressDialog = new HttpAsyncProgressDlgFragment();
 		}
     }
+	
+	@Override
+	public void onStart() {
+		
+		super.onStart();
+
+		setTitle(getString(R.string.menu_data_management));
+		
+		mDrawerList.setItemChecked(Constant.MENU_USER_MANAGEMENT_POSITION, true);
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

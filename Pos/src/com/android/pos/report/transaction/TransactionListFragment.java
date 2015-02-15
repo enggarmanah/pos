@@ -1,4 +1,4 @@
-package com.android.pos.transaction;
+package com.android.pos.report.transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public class TransactionListFragment extends BaseFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.transaction_list_fragment, container, false);
+		View view = inflater.inflate(R.layout.report_transaction_list_fragment, container, false);
 		
 		if (mTransactionYears == null) {
 			mTransactionYears = new ArrayList<TransactionYear>();
@@ -227,7 +227,7 @@ public class TransactionListFragment extends BaseFragment
 		
 		setBackButtonVisible(true);
 		
-		mNavigationTitle.setText(CommonUtil.formatYear(transactionYear.getYear()));
+		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
 		
 		mTransactionList.setAdapter(mTransactionMonthAdapter);
@@ -288,7 +288,7 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionMonths.clear();
 		mTransactionMonths.addAll(mTransactionDaoService.getTransactionMonths(transactionYear));
 		
-		mNavigationTitle.setText(CommonUtil.formatYear(transactionYear.getYear()));
+		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
 		
 		mTransactionList.setAdapter(mTransactionMonthAdapter);

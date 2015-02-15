@@ -23,8 +23,9 @@ public class Constant {
 	
 	public static int MENU_CASHIER_POSITION = 0;
 	public static int MENU_TRANSACTION_POSITION = 1;
-	public static int MENU_USER_MANAGEMENT_POSITION = 5;
-	public static int MENU_DATA_MANAGEMENT_POSITION = 6;
+	public static int MENU_STATISTIC_PRODUCT_POSITION = 2;
+	public static int MENU_USER_MANAGEMENT_POSITION = 3;
+	public static int MENU_DATA_MANAGEMENT_POSITION = 4;
 	
 	public static String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	

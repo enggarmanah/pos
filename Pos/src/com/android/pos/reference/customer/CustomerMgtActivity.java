@@ -19,7 +19,13 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onStart() {
 		
+		super.onStart();
+
 		setTitle(getString(R.string.module_customer));
 		
 		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);

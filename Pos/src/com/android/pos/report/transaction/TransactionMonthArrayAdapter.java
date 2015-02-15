@@ -1,9 +1,9 @@
-package com.android.pos.transaction;
+package com.android.pos.report.transaction;
 
 import java.util.List;
 
 import com.android.pos.R;
-import com.android.pos.dao.TransactionDay;
+import com.android.pos.dao.TransactionMonth;
 import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -13,17 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
+public class TransactionMonthArrayAdapter extends ArrayAdapter<TransactionMonth> {
 
 	private Context context;
-	private List<TransactionDay> transactionDays;
+	private List<TransactionMonth> transactioMonths;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onTransactionDaySelected(TransactionDay item);
+		public void onTransactionMonthSelected(TransactionMonth item);
 		
-		public TransactionDay getSelectedTransactionDay();
+		public TransactionMonth getSelectedTransactionMonth();
 	}
 
 	class ViewHolder {
@@ -31,19 +31,19 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 		TextView totalAmountText;
 	}
 
-	public TransactionDayArrayAdapter(Context context, List<TransactionDay> transactions, ItemActionListener listener) {
+	public TransactionMonthArrayAdapter(Context context, List<TransactionMonth> transactionMonths, ItemActionListener listener) {
 
-		super(context, R.layout.transaction_list_item, transactions);
+		super(context, R.layout.report_transaction_list_item, transactionMonths);
 		
 		this.context = context;
-		this.transactionDays = transactions;
+		this.transactioMonths = transactionMonths;
 		this.mCallback = listener;
 	}
 	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final TransactionDay transactionDay = transactionDays.get(position);
+		final TransactionMonth transactionMonth = transactioMonths.get(position);
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -54,7 +54,7 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.transaction_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.report_transaction_list_item, parent, false);
 			
 			transDate = (TextView) rowView.findViewById(R.id.transactionDateText);
 			totalAmount = (TextView) rowView.findViewById(R.id.totalAmountText);
@@ -74,14 +74,14 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 			totalAmount = viewHolder.totalAmountText;
 		}
 		
-		transDate.setText(CommonUtil.formatDate(transactionDay.getDate()));
-		totalAmount.setText(CommonUtil.formatCurrency(transactionDay.getAmount()));
+		transDate.setText(CommonUtil.formatMonth(transactionMonth.getMonth()));
+		totalAmount.setText(CommonUtil.formatCurrency(transactionMonth.getAmount()));
 
-		rowView.setOnClickListener(getItemOnClickListener(transactionDay, transDate));
+		rowView.setOnClickListener(getItemOnClickListener(transactionMonth, transDate));
 		
-		TransactionDay selectedTransactionDay = mCallback.getSelectedTransactionDay();
+		TransactionMonth selectedTransactionMonth = mCallback.getSelectedTransactionMonth();
 		
-		if (selectedTransactionDay != null && selectedTransactionDay.getDate() == transactionDay.getDate()) {
+		if (selectedTransactionMonth != null && selectedTransactionMonth.getMonth() == transactionMonth.getMonth()) {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
 		} else {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
@@ -90,7 +90,7 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final TransactionDay item, final TextView itemNameView) {
+	private View.OnClickListener getItemOnClickListener(final TransactionMonth item, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			
@@ -99,7 +99,7 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 				
 				v.setSelected(true);
 
-				mCallback.onTransactionDaySelected(item);
+				mCallback.onTransactionMonthSelected(item);
 			}
 		};
 	}

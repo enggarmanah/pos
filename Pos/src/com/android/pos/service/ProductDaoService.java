@@ -1,16 +1,25 @@
 package com.android.pos.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
+import com.android.pos.dao.ProductStatistic;
+import com.android.pos.dao.TransactionMonth;
+import com.android.pos.dao.TransactionYear;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -124,5 +133,93 @@ public class ProductDaoService {
 				productDao.update(product);
 			}
 		} 
+	}
+	
+	public List<ProductStatistic> getProductStatistics(TransactionMonth transactionMonth) {
+		
+		ArrayList<ProductStatistic> productStatistics = new ArrayList<ProductStatistic>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT product_name, SUM(quantity) quantity "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY product_name "
+				+ " ORDER BY quantity DESC, product_name ASC ", new String[] { startDate, endDate });
+			
+		while(cursor.moveToNext()) {
+			
+			String productName = cursor.getString(0);
+			Long quantity = cursor.getLong(1);
+			
+			ProductStatistic productStatistic = new ProductStatistic();
+			
+			productStatistic.setProduct_name(productName);
+			productStatistic.setQuantity(quantity);
+			
+			productStatistics.add(productStatistic);
+		}
+		
+		return productStatistics;
+	}
+	
+	public List<TransactionYear> getTransactionYears() {
+		
+		ArrayList<TransactionYear> transactionYears = new ArrayList<TransactionYear>();
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String merchantId = MerchantUtil.getMerchantId().toString();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(quantity) quantity "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND t.merchant_id = ? "
+				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", 
+				new String[] { merchantId });
+			
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
+			Long amount = cursor.getLong(1);
+			TransactionYear transactionYear = new TransactionYear();
+			transactionYear.setYear(date);
+			transactionYear.setAmount(amount);
+			transactionYears.add(transactionYear);
+		}
+		
+		return transactionYears;
+	}
+	
+	public List<TransactionMonth> getTransactionMonths(TransactionYear transactionYear) {
+		
+		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(transactionYear.getYear()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(transactionYear.getYear()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String merchantId = MerchantUtil.getMerchantId().toString();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(quantity) quantity "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND t.merchant_id = ? AND transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
+				new String[] { merchantId, startDate, endDate });
+		
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
+			Long amount = cursor.getLong(1);
+			TransactionMonth transactionMonth = new TransactionMonth();
+			transactionMonth.setMonth(date);
+			transactionMonth.setAmount(amount);
+			transactionMonths.add(transactionMonth);
+		}
+		
+		return transactionMonths;
 	}
 }

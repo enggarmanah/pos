@@ -107,6 +107,14 @@ public class CommonUtil {
 		return new SimpleDateFormat("EEEE, dd MMM yyyy, HH:mm", getLocale());
 	}
 	
+	private static void removeTime(Calendar cal) {
+		
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+	}
+	
 	public static Date getFirstDayOfYear(Date date) {
 		
 		Calendar cal = Calendar.getInstance();
@@ -156,6 +164,9 @@ public class CommonUtil {
 	public static Date getCurrentYear() {
 		
 		Calendar cal = Calendar.getInstance();
+		
+		removeTime(cal);
+		
 		cal.set(Calendar.DATE, 1);
 		cal.set(Calendar.MONTH, 0);
 		
@@ -165,6 +176,9 @@ public class CommonUtil {
 	public static Date getCurrentMonth() {
 		
 		Calendar cal = Calendar.getInstance();
+		
+		removeTime(cal);
+		
 		cal.set(Calendar.DATE, 1);
 		
 		return cal.getTime();
@@ -360,6 +374,11 @@ public class CommonUtil {
 	}
 	
 	public static String formatCurrencyUnsigned(Integer inputInt) {
+		
+		return formatCurrencyUnsigned(formatString(inputInt));
+	}
+	
+	public static String formatCurrencyUnsigned(Long inputInt) {
 		
 		return formatCurrencyUnsigned(formatString(inputInt));
 	}

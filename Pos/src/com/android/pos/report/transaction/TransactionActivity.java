@@ -1,4 +1,4 @@
-package com.android.pos.transaction;
+package com.android.pos.report.transaction;
 
 import java.io.Serializable;
 
@@ -48,7 +48,7 @@ public class TransactionActivity extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.transaction_activity);
+		setContentView(R.layout.report_transaction_activity);
 
 		DbUtil.initDb(this);
 
@@ -57,10 +57,6 @@ public class TransactionActivity extends BaseActivity
 		initInstanceState(savedInstanceState);
 		
 		initFragments();
-
-		setTitle(getString(R.string.menu_transaction));
-
-		mDrawerList.setItemChecked(Constant.MENU_TRANSACTION_POSITION, true);
 		
 		initWaitAfterFragmentRemovedTask(mTransactionListFragmentTag, mTransactionDetailFragmentTag);
 		
@@ -72,6 +68,16 @@ public class TransactionActivity extends BaseActivity
 			mSelectedTransactionYear = new TransactionYear();
 			mSelectedTransactionYear.setYear(CommonUtil.getCurrentYear());
 		}
+	}
+	
+	@Override
+	public void onStart() {
+		
+		super.onStart();
+
+		setTitle(getString(R.string.menu_transaction));
+
+		mDrawerList.setItemChecked(Constant.MENU_TRANSACTION_POSITION, true);
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {
@@ -137,7 +143,6 @@ public class TransactionActivity extends BaseActivity
 			addFragment(mTransactionListFragment, mTransactionListFragmentTag);
 			addFragment(mTransactionDetailFragment, mTransactionDetailFragmentTag);
 			
-			//mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
 			mTransactionDetailFragment.setTransaction(mSelectedTransaction);
 			
 		} else {

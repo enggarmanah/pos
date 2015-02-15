@@ -3,7 +3,8 @@ package com.android.pos.base.activity;
 import com.android.pos.R;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.reference.DataMgtActivity;
-import com.android.pos.transaction.TransactionActivity;
+import com.android.pos.report.product.ProductStatisticActivity;
+import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
 
 import android.app.Activity;
@@ -161,6 +162,11 @@ public abstract class BaseActivity extends Activity {
 		} else if (getString(R.string.menu_transaction).equals(menu)) {
 
 			Intent intent = new Intent(this, TransactionActivity.class);
+			startActivity(intent);
+
+		} else if (getString(R.string.menu_statistic_product).equals(menu)) {
+
+			Intent intent = new Intent(this, ProductStatisticActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_user_management).equals(menu)) {

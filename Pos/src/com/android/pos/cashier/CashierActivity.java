@@ -90,9 +90,6 @@ public class CashierActivity extends BaseActivity
 		initDrawerMenu();
 
 		initFragments(savedInstanceState);
-
-		setTitle(getString(R.string.menu_cashier));
-		mDrawerList.setItemChecked(Constant.MENU_CASHIER_POSITION, true);
 		
 		System.out.println("CashierActivity.onCreate");
 
@@ -106,6 +103,16 @@ public class CashierActivity extends BaseActivity
 		messageText.setOnClickListener(getMessageTextOnClickListener());
 		
 		PrintUtil.initBluetooth(this);
+	}
+	
+	@Override
+	public void onStart() {
+		
+		super.onStart();
+
+		setTitle(getString(R.string.menu_cashier));
+
+		mDrawerList.setItemChecked(Constant.MENU_CASHIER_POSITION, true);
 	}
 	
 	public void setMessage(String message) {

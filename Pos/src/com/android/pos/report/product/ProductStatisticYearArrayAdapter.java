@@ -1,4 +1,4 @@
-package com.android.pos.transaction;
+package com.android.pos.report.product;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
+public class ProductStatisticYearArrayAdapter extends ArrayAdapter<TransactionYear> {
 
 	private Context context;
 	private List<TransactionYear> transactioYears;
@@ -31,9 +31,9 @@ public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
 		TextView totalAmountText;
 	}
 
-	public TransactionYearArrayAdapter(Context context, List<TransactionYear> transactionYears, ItemActionListener listener) {
+	public ProductStatisticYearArrayAdapter(Context context, List<TransactionYear> transactionYears, ItemActionListener listener) {
 
-		super(context, R.layout.transaction_list_item, transactionYears);
+		super(context, R.layout.report_transaction_list_item, transactionYears);
 		
 		this.context = context;
 		this.transactioYears = transactionYears;
@@ -54,7 +54,7 @@ public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.transaction_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.report_transaction_list_item, parent, false);
 			
 			transDate = (TextView) rowView.findViewById(R.id.transactionDateText);
 			totalAmount = (TextView) rowView.findViewById(R.id.totalAmountText);
@@ -75,7 +75,7 @@ public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
 		}
 		
 		transDate.setText(CommonUtil.formatYear(transactionYear.getYear()));
-		totalAmount.setText(CommonUtil.formatCurrency(transactionYear.getAmount()));
+		totalAmount.setText(CommonUtil.formatCurrencyUnsigned(transactionYear.getAmount()));
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionYear, transDate));
 		

@@ -1,4 +1,4 @@
-package com.android.pos.transaction;
+package com.android.pos.report.transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.transaction_detail_fragment, container, false);
+		View view = inflater.inflate(R.layout.report_transaction_detail_fragment, container, false);
 		
 		if (mTransactionItems == null) {
 			mTransactionItems = new ArrayList<TransactionItem>();

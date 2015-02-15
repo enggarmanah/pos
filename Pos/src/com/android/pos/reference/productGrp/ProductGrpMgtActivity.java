@@ -19,7 +19,13 @@ public class ProductGrpMgtActivity extends BaseItemMgtActivity<ProductGrpSearchF
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onStart() {
 		
+		super.onStart();
+
 		setTitle(getString(R.string.module_product_group));
 		
 		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);
