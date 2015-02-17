@@ -19,6 +19,16 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+USE `mysql`;
+
+UPDATE mysql.user SET Password=PASSWORD('enggar') WHERE User='root';
+FLUSH PRIVILEGES;
+
+-- Dumping database structure for pos
+DROP DATABASE IF EXISTS `tokoku`;
+CREATE DATABASE IF NOT EXISTS `tokoku` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `tokoku`;
+
 
 # Dump of table customer
 # ------------------------------------------------------------
