@@ -19,6 +19,7 @@ public class Merchant implements Serializable {
     private String name;
     private String type;
     private String address;
+    private String telephone;
     private String contactName;
     private String contactTelephone;
     private String loginId;
@@ -53,11 +54,12 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String name, String type, String address, String contactName, String contactTelephone, String loginId, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String loginId, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.address = address;
+        this.telephone = telephone;
         this.contactName = contactName;
         this.contactTelephone = contactTelephone;
         this.loginId = loginId;
@@ -113,6 +115,14 @@ public class Merchant implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getContactName() {

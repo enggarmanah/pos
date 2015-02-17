@@ -28,6 +28,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 	EditText mNameText;
 	Spinner mTypeSp;
     EditText mAddressText;
+    EditText mTelephoneText;
     EditText mContactNameText;
     EditText mContactTelephoneText;
     EditText mLoginIdText;
@@ -63,6 +64,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
         mNameText = (EditText) getActivity().findViewById(R.id.nameText);
     	mTypeSp = (Spinner) getActivity().findViewById(R.id.typeSp);
     	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
+    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneText);
     	mContactNameText = (EditText) getActivity().findViewById(R.id.contactNameText);
     	mContactTelephoneText = (EditText) getActivity().findViewById(R.id.contactTelephoneText);
     	mLoginIdText = (EditText) getActivity().findViewById(R.id.loginIdText);
@@ -76,6 +78,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mNameText);
     	registerField(mTypeSp);
     	registerField(mAddressText);
+    	registerField(mTelephoneText);
     	registerField(mContactNameText);
     	registerField(mContactTelephoneText);
     	registerField(mLoginIdText);
@@ -91,6 +94,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mandatoryFields = new ArrayList<MerchantEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mAddressText, R.string.field_address));
+    	//mandatoryFields.add(new FormField(mTelephoneText, R.string.field_telephone));
     	mandatoryFields.add(new FormField(mContactNameText, R.string.field_contact_name));
     	mandatoryFields.add(new FormField(mContactTelephoneText, R.string.field_contact_telephone));
     	mandatoryFields.add(new FormField(mLoginIdText, R.string.field_login_id));
@@ -121,6 +125,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		
     		mNameText.setText(merchant.getName());
     		mAddressText.setText(merchant.getAddress());
+    		mTelephoneText.setText(merchant.getTelephone());
     		mContactNameText.setText(merchant.getContactName());
     		mContactTelephoneText.setText(merchant.getContactTelephone());
     		mLoginIdText.setText(merchant.getLoginId());
@@ -148,6 +153,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	String name = mNameText.getText().toString();
     	String type = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
     	String address = mAddressText.getText().toString();
+    	String telephone = mTelephoneText.getText().toString();
     	String contactName = mContactNameText.getText().toString();
     	String contactTelephone = mContactTelephoneText.getText().toString();
     	String loginId = mLoginIdText.getText().toString();
@@ -163,6 +169,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setName(name);
     		mItem.setType(type);
     		mItem.setAddress(address);
+    		mItem.setTelephone(telephone);
     		mItem.setContactName(contactName);
     		mItem.setContactTelephone(contactTelephone);
     		mItem.setLoginId(loginId);

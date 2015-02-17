@@ -18,6 +18,10 @@ public abstract class BaseFragment extends Fragment {
 	
 	protected List<FormField> mandatoryFields;
 	
+	public void onStart() {
+		super.onStart();
+	}
+	
 	protected boolean isValidated() {
     	
     	for (FormField field : mandatoryFields) {

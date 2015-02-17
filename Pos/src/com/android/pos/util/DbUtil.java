@@ -123,6 +123,11 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'DISCOUNT' INTEGER");
             }
             
+            // handle version 15 changes
+            if (oldVersion < 17) {
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'TELEPHONE' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

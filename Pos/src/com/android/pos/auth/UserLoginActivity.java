@@ -21,6 +21,7 @@ import com.android.pos.dao.User;
 import com.android.pos.reference.DataMgtActivity;
 import com.android.pos.service.MerchantDaoService;
 import com.android.pos.service.UserDaoService;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
@@ -64,8 +65,15 @@ public class UserLoginActivity extends Activity {
 		
 		mMerchant = mMerchantDaoService.getActiveMerchant();
 		
-		mMerchantNameTxt.setText(mMerchant.getName());
-		mMerchantAddrTxt.setText(mMerchant.getAddress());
+		String name = mMerchant.getName();
+		String contact = mMerchant.getAddress();
+		
+		if (!CommonUtil.isEmpty(mMerchant.getTelephone())) {
+			contact = contact + "\nTelp. " + mMerchant.getContactTelephone();
+		}
+		
+		mMerchantNameTxt.setText(name);
+		mMerchantAddrTxt.setText(contact);
     }
 	
 	private View.OnClickListener getLoginBtnOnClickListener() {
@@ -98,7 +106,7 @@ public class UserLoginActivity extends Activity {
 					
 					AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
 	    			alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
-	    			alertDialogFragment.setAlertMessage("ID Merchant & password salah!");
+	    			alertDialogFragment.setAlertMessage("ID Pengguna & password salah!");
 				} 
 			}
 		};

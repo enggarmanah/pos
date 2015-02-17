@@ -45,12 +45,12 @@
     <string name="menu_data_management">Manajemen Data</string>
     <string name="menu_logout">Keluar</string> 
     
-    <string name="module_merchant">Merchant</string>
-    <string name="module_product_group">Group Produk</string>
-    <string name="module_product">Produk</string>
-    <string name="module_employee">Pegawai</string>
-    <string name="module_customer">Pelanggan</string>
-    <string name="module_discount">Diskon</string>
+    <string name="module_merchant">Data Merchant</string>
+    <string name="module_product_group">Data Group Produk</string>
+    <string name="module_product">Data Produk</string>
+    <string name="module_employee">Data Pegawai</string>
+    <string name="module_customer">Data Pelanggan</string>
+    <string name="module_discount">Data Diskon</string>
     
     <string name="empty"></string>
     <string name="search">Cari</string>
@@ -121,7 +121,7 @@
     <string name="payment">Bayar</string>
     <string name="payment_type">Tipe</string>
     <string name="change">Kembali</string>
-    <string name="order">Pemesanan</string>
+    <string name="order">Item Transaksi</string>
     <string name="print">Print Nota</string>
     
     <string name="product_group">Kategori</string>

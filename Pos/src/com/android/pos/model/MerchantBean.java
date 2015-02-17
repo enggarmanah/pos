@@ -9,6 +9,7 @@ public class MerchantBean {
 	private String name;
 	private String type;
 	private String address;
+	private String telephone;
 	private String contact_name;
 	private String contact_telephone;
 	private String login_id;
@@ -55,6 +56,14 @@ public class MerchantBean {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getContact_name() {

@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(16, "com.android.pos.dao");
+        Schema schema = new Schema(17, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -46,6 +46,7 @@ public class PosDaoGenerator {
         merchant.addStringProperty("name").notNull();
         merchant.addStringProperty("type");
         merchant.addStringProperty("address");
+        merchant.addStringProperty("telephone");
         merchant.addStringProperty("contactName");
         merchant.addStringProperty("contactTelephone");
         merchant.addStringProperty("loginId");

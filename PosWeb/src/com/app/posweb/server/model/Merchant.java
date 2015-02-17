@@ -23,6 +23,7 @@ public class Merchant {
 	private String name;
 	private String type;
 	private String address;
+	private String telephone;
 	private String contact_name;
 	private String contact_telephone;
 	private String login_id;
@@ -81,6 +82,14 @@ public class Merchant {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getContact_name() {
@@ -194,6 +203,7 @@ public class Merchant {
 		this.name = bean.getName();
 		this.type = bean.getType();
 		this.address = bean.getAddress();
+		this.telephone = bean.getTelephone();
 		this.contact_name = bean.getContact_name();
 		this.contact_telephone = bean.getContact_telephone();
 		this.login_id = bean.getLogin_id();

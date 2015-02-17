@@ -90,6 +90,7 @@ public class BeanUtil {
 		bean.setName(merchant.getName());
 		bean.setType(merchant.getType());
 		bean.setAddress(merchant.getAddress());
+		bean.setTelephone(merchant.getTelephone());
 		bean.setContact_name(merchant.getContactName());
 		bean.setContact_telephone(merchant.getContactTelephone());
 		bean.setLogin_id(merchant.getLoginId());
@@ -113,6 +114,7 @@ public class BeanUtil {
 		merchant.setName(bean.getName());
 		merchant.setType(bean.getType());
 		merchant.setAddress(bean.getAddress());
+		merchant.setTelephone(bean.getTelephone());
 		merchant.setContactName(bean.getContact_name());
 		merchant.setContactTelephone(bean.getContact_telephone());
 		merchant.setLoginId(bean.getLogin_id());

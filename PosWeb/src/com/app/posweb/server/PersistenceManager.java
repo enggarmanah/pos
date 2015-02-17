@@ -48,7 +48,7 @@ public class PersistenceManager {
 				log.info("Environment Development");
 				
 				properties.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
-				properties.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost/pos?user=root");
+				properties.put("javax.persistence.jdbc.url", "jdbc:mysql://localhost/tokoku?user=root");
 			}
 		
 			emf = Persistence.createEntityManagerFactory("PosWeb", properties);
