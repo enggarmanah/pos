@@ -39,14 +39,14 @@ public class ProductStatisticActivity extends BaseActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		initInstanceState(savedInstanceState);
+		
 		setContentView(R.layout.report_transaction_activity);
 
 		DbUtil.initDb(this);
 
 		initDrawerMenu();
-		
-		initInstanceState(savedInstanceState);
 		
 		initFragments();
 		

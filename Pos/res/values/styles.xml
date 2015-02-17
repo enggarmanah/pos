@@ -32,8 +32,8 @@
     </style>
 
     <style name="SpinnerStyle" parent="android:Widget.ListView.DropDown">
-        <item name="android:divider">@color/border_blue_light</item>
-        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">@color/border_gray_light</item>
+        <item name="android:dividerHeight">0.5dp</item>
     </style>
 
     <style name="MainActivityStyle">
@@ -49,7 +49,7 @@
         <item name="android:background">@color/menu_normal</item>
         <item name="android:choiceMode">singleChoice</item>
         <item name="android:divider">@color/menu_border</item>
-        <item name="android:dividerHeight">1dp</item>
+        <item name="android:dividerHeight">0.5dp</item>
     </style>
 
     <style name="DataManagementMenuStyle">
@@ -57,7 +57,7 @@
         <item name="android:layout_width">250dp</item>
         <item name="android:background">@drawable/selector_data_mgt_btn</item>
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:paddingLeft">50dp</item>
+        <item name="android:paddingLeft">30dp</item>
         <item name="android:textColor">@color/text_dark</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
@@ -68,20 +68,20 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_margin">0dp</item>
+        <item name="android:layout_margin">2dp</item>
         <item name="android:padding">1dp</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@drawable/bg_border_blue</item>
+        <item name="android:background">@drawable/bg_border_gray</item>
     </style>
 
     <style name="RightFragmentStyle">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_margin">0dp</item>
+        <item name="android:layout_margin">2dp</item>
         <item name="android:padding">1dp</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@drawable/bg_border_blue</item>
+        <item name="android:background">@drawable/bg_border_gray</item>
     </style>
 
     <style name="ListViewWrapperStyle">
@@ -97,8 +97,8 @@
     <style name="ListViewStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:divider">@color/border_blue_light</item>
-        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">@color/border_gray_light</item>
+        <item name="android:dividerHeight">0.5dp</item>
         <item name="android:background">#FFF</item>
     </style>
 
@@ -538,9 +538,9 @@
     <style name="PaymentRowStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:background">@color/border_blue_light</item>
+        <item name="android:background">@color/border_gray_light</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingTop">1dp</item>
+        <item name="android:paddingTop">0.5dp</item>
     </style>
 
     <style name="PaymentRowContentStyle">
@@ -597,8 +597,8 @@
     <style name="PaymentSummaryRowStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/border_blue_light</item>
-        <item name="android:paddingTop">1dp</item>
+        <item name="android:background">@color/border_gray_light</item>
+        <item name="android:paddingTop">0.5dp</item>
     </style>
 
     <style name="PaymentSummaryRowTextStyle">
@@ -650,9 +650,9 @@
     <style name="SectionContentPanelStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/border_blue_light</item>
+        <item name="android:background">@color/border_gray_light</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingBottom">0.5dp</item>
     </style>
 
     <style name="SectionSubContentPanelStyle">

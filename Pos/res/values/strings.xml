@@ -121,7 +121,7 @@
     <string name="payment">Bayar</string>
     <string name="payment_type">Tipe</string>
     <string name="change">Kembali</string>
-    <string name="order">Item Transaksi</string>
+    <string name="order">Daftar Penjualan</string>
     <string name="print">Print Nota</string>
     
     <string name="product_group">Kategori</string>

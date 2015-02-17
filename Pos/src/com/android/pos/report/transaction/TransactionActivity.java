@@ -48,26 +48,17 @@ public class TransactionActivity extends BaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		initInstanceState(savedInstanceState);
+		
 		setContentView(R.layout.report_transaction_activity);
 
 		DbUtil.initDb(this);
 
 		initDrawerMenu();
 		
-		initInstanceState(savedInstanceState);
-		
 		initFragments();
 		
 		initWaitAfterFragmentRemovedTask(mTransactionListFragmentTag, mTransactionDetailFragmentTag);
-		
-		if (savedInstanceState == null) {
-			
-			mSelectedTransactionMonth = new TransactionMonth();
-			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
-			
-			mSelectedTransactionYear = new TransactionYear();
-			mSelectedTransactionYear.setYear(CommonUtil.getCurrentYear());
-		}
 	}
 	
 	@Override
@@ -88,7 +79,15 @@ public class TransactionActivity extends BaseActivity
 			mSelectedTransactionMonth = (TransactionMonth) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
 			mSelectedTransactionDay = (TransactionDay) savedInstanceState.getSerializable(SELECTED_TRANSACTION_DAY);
 			mSelectedTransaction = (Transactions) savedInstanceState.getSerializable(SELECTED_TRANSACTION);
-		}
+		
+		} else {
+			
+			mSelectedTransactionMonth = new TransactionMonth();
+			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
+				
+			mSelectedTransactionYear = new TransactionYear();
+			mSelectedTransactionYear.setYear(CommonUtil.getCurrentYear());
+		} 
 	}
 	
 	private void initFragments() {
