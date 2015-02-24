@@ -19,12 +19,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
-
+        android:orientation="vertical"
+        android:background="@color/background">
+		
+        <TextView 
+            android:id="@+id/discountBorder"
+            style="@style/PaymentRowDividerStyle" />
+        
         <LinearLayout
             android:id="@+id/discountPanel"
             style="@style/PaymentRowStyle" >
-
+			
             <TextView
                 android:id="@+id/discountLabelText"
                 style="@style/PaymentRowContentLeftStyle" />
@@ -33,11 +38,15 @@
                 android:id="@+id/discountText"
                 style="@style/PaymentRowContentRightStyle" />
         </LinearLayout>
-
+        
+        <TextView 
+            android:id="@+id/taxBorder"
+            style="@style/PaymentRowDividerStyle" />
+         
         <LinearLayout
             android:id="@+id/taxPanel"
             style="@style/PaymentRowStyle" >
-
+			
             <TextView
                 style="@style/PaymentRowContentLeftStyle"
                 android:text="@string/tax" />
@@ -46,11 +55,15 @@
                 android:id="@+id/taxText"
                 style="@style/PaymentRowContentRightStyle" />
         </LinearLayout>
-
+		
+        <TextView 
+            android:id="@+id/serviceChargeBorder"
+            style="@style/PaymentRowDividerStyle" />
+            
         <LinearLayout
             android:id="@+id/serviceChargePanel"
             style="@style/PaymentRowStyle" >
-
+			
             <TextView
                 style="@style/PaymentRowContentLeftStyle"
                 android:text="@string/service_charge" />
@@ -61,7 +74,7 @@
         </LinearLayout>
 
         <LinearLayout style="@style/PaymentRowTotalStyle" >
-
+            
             <TextView
                 style="@style/PaymentRowTotalContentLeftStyle"
                 android:text="@string/total" />

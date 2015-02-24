@@ -29,6 +29,9 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 	private TextView mServiceChargeText;
 	private TextView mTotalOrderText;
 	
+	private TextView mTaxBorder;
+	private TextView mServiceChargeBorder;
+	
 	private LinearLayout mDiscountPanel;
 	private LinearLayout mTaxPanel;
 	private LinearLayout mServiceChargePanel;
@@ -91,6 +94,9 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		
 		mTaxPanel = (LinearLayout) getView().findViewById(R.id.taxPanel);
 		mServiceChargePanel = (LinearLayout) getView().findViewById(R.id.serviceChargePanel);
+		
+		mTaxBorder = (TextView) getView().findViewById(R.id.taxBorder);
+		mServiceChargeBorder = (TextView) getView().findViewById(R.id.serviceChargeBorder);
 	}
 	
 	public void onStart() {
@@ -206,13 +212,19 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		mTaxText.setText(CommonUtil.formatCurrency(tax));
 		mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));
 		
+		mTaxBorder.setVisibility(View.VISIBLE);
 		mTaxPanel.setVisibility(View.VISIBLE);
-		if (taxPercentage == 0) {
+		
+		if (tax == 0) {
+			mTaxBorder.setVisibility(View.GONE);
 			mTaxPanel.setVisibility(View.GONE);
 		}
 		
+		mServiceChargeBorder.setVisibility(View.VISIBLE);
 		mServiceChargePanel.setVisibility(View.VISIBLE);
-		if (serviceChargePercentage == 0) {
+		
+		if (serviceCharge == 0) {
+			mServiceChargeBorder.setVisibility(View.GONE);
 			mServiceChargePanel.setVisibility(View.GONE);
 		}
 		

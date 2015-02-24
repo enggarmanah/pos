@@ -14,8 +14,10 @@ import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
+import com.android.pos.service.MerchantDaoService;
 import com.android.pos.service.TransactionItemDaoService;
 import com.android.pos.service.TransactionsDaoService;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.PrintUtil;
@@ -55,8 +57,11 @@ public class CashierActivity extends BaseActivity
 	boolean mIsEnableSearch = true;
 	
 	SearchView mSearchView;
+	
 	MenuItem mSearchItem;
-
+	MenuItem mListItem;
+	MenuItem mSelectPrinterItem;
+	
 	Product mSelectedProduct;
 	List<TransactionItem> mTransactionItems;
 	
@@ -78,6 +83,8 @@ public class CashierActivity extends BaseActivity
 	
 	private TransactionsDaoService mTransactionDaoService = new TransactionsDaoService();
 	private TransactionItemDaoService mTransactionItemDaoService = new TransactionItemDaoService();
+	
+	private static boolean isTryToConnect = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +98,6 @@ public class CashierActivity extends BaseActivity
 
 		initFragments(savedInstanceState);
 		
-		System.out.println("CashierActivity.onCreate");
-
 		initWaitAfterFragmentRemovedTask(mProductSearchFragmentTag, mOrderFragmentTag);
 		
 		messagePanel = (LinearLayout) findViewById(R.id.messagePanel);
@@ -102,7 +107,10 @@ public class CashierActivity extends BaseActivity
 		
 		messageText.setOnClickListener(getMessageTextOnClickListener());
 		
-		PrintUtil.initBluetooth(this);
+		if (!isTryToConnect) {
+			isTryToConnect = true;
+			connectToMerchantPrinter();
+		}
 	}
 	
 	@Override
@@ -113,6 +121,27 @@ public class CashierActivity extends BaseActivity
 		setTitle(getString(R.string.menu_cashier));
 
 		mDrawerList.setItemChecked(Constant.MENU_CASHIER_POSITION, true);
+	}
+	
+	private void connectToMerchantPrinter() {
+		
+		Merchant merchant = MerchantUtil.getMerchant();
+		String printerType = merchant.getPrinterType();
+		String printerAddress = merchant.getPrinterAddress();
+		
+		if (PrintUtil.initBluetooth(this)) {
+			
+			if (!CommonUtil.isEmpty(printerAddress)) {
+				
+				setMessage("Melaksanakan koneksi ke Printer Bluetooth : " + printerAddress);
+				connectToPrinter(printerType, printerAddress);
+			
+			} else {
+				
+				setMessage("Printer tidak terhubung, aktifkan Bluetooth Printer anda dan hubungkan ke sistem");
+				PrintUtil.selectBluetoothPrinter();
+			}
+		}
 	}
 	
 	public void setMessage(String message) {
@@ -228,11 +257,14 @@ public class CashierActivity extends BaseActivity
 		inflater.inflate(R.menu.cashier_menu, menu);
 
 		mSearchItem = menu.findItem(R.id.menu_item_search);
+		mListItem = menu.findItem(R.id.menu_item_list);
+		mSelectPrinterItem = menu.findItem(R.id.menu_item_select_printer);
 
 		mSearchView = (SearchView) mSearchItem.getActionView();
 		mSearchView.setLayoutParams(new ActionBar.LayoutParams(Gravity.START));
 
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		
 		if (null != searchManager) {
 			mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 		}
@@ -248,8 +280,9 @@ public class CashierActivity extends BaseActivity
 
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 
-		menu.findItem(R.id.menu_item_search).setVisible(!isDrawerOpen);
-		menu.findItem(R.id.menu_item_list).setVisible(!isDrawerOpen);
+		mSearchItem.setVisible(!isDrawerOpen);
+		mListItem.setVisible(!isDrawerOpen);
+		mSelectPrinterItem.setVisible(!isDrawerOpen);
 
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -277,6 +310,12 @@ public class CashierActivity extends BaseActivity
 			doSearch(Constant.EMPTY_STRING);
 
 			showMessage(R.string.msg_notification_search_action);
+
+			return true;
+			
+		case R.id.menu_item_select_printer:
+
+			PrintUtil.selectBluetoothPrinter();
 
 			return true;
 
@@ -557,6 +596,22 @@ public class CashierActivity extends BaseActivity
 	}
 	
 	// Printer - Begin
+	
+	private void connectToPrinter(String printerType, String address) {
+		
+		if (printerType.indexOf("PTP-II") != -1) {
+			PrintUtil.setPrinterLineSize(40);
+			
+		} else if (printerType.indexOf("RPP-02N") != -1) {
+			PrintUtil.setPrinterLineSize(32);
+		}
+		
+		try {
+			PrintUtil.connectToBluetoothPrinter(address);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -574,18 +629,14 @@ public class CashierActivity extends BaseActivity
 				// Get the device MAC address
 				String address = data.getExtras().getString(CashierPaymentDeviceListActivity.EXTRA_DEVICE_ADDRESS);
 				
-				if (printerType.indexOf("PTP-II") != -1) {
-					PrintUtil.setPrinterLineSize(40);
-					
-				} else if (printerType.indexOf("RPP-02N") != -1) {
-					PrintUtil.setPrinterLineSize(32);
-				}
+				Merchant merchant = MerchantUtil.getMerchant();
+				merchant.setPrinterType(printerType);
+				merchant.setPrinterAddress(address);
 				
-				try {
-					PrintUtil.connectToBluetoothPrinter(address);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				MerchantDaoService merchantDaoService = new MerchantDaoService();
+				merchantDaoService.updateMerchant(merchant);
+				
+				connectToPrinter(printerType, address);
 			}
 			break;
 			
@@ -594,10 +645,10 @@ public class CashierActivity extends BaseActivity
 			// When the request to enable Bluetooth returns
 			if (resultCode == Activity.RESULT_OK) {
 				
-				setMessage("Aktifkan Bluetooth Printer anda dan hubungkan ke sistem");
+				setMessage("Printer tidak terhubung, aktifkan Bluetooth Printer anda dan hubungkan ke sistem");
 				
 				// Bluetooth is now enabled, so set up a chat session
-				PrintUtil.setupChat();
+				PrintUtil.selectBluetoothPrinter();
 
 			} else {
 

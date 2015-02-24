@@ -135,7 +135,7 @@ public class ProductDaoService {
 		} 
 	}
 	
-	public List<ProductStatistic> getProductStatistics(TransactionMonth transactionMonth) {
+	public List<ProductStatistic> getProductStatisticsQuantity(TransactionMonth transactionMonth) {
 		
 		ArrayList<ProductStatistic> productStatistics = new ArrayList<ProductStatistic>();
 		
@@ -153,12 +153,12 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			String productName = cursor.getString(0);
-			Long quantity = cursor.getLong(1);
+			Long value = cursor.getLong(1);
 			
 			ProductStatistic productStatistic = new ProductStatistic();
 			
 			productStatistic.setProduct_name(productName);
-			productStatistic.setQuantity(quantity);
+			productStatistic.setValue(value);
 			
 			productStatistics.add(productStatistic);
 		}
@@ -166,7 +166,69 @@ public class ProductDaoService {
 		return productStatistics;
 	}
 	
-	public List<TransactionYear> getTransactionYears() {
+	public List<ProductStatistic> getProductStatisticsRevenue(TransactionMonth transactionMonth) {
+		
+		ArrayList<ProductStatistic> productStatistics = new ArrayList<ProductStatistic>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT product_name, SUM(price - discount) revenue "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY product_name "
+				+ " ORDER BY revenue DESC, product_name ASC ", new String[] { startDate, endDate });
+			
+		while(cursor.moveToNext()) {
+			
+			String productName = cursor.getString(0);
+			Long value = cursor.getLong(1);
+			
+			ProductStatistic productStatistic = new ProductStatistic();
+			
+			productStatistic.setProduct_name(productName);
+			productStatistic.setValue(value);
+			
+			productStatistics.add(productStatistic);
+		}
+		
+		return productStatistics;
+	}
+	
+	public List<ProductStatistic> getProductStatisticsProfit(TransactionMonth transactionMonth) {
+		
+		ArrayList<ProductStatistic> productStatistics = new ArrayList<ProductStatistic>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT product_name, SUM(price - discount - cost_price) profit "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY product_name "
+				+ " ORDER BY profit DESC, product_name ASC ", new String[] { startDate, endDate });
+			
+		while(cursor.moveToNext()) {
+			
+			String productName = cursor.getString(0);
+			Long value = cursor.getLong(1);
+			
+			ProductStatistic productStatistic = new ProductStatistic();
+			
+			productStatistic.setProduct_name(productName);
+			productStatistic.setValue(value);
+			
+			productStatistics.add(productStatistic);
+		}
+		
+		return productStatistics;
+	}
+	
+	public List<TransactionYear> getTransactionYearsQuantity() {
 		
 		ArrayList<TransactionYear> transactionYears = new ArrayList<TransactionYear>();
 		
@@ -183,17 +245,71 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
-			Long amount = cursor.getLong(1);
+			Long value = cursor.getLong(1);
 			TransactionYear transactionYear = new TransactionYear();
 			transactionYear.setYear(date);
-			transactionYear.setAmount(amount);
+			transactionYear.setAmount(value);
 			transactionYears.add(transactionYear);
 		}
 		
 		return transactionYears;
 	}
 	
-	public List<TransactionMonth> getTransactionMonths(TransactionYear transactionYear) {
+	public List<TransactionYear> getTransactionYearsRevenue() {
+		
+		ArrayList<TransactionYear> transactionYears = new ArrayList<TransactionYear>();
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String merchantId = MerchantUtil.getMerchantId().toString();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price-discount) revenue "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND t.merchant_id = ? "
+				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", 
+				new String[] { merchantId });
+			
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
+			Long value = cursor.getLong(1);
+			TransactionYear transactionYear = new TransactionYear();
+			transactionYear.setYear(date);
+			transactionYear.setAmount(value);
+			transactionYears.add(transactionYear);
+		}
+		
+		return transactionYears;
+	}
+	
+	public List<TransactionYear> getTransactionYearsProfit() {
+		
+		ArrayList<TransactionYear> transactionYears = new ArrayList<TransactionYear>();
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String merchantId = MerchantUtil.getMerchantId().toString();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price - discount - cost_price) profit "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND t.merchant_id = ? "
+				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", 
+				new String[] { merchantId });
+			
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
+			Long value = cursor.getLong(1);
+			TransactionYear transactionYear = new TransactionYear();
+			transactionYear.setYear(date);
+			transactionYear.setAmount(value);
+			transactionYears.add(transactionYear);
+		}
+		
+		return transactionYears;
+	}
+	
+	public List<TransactionMonth> getTransactionMonthsQuantity(TransactionYear transactionYear) {
 		
 		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
 		
@@ -213,10 +329,70 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
-			Long amount = cursor.getLong(1);
+			Long value = cursor.getLong(1);
 			TransactionMonth transactionMonth = new TransactionMonth();
 			transactionMonth.setMonth(date);
-			transactionMonth.setAmount(amount);
+			transactionMonth.setAmount(value);
+			transactionMonths.add(transactionMonth);
+		}
+		
+		return transactionMonths;
+	}
+	
+	public List<TransactionMonth> getTransactionMonthsRevenue(TransactionYear transactionYear) {
+		
+		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(transactionYear.getYear()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(transactionYear.getYear()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String merchantId = MerchantUtil.getMerchantId().toString();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price-discount) revenue "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND t.merchant_id = ? AND transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
+				new String[] { merchantId, startDate, endDate });
+		
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
+			Long value = cursor.getLong(1);
+			TransactionMonth transactionMonth = new TransactionMonth();
+			transactionMonth.setMonth(date);
+			transactionMonth.setAmount(value);
+			transactionMonths.add(transactionMonth);
+		}
+		
+		return transactionMonths;
+	}
+	
+	public List<TransactionMonth> getTransactionMonthsProfit(TransactionYear transactionYear) {
+		
+		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(transactionYear.getYear()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(transactionYear.getYear()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String merchantId = MerchantUtil.getMerchantId().toString();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price - discount - cost_price) profit "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t._id = ti.transaction_id AND t.merchant_id = ? AND transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
+				new String[] { merchantId, startDate, endDate });
+		
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
+			Long value = cursor.getLong(1);
+			TransactionMonth transactionMonth = new TransactionMonth();
+			transactionMonth.setMonth(date);
+			transactionMonth.setAmount(value);
 			transactionMonths.add(transactionMonth);
 		}
 		

@@ -116,16 +116,22 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'IS_LOGIN' INTEGER");
             }
             
-            // handle version 14 changes
+            // handle version 16 changes
             if (oldVersion < 16) {
             	db.execSQL("ALTER TABLE 'PRODUCT' ADD 'COST_PRICE' INTEGER");
             	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'COST_PRICE' INTEGER");
             	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'DISCOUNT' INTEGER");
             }
             
-            // handle version 15 changes
+            // handle version 17 changes
             if (oldVersion < 17) {
             	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'TELEPHONE' TEXT");
+            }
+            
+            // handle version 18 changes
+            if (oldVersion < 18) {
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRINTER_TYPE' TEXT");
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRINTER_ADDRESS' TEXT");
             }
             
             //DaoMaster.dropAllTables(db, true);

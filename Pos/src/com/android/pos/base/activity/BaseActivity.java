@@ -1,11 +1,13 @@
 package com.android.pos.base.activity;
 
 import com.android.pos.R;
+import com.android.pos.auth.UserLoginActivity;
 import com.android.pos.cashier.CashierActivity;
-import com.android.pos.reference.DataMgtActivity;
+import com.android.pos.data.DataMgtActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
+import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -39,7 +41,13 @@ public abstract class BaseActivity extends Activity {
 	protected void initDrawerMenu() {
 
 		mTitle = mDrawerTitle = getTitle();
-		mAppMenus = getResources().getStringArray(R.array.app_menus);
+		
+		if (UserUtil.isMerchantAdmin()) {
+			mAppMenus = getResources().getStringArray(R.array.app_menus_admin);
+		} else {
+			mAppMenus = getResources().getStringArray(R.array.app_menus);
+		}
+		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -150,10 +158,17 @@ public abstract class BaseActivity extends Activity {
 		mDrawerList.setItemChecked(position, true);
 		setTitle(mAppMenus[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
-
-		String[] appMenus = getResources().getStringArray(R.array.app_menus);
+		
+		String[] appMenus = null;
+		
+		if (UserUtil.isMerchantAdmin()) {
+			appMenus = getResources().getStringArray(R.array.app_menus_admin);
+		} else {
+			appMenus = getResources().getStringArray(R.array.app_menus);			
+		}
+		
 		String menu = appMenus[position];
-
+		
 		if (getString(R.string.menu_cashier).equals(menu)) {
 
 			Intent intent = new Intent(this, CashierActivity.class);
@@ -178,6 +193,11 @@ public abstract class BaseActivity extends Activity {
 
 			Intent intent = new Intent(this, DataMgtActivity.class);
 			startActivity(intent);
+			
+		} else if (getString(R.string.menu_logout).equals(menu)) {
+
+			Intent intent = new Intent(this, UserLoginActivity.class);
+			startActivity(intent);	
 		}
 	}
 
@@ -243,8 +263,6 @@ public abstract class BaseActivity extends Activity {
 		protected Boolean doInBackground(String... params) {
 
 			boolean isRemoved = false;
-			
-			int i = 1;
 			
 			while (!isRemoved) {
 				

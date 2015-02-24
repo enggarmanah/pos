@@ -17,6 +17,10 @@ public class Constant {
 	public static String USER_ROLE_CASHIER = "C";
 	public static String USER_ROLE_ADMIN = "A";
 	
+	public static String PRODUCT_QUANTITY = "PRODUCT_QUANTITY";
+	public static String PRODUCT_REVENUE = "PRODUCT_REVENUE";
+	public static String PRODUCT_PROFIT = "PRODUCT_PROFIT";
+	
 	public static int WAIT_ON_LOAD_PERIOD = 250;
 	
 	public static int LIST_SELECTED_ITEM_GAP = 5;

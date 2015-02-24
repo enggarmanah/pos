@@ -7,6 +7,7 @@ public class UserUtil {
 	
 	private static UserDaoService mUserDaoService = new UserDaoService();
 	private static User mUser;
+	private static boolean mIsMerchantAdmin = false;
 	
 	public static User getUser() {
 		
@@ -20,5 +21,15 @@ public class UserUtil {
 	public static void setUser(User user) {
 		
 		mUser = user;
+	}
+	
+	public static boolean isMerchantAdmin() {
+		
+		return mIsMerchantAdmin;
+	}
+	
+	public static void setMerchantAdmin(boolean isMerchantAdmin) {
+		
+		mIsMerchantAdmin = isMerchantAdmin;
 	}
 }

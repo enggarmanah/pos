@@ -8,6 +8,8 @@ import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.common.ConfirmDeleteDlgFragment;
+import com.android.pos.dao.Merchant;
+import com.android.pos.util.AdminUtil;
 import com.android.pos.util.DbUtil;
 
 import android.app.ActionBar;
@@ -33,12 +35,12 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	SearchView searchView;
 	
-	MenuItem mSearchItem;
-	MenuItem mListItem;
-	MenuItem mSaveItem;
-	MenuItem mDiscardItem;
-	MenuItem mEditItem;
-	MenuItem mDeleteItem;
+	MenuItem mSearchMenu;
+	MenuItem mListMenu;
+	MenuItem mSaveMenu;
+	MenuItem mDiscardMenu;
+	MenuItem mEditMenu;
+	MenuItem mDeleteMenu;
 
 	List<T> mItems;
 	T mSelectedItem;
@@ -51,6 +53,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	private String confirmDeleteFragmentTag = "confirmDeleteFragment";
 	
 	private String prevQuery = Constant.EMPTY_STRING;
+	
+	private boolean mIsOnEdit = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -135,10 +139,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	private void loadFragments() {
 
-		/*if (!isInFront) {
-			return;
-		}*/
-		
 		if (isFragmentHasBeenLoaded()) {
 			return;
 		}
@@ -173,16 +173,16 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.item_mgt_menu, menu);
 
-		mSearchItem = menu.findItem(R.id.menu_item_search);
-		mListItem = menu.findItem(R.id.menu_item_list);
-		mSaveItem = menu.findItem(R.id.menu_item_save);
-		mDiscardItem = menu.findItem(R.id.menu_item_discard);
-		mEditItem = menu.findItem(R.id.menu_item_edit);
-		mDeleteItem = menu.findItem(R.id.menu_item_delete);
+		mSearchMenu = menu.findItem(R.id.menu_item_search);
+		mListMenu = menu.findItem(R.id.menu_item_list);
+		mSaveMenu = menu.findItem(R.id.menu_item_save);
+		mDiscardMenu = menu.findItem(R.id.menu_item_discard);
+		mEditMenu = menu.findItem(R.id.menu_item_edit);
+		mDeleteMenu = menu.findItem(R.id.menu_item_delete);
 		
 		showNavigationMenu();
 		
-		searchView = (SearchView) mSearchItem.getActionView();
+		searchView = (SearchView) mSearchMenu.getActionView();
 		searchView.setLayoutParams(new ActionBar.LayoutParams(Gravity.START));
 
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -207,14 +207,31 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
-		if (mSearchItem.isVisible()) {
-			mSearchItem.setVisible(!isDrawerOpen);
+		if (mSelectedItem instanceof Merchant && !AdminUtil.isAdmin()) {
+			mDeleteMenu.setVisible(false);
+		} else {
+			if (mSelectedItem != null) {
+				mDeleteMenu.setVisible(!isDrawerOpen);
+			}
 		}
 		
-		if (mListItem.isVisible()) {
-			mListItem.setVisible(!isDrawerOpen);
+		if (mSearchMenu.isVisible()) {
+			mSearchMenu.setVisible(!isDrawerOpen);
 		}
-
+		
+		if (mListMenu.isVisible()) {
+			mListMenu.setVisible(!isDrawerOpen);
+		}
+		
+		if (mSelectedItem != null) {
+			mEditMenu.setVisible(!isDrawerOpen);
+		}
+		
+		if (mIsOnEdit) {
+			mSaveMenu.setVisible(!isDrawerOpen);
+			mDiscardMenu.setVisible(!isDrawerOpen);
+		}
+		
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -367,14 +384,16 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	private void showNavigationMenu() {
 		
-		mSearchItem.setVisible(true);
-		mListItem.setVisible(false);
+		mSearchMenu.setVisible(true);
+		mListMenu.setVisible(false);
 		
-		mEditItem.setVisible(false);
-		mDeleteItem.setVisible(false);
+		mEditMenu.setVisible(false);
+		mDeleteMenu.setVisible(false);
 		
-		mSaveItem.setVisible(false);
-		mDiscardItem.setVisible(false);
+		mSaveMenu.setVisible(false);
+		mDiscardMenu.setVisible(false);
+		
+		mIsOnEdit = false;
 	}
 	
 	private void showNavigationAndItemMenu() {
@@ -382,32 +401,36 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		enableEditFragmentInputFields(false);
 		
 		if (mIsMultiplesPane) {
-			mSearchItem.setVisible(true);
-			mListItem.setVisible(false);
+			mSearchMenu.setVisible(true);
+			mListMenu.setVisible(false);
 		} else {
-			mSearchItem.setVisible(false);
-			mListItem.setVisible(true);
+			mSearchMenu.setVisible(false);
+			mListMenu.setVisible(true);
 		}
 		
-		mEditItem.setVisible(true);
-		mDeleteItem.setVisible(true);
+		mEditMenu.setVisible(true);
+		mDeleteMenu.setVisible(true);
 		
-		mSaveItem.setVisible(false);
-		mDiscardItem.setVisible(false);
+		mSaveMenu.setVisible(false);
+		mDiscardMenu.setVisible(false);
+		
+		mIsOnEdit = false;
 	}
 	
 	private void showEditMenu() {
 		
 		enableEditFragmentInputFields(true);
 		
-		mSearchItem.setVisible(false);
-		mListItem.setVisible(false);
+		mSearchMenu.setVisible(false);
+		mListMenu.setVisible(false);
 		
-		mEditItem.setVisible(false);
-		mDeleteItem.setVisible(false);
+		mEditMenu.setVisible(false);
+		mDeleteMenu.setVisible(false);
 		
-		mSaveItem.setVisible(true);
-		mDiscardItem.setVisible(true);
+		mSaveMenu.setVisible(true);
+		mDiscardMenu.setVisible(true);
+		
+		mIsOnEdit = true;
 	}
 
 	@Override
@@ -417,6 +440,10 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		showNavigationAndItemMenu();
 		
+		if (item instanceof Merchant && !AdminUtil.isAdmin()) {
+			mDeleteMenu.setVisible(false);
+		}
+		
 		if (mIsMultiplesPane) {
 			updateEditFragmentItem(item);
 			refreshEditView();
@@ -424,7 +451,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		} else {
 			
 			mIsEnableSearch = false;
-			mSearchItem.collapseActionView();
+			mSearchMenu.collapseActionView();
 			mIsEnableSearch = true;
 			
 			replaceFragment(mEditFragment, editFragmentTag);
@@ -441,7 +468,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		unSelectItem();
 		
-		mSearchItem.collapseActionView();
+		mSearchMenu.collapseActionView();
 
 		mSelectedItem = getItemInstance();
 
@@ -462,7 +489,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		showNavigationMenu();
 		
-		if (!mSearchItem.collapseActionView()) {
+		if (!mSearchMenu.collapseActionView()) {
 			reloadItems();
 		}
 
@@ -480,7 +507,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		showNavigationMenu();
 		
-		if (!mSearchItem.collapseActionView()) {
+		if (!mSearchMenu.collapseActionView()) {
 			reloadItems();
 		}
 
@@ -536,7 +563,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		mSelectedItem = null;
 		
-		mSearchItem.collapseActionView();
+		mSearchMenu.collapseActionView();
 
 		reloadItems();
 

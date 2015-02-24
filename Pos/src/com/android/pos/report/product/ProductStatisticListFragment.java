@@ -3,6 +3,7 @@ package com.android.pos.report.product;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.TransactionDay;
@@ -40,12 +41,16 @@ public class ProductStatisticListFragment extends BaseFragment
 	private TransactionYear mSelectedTransactionYear;
 	private TransactionMonth mSelectedTransactionMonth;
 	
+	private String mSelectedProductInfo = Constant.PRODUCT_REVENUE;
+	
 	private ProductStatisticYearArrayAdapter mTransactionYearAdapter;
 	private ProductStatisticMonthArrayAdapter mTransactionMonthAdapter;
 	
 	private ProductStatisticActionListener mActionListener;
 	
 	private ProductDaoService mProductDaoService = new ProductDaoService();
+	
+	private String mStatus;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,8 +107,7 @@ public class ProductStatisticListFragment extends BaseFragment
 		mTransactionList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		if (mSelectedTransactionYear != null) {
-			onTransactionYearSelected(mSelectedTransactionYear);
-			
+			onTransactionYearSelected(mSelectedTransactionYear);		
 		} else {
 			displayTransactionAllYears();
 		}
@@ -121,15 +125,63 @@ public class ProductStatisticListFragment extends BaseFragment
         }
     }
 	
+	public void setSelectedProductInfo(String productInfo) {
+		
+		mSelectedProductInfo = productInfo;
+		updateContent();
+	}
+	
+	private void updateContent() {
+		
+		if (!isViewInitialized()) {
+			return;
+		}
+		
+		if (ProductStatisticActivity.DISPLAY_TRANSACTION_ALL_YEARS.equals(mStatus)) {
+			displayTransactionAllYears();
+			
+		} else if (ProductStatisticActivity.DISPLAY_TRANSACTION_ON_YEAR.equals(mStatus)) {
+			displayTransactionOnYear(mSelectedTransactionYear);
+			
+		} else if (ProductStatisticActivity.DISPLAY_TRANSACTION_ON_MONTH.equals(mStatus)) {
+			displayTransactionOnMonth(mSelectedTransactionMonth);
+		}
+	}
+	
 	public void setSelectedTransactionYear(TransactionYear transactionYear) {
 		
 		mSelectedTransactionYear = transactionYear;
+		
+		if (transactionYear == null) {
+			return;
+		}
+		
+		mStatus = ProductStatisticActivity.DISPLAY_TRANSACTION_ON_YEAR;
+		
+		if (isViewInitialized()) {
+			updateContent();
+		}
 	}
 	
 	public void setSelectedTransactionMonth(TransactionMonth transactionMonth) {
 		
 		mSelectedTransactionMonth = transactionMonth;
+		
+		if (transactionMonth == null) {
+			return;
+		}
+		
+		mStatus = ProductStatisticActivity.DISPLAY_TRANSACTION_ON_MONTH;
+		
+		if (isViewInitialized()) {
+			updateContent();
+		}
 	}
+	
+	public void refreshTransactionYear() {
+		
+		displayTransactionOnYear(mSelectedTransactionYear);
+	} 
 	
 	private int getTransactionYearsTotalAmount(List<TransactionYear> transactionYears) {
 		
@@ -155,8 +207,19 @@ public class ProductStatisticListFragment extends BaseFragment
 	
 	public void displayTransactionAllYears() {
 		
+		mStatus = ProductStatisticActivity.DISPLAY_TRANSACTION_ALL_YEARS;
+		
 		mTransactionYears.clear();
-		mTransactionYears.addAll(mProductDaoService.getTransactionYears());
+		
+		if (Constant.PRODUCT_QUANTITY.equals(mSelectedProductInfo)) {
+			mTransactionYears.addAll(mProductDaoService.getTransactionYearsQuantity());
+			
+		} else if (Constant.PRODUCT_REVENUE.equals(mSelectedProductInfo)) {
+			mTransactionYears.addAll(mProductDaoService.getTransactionYearsRevenue());
+			
+		} else if (Constant.PRODUCT_PROFIT.equals(mSelectedProductInfo)) {
+			mTransactionYears.addAll(mProductDaoService.getTransactionYearsProfit());
+		}
 		
 		if (!isViewInitialized()) {
 			return;
@@ -165,15 +228,31 @@ public class ProductStatisticListFragment extends BaseFragment
 		setBackButtonVisible(false);
 		
 		mNavigationTitle.setText(getString(R.string.transaction_total));
-		mNavText.setText("Total   " + CommonUtil.formatCurrencyUnsigned(getTransactionYearsTotalAmount(mTransactionYears)));
+		
+		if (Constant.PRODUCT_QUANTITY.equals(mSelectedProductInfo)) {
+			mNavText.setText("Total   " + CommonUtil.formatCurrencyUnsigned(getTransactionYearsTotalAmount(mTransactionYears)));
+		} else {
+			mNavText.setText(CommonUtil.formatCurrency(getTransactionYearsTotalAmount(mTransactionYears)));
+		}
 		
 		mTransactionList.setAdapter(mTransactionYearAdapter);
 	}
 	
 	public void displayTransactionOnYear(TransactionYear transactionYear) {
 		
+		mStatus = ProductStatisticActivity.DISPLAY_TRANSACTION_ON_YEAR;
+		
 		mTransactionMonths.clear();
-		mTransactionMonths.addAll(mProductDaoService.getTransactionMonths(transactionYear));
+		
+		if (Constant.PRODUCT_QUANTITY.equals(mSelectedProductInfo)) {
+			mTransactionMonths.addAll(mProductDaoService.getTransactionMonthsQuantity(transactionYear));
+			
+		} else if (Constant.PRODUCT_REVENUE.equals(mSelectedProductInfo)) {
+			mTransactionMonths.addAll(mProductDaoService.getTransactionMonthsRevenue(transactionYear));
+		
+		} else if (Constant.PRODUCT_PROFIT.equals(mSelectedProductInfo)) {
+			mTransactionMonths.addAll(mProductDaoService.getTransactionMonthsProfit(transactionYear));
+		}
 		
 		if (!isViewInitialized()) {
 			return;
@@ -182,27 +261,27 @@ public class ProductStatisticListFragment extends BaseFragment
 		setBackButtonVisible(true);
 		
 		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
-		mNavText.setText("Total   " + CommonUtil.formatCurrencyUnsigned(getTransactionMonthsTotalAmount(mTransactionMonths)));
+		
+		if (Constant.PRODUCT_QUANTITY.equals(mSelectedProductInfo)) {
+			mNavText.setText("Total   " + CommonUtil.formatCurrencyUnsigned(getTransactionMonthsTotalAmount(mTransactionMonths)));
+		} else {
+			mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
+		}
 		
 		mTransactionList.setAdapter(mTransactionMonthAdapter);
+	}
+	
+	public void displayTransactionOnMonth(TransactionMonth transactionMonth) {
+		
+		mStatus = ProductStatisticActivity.DISPLAY_TRANSACTION_ON_MONTH;
+		
+		mTransactionMonthAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
 	public void onTransactionYearSelected(TransactionYear transactionYear) {
 		
-		setBackButtonVisible(true);
-		
-		mSelectedTransactionYear = transactionYear;
-		
 		mActionListener.onTransactionYearSelected(transactionYear);
-		
-		mTransactionMonths.clear();
-		mTransactionMonths.addAll(mProductDaoService.getTransactionMonths(transactionYear));
-		
-		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
-		mNavText.setText("Total   " + CommonUtil.formatCurrencyUnsigned(getTransactionMonthsTotalAmount(mTransactionMonths)));
-		
-		mTransactionList.setAdapter(mTransactionMonthAdapter);
 	}
 	
 	@Override
@@ -212,11 +291,15 @@ public class ProductStatisticListFragment extends BaseFragment
 	}
 	
 	@Override
+	public String getSelectedProductInfo() {
+		
+		return mSelectedProductInfo;
+	}
+	
+	@Override
 	public void onTransactionMonthSelected(TransactionMonth transactionMonth) {
 		
-		mSelectedTransactionMonth = transactionMonth;
 		mActionListener.onTransactionMonthSelected(transactionMonth);
-		mTransactionMonthAdapter.notifyDataSetChanged();
 	}
 	
 	@Override

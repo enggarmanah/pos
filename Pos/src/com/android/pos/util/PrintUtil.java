@@ -10,8 +10,10 @@ import android.os.Message;
 import android.util.Log;
 
 import com.RT_Printer.BluetoothPrinter.BLUETOOTH.BluetoothPrintDriver;
+import com.android.pos.Constant;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.cashier.CashierPaymentDeviceListActivity;
+import com.android.pos.dao.Merchant;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
 
@@ -59,7 +61,9 @@ public class PrintUtil {
 		mPrinterLineSize = printerLineSize;
 	}
 	
-	public static void initBluetooth(CashierActivity activity) {
+	public static boolean initBluetooth(CashierActivity activity) {
+		
+		boolean isActivated = false;
 		
 		mActivity = activity;
 
@@ -86,33 +90,43 @@ public class PrintUtil {
 
 			} else {
 				
+				isActivated = true;
+				
 				if (mChatService == null) {
 					
-					mActivity.setMessage("Aktifkan bluetooth printer anda dan hubungkan ke sistem");
 					setupChat();
+					
+					//mActivity.setMessage("Printer tidak terhubung, aktifkan Bluetooth Printer anda dan hubungkan ke sistem");
+					//setupChat();
 				
 				} else {
 					
 					if (BluetoothPrintDriver.IsNoConnection()) {
-						mActivity.setMessage("Aktifkan bluetooth printer anda dan hubungkan ke sistem");
+						//mActivity.setMessage("Printer tidak terhubung, aktifkan Bluetooth Printer anda dan hubungkan ke sistem");
 					}
 				} 
 			}
 		}
+		
+		return isActivated;
 	}
 	
 	public static void setupChat() {
 
-		Log.d(TAG, "setupChat()");
-		
-		// Initialize the BluetoothChatService to perform bluetooth connections
-		mChatService = new BluetoothPrintDriver(mActivity, mHandler);
-		
-		// Connect to Bluetooth printer
-		selectBluetoothPrinter();
+		if (mChatService == null) {
+			
+			mChatService = new BluetoothPrintDriver(mActivity, mHandler);
+		}
 	}
 	
 	public static void connectToBluetoothPrinter(String address) {
+		
+		System.out.println("Connecting to BT Printer : " + address);
+		
+		// Get Bluetooth driver
+		if (mBluetoothAdapter == null) {
+			mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		}
 		
 		// Get the BLuetoothDevice object
 		BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
@@ -123,9 +137,16 @@ public class PrintUtil {
 	
 	public static void selectBluetoothPrinter() {
 		
-		if (mBluetoothAdapter != null && 
-			BluetoothPrintDriver.IsNoConnection()) {
-
+		setupChat();
+		
+		//if (mBluetoothAdapter != null && 
+		//	BluetoothPrintDriver.IsNoConnection()) {
+		
+		if (mBluetoothAdapter != null) {
+			
+			mChatService.stop();
+			mChatService.start();
+			
 			Intent serverIntent = new Intent(mActivity, CashierPaymentDeviceListActivity.class);
 			mActivity.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 		}
@@ -158,8 +179,11 @@ public class PrintUtil {
 				case BluetoothPrintDriver.STATE_LISTEN:
 
 				case BluetoothPrintDriver.STATE_NONE:
-
-					mActivity.showLongMessage("Tidak dapat terhubung ke Printer Bluetooth. Pastikan Printer Bluetooth anda aktif.");
+					
+					String message = "Tidak dapat terhubung ke Printer Bluetooth. Pastikan Printer Bluetooth anda aktif.";
+					
+					//mActivity.showMessage(message);
+					mActivity.setMessage(message);
 
 					break;
 				}
@@ -215,7 +239,7 @@ public class PrintUtil {
 			}
 		}
 	};
-
+	
 	public static void print(Transactions transaction, List<TransactionItem> transactionItems) {
 
 		/*if (BluetoothPrintDriver.IsNoConnection()) {
@@ -224,6 +248,8 @@ public class PrintUtil {
 			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 		}*/
 
+		BluetoothPrintDriver.WakeUpPritner();
+		
 		BluetoothPrintDriver.Begin();
 
 		// width
@@ -248,6 +274,60 @@ public class PrintUtil {
 		String divider = "----------------------------------------";
 		
 		StringBuffer line = new StringBuffer();
+		
+		Merchant merchant = MerchantUtil.getMerchant();
+		
+		line.append(merchant.getName());
+		
+		line.append(spaces.substring(0, mPrinterLineSize - merchant.getName().length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		
+		String addrAndTelp = merchant.getAddress() + " Tlp. " + merchant.getTelephone();
+		String[] addrAndTelps = addrAndTelp.split(" ");
+		
+		String addrAndTlpLine = Constant.EMPTY_STRING;
+		
+		for (String str : addrAndTelps) {
+			
+			if (addrAndTlpLine.length() + str.length() < mPrinterLineSize) {
+				
+				addrAndTlpLine = addrAndTlpLine + str + " "; 
+			
+			} else {
+				
+				line.setLength(0);
+				line.append(addrAndTlpLine);
+				line.append(spaces.substring(0, mPrinterLineSize - addrAndTlpLine.length()));
+				BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+				
+				addrAndTlpLine = Constant.EMPTY_STRING;
+			}
+		}
+		
+		line.setLength(0);
+		line.append(addrAndTlpLine);
+		line.append(spaces.substring(0, mPrinterLineSize - addrAndTlpLine.length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		
+		String transDateText = CommonUtil.formatDateTime(transaction.getTransactionDate()); 
+		
+		line.setLength(0);
+		line.append(transDateText);
+		line.append(spaces.substring(0, mPrinterLineSize - transDateText.length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		String cashierText = "Kasir : " + transaction.getCashierName();
+		
+		line.setLength(0);
+		line.append(cashierText);
+		line.append(spaces.substring(0, mPrinterLineSize - cashierText.length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
 		
 		for (TransactionItem item : transactionItems) {
 			
@@ -339,8 +419,9 @@ public class PrintUtil {
 		}
 		
 		String totalLabel = "Total";
-		String paymentLabel = "Bayar";
 		String returnLabel = "Kembali";
+		
+		String paymentLabel =  CodeUtil.getPaymentTypeLabel(transaction.getPaymentType());
 
 		String totalText = CommonUtil.formatCurrency(transaction.getTotalAmount());
 		String paymentText = CommonUtil.formatCurrency(transaction.getPaymentAmount());

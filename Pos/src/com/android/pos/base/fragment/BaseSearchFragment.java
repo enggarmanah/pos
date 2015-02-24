@@ -169,4 +169,9 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 		
 		searchItem(Constant.EMPTY_STRING);
 	}
+	
+	protected ImageButton getAddBtn() {
+		
+		return mAddButton;
+	}
 }

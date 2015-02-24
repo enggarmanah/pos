@@ -18,14 +18,14 @@
             <TextView
                 style="@style/SectionTopTextStyle"
                 android:layout_weight="1"
-                android:gravity="start"
+                android:gravity="start|center_vertical"
                 android:text="@string/transaction" />
 
             <TextView
                 android:id="@+id/dateText"
                 style="@style/SectionTopTextStyle"
                 android:layout_weight="2"
-                android:gravity="end" />
+                android:gravity="end|center_vertical" />
         </LinearLayout>
 
         <LinearLayout
@@ -72,6 +72,9 @@
                     style="@style/SectionSubContentInfoTextStyle" />
             </LinearLayout>
         </LinearLayout>
+		
+        <TextView style="@style/PaymentRowDividerStyle" />
+        
     </LinearLayout>
 
     <LinearLayout
@@ -79,13 +82,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#888"
-        android:orientation="vertical" >
-
+        android:orientation="vertical">
+		
+        <TextView 
+            android:id="@+id/discountBorder"
+            style="@style/PaymentRowDividerStyle" />
+            
         <LinearLayout
             android:id="@+id/discountPanel"
             style="@style/PaymentRowStyle" >
-
+			
             <TextView
                 android:id="@+id/discountLabelText"
                 style="@style/PaymentRowContentLeftStyle" />
@@ -94,11 +100,15 @@
                 android:id="@+id/discountText"
                 style="@style/PaymentRowContentRightStyle" />
         </LinearLayout>
-
+		
+        <TextView 
+            android:id="@+id/taxBorder"
+            style="@style/PaymentRowDividerStyle" />
+            
         <LinearLayout
             android:id="@+id/taxPanel"
             style="@style/PaymentRowStyle" >
-
+			
             <TextView
                 style="@style/PaymentRowContentLeftStyle"
                 android:text="@string/tax" />
@@ -107,7 +117,11 @@
                 android:id="@+id/taxText"
                 style="@style/PaymentRowContentRightStyle" />
         </LinearLayout>
-
+		
+        <TextView 
+            android:id="@+id/serviceChargeBorder"
+            style="@style/PaymentRowDividerStyle" />
+            
         <LinearLayout
             android:id="@+id/serviceChargePanel"
             style="@style/PaymentRowStyle" >

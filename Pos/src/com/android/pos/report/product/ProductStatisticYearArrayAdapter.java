@@ -2,6 +2,7 @@ package com.android.pos.report.product;
 
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.TransactionYear;
 import com.android.pos.util.CommonUtil;
@@ -24,6 +25,8 @@ public class ProductStatisticYearArrayAdapter extends ArrayAdapter<TransactionYe
 		public void onTransactionYearSelected(TransactionYear item);
 		
 		public TransactionYear getSelectedTransactionYear();
+		
+		public String getSelectedProductInfo();
 	}
 
 	class ViewHolder {
@@ -75,7 +78,12 @@ public class ProductStatisticYearArrayAdapter extends ArrayAdapter<TransactionYe
 		}
 		
 		transDate.setText(CommonUtil.formatYear(transactionYear.getYear()));
-		totalAmount.setText(CommonUtil.formatCurrencyUnsigned(transactionYear.getAmount()));
+		
+		if (Constant.PRODUCT_QUANTITY.equals(mCallback.getSelectedProductInfo())) {
+			totalAmount.setText(CommonUtil.formatCurrencyUnsigned(transactionYear.getAmount()));
+		} else {
+			totalAmount.setText(CommonUtil.formatCurrency(transactionYear.getAmount()));	
+		}
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionYear, transDate));
 		

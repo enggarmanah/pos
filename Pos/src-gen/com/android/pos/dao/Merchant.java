@@ -23,6 +23,8 @@ public class Merchant implements Serializable {
     private String contactName;
     private String contactTelephone;
     private String loginId;
+    private String printerType;
+    private String printerAddress;
     private String password;
     private java.util.Date periodStart;
     private java.util.Date periodEnd;
@@ -54,7 +56,7 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String loginId, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String loginId, String printerType, String printerAddress, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -63,6 +65,8 @@ public class Merchant implements Serializable {
         this.contactName = contactName;
         this.contactTelephone = contactTelephone;
         this.loginId = loginId;
+        this.printerType = printerType;
+        this.printerAddress = printerAddress;
         this.password = password;
         this.periodStart = periodStart;
         this.periodEnd = periodEnd;
@@ -147,6 +151,22 @@ public class Merchant implements Serializable {
 
     public void setLoginId(String loginId) {
         this.loginId = loginId;
+    }
+
+    public String getPrinterType() {
+        return printerType;
+    }
+
+    public void setPrinterType(String printerType) {
+        this.printerType = printerType;
+    }
+
+    public String getPrinterAddress() {
+        return printerAddress;
+    }
+
+    public void setPrinterAddress(String printerAddress) {
+        this.printerAddress = printerAddress;
     }
 
     public String getPassword() {

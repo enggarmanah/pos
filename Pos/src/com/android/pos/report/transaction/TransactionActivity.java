@@ -11,6 +11,7 @@ import com.android.pos.dao.TransactionYear;
 import com.android.pos.dao.Transactions;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.PrintUtil;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -43,6 +44,9 @@ public class TransactionActivity extends BaseActivity
 	private boolean mIsDisplayTransactionMonth = false;
 	private boolean mIsDisplayTransactionDay = false;
 	private boolean mIsDisplayTransaction = false;
+	
+	private MenuItem mPrintItem;
+	private MenuItem mUpItem;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -162,33 +166,48 @@ public class TransactionActivity extends BaseActivity
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.transaction_menu, menu);
+		inflater.inflate(R.menu.report_transaction_menu, menu);
 		
+		mPrintItem = menu.findItem(R.id.menu_item_print);
+		mUpItem = menu.findItem(R.id.menu_item_up);
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 
-		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-
-		menu.findItem(R.id.menu_item_list).setVisible(!isDrawerOpen);
-
+		initMenus();
+		
 		return super.onPrepareOptionsMenu(menu);
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-
-			case R.id.menu_item_list:
+			
+			case R.id.menu_item_print:
+				
+				PrintUtil.print(mSelectedTransaction, mSelectedTransaction.getTransactionItemList());
+				
+				return true;
+		
+			case R.id.menu_item_up:
 				
 				onBackToParent();
+				
+				return true;
 
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	private void hideAllMenus() {
+		
+		mPrintItem.setVisible(false);
+		mUpItem.setVisible(false);
 	}
 	
 	@Override
@@ -198,6 +217,8 @@ public class TransactionActivity extends BaseActivity
 		
 		resetDisplayStatus();
 		mIsDisplayTransactionYear = true;
+		
+		initMenus();
 	}
 	
 	@Override
@@ -207,6 +228,8 @@ public class TransactionActivity extends BaseActivity
 		
 		resetDisplayStatus();
 		mIsDisplayTransactionMonth = true;
+		
+		initMenus();
 	}
 	
 	@Override
@@ -216,6 +239,8 @@ public class TransactionActivity extends BaseActivity
 		
 		resetDisplayStatus();
 		mIsDisplayTransactionDay = true;
+		
+		initMenus();
 	}
 	
 	@Override
@@ -235,6 +260,8 @@ public class TransactionActivity extends BaseActivity
 			replaceFragment(mTransactionDetailFragment, mTransactionDetailFragmentTag);
 			mTransactionDetailFragment.setTransaction(transaction);
 		}
+		
+		initMenus();
 	}
 	
 	@Override
@@ -259,6 +286,8 @@ public class TransactionActivity extends BaseActivity
 			
 			initFragment();
 		}
+		
+		initMenus();
 	}
 	
 	private void initFragment() {
@@ -274,6 +303,36 @@ public class TransactionActivity extends BaseActivity
 			
 		} else if (mIsDisplayTransactionDay) {
 			mTransactionListFragment.displayTransactionOnDay(mSelectedTransactionDay);
+		
+		} else if (mIsDisplayTransaction) {
+			mUpItem.setVisible(true);
+		}
+	}
+	
+	private void initMenus() {
+		
+		if (mUpItem == null) {
+			return;
+		}
+		
+		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		
+		if (isDrawerOpen) {
+			
+			mPrintItem.setVisible(false);
+			mUpItem.setVisible(false);
+		
+		} else {
+			
+			hideAllMenus();
+			
+			if (mIsDisplayTransactionYear || mIsDisplayTransactionMonth || mIsDisplayTransactionDay) {
+				mUpItem.setVisible(true);
+				
+			} else if (mIsDisplayTransaction) {
+				mUpItem.setVisible(true);
+				mPrintItem.setVisible(true);
+			}
 		}
 	}
 	

@@ -60,6 +60,7 @@
     
     <color name="list_row_background">#FFF</color>
     <color name="list_row_normal_text">#4f5460</color>
+    <color name="list_row_normal_grey_text">#777</color>
     <color name="list_row_normal_light_text">#5e98c7</color>
     <color name="list_row_normal_background">#FFF</color>
     <color name="list_row_selected_text">#4f5460</color>

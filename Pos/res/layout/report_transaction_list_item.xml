@@ -4,10 +4,10 @@
 
     <TextView
         android:id="@+id/transactionDateText"
-        style="@style/ListViewRowProductNameTextStyle"/>
+        style="@style/ListViewRowReportDateTextStyle"/>
     
     <TextView
         android:id="@+id/totalAmountText"
-        style="@style/ListViewRowProductPriceTextStyle"/>
+        style="@style/ListViewRowReportTotalTextStyle"/>
 
 </LinearLayout>

@@ -149,7 +149,7 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 				
 				mActionListener.onPrintReceipt(transaction);
 				mActionListener.onPaymentCompleted(transaction);
-				
+					
 				dismiss();
 			}
 		};

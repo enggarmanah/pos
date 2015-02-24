@@ -19,10 +19,14 @@
     
     <string-array name="app_menus">
         <item>Kasir</item>
-        <item>Rekap Transaksi</item>
-        <item>Statistik Penjualan</item>
+        <item>Laporan Transaksi</item>
+        <item>Laporan Penjualan</item>
         <item>Manajemen Pengguna</item>
         <item>Manajemen Data</item>
+        <item>Keluar</item>
+    </string-array>
+    
+    <string-array name="app_menus_admin">
         <item>Keluar</item>
     </string-array>
     
@@ -36,8 +40,8 @@
     <string name="pin">PIN</string>
     
     <string name="menu_cashier">Kasir</string>
-    <string name="menu_transaction">Rekap Transaksi</string>
-    <string name="menu_statistic_product">Statistik Penjualan</string>
+    <string name="menu_transaction">Laporan Transaksi</string>
+    <string name="menu_statistic_product">Laporan Penjualan</string>
     <string name="menu_expense">Pengeluaran</string>
     <string name="menu_profit_lost">Rekap Untung Rugi</string>
     <string name="menu_statistic">Statistik</string>
@@ -52,6 +56,10 @@
     <string name="module_customer">Data Pelanggan</string>
     <string name="module_discount">Data Diskon</string>
     
+    <string name="info_quantity">Jumlah</string>
+    <string name="info_revenue">Pendapatan</string>
+    <string name="info_profit">Laba</string>
+    
     <string name="empty"></string>
     <string name="search">Cari</string>
     <string name="add">Tambah</string>
@@ -63,11 +71,11 @@
     <string name="select">Pilih</string>
     <string name="confirmation">Konfirmasi</string>
     <string name="save">Simpan</string>
+    <string name="select_printer">Pilih Printer</string>
     <string name="none"></string>
     
     <string name="sync">Sync</string>
     <string name="exit">Keluar</string>
-    
     
     <string name="product_search">Cari Produk</string>
     <string name="product_list">Daftar Produk</string>

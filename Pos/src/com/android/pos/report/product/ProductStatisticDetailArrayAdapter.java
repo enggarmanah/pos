@@ -2,6 +2,7 @@ package com.android.pos.report.product;
 
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.ProductStatistic;
 import com.android.pos.util.CommonUtil;
@@ -17,18 +18,25 @@ public class ProductStatisticDetailArrayAdapter extends ArrayAdapter<ProductStat
 
 	private Context context;
 	private List<ProductStatistic> productStatistics;
+	private ItemActionListener mCallback;
+	
+	public interface ItemActionListener {
+
+		public String getProductInfo();
+	}
 
 	class ViewHolder {
 		TextView productNameText;
 		TextView saleCountText;
 	}
 
-	public ProductStatisticDetailArrayAdapter(Context context, List<ProductStatistic> productStatistics) {
+	public ProductStatisticDetailArrayAdapter(Context context, List<ProductStatistic> productStatistics, ItemActionListener listener) {
 
 		super(context, R.layout.report_product_statistic_list_item, productStatistics);
 		
 		this.context = context;
 		this.productStatistics = productStatistics;
+		mCallback = (ItemActionListener) listener;
 	}
 	
 	@Override
@@ -66,7 +74,12 @@ public class ProductStatisticDetailArrayAdapter extends ArrayAdapter<ProductStat
 		}
 		
 		productName.setText(productStatistic.getProduct_name());
-		saleCount.setText(CommonUtil.formatCurrencyUnsigned(productStatistic.getQuantity()));
+		
+		if (Constant.PRODUCT_QUANTITY.equals(mCallback.getProductInfo())) {
+			saleCount.setText(CommonUtil.formatCurrencyUnsigned(productStatistic.getValue()));
+		} else {
+			saleCount.setText(CommonUtil.formatCurrency(productStatistic.getValue()));
+		}
 
 		rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
 

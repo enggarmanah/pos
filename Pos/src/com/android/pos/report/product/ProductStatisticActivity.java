@@ -26,8 +26,15 @@ public class ProductStatisticActivity extends BaseActivity
 	private TransactionYear mSelectedTransactionYear;
 	private TransactionMonth mSelectedTransactionMonth;
 	
+	private String mSelectedProductInfo = Constant.PRODUCT_QUANTITY;
+	
 	private static String SELECTED_TRANSACTION_YEAR = "SELECTED_TRANSACTION_YEAR";
 	private static String SELECTED_TRANSACTION_MONTH = "SELECTED_TRANSACTION_MONTH";
+	private static String SELECTED_PRODUCT_INFO = "SELECTED_PRODUCT_INFO";
+	
+	public static final String DISPLAY_TRANSACTION_ALL_YEARS = "DISPLAY_TRANSACTION_ALL_YEARS";
+	public static final String DISPLAY_TRANSACTION_ON_YEAR = "DISPLAY_TRANSACTION_ON_YEAR";
+	public static final String DISPLAY_TRANSACTION_ON_MONTH = "DISPLAY_TRANSACTION_ON_MONTH";
 	
 	private String mProductStatisticListFragmentTag = "productStatisticListFragmentTag";
 	private String mProductStatisticDetailFragmentTag = "productStatisticDetailFragmentTag";
@@ -35,6 +42,10 @@ public class ProductStatisticActivity extends BaseActivity
 	private boolean mIsDisplayTransactionAllYears = false;
 	private boolean mIsDisplayTransactionYear = false;
 	private boolean mIsDisplayTransactionMonth = false;
+	
+	private MenuItem mMenuRevenue;
+	private MenuItem mMenuProfit;
+	private MenuItem mMenuQuantity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +78,14 @@ public class ProductStatisticActivity extends BaseActivity
 		
 		if (savedInstanceState != null) {
 			
+			mSelectedProductInfo = (String) savedInstanceState.getSerializable(SELECTED_PRODUCT_INFO);
+			
 			mSelectedTransactionYear = (TransactionYear) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
 			mSelectedTransactionMonth = (TransactionMonth) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
+			
+			mIsDisplayTransactionAllYears = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ALL_YEARS);
+			mIsDisplayTransactionYear = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ON_YEAR);
+			mIsDisplayTransactionMonth = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ON_MONTH);
 		
 		} else {
 			
@@ -108,8 +125,14 @@ public class ProductStatisticActivity extends BaseActivity
 
 		super.onSaveInstanceState(outState);
 		
+		outState.putSerializable(SELECTED_PRODUCT_INFO, (Serializable) mSelectedProductInfo);
+		
 		outState.putSerializable(SELECTED_TRANSACTION_YEAR, (Serializable) mSelectedTransactionYear);
 		outState.putSerializable(SELECTED_TRANSACTION_MONTH, (Serializable) mSelectedTransactionMonth);
+		
+		outState.putSerializable(DISPLAY_TRANSACTION_ALL_YEARS, (Serializable) mIsDisplayTransactionAllYears);
+		outState.putSerializable(DISPLAY_TRANSACTION_ON_YEAR, (Serializable) mIsDisplayTransactionYear);
+		outState.putSerializable(DISPLAY_TRANSACTION_ON_MONTH, (Serializable) mIsDisplayTransactionMonth);
 	}
 	
 	@Override
@@ -120,22 +143,23 @@ public class ProductStatisticActivity extends BaseActivity
 	
 	private void loadFragments() {
 		
+		mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
 		mProductStatisticListFragment.setSelectedTransactionYear(mSelectedTransactionYear);
 		mProductStatisticListFragment.setSelectedTransactionMonth(mSelectedTransactionMonth);
-
+		
+		mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
+		mProductStatisticDetailFragment.setTransactionMonth(mSelectedTransactionMonth);
+		
 		if (mIsMultiplesPane) {
 
 			addFragment(mProductStatisticListFragment, mProductStatisticListFragmentTag);
 			addFragment(mProductStatisticDetailFragment, mProductStatisticDetailFragmentTag);
-			
-			mProductStatisticDetailFragment.setTransactionMonth(mSelectedTransactionMonth);
 			
 		} else {
 
 			if (mSelectedTransactionMonth != null) {
 				
 				addFragment(mProductStatisticDetailFragment, mProductStatisticDetailFragmentTag);
-				mProductStatisticDetailFragment.setTransactionMonth(mSelectedTransactionMonth);
 				
 			} else {
 				
@@ -148,7 +172,11 @@ public class ProductStatisticActivity extends BaseActivity
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.transaction_menu, menu);
+		inflater.inflate(R.menu.report_product_menu, menu);
+		
+		mMenuRevenue = menu.findItem(R.id.menu_revenue);
+		mMenuProfit = menu.findItem(R.id.menu_profit);
+		mMenuQuantity = menu.findItem(R.id.menu_quantity);
 		
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -156,22 +184,79 @@ public class ProductStatisticActivity extends BaseActivity
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 
-		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-
-		menu.findItem(R.id.menu_item_list).setVisible(!isDrawerOpen);
-
+		hideSelectedMenu();
+		
 		return super.onPrepareOptionsMenu(menu);
+	}
+	
+	private void hideSelectedMenu() {
+		
+		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		
+		if (!isDrawerOpen) {
+		
+			mMenuRevenue.setVisible(true);
+			mMenuProfit.setVisible(true);
+			mMenuQuantity.setVisible(true);
+			
+			if (Constant.PRODUCT_REVENUE.equals(mSelectedProductInfo)) {
+				mMenuRevenue.setVisible(false);
+				
+			} else if (Constant.PRODUCT_PROFIT.equals(mSelectedProductInfo)) {
+				mMenuProfit.setVisible(false);
+			
+			} else if (Constant.PRODUCT_QUANTITY.equals(mSelectedProductInfo)) {
+				mMenuQuantity.setVisible(false);
+			}
+		} else {
+			
+			mMenuRevenue.setVisible(false);
+			mMenuProfit.setVisible(false);
+			mMenuQuantity.setVisible(false);
+		}
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
+		
 		switch (item.getItemId()) {
 
-			case R.id.menu_item_list:
+			case R.id.menu_revenue:
 				
-				onBackToParent();
-
+				mSelectedProductInfo = Constant.PRODUCT_REVENUE;
+				
+				mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
+				mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
+				
+				refreshParentView();
+				hideSelectedMenu();
+				
+				return true;
+			
+			case R.id.menu_profit:
+				
+				mSelectedProductInfo = Constant.PRODUCT_PROFIT;
+				
+				mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
+				mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
+				
+				refreshParentView();
+				hideSelectedMenu();
+				
+				return true;
+			
+			case R.id.menu_quantity:
+				
+				mSelectedProductInfo = Constant.PRODUCT_QUANTITY;
+				
+				mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
+				mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
+				
+				refreshParentView();
+				hideSelectedMenu();
+				
+				return true;
+				
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -184,6 +269,8 @@ public class ProductStatisticActivity extends BaseActivity
 		
 		resetDisplayStatus();
 		mIsDisplayTransactionYear = true;
+		
+		mProductStatisticListFragment.setSelectedTransactionYear(transactionYear);
 	}
 	
 	@Override
@@ -195,13 +282,22 @@ public class ProductStatisticActivity extends BaseActivity
 		mIsDisplayTransactionMonth = true;
 		
 		if (mIsMultiplesPane) {
-
+			
+			mProductStatisticListFragment.setSelectedTransactionMonth(transactionMonth);
 			mProductStatisticDetailFragment.setTransactionMonth(transactionMonth);
 			
 		} else {
 
 			replaceFragment(mProductStatisticDetailFragment, mProductStatisticDetailFragmentTag);
 			mProductStatisticDetailFragment.setTransactionMonth(transactionMonth);
+		}
+	}
+	
+	private void refreshParentView() {
+		
+		if (mIsMultiplesPane && mIsDisplayTransactionMonth) {
+			
+			mProductStatisticListFragment.setSelectedTransactionYear(mSelectedTransactionYear);
 		}
 	}
 	
@@ -215,17 +311,19 @@ public class ProductStatisticActivity extends BaseActivity
 		
 		setDisplayStatusToParent();
 		
+		mProductStatisticListFragment.setSelectedTransactionYear(mSelectedTransactionYear);
+		mProductStatisticListFragment.setSelectedTransactionMonth(mSelectedTransactionMonth);
+		
+		mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
+		mProductStatisticDetailFragment.setTransactionMonth(mSelectedTransactionMonth);
+		
 		if (mIsMultiplesPane) {
 			
 			initFragment();
 			
-			mProductStatisticDetailFragment.setTransactionMonth(null);
-			
 		} else {
 			
-			mProductStatisticListFragment.setSelectedTransactionMonth(null);
 			replaceFragment(mProductStatisticListFragment, mProductStatisticListFragmentTag);
-			
 			initFragment();
 		}
 	}
@@ -239,7 +337,6 @@ public class ProductStatisticActivity extends BaseActivity
 		} else if (mIsDisplayTransactionYear) {
 			
 			mProductStatisticListFragment.displayTransactionOnYear(mSelectedTransactionYear);
-			
 		}
 	}
 	

@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.ProductStatistic;
@@ -19,16 +20,19 @@ import com.android.pos.dao.TransactionMonth;
 import com.android.pos.service.ProductDaoService;
 import com.android.pos.util.CommonUtil;
 
-public class ProductStatisticDetailFragment extends BaseFragment {
+public class ProductStatisticDetailFragment extends BaseFragment implements ProductStatisticDetailArrayAdapter.ItemActionListener {
 	
 	private ImageButton mBackButton;
 	
 	private TextView mDateText;
+	private TextView mProductInfoText;
 	
 	protected ListView mProductStatisticList;
 
 	protected TransactionMonth mTransactionMonth;
 	protected List<ProductStatistic> mProductStatistics;
+	
+	protected String mProductInfo = Constant.PRODUCT_REVENUE;
 	
 	private ProductStatisticActionListener mActionListener;
 	
@@ -45,7 +49,7 @@ public class ProductStatisticDetailFragment extends BaseFragment {
 			mProductStatistics = new ArrayList<ProductStatistic>();
 		} 
 		
-		mAdapter = new ProductStatisticDetailArrayAdapter(getActivity(), mProductStatistics);
+		mAdapter = new ProductStatisticDetailArrayAdapter(getActivity(), mProductStatistics, this);
 		
 		return view;
 	}
@@ -70,6 +74,7 @@ public class ProductStatisticDetailFragment extends BaseFragment {
 		}
 		
 		mDateText = (TextView) getView().findViewById(R.id.dateText);
+		mProductInfoText = (TextView) getView().findViewById(R.id.productInfoText);
 	}
 	
 	public void onStart() {
@@ -91,6 +96,20 @@ public class ProductStatisticDetailFragment extends BaseFragment {
         }
     }
 	
+	public void setProductInfo(String productInfo) {
+		
+		mProductInfo = productInfo;
+		
+		if (isViewInitialized()) {
+			updateContent();
+		}
+	}
+	
+	public String getProductInfo() {
+		
+		return mProductInfo;
+	}
+	
 	public void setTransactionMonth(TransactionMonth transactionMonth) {
 		
 		mTransactionMonth = transactionMonth;
@@ -105,7 +124,20 @@ public class ProductStatisticDetailFragment extends BaseFragment {
 		if (mTransactionMonth != null) {
 			
 			mProductStatistics.clear();
-			mProductStatistics.addAll(mProductDaoService.getProductStatistics(mTransactionMonth));
+			
+			if (Constant.PRODUCT_QUANTITY.equals(mProductInfo)) {
+				mProductStatistics.addAll(mProductDaoService.getProductStatisticsQuantity(mTransactionMonth));
+				mProductInfoText.setText("Jumlah Penjualan");
+				
+			} else if (Constant.PRODUCT_REVENUE.equals(mProductInfo)) {
+				mProductStatistics.addAll(mProductDaoService.getProductStatisticsRevenue(mTransactionMonth));
+				mProductInfoText.setText("Hasil Penjualan");
+			
+			} else if (Constant.PRODUCT_PROFIT.equals(mProductInfo)) {
+				mProductStatistics.addAll(mProductDaoService.getProductStatisticsProfit(mTransactionMonth));
+				mProductInfoText.setText("Laba Penjualan");
+			}
+			
 			mAdapter.notifyDataSetChanged();
 			
 			getView().setVisibility(View.VISIBLE);

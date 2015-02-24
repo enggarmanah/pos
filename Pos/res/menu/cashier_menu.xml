@@ -23,6 +23,12 @@
         android:showAsAction="ifRoom|collapseActionView">
     </item>
     <item
+        android:id="@+id/menu_item_select_printer"
+        android:icon="@drawable/action_select_printer"
+        android:title="@string/select_printer"
+        android:showAsAction="ifRoom|collapseActionView">
+    </item>
+    <item
         android:id="@+id/menu_item_list"
         android:icon="@drawable/view_as_list"
         android:title="@string/product_group_list"

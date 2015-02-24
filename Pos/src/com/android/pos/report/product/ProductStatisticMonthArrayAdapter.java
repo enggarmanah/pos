@@ -2,6 +2,7 @@ package com.android.pos.report.product;
 
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.TransactionMonth;
 import com.android.pos.util.CommonUtil;
@@ -24,6 +25,8 @@ public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionM
 		public void onTransactionMonthSelected(TransactionMonth item);
 		
 		public TransactionMonth getSelectedTransactionMonth();
+		
+		public String getSelectedProductInfo();
 	}
 
 	class ViewHolder {
@@ -75,7 +78,12 @@ public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionM
 		}
 		
 		transDate.setText(CommonUtil.formatMonth(transactionMonth.getMonth()));
-		totalAmount.setText(CommonUtil.formatCurrencyUnsigned(transactionMonth.getAmount()));
+		
+		if (Constant.PRODUCT_QUANTITY.equals(mCallback.getSelectedProductInfo())) {
+			totalAmount.setText(CommonUtil.formatCurrencyUnsigned(transactionMonth.getAmount()));
+		} else {
+			totalAmount.setText(CommonUtil.formatCurrency(transactionMonth.getAmount()));	
+		}
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionMonth, transDate));
 		

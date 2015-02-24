@@ -14,12 +14,12 @@
         <TextView
             android:id="@+id/navigationTitle"
             style="@style/SectionTopTextStyle"
-            android:gravity="start" />
+            android:gravity="start|center_vertical" />
 
         <TextView
             android:id="@+id/navText"
             style="@style/SectionTopTextStyle"
-            android:gravity="end" />
+            android:gravity="end|center_vertical" />
     </LinearLayout>
 
     <ListView

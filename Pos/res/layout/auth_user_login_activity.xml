@@ -61,8 +61,8 @@
     
     <EditText
         android:id="@+id/passwordTxt"
-        android:hint="@string/pin"
-        android:inputType="numberPassword"
+        android:hint="@string/password"
+        android:inputType="textPassword"
         android:layout_height="wrap_content"
         android:layout_width="300dp"
         android:fontFamily="sans-serif"

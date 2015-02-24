@@ -29,7 +29,7 @@ public class HttpAsyncProgressDlgFragment extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View view = inflater.inflate(R.layout.ref_sync_progress_fragment, container, false);
+		View view = inflater.inflate(R.layout.data_sync_progress_fragment, container, false);
 		
 		return view;
 	}

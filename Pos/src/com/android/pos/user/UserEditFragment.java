@@ -40,7 +40,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
     	
-    	View view = inflater.inflate(R.layout.ref_user_fragment, container, false);
+    	View view = inflater.inflate(R.layout.data_user_fragment, container, false);
     	
     	return view;
     }
