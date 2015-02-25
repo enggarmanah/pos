@@ -74,7 +74,7 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     	
     	if (mItem != null) {
     		
-    		Long merchantId = MerchantUtil.getMerchant().getId();
+    		Long merchantId = MerchantUtil.getMerchantId();
     		
     		mItem.setMerchantId(merchantId);
     		mItem.setName(name);

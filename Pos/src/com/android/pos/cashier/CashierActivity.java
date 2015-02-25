@@ -81,8 +81,8 @@ public class CashierActivity extends BaseActivity
 
 	private String prevQuery = Constant.EMPTY_STRING;
 	
-	private TransactionsDaoService mTransactionDaoService = new TransactionsDaoService();
-	private TransactionItemDaoService mTransactionItemDaoService = new TransactionItemDaoService();
+	private TransactionsDaoService mTransactionDaoService;
+	private TransactionItemDaoService mTransactionItemDaoService;
 	
 	private static boolean isTryToConnect = false;
 
@@ -93,7 +93,10 @@ public class CashierActivity extends BaseActivity
 		setContentView(R.layout.cashier_activity);
 
 		DbUtil.initDb(this);
-
+		
+		mTransactionDaoService = new TransactionsDaoService();
+		mTransactionItemDaoService = new TransactionItemDaoService();
+		
 		initDrawerMenu();
 
 		initFragments(savedInstanceState);
@@ -119,8 +122,7 @@ public class CashierActivity extends BaseActivity
 		super.onStart();
 
 		setTitle(getString(R.string.menu_cashier));
-
-		mDrawerList.setItemChecked(Constant.MENU_CASHIER_POSITION, true);
+		setSelectedMenu(getString(R.string.menu_cashier));
 	}
 	
 	private void connectToMerchantPrinter() {

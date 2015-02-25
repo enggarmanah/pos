@@ -3,7 +3,6 @@ package com.android.pos.user;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.User;
@@ -27,8 +26,7 @@ public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, Use
 		super.onStart();
 
 		setTitle(getString(R.string.menu_user_management));
-		
-		mDrawerList.setItemChecked(Constant.MENU_USER_MANAGEMENT_POSITION, true);
+		setSelectedMenu(getString(R.string.menu_user_management));
 	}
 	
 	@Override

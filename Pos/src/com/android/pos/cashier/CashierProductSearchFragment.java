@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class CashierProductSearchFragment extends BaseFragment
 	CashierProductArrayAdapter.ItemActionListener {
 	
 	private TextView mNavigationTitle;
-	private TextView mUpButton;
+	private ImageButton mBackButton;
 	
 	private ListView mProductGroupList;
 	private List<ProductGroup> mProductGroups;
@@ -95,8 +96,8 @@ public class CashierProductSearchFragment extends BaseFragment
 	public void onStart() {
 		super.onStart();
 		
+		mBackButton = (ImageButton) getActivity().findViewById(R.id.backButton);
 		mNavigationTitle = (TextView) getActivity().findViewById(R.id.navigationTitle);
-		mUpButton = (TextView) getActivity().findViewById(R.id.upButton);
 		mProductGroupList = (ListView) getActivity().findViewById(R.id.productGroupList);
 		
 		if (mProducts.size() > 0) {
@@ -108,7 +109,7 @@ public class CashierProductSearchFragment extends BaseFragment
 		mProductGroupList.setItemsCanFocus(true);
 		mProductGroupList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		mUpButton.setOnClickListener(getUpButtonOnClickListener());
+		mBackButton.setOnClickListener(getUpButtonOnClickListener());
 		
 		refreshNavigationPanel();
 	}
@@ -129,15 +130,15 @@ public class CashierProductSearchFragment extends BaseFragment
 		
 		if (mSelectedPrdGroup != null) {
 			mNavigationTitle.setText(mSelectedPrdGroup.getName());
-			mUpButton.setVisibility(View.VISIBLE);
+			mBackButton.setVisibility(View.VISIBLE);
 		
 		} else if (mSearchQuery != null) {
 			mNavigationTitle.setText(getString(R.string.product_search));
-			mUpButton.setVisibility(View.VISIBLE);
+			mBackButton.setVisibility(View.VISIBLE);
 			
 		} else {
 			mNavigationTitle.setText(getString(R.string.product_group_list));
-			mUpButton.setVisibility(View.INVISIBLE);
+			mBackButton.setVisibility(View.GONE);
 		}
 	}
 	

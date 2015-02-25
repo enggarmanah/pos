@@ -41,6 +41,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	MenuItem mDiscardMenu;
 	MenuItem mEditMenu;
 	MenuItem mDeleteMenu;
+	MenuItem mSyncMenu;
 
 	List<T> mItems;
 	T mSelectedItem;
@@ -179,6 +180,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		mDiscardMenu = menu.findItem(R.id.menu_item_discard);
 		mEditMenu = menu.findItem(R.id.menu_item_edit);
 		mDeleteMenu = menu.findItem(R.id.menu_item_delete);
+		mSyncMenu = menu.findItem(R.id.menu_item_sync);
 		
 		showNavigationMenu();
 		
@@ -207,7 +209,13 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
-		if (mSelectedItem instanceof Merchant && !AdminUtil.isAdmin()) {
+		if (AdminUtil.isRoot()) {
+			mSyncMenu.setVisible(!isDrawerOpen);
+		} else {
+			mSyncMenu.setVisible(false);
+		}
+		
+		if (mSelectedItem instanceof Merchant && !AdminUtil.isRoot()) {
 			mDeleteMenu.setVisible(false);
 		} else {
 			if (mSelectedItem != null) {

@@ -3,7 +3,6 @@ package com.android.pos.data.productGrp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.ProductGroup;
@@ -27,8 +26,7 @@ public class ProductGrpMgtActivity extends BaseItemMgtActivity<ProductGrpSearchF
 		super.onStart();
 
 		setTitle(getString(R.string.module_product_group));
-		
-		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);
+		setSelectedMenu(getString(R.string.module_product_group));
 	}
 	
 	@Override

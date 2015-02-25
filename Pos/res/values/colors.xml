@@ -82,4 +82,7 @@
     <color name="button_menu_pressed">#90b8d9</color>
     <color name="button_menu_focused">#90b8d9</color>
     
+    <color name="button_back_normal">#e9f1f7</color>
+    <color name="button_back_pressed">#d0e1ee</color>
+    
 </resources>

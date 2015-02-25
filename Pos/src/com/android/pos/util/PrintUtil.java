@@ -284,7 +284,12 @@ public class PrintUtil {
 		
 		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
 		
-		String addrAndTelp = merchant.getAddress() + " Tlp. " + merchant.getTelephone();
+		String addrAndTelp = merchant.getAddress();
+		
+		if (!CommonUtil.isEmpty(merchant.getTelephone())) {
+			 addrAndTelp += " Tlp. " + merchant.getTelephone();
+		}
+		
 		String[] addrAndTelps = addrAndTelp.split(" ");
 		
 		String addrAndTlpLine = Constant.EMPTY_STRING;
@@ -300,9 +305,10 @@ public class PrintUtil {
 				line.setLength(0);
 				line.append(addrAndTlpLine);
 				line.append(spaces.substring(0, mPrinterLineSize - addrAndTlpLine.length()));
+				
 				BluetoothPrintDriver.BT_Write(line.toString() + "\r");
 				
-				addrAndTlpLine = Constant.EMPTY_STRING;
+				addrAndTlpLine = str + " ";
 			}
 		}
 		

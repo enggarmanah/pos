@@ -11,7 +11,7 @@ public class MerchantUtil {
 	public static Merchant getMerchant() {
 		
 		if (mMerchant == null) {
-			mMerchant = merchantDaoService.getMerchant(Long.valueOf(1));
+			mMerchant = merchantDaoService.getMerchant(Long.valueOf(4));
 		}
 		
 		return mMerchant;

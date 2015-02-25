@@ -70,8 +70,7 @@ public class ProductStatisticActivity extends BaseActivity
 		super.onStart();
 		
 		setTitle(getString(R.string.menu_statistic_product));
-
-		mDrawerList.setItemChecked(Constant.MENU_STATISTIC_PRODUCT_POSITION, true);
+		setSelectedMenu(getString(R.string.menu_statistic_product));
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {

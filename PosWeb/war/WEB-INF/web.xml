@@ -38,6 +38,10 @@
 		<servlet-class>com.app.posweb.server.servlet.MerchantGetJsonServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>merchantGetAllJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantGetAllJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>merchantUpdateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.MerchantUpdateJsonServlet</servlet-class>
 	</servlet>
@@ -121,6 +125,10 @@
 	<servlet-mapping>
 		<servlet-name>merchantGetJsonServlet</servlet-name>
 		<url-pattern>/merchantGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantGetAllJsonServlet</servlet-name>
+		<url-pattern>/merchantGetAllJsonServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>merchantUpdateJsonServlet</servlet-name>

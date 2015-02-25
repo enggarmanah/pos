@@ -2,6 +2,8 @@ package com.android.pos;
 
 public class Constant {
 	
+	public static int TIMEOUT = 20000;
+	
 	public static String EMPTY_STRING = "";
 	
 	public static String STATUS_YES = "Y";
@@ -25,15 +27,13 @@ public class Constant {
 	
 	public static int LIST_SELECTED_ITEM_GAP = 5;
 	
-	public static int MENU_CASHIER_POSITION = 0;
-	public static int MENU_TRANSACTION_POSITION = 1;
-	public static int MENU_STATISTIC_PRODUCT_POSITION = 2;
-	public static int MENU_USER_MANAGEMENT_POSITION = 3;
-	public static int MENU_DATA_MANAGEMENT_POSITION = 4;
-	
 	public static String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	
+	public static String TASK_GET_MERCHANT_ONLY = "TASK_GET_MERCHANT_ONLY";
+	public static String TASK_UPDATE_MERCHANT_ONLY = "TASK_UPDATE_MERCHANT_ONLY";
+	
 	public static String TASK_GET_LAST_SYNC = "TASK_GET_LAST_SYNC";
+	public static String TASK_GET_LAST_SYNC_ONLY = "TASK_GET_LAST_SYNC_ONLY";
 	public static String TASK_UPDATE_LAST_SYNC = "TASK_UPDATE_LAST_SYNC";
 	
 	public static String TASK_GET_PRODUCT_GROUP = "TASK_GET_PRODUCT_GROUP";

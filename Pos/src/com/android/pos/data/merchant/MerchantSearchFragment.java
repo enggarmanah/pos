@@ -19,7 +19,7 @@ public class MerchantSearchFragment extends BaseSearchFragment<Merchant> {
 	public void onStart() {
 		super.onStart();
 		
-		if (!AdminUtil.isAdmin()) {
+		if (!AdminUtil.isRoot()) {
 			getAddBtn().setVisibility(View.GONE);
 		}
 	}

@@ -16,11 +16,6 @@ import com.android.pos.dao.ProductGroup;
 @SuppressLint("SimpleDateFormat")
 public class CommonUtil {
 	
-	public static Long getMerchantId() {
-		
-		return Long.valueOf(1);
-	}
-	
 	public static boolean isEmpty(String str) {
 		
 		if (str != null && str.length() != 0) {
@@ -105,6 +100,14 @@ public class CommonUtil {
 	public static DateFormat getDayDateTimeFormat() {
 		
 		return new SimpleDateFormat("EEEE, dd MMM yyyy, HH:mm", getLocale());
+	}
+	
+	public static String getOtpKey() {
+		
+		//SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy");
+		//return sdf.format(new Date());
+		
+		return "";
 	}
 	
 	private static void removeTime(Calendar cal) {

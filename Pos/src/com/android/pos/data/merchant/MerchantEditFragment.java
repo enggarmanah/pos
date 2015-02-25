@@ -101,6 +101,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mandatoryFields.add(new FormField(mPasswordText, R.string.field_password));
     	mandatoryFields.add(new FormField(mPeriodStartDate, R.string.field_period_start));
     	mandatoryFields.add(new FormField(mPeriodEndDate, R.string.field_period_end));
+    	mandatoryFields.add(new FormField(mTaxText, R.string.field_tax_percentage));
+    	mandatoryFields.add(new FormField(mServiceChargeText, R.string.field_service_charge_percentage));
     	
     	mPeriodStartDate.setOnClickListener(getDateFieldOnClickListener(mPeriodStartDate, "startDatePicker"));
     	mPeriodEndDate.setOnClickListener(getDateFieldOnClickListener(mPeriodEndDate, "endDatePicker"));

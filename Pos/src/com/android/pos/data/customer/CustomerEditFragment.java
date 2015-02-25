@@ -11,7 +11,7 @@ import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Customer;
 import com.android.pos.service.CustomerDaoService;
 import com.android.pos.util.CodeUtil;
-import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
@@ -116,7 +116,7 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     	
     	if (mItem != null) {
     		
-    		mItem.setMerchantId(CommonUtil.getMerchantId());
+    		mItem.setMerchantId(MerchantUtil.getMerchantId());
     		
     		mItem.setName(name);
     		mItem.setTelephone(telephone);

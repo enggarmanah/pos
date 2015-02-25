@@ -42,10 +42,17 @@ public abstract class BaseActivity extends Activity {
 
 		mTitle = mDrawerTitle = getTitle();
 		
-		if (UserUtil.isMerchantAdmin()) {
+		if (UserUtil.isMerchant()) {
+			mAppMenus = getResources().getStringArray(R.array.app_menus_merchant);
+			
+		} else if (UserUtil.isCashier()) {
+			mAppMenus = getResources().getStringArray(R.array.app_menus_cashier);			
+		
+		} else if (UserUtil.isAdmin()) {
 			mAppMenus = getResources().getStringArray(R.array.app_menus_admin);
+			
 		} else {
-			mAppMenus = getResources().getStringArray(R.array.app_menus);
+			mAppMenus = getResources().getStringArray(R.array.app_menus_root);
 		}
 		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -159,15 +166,7 @@ public abstract class BaseActivity extends Activity {
 		setTitle(mAppMenus[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 		
-		String[] appMenus = null;
-		
-		if (UserUtil.isMerchantAdmin()) {
-			appMenus = getResources().getStringArray(R.array.app_menus_admin);
-		} else {
-			appMenus = getResources().getStringArray(R.array.app_menus);			
-		}
-		
-		String menu = appMenus[position];
+		String menu = mAppMenus[position];
 		
 		if (getString(R.string.menu_cashier).equals(menu)) {
 
@@ -199,6 +198,30 @@ public abstract class BaseActivity extends Activity {
 			Intent intent = new Intent(this, UserLoginActivity.class);
 			startActivity(intent);	
 		}
+	}
+	
+	private int getMenuIndex(String str) {
+		
+		int index = -1;
+		
+		for (String menu : mAppMenus) {
+			
+			index++;
+			
+			if (str.equals(menu)) {
+				
+				return index;
+			}
+		}
+		
+		return index;
+	}
+	
+	protected void setSelectedMenu(String menu) {
+		
+		int index = getMenuIndex(menu);
+		
+		mDrawerList.setItemChecked(index, true);
 	}
 
 	public void showMessage(int resourceId) {

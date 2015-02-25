@@ -15,6 +15,7 @@ import com.android.pos.service.ProductDaoService;
 import com.android.pos.service.ProductGroupDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
@@ -167,7 +168,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	
     	if (mItem != null) {
     		
-    		mItem.setMerchantId(CommonUtil.getMerchantId());
+    		mItem.setMerchantId(MerchantUtil.getMerchantId());
     		
     		mItem.setName(name);
     		mItem.setType(type);

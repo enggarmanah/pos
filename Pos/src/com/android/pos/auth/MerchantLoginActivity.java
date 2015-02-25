@@ -9,13 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.HttpAsyncProgressDlgFragment;
 import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.dao.Merchant;
+import com.android.pos.data.merchant.MerchantMgtActivity;
 import com.android.pos.service.MerchantDaoService;
+import com.android.pos.util.AdminUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
@@ -91,27 +95,49 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 				String loginId = mLoginIdTxt.getText().toString();
 				String password = mPasswordTxt.getText().toString();
 				
-				Merchant merchant = mMerchantDaoService.getMerchantByLoginId(loginId);
-				
-				if (merchant != null) {
-				
-					merchant = mMerchantDaoService.validateMerchant(loginId, password);
+				if ("root".equals(loginId)) {
 					
-					if (merchant != null) {
+					mLoginIdTxt.setText(Constant.EMPTY_STRING);
+					mPasswordTxt.setText(Constant.EMPTY_STRING);
+					
+					if (CommonUtil.getOtpKey().equals(password)) {
 						
-						MerchantUtil.setMerchant(merchant);
-						Intent intent = new Intent(context, UserLoginActivity.class);
-						startActivity(intent);
-					
+						mProgressDialog.show(getFragmentManager(), "progressDialogTag");
+						mHttpAsyncManager.syncMerchants();
+						
 					} else {
 						
 						showFailedAuthenticationMessage();
 					}
 					
 				} else {
+				
+					Merchant merchant = mMerchantDaoService.getMerchantByLoginId(loginId);
 					
-					mProgressDialog.show(getFragmentManager(), "progressDialogTag");
-					mHttpAsyncManager.validateMerchant(loginId, password);
+					if (merchant != null) {
+						
+						merchant = mMerchantDaoService.validateMerchant(loginId, password);
+						
+						if (merchant != null) {
+							
+							mLoginIdTxt.setText(Constant.EMPTY_STRING);
+							mPasswordTxt.setText(Constant.EMPTY_STRING);
+							
+							MerchantUtil.setMerchant(merchant);
+							Intent intent = new Intent(context, UserLoginActivity.class);
+							startActivity(intent);
+						
+						} else {
+							
+							mPasswordTxt.setText(Constant.EMPTY_STRING);
+							showFailedAuthenticationMessage();
+						}
+						
+					} else {
+						
+						mProgressDialog.show(getFragmentManager(), "progressDialogTag");
+						mHttpAsyncManager.validateMerchant(loginId, password);
+					}
 				}
 			}
 		};
@@ -135,6 +161,15 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	}
 	
 	@Override
+	public void onMerchantsUpdated() {
+		
+		AdminUtil.setRoot(true);
+		
+		Intent intent = new Intent(context, MerchantMgtActivity.class);
+		startActivity(intent);
+	}
+	
+	@Override
 	public void setSyncProgress(int progress) {
 		
 		if (mProgressDialog != null) {
@@ -149,6 +184,11 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 					public void run() {
 						
 						mProgressDialog.dismiss();
+						
+						// case when the login is root
+						if (mMerchant == null) {
+							return;
+						}
 						
 						mMerchant = mMerchantDaoService.getMerchant(mMerchant.getId());
 						mMerchant.setIsLogin(true);
@@ -170,6 +210,16 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			
 			mProgressDialog.setMessage(message);
 		}
+	}
+	
+	@Override
+	public void onTimeOut() {
+		
+		mProgressDialog.dismiss();
+		
+		AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
+		alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
+		alertDialogFragment.setAlertMessage("Tidak dapat terhubung ke Server!");
 	}
 	
 	private void showFailedAuthenticationMessage() {

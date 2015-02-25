@@ -2,7 +2,6 @@ package com.android.pos.report.transaction;
 
 import java.io.Serializable;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.TransactionDay;
@@ -71,8 +70,7 @@ public class TransactionActivity extends BaseActivity
 		super.onStart();
 
 		setTitle(getString(R.string.menu_transaction));
-
-		mDrawerList.setItemChecked(Constant.MENU_TRANSACTION_POSITION, true);
+		setSelectedMenu(getString(R.string.menu_transaction));
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {

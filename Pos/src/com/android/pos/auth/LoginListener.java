@@ -5,4 +5,6 @@ import com.android.pos.dao.Merchant;
 public interface LoginListener {
 	
 	public void onMerchantValidated(Merchant merchant);
+	
+	public void onMerchantsUpdated();
 }

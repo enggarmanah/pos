@@ -5,18 +5,18 @@
     <LinearLayout
         android:id="@+id/topPanel"
         style="@style/SectionTopPanelStyle" >
-
+		
+        <ImageButton
+            android:id="@+id/backButton"
+            style="@style/SectionBackButtonStyle"
+            android:contentDescription="@string/none" />
+        
         <TextView
             android:id="@+id/navigationTitle"
             style="@style/SectionTopTextStyle"
             android:gravity="center_vertical|start"
             android:text="@string/product" />
-
-        <TextView
-            android:id="@+id/upButton"
-            style="@style/SectionTopTextStyle"
-            android:gravity="center_vertical|end"
-            android:text="@string/product_group_list" />
+        
     </LinearLayout>
 
     <ListView

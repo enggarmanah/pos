@@ -3,7 +3,6 @@ package com.android.pos.data.product;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Product;
@@ -27,8 +26,7 @@ public class ProductMgtActivity extends BaseItemMgtActivity<ProductSearchFragmen
 		super.onStart();
 
 		setTitle(getString(R.string.module_product));
-
-		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);
+		setSelectedMenu(getString(R.string.module_product));
 	}
 	
 	@Override

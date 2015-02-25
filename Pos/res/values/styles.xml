@@ -659,11 +659,12 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">45dp</item>
+        <item name="android:gravity">center</item>
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:background">@color/section_header_background</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
     </style>
@@ -713,11 +714,12 @@
     </style>
 
     <style name="SectionBackButtonStyle">
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:background">@drawable/selector_back_btn</item>
         <item name="android:src">@drawable/action_back</item>
     </style>
 

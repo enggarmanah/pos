@@ -104,7 +104,27 @@ public class MerchantDao {
 		return result;
 	}
 	
-	public List<Merchant> getMerchants(SyncRequest syncRequest) {
+	public List<Merchant> getMerchant(SyncRequest syncRequest) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE update_date >= :lastSyncDate AND remote_id = :merchantId");
+		
+		sql.append(" ORDER BY m.name");
+		
+		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
+
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		
+		List<Merchant> result = query.getResultList();
+		
+		em.close();
+
+		return result;
+	}
+	
+	public List<Merchant> getAllMerchants(SyncRequest syncRequest) {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		

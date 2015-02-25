@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -68,7 +69,7 @@ public class HttpAsyncManager {
 	private TransactionsDaoService mTransactionsDaoService;
 	private TransactionItemDaoService mTransactionItemDaoService;
 
-	private HttpAsyncListener mListener;
+	private HttpAsyncListener mAsyncListener;
 
 	private final int TOTAL_TASK = 20;
 
@@ -76,7 +77,7 @@ public class HttpAsyncManager {
 
 		this.mContext = context;
 		
-		mListener = (HttpAsyncListener) context;
+		mAsyncListener = (HttpAsyncListener) context;
 
 		mProductGroupDaoService = new ProductGroupDaoService();
 		mDiscountDaoService = new DiscountDaoService();
@@ -94,16 +95,52 @@ public class HttpAsyncManager {
 		mLoginId = loginId;
 		mPassword = password;
 		
-		mListener.setSyncProgress(0);
-		mListener.setSyncMessage("Melaksanakan validasi ke server.");
+		mAsyncListener.setSyncProgress(0);
+		mAsyncListener.setSyncMessage("Melaksanakan validasi ke server.");
+		
+		//new HttpAsyncTask().execute(Constant.TASK_VALIDATE_MERCHANT);
+		
+		try {
+			new HttpAsyncTask().execute(Constant.TASK_VALIDATE_MERCHANT).get(Constant.TIMEOUT, TimeUnit.MILLISECONDS);
+		} catch (Exception e) {
+			mAsyncListener.onTimeOut();
+		}
+	}
+	
+	public void syncMerchants() {
+		
+		mAsyncListener.setSyncProgress(0);
+		mAsyncListener.setSyncMessage("Cek waktu terakhir sync up data.");
 
-		new HttpAsyncTask().execute(Constant.TASK_VALIDATE_MERCHANT);
+		//new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC_ONLY);
+		
+		try {
+			new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC_ONLY).get(Constant.TIMEOUT, TimeUnit.MILLISECONDS);
+		} catch (Exception e) {
+			mAsyncListener.onTimeOut();
+		}
+	}
+	
+	private void getMerchantsBasedOnLastSync() {
+		
+		mAsyncListener.setSyncProgress(1 / 100 * 3);
+		mAsyncListener.setSyncMessage("Melaksanakan download data merchant.");
+
+		new HttpAsyncTask().execute(Constant.TASK_GET_MERCHANT_ONLY);
+	}
+	
+	private void updateMerchants() {
+		
+		mAsyncListener.setSyncProgress(2 / 100 * 3);
+		mAsyncListener.setSyncMessage("Melaksanakan upload data merchant.");
+
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_MERCHANT_ONLY);
 	}
 	
 	public void sync() {
 
-		mListener.setSyncProgress(0 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Cek waktu terakhir sync up data.");
+		mAsyncListener.setSyncProgress(0 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Cek waktu terakhir sync up data.");
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC);
 	}
@@ -112,157 +149,157 @@ public class HttpAsyncManager {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT_GROUP);
 
-		mListener.setSyncProgress(1 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data group produk dari server.");
+		mAsyncListener.setSyncProgress(1 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data group produk dari server.");
 	}
 
 	private void updateProductGroup() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_PRODUCT_GROUP);
 
-		mListener.setSyncProgress(2 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data group produk ke server.");
+		mAsyncListener.setSyncProgress(2 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data group produk ke server.");
 	}
 
 	private void getDiscount() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_DISCOUNT);
 
-		mListener.setSyncProgress(3 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data diskon dari server.");
+		mAsyncListener.setSyncProgress(3 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data diskon dari server.");
 	}
 
 	private void updateDiscount() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_DISCOUNT);
 
-		mListener.setSyncProgress(4 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data diskon ke server.");
+		mAsyncListener.setSyncProgress(4 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data diskon ke server.");
 	}
 
 	private void getMerchant() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_MERCHANT);
 
-		mListener.setSyncProgress(5 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data merchant dari server.");
+		mAsyncListener.setSyncProgress(5 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data merchant dari server.");
 	}
 
 	private void updateMerchant() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_MERCHANT);
 
-		mListener.setSyncProgress(6 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data merchant ke server.");
+		mAsyncListener.setSyncProgress(6 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data merchant ke server.");
 	}
 
 	private void getEmployee() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_EMPLOYEE);
 
-		mListener.setSyncProgress(7 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data pegawai dari server.");
+		mAsyncListener.setSyncProgress(7 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data pegawai dari server.");
 	}
 
 	private void updateEmployee() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_EMPLOYEE);
 
-		mListener.setSyncProgress(8 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data pegawai ke server.");
+		mAsyncListener.setSyncProgress(8 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data pegawai ke server.");
 	}
 
 	private void getCustomer() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_CUSTOMER);
 
-		mListener.setSyncProgress(9 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data pelanggan dari server.");
+		mAsyncListener.setSyncProgress(9 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data pelanggan dari server.");
 	}
 
 	private void updateCustomer() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_CUSTOMER);
 
-		mListener.setSyncProgress(10 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data pelanggan ke server.");
+		mAsyncListener.setSyncProgress(10 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data pelanggan ke server.");
 	}
 
 	private void getProduct() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT);
 
-		mListener.setSyncProgress(11 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data produk dari server.");
+		mAsyncListener.setSyncProgress(11 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data produk dari server.");
 	}
 
 	private void updateProduct() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_PRODUCT);
 
-		mListener.setSyncProgress(12 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data produk ke server.");
+		mAsyncListener.setSyncProgress(12 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data produk ke server.");
 	}
 
 	private void getUser() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_USER);
 
-		mListener.setSyncProgress(13 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data user dari server.");
+		mAsyncListener.setSyncProgress(13 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data user dari server.");
 	}
 
 	private void updateUser() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_USER);
 
-		mListener.setSyncProgress(14 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data user ke server.");
+		mAsyncListener.setSyncProgress(14 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data user ke server.");
 	}
 
 	private void getTransactions() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_TRANSACTIONS);
 
-		mListener.setSyncProgress(15 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data transaksi dari server.");
+		mAsyncListener.setSyncProgress(15 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data transaksi dari server.");
 	}
 
 	private void updateTransactions() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_TRANSACTIONS);
 
-		mListener.setSyncProgress(16 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data transaksi ke server.");
+		mAsyncListener.setSyncProgress(16 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data transaksi ke server.");
 	}
 
 	private void getTransactionItem() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_TRANSACTION_ITEM);
 
-		mListener.setSyncProgress(17 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update data item transaksi dari server.");
+		mAsyncListener.setSyncProgress(17 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update data item transaksi dari server.");
 	}
 
 	private void updateTransactionItem() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_TRANSACTION_ITEM);
 
-		mListener.setSyncProgress(18 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Upload data item transaksi ke server.");
+		mAsyncListener.setSyncProgress(18 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data item transaksi ke server.");
 	}
 
 	private void updateLastSync() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_LAST_SYNC);
 
-		mListener.setSyncProgress(19 * 100 / TOTAL_TASK);
-		mListener.setSyncMessage("Update waktu terakhir sync up data ke server.");
+		mAsyncListener.setSyncProgress(19 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Update waktu terakhir sync up data ke server.");
 	}
 
 	private void syncCompleted() {
 
-		mListener.setSyncProgress(100);
+		mAsyncListener.setSyncProgress(100);
 	}
 
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
@@ -278,7 +315,6 @@ public class HttpAsyncManager {
 			Long merchantId = null;
 			
 			if (merchant != null) {
-				
 				merchantId = merchant.getId();
 			}
 			
@@ -286,7 +322,10 @@ public class HttpAsyncManager {
 			Object obj = null;
 
 			if (Constant.TASK_VALIDATE_MERCHANT.equals(tasks[0])) {
-
+				
+				//mAsyncListener.setSyncProgress(0);
+				//mAsyncListener.setSyncMessage("Melaksanakan validasi ke server.");
+				
 				url = Config.SERVER_URL + "/merchantValidateJsonServlet";
 
 				MerchantBean bean = new MerchantBean();
@@ -296,12 +335,30 @@ public class HttpAsyncManager {
 				
 				obj = bean;
 
+			} else if (Constant.TASK_GET_MERCHANT_ONLY.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/merchantGetAllJsonServlet";
+
+				SyncRequestBean request = new SyncRequestBean();
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+				
+				obj = request;
+
 			} else if (Constant.TASK_GET_LAST_SYNC.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/getLastSyncJsonServlet";
 
 				DeviceBean bean = new DeviceBean();
-				bean.setMerchant_id(MerchantUtil.getMerchant().getId());
+				bean.setMerchant_id(merchantId);
+				bean.setUuid(Installation.getInstallationId(mContext));
+				obj = bean;
+
+			} else if (Constant.TASK_GET_LAST_SYNC_ONLY.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/getLastSyncJsonServlet";
+				
+				DeviceBean bean = new DeviceBean();
+				bean.setMerchant_id(merchantId);
 				bean.setUuid(Installation.getInstallationId(mContext));
 				obj = bean;
 
@@ -344,12 +401,14 @@ public class HttpAsyncManager {
 				url = Config.SERVER_URL + "/merchantGetJsonServlet";
 
 				SyncRequestBean request = new SyncRequestBean();
-
+				
+				request.setMerchant_id(merchantId);
 				request.setLast_sync_date(mDevice.getLast_sync_date());
 
 				obj = request;
 
-			} else if (Constant.TASK_UPDATE_MERCHANT.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_MERCHANT.equals(tasks[0]) ||
+					Constant.TASK_UPDATE_MERCHANT_ONLY.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/merchantUpdateJsonServlet";
 
@@ -480,7 +539,6 @@ public class HttpAsyncManager {
 				if (Constant.TASK_VALIDATE_MERCHANT.equals(task)) {
 
 					MerchantBean bean = mapper.readValue(result, MerchantBean.class);
-					LoginListener listener = (LoginListener) mContext;
 					
 					Merchant merchant = null;
 					
@@ -490,12 +548,18 @@ public class HttpAsyncManager {
 						BeanUtil.updateBean(merchant, bean);
 					}
 					
-					listener.onMerchantValidated(merchant);
+					LoginListener mLoginListener = (LoginListener) mContext;
+					mLoginListener.onMerchantValidated(merchant);
 					
 				} else if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
 
 					mDevice = mapper.readValue(result, DeviceBean.class);
 					getProductGroup();
+
+				} else if (Constant.TASK_GET_LAST_SYNC_ONLY.equals(task)) {
+
+					mDevice = mapper.readValue(result, DeviceBean.class);
+					getMerchantsBasedOnLastSync();
 
 				} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(task)) {
 
@@ -536,6 +600,28 @@ public class HttpAsyncManager {
 
 					mMerchantDaoService.updateMerchants(merchants);
 					updateMerchant();
+
+				} else if (Constant.TASK_GET_MERCHANT_ONLY.equals(task)) {
+
+					List<MerchantBean> merchants = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, MerchantBean.class));
+
+					mMerchantDaoService.updateMerchants(merchants);
+					updateMerchants();
+
+				} else if (Constant.TASK_UPDATE_MERCHANT_ONLY.equals(task)) {
+
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
+
+					mMerchantDaoService.updateMerchantStatus(syncStatusBeans);
+					syncCompleted();
+					
+					if (mContext instanceof LoginListener) {
+						
+						LoginListener mLoginListener = (LoginListener) mContext;
+						mLoginListener.onMerchantsUpdated();
+					}
 
 				} else if (Constant.TASK_UPDATE_MERCHANT.equals(task)) {
 
@@ -647,8 +733,10 @@ public class HttpAsyncManager {
 					syncCompleted();
 				}
 
-			} catch (IOException e) {
+			} catch (Exception e) {
+				
 				e.printStackTrace();
+				mAsyncListener.onTimeOut();
 			}
 		}
 	}

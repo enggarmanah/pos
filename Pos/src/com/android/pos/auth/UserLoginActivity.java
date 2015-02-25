@@ -18,7 +18,7 @@ import com.android.pos.cashier.CashierActivity;
 import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.User;
-import com.android.pos.data.DataMgtActivity;
+import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.service.MerchantDaoService;
 import com.android.pos.service.UserDaoService;
 import com.android.pos.user.UserMgtActivity;
@@ -70,7 +70,7 @@ public class UserLoginActivity extends Activity {
 		String contact = mMerchant.getAddress();
 		
 		if (!CommonUtil.isEmpty(mMerchant.getTelephone())) {
-			contact = contact + "\nTelp. " + mMerchant.getContactTelephone();
+			contact = contact + "\nTelp. " + mMerchant.getTelephone();
 		}
 		
 		mMerchantNameTxt.setText(name);
@@ -84,7 +84,7 @@ public class UserLoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
-				UserUtil.setMerchantAdmin(false);
+				UserUtil.setMerchant(false);
 				
 				String loginId = mLoginIdTxt.getText().toString();
 				String password = mPasswordTxt.getText().toString();
@@ -96,13 +96,13 @@ public class UserLoginActivity extends Activity {
 					mLoginIdTxt.setText(Constant.EMPTY_STRING);
 					mPasswordTxt.setText(Constant.EMPTY_STRING);
 					
-					UserUtil.setMerchantAdmin(true);
+					UserUtil.setMerchant(true);
 					
 					Intent intent = new Intent(context, UserMgtActivity.class);
 					startActivity(intent);
 					
 				} else {
-				
+					
 					User user = mUserDaoService.validateUser(mMerchant.getId(), loginId, password);
 					
 					if (user != null) {
@@ -119,7 +119,7 @@ public class UserLoginActivity extends Activity {
 							
 						}else {
 							
-							Intent intent = new Intent(context, DataMgtActivity.class);
+							Intent intent = new Intent(context, TransactionActivity.class);
 							startActivity(intent);
 						}
 					} else {

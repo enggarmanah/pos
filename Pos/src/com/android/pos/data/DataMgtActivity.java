@@ -9,12 +9,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.HttpAsyncProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
+import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.data.customer.CustomerMgtActivity;
 import com.android.pos.data.discount.DiscountMgtActivity;
 import com.android.pos.data.employee.EmployeeMgtActivity;
@@ -22,6 +22,7 @@ import com.android.pos.data.merchant.MerchantMgtActivity;
 import com.android.pos.data.product.ProductMgtActivity;
 import com.android.pos.data.productGrp.ProductGrpMgtActivity;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.NotificationUtil;
 
 public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 
@@ -55,8 +56,7 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		super.onStart();
 
 		setTitle(getString(R.string.menu_data_management));
-		
-		mDrawerList.setItemChecked(Constant.MENU_DATA_MANAGEMENT_POSITION, true);
+		setSelectedMenu(getString(R.string.menu_data_management));
 	}
 	
 	@Override
@@ -150,5 +150,15 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 			
 			mProgressDialog.setMessage(message);
 		}
+	}
+	
+	@Override
+	public void onTimeOut() {
+		
+		mProgressDialog.dismiss();
+		
+		AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
+		alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
+		alertDialogFragment.setAlertMessage("Tidak dapat terhubung ke Server!");
 	}
 }
