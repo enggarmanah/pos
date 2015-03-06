@@ -17,14 +17,10 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.TransactionItem;
-import com.android.pos.dao.TransactionItemDao;
 import com.android.pos.dao.Transactions;
+import com.android.pos.service.TransactionItemDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
-
-import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 
 public class TransactionDetailFragment extends BaseFragment implements TransactionDetailArrayAdapter.ItemActionListener {
 	
@@ -59,7 +55,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	
 	private TransactionDetailArrayAdapter mAdapter;
 	
-	private TransactionItemDao transactionItemDao = DbUtil.getSession().getTransactionItemDao();
+	private TransactionItemDaoService mTransactionItemDaoService = new TransactionItemDaoService(); 
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -162,7 +158,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		if (mTransaction != null) {
 			
 			mTransactionItems.clear();
-			mTransactionItems.addAll(getTransactionItems(mTransaction));
+			mTransactionItems.addAll(mTransactionItemDaoService.getTransactionItemsByTransactionId(mTransaction.getId()));
 			mAdapter.notifyDataSetChanged();
 			
 			getView().setVisibility(View.VISIBLE);
@@ -220,17 +216,6 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		mTotalOrderText.setText(CommonUtil.formatCurrency(mTransaction.getTotalAmount()));
 		
 		mAdapter.notifyDataSetChanged();
-	}
-	
-	private List<TransactionItem> getTransactionItems(Transactions transaction) {
-
-		QueryBuilder<TransactionItem> qb = transactionItemDao.queryBuilder();
-		qb.where(TransactionItemDao.Properties.TransactionId.eq(transaction.getId())).orderAsc(TransactionItemDao.Properties.Id);
-
-		Query<TransactionItem> q = qb.build();
-		List<TransactionItem> list = q.list();
-		
-		return list;
 	}
 	
 	private View.OnClickListener getBackButtonOnClickListener() {

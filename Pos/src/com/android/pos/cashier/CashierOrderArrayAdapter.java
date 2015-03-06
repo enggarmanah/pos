@@ -52,7 +52,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 		
 		TextView productQuantity = null;
 		TextView productName = null;
-		TextView picName = null;
+		TextView productInfo = null;
 		TextView productPrice = null;
 		TextView totalProductPrice = null;
 		
@@ -62,7 +62,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 			
 			productQuantity = (TextView) rowView.findViewById(R.id.quantityText);
 			productName = (TextView) rowView.findViewById(R.id.nameText);
-			picName = (TextView) rowView.findViewById(R.id.picText);
+			productInfo = (TextView) rowView.findViewById(R.id.infoText);
 			productPrice = (TextView) rowView.findViewById(R.id.priceText);
 			totalProductPrice = (TextView) rowView.findViewById(R.id.totalPriceText);
 			
@@ -70,7 +70,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 			
 			viewHolder.quantityText = productQuantity;
 			viewHolder.nameText = productName;
-			viewHolder.picText = picName;
+			viewHolder.picText = productInfo;
 			viewHolder.priceText = productPrice;
 			viewHolder.totalPriceText = totalProductPrice;
 
@@ -82,7 +82,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 			
 			productQuantity = viewHolder.quantityText;
 			productName = viewHolder.nameText;
-			picName = viewHolder.picText;
+			productInfo = viewHolder.picText;
 			productPrice = viewHolder.priceText;
 			totalProductPrice = viewHolder.totalPriceText;
 		}
@@ -92,14 +92,22 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 		
 		if (transactionItem.getEmployeeId() != 0) {
 			
-			picName.setText(transactionItem.getEmployee().getName());
-			ViewGroup.LayoutParams lp = picName.getLayoutParams();
-			lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+			productInfo.setText(transactionItem.getEmployee().getName());
+			productInfo.setVisibility(View.VISIBLE);
 			
 		} else {
 			
-			ViewGroup.LayoutParams lp = picName.getLayoutParams();
-			lp.height = 0;
+			productInfo.setVisibility(View.GONE);
+		}
+		
+		if (!CommonUtil.isEmpty(transactionItem.getRemarks())) {
+			
+			productInfo.setText(transactionItem.getRemarks());
+			productInfo.setVisibility(View.VISIBLE);
+			
+		} else {
+			
+			productInfo.setVisibility(View.GONE);
 		}
 		
 		productPrice.setText(CommonUtil.formatCurrency(transactionItem.getPrice()));

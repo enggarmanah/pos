@@ -62,7 +62,7 @@ public class TransactionDetailArrayAdapter extends ArrayAdapter<TransactionItem>
 			
 			productQuantity = (TextView) rowView.findViewById(R.id.quantityText);
 			productName = (TextView) rowView.findViewById(R.id.nameText);
-			picName = (TextView) rowView.findViewById(R.id.picText);
+			picName = (TextView) rowView.findViewById(R.id.infoText);
 			productPrice = (TextView) rowView.findViewById(R.id.priceText);
 			totalProductPrice = (TextView) rowView.findViewById(R.id.totalPriceText);
 			

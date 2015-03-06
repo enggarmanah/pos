@@ -8,10 +8,10 @@
         style="@style/SectionTopPanelStyle" >
 
         <TextView
-            android:id="@+id/navigationTitle"
+            android:id="@+id/headerText"
             style="@style/SectionTopTextStyle"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/order" />
+            android:text="@string/transaction_items" />
     </LinearLayout>
 
     <LinearLayout
@@ -24,7 +24,7 @@
 		
         <TextView 
             android:id="@+id/discountBorder"
-            style="@style/PaymentRowDividerStyle" />
+            style="@style/SectionDividerStyle" />
         
         <LinearLayout
             android:id="@+id/discountPanel"
@@ -41,7 +41,7 @@
         
         <TextView 
             android:id="@+id/taxBorder"
-            style="@style/PaymentRowDividerStyle" />
+            style="@style/SectionDividerStyle" />
          
         <LinearLayout
             android:id="@+id/taxPanel"
@@ -58,7 +58,7 @@
 		
         <TextView 
             android:id="@+id/serviceChargeBorder"
-            style="@style/PaymentRowDividerStyle" />
+            style="@style/SectionDividerStyle" />
             
         <LinearLayout
             android:id="@+id/serviceChargePanel"
@@ -105,6 +105,42 @@
                     android:drawableStart="@drawable/action_accept"
                     android:drawablePadding="10dp"
                     android:text="@string/payment" />
+            </FrameLayout>
+            
+            <FrameLayout
+                android:id="@+id/orderNewItemPanel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/orderNewItemText"
+                    style="@style/CashierButtonStyle"
+                    android:drawableLeft="@drawable/action_accept"
+                    android:drawableStart="@drawable/action_accept"
+                    android:drawablePadding="10dp"
+                    android:text="@string/ok" />
+            </FrameLayout>
+            
+            <TextView
+                android:id="@+id/orderDivider"
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="@color/payment_btn_text" />
+            
+            <FrameLayout
+                android:id="@+id/orderPanel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/orderText"
+                    style="@style/CashierButtonStyle"
+                    android:drawableLeft="@drawable/action_shopping"
+                    android:drawableStart="@drawable/action_shopping"
+                    android:drawablePadding="10dp"
+                    android:text="@string/order" />
             </FrameLayout>
 
             <TextView

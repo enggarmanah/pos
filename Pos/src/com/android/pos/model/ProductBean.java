@@ -12,6 +12,8 @@ public class ProductBean extends BaseBean {
 	private Integer promo_price;
 	private java.util.Date promo_start;
 	private java.util.Date promo_end;
+	private Integer stock;
+	private Integer min_stock;
 	private String status;
 
 	public Long getProduct_group_id() {
@@ -92,6 +94,22 @@ public class ProductBean extends BaseBean {
 
 	public void setPromo_end(java.util.Date promo_end) {
 		this.promo_end = promo_end;
+	}
+	
+	public Integer getStock() {
+		return stock;
+	}
+
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
+
+	public Integer getMin_stock() {
+		return min_stock;
+	}
+
+	public void setMin_stock(Integer min_stock) {
+		this.min_stock = min_stock;
 	}
 
 	public String getStatus() {

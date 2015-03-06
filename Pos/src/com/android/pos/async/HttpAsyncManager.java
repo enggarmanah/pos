@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -18,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import com.android.pos.Config;
@@ -98,27 +98,39 @@ public class HttpAsyncManager {
 		mAsyncListener.setSyncProgress(0);
 		mAsyncListener.setSyncMessage("Melaksanakan validasi ke server.");
 		
-		//new HttpAsyncTask().execute(Constant.TASK_VALIDATE_MERCHANT);
-		
-		try {
-			new HttpAsyncTask().execute(Constant.TASK_VALIDATE_MERCHANT).get(Constant.TIMEOUT, TimeUnit.MILLISECONDS);
-		} catch (Exception e) {
-			mAsyncListener.onTimeOut();
-		}
+		final HttpAsyncTask task = new HttpAsyncTask();
+		task.execute(Constant.TASK_VALIDATE_MERCHANT);
+			
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (task.getStatus() == AsyncTask.Status.RUNNING) {
+					task.cancel(true);
+					mAsyncListener.onTimeOut();
+				}
+			}
+		}, Constant.TIMEOUT);
 	}
 	
 	public void syncMerchants() {
 		
 		mAsyncListener.setSyncProgress(0);
-		mAsyncListener.setSyncMessage("Cek waktu terakhir sync up data.");
+		mAsyncListener.setSyncMessage("Melaksanakan koneksi ke server ...");
 
-		//new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC_ONLY);
-		
-		try {
-			new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC_ONLY).get(Constant.TIMEOUT, TimeUnit.MILLISECONDS);
-		} catch (Exception e) {
-			mAsyncListener.onTimeOut();
-		}
+		final HttpAsyncTask task = new HttpAsyncTask();
+		task.execute(Constant.TASK_GET_LAST_SYNC_ONLY);
+			
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (task.getStatus() == AsyncTask.Status.RUNNING) {
+					task.cancel(true);
+					mAsyncListener.onTimeOut();
+				}
+			}
+		}, Constant.TIMEOUT);
 	}
 	
 	private void getMerchantsBasedOnLastSync() {
@@ -138,11 +150,23 @@ public class HttpAsyncManager {
 	}
 	
 	public void sync() {
-
+		
 		mAsyncListener.setSyncProgress(0 * 100 / TOTAL_TASK);
-		mAsyncListener.setSyncMessage("Cek waktu terakhir sync up data.");
+		mAsyncListener.setSyncMessage("Melaksanakan koneksi ke server ...");
 
-		new HttpAsyncTask().execute(Constant.TASK_GET_LAST_SYNC);
+		final HttpAsyncTask task = new HttpAsyncTask();
+		task.execute(Constant.TASK_GET_LAST_SYNC);
+			
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (task.getStatus() == AsyncTask.Status.RUNNING) {
+					task.cancel(true);
+					mAsyncListener.onTimeOut();
+				}
+			}
+		}, Constant.TIMEOUT);
 	}
 
 	private void getProductGroup() {
@@ -323,8 +347,8 @@ public class HttpAsyncManager {
 
 			if (Constant.TASK_VALIDATE_MERCHANT.equals(tasks[0])) {
 				
-				//mAsyncListener.setSyncProgress(0);
-				//mAsyncListener.setSyncMessage("Melaksanakan validasi ke server.");
+				mAsyncListener.setSyncProgress(0);
+				mAsyncListener.setSyncMessage("Melaksanakan validasi ke server.");
 				
 				url = Config.SERVER_URL + "/merchantValidateJsonServlet";
 

@@ -3,6 +3,9 @@ package com.android.pos.report.transaction;
 import java.io.Serializable;
 
 import com.android.pos.R;
+import com.android.pos.async.HttpAsyncListener;
+import com.android.pos.async.HttpAsyncManager;
+import com.android.pos.async.HttpAsyncProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.TransactionDay;
 import com.android.pos.dao.TransactionMonth;
@@ -10,15 +13,17 @@ import com.android.pos.dao.TransactionYear;
 import com.android.pos.dao.Transactions;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.PrintUtil;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class TransactionActivity extends BaseActivity 
-	implements TransactionActionListener {
+	implements TransactionActionListener, HttpAsyncListener {
 	
 	protected TransactionListFragment mTransactionListFragment;
 	protected TransactionDetailFragment mTransactionDetailFragment;
@@ -46,6 +51,11 @@ public class TransactionActivity extends BaseActivity
 	
 	private MenuItem mPrintItem;
 	private MenuItem mUpItem;
+	private MenuItem mSyncItem;
+	
+	private static HttpAsyncProgressDlgFragment mProgressDialog;
+
+	private HttpAsyncManager mHttpAsyncManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +71,15 @@ public class TransactionActivity extends BaseActivity
 		
 		initFragments();
 		
+		mHttpAsyncManager = new HttpAsyncManager(this);
+		
 		initWaitAfterFragmentRemovedTask(mTransactionListFragmentTag, mTransactionDetailFragmentTag);
+		
+		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
+		
+		if (mProgressDialog == null) {
+			mProgressDialog = new HttpAsyncProgressDlgFragment();
+		}
 	}
 	
 	@Override
@@ -81,8 +99,22 @@ public class TransactionActivity extends BaseActivity
 			mSelectedTransactionMonth = (TransactionMonth) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
 			mSelectedTransactionDay = (TransactionDay) savedInstanceState.getSerializable(SELECTED_TRANSACTION_DAY);
 			mSelectedTransaction = (Transactions) savedInstanceState.getSerializable(SELECTED_TRANSACTION);
-		
+			
+			if (mSelectedTransaction != null) {
+				mIsDisplayTransaction = true;
+			} else if (mSelectedTransactionDay != null) {
+				mIsDisplayTransactionDay = true;
+			} else if (mSelectedTransactionMonth != null) {
+				mIsDisplayTransactionMonth = true;
+			} else if (mSelectedTransactionYear != null) {
+				mIsDisplayTransactionYear = true;
+			} else {
+				mIsDisplayTransactionAllYears = true;
+			}
+			
 		} else {
+			
+			mIsDisplayTransactionMonth = true;
 			
 			mSelectedTransactionMonth = new TransactionMonth();
 			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
@@ -168,6 +200,7 @@ public class TransactionActivity extends BaseActivity
 		
 		mPrintItem = menu.findItem(R.id.menu_item_print);
 		mUpItem = menu.findItem(R.id.menu_item_up);
+		mSyncItem = menu.findItem(R.id.menu_item_sync);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -187,13 +220,21 @@ public class TransactionActivity extends BaseActivity
 			
 			case R.id.menu_item_print:
 				
-				PrintUtil.print(mSelectedTransaction, mSelectedTransaction.getTransactionItemList());
+				PrintUtil.print(mSelectedTransaction);
 				
 				return true;
 		
 			case R.id.menu_item_up:
 				
 				onBackToParent();
+				
+				return true;
+				
+			case R.id.menu_item_sync:
+				
+				mProgressDialog.show(getFragmentManager(), "progressDialogTag");
+				
+				mHttpAsyncManager.sync(); 
 				
 				return true;
 
@@ -206,6 +247,7 @@ public class TransactionActivity extends BaseActivity
 		
 		mPrintItem.setVisible(false);
 		mUpItem.setVisible(false);
+		mSyncItem.setVisible(false);
 	}
 	
 	@Override
@@ -265,7 +307,9 @@ public class TransactionActivity extends BaseActivity
 	@Override
 	public void onBackButtonClicked() {
 		
-		onBackToParent();
+		synchronized (CommonUtil.LOCK) {
+			onBackToParent();
+		}
 	}
 	
 	private void onBackToParent() {
@@ -317,12 +361,13 @@ public class TransactionActivity extends BaseActivity
 		
 		if (isDrawerOpen) {
 			
-			mPrintItem.setVisible(false);
-			mUpItem.setVisible(false);
+			hideAllMenus();
 		
 		} else {
 			
 			hideAllMenus();
+			
+			mSyncItem.setVisible(true);
 			
 			if (mIsDisplayTransactionYear || mIsDisplayTransactionMonth || mIsDisplayTransactionDay) {
 				mUpItem.setVisible(true);
@@ -372,10 +417,53 @@ public class TransactionActivity extends BaseActivity
 			mSelectedTransaction = null;
 			
 			if (mIsMultiplesPane) {
+				
+				mIsDisplayTransactionDay = false;
+				mSelectedTransactionDay = null;
+				
 				mIsDisplayTransactionMonth = true;
+				
+				System.out.println("month : " + mSelectedTransactionMonth);
 			} else {
 				mIsDisplayTransactionDay = true;
 			}
 		}
+	}
+	
+	@Override
+	public void setSyncProgress(int progress) {
+		
+		if (mProgressDialog != null) {
+			
+			mProgressDialog.setProgress(progress);
+			
+			if (progress == 100) {
+				
+				new Handler().postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						mProgressDialog.dismiss();
+					}
+				}, 500);
+			}
+		}
+	}
+	
+	@Override
+	public void setSyncMessage(String message) {
+		
+		if (mProgressDialog != null) {
+			
+			mProgressDialog.setMessage(message);
+		}
+	}
+	
+	@Override
+	public void onTimeOut() {
+		
+		mProgressDialog.dismiss();
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
 }

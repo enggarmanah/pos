@@ -54,7 +54,8 @@ public class ProductDaoService {
 	public List<Product> getProducts(String query) {
 
 		QueryBuilder<Product> qb = productDao.queryBuilder();
-		qb.where(ProductDao.Properties.Name.like("%" + query + "%"), 
+		qb.where(ProductDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				ProductDao.Properties.Name.like("%" + query + "%"), 
 				ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
 
 		Query<Product> q = qb.build();
@@ -68,10 +69,12 @@ public class ProductDaoService {
 		QueryBuilder<Product> qb = productDao.queryBuilder();
 		
 		if (productGroup == null) {
-			qb.where(ProductDao.Properties.Name.like("%" + query + "%"),
+			qb.where(ProductDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+					ProductDao.Properties.Name.like("%" + query + "%"),
 					ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
 		} else {
-			qb.where(ProductDao.Properties.Name.like("%" + query + "%"), 
+			qb.where(ProductDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+					ProductDao.Properties.Name.like("%" + query + "%"), 
 					ProductDao.Properties.ProductGroupId.eq(productGroup.getId()),
 					ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
 		}
@@ -85,7 +88,8 @@ public class ProductDaoService {
 	public List<ProductBean> getProductsForUpload() {
 
 		QueryBuilder<Product> qb = productDao.queryBuilder();
-		qb.where(ProductDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(ProductDao.Properties.Name);
+		qb.where(ProductDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				ProductDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(ProductDao.Properties.Name);
 		
 		Query<Product> q = qb.build();
 		
@@ -144,11 +148,13 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
+		String merchantId = String.valueOf(MerchantUtil.getMerchantId());
+		
 		Cursor cursor = db.rawQuery("SELECT product_name, SUM(quantity) quantity "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.merchant_id = ? AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY product_name "
-				+ " ORDER BY quantity DESC, product_name ASC ", new String[] { startDate, endDate });
+				+ " ORDER BY quantity DESC, product_name ASC ", new String[] { merchantId, startDate, endDate });
 			
 		while(cursor.moveToNext()) {
 			
@@ -173,13 +179,15 @@ public class ProductDaoService {
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
 		
+		String merchantId = String.valueOf(MerchantUtil.getMerchantId());
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT product_name, SUM(price - discount) revenue "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.merchant_id = ? AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY product_name "
-				+ " ORDER BY revenue DESC, product_name ASC ", new String[] { startDate, endDate });
+				+ " ORDER BY revenue DESC, product_name ASC ", new String[] { merchantId, startDate, endDate });
 			
 		while(cursor.moveToNext()) {
 			
@@ -204,13 +212,15 @@ public class ProductDaoService {
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
 		
+		String merchantId = String.valueOf(MerchantUtil.getMerchantId());
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT product_name, SUM(price - discount - cost_price) profit "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.merchant_id = ? AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY product_name "
-				+ " ORDER BY profit DESC, product_name ASC ", new String[] { startDate, endDate });
+				+ " ORDER BY profit DESC, product_name ASC ", new String[] { merchantId, startDate, endDate });
 			
 		while(cursor.moveToNext()) {
 			
@@ -234,7 +244,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		String merchantId = MerchantUtil.getMerchantId().toString();
+		String merchantId = String.valueOf(MerchantUtil.getMerchantId());
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(quantity) quantity "
 				+ " FROM transactions t, transaction_item ti "
@@ -261,7 +271,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		String merchantId = MerchantUtil.getMerchantId().toString();
+		String merchantId = String.valueOf(MerchantUtil.getMerchantId());
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price-discount) revenue "
 				+ " FROM transactions t, transaction_item ti "

@@ -26,7 +26,7 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 		super.onStart();
 
 		setTitle(getString(R.string.module_customer));
-		setSelectedMenu(getString(R.string.module_customer));
+		setSelectedMenu(getString(R.string.menu_data_management));
 	}
 	
 	@Override

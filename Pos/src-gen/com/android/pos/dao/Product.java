@@ -25,6 +25,8 @@ public class Product implements Serializable {
     private Integer promoPrice;
     private java.util.Date promoStart;
     private java.util.Date promoEnd;
+    private Integer stock;
+    private Integer minStock;
     private String status;
     private String uploadStatus;
     private String createBy;
@@ -52,7 +54,7 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(Long id, long merchantId, Long productGroupId, String name, String type, Integer price, Integer costPrice, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Product(Long id, long merchantId, Long productGroupId, String name, String type, Integer price, Integer costPrice, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, Integer stock, Integer minStock, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.productGroupId = productGroupId;
@@ -65,6 +67,8 @@ public class Product implements Serializable {
         this.promoPrice = promoPrice;
         this.promoStart = promoStart;
         this.promoEnd = promoEnd;
+        this.stock = stock;
+        this.minStock = minStock;
         this.status = status;
         this.uploadStatus = uploadStatus;
         this.createBy = createBy;
@@ -173,6 +177,22 @@ public class Product implements Serializable {
 
     public void setPromoEnd(java.util.Date promoEnd) {
         this.promoEnd = promoEnd;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public Integer getMinStock() {
+        return minStock;
+    }
+
+    public void setMinStock(Integer minStock) {
+        this.minStock = minStock;
     }
 
     public String getStatus() {

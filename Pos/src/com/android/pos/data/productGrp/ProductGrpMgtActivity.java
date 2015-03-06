@@ -26,7 +26,7 @@ public class ProductGrpMgtActivity extends BaseItemMgtActivity<ProductGrpSearchF
 		super.onStart();
 
 		setTitle(getString(R.string.module_product_group));
-		setSelectedMenu(getString(R.string.module_product_group));
+		setSelectedMenu(getString(R.string.menu_data_management));
 	}
 	
 	@Override

@@ -169,6 +169,10 @@ public class CashierProductSearchFragment extends BaseFragment
 		mSearchQuery = null;
 		mSelectedPrdGroup = null;
 		
+		if (mProducts != null) {
+			mProducts.clear();
+		}
+		
 		mProductGroupList.setAdapter(mProductGroupAdapter);
 		
 		refreshNavigationPanel();
@@ -195,7 +199,7 @@ public class CashierProductSearchFragment extends BaseFragment
 	public void onProductSelected(Product product) {
 		
 		System.out.println("Product : " + product.getName());
-		mActionListener.onProductSelected(product, 0);
+		mActionListener.onProductSelected(product, 0, Constant.EMPTY_STRING);
 	}
 	
 	private View.OnClickListener getUpButtonOnClickListener() {

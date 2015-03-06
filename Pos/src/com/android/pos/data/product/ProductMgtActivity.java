@@ -26,7 +26,7 @@ public class ProductMgtActivity extends BaseItemMgtActivity<ProductSearchFragmen
 		super.onStart();
 
 		setTitle(getString(R.string.module_product));
-		setSelectedMenu(getString(R.string.module_product));
+		setSelectedMenu(getString(R.string.menu_data_management));
 	}
 	
 	@Override

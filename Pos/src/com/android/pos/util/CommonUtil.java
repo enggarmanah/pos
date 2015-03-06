@@ -16,6 +16,8 @@ import com.android.pos.dao.ProductGroup;
 @SuppressLint("SimpleDateFormat")
 public class CommonUtil {
 	
+	public static Boolean LOCK = true;
+	
 	public static boolean isEmpty(String str) {
 		
 		if (str != null && str.length() != 0) {
@@ -137,7 +139,7 @@ public class CommonUtil {
 		cal.set(Calendar.DATE, 1);
 		cal.set(Calendar.MONTH, 0);
 		cal.add(Calendar.YEAR, 1);
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.MILLISECOND, -1);
 		
 		return cal.getTime();
 	}
@@ -159,7 +161,7 @@ public class CommonUtil {
 		cal.setTime(date);
 		cal.set(Calendar.DATE, 1);
 		cal.add(Calendar.MONTH, 1);
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.MILLISECOND, -1);
 		
 		return cal.getTime();
 	}

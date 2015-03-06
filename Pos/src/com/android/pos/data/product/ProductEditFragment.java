@@ -39,6 +39,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     EditText mPromoPriceText;
     EditText mPromoStartDate;
     EditText mPromoEndDate;
+    EditText mStockText;
+    EditText mMinStockText;
     Spinner mStatusSp;
     
     ProductGrpSpinnerArrayAdapter productGrpArrayAdapter;
@@ -76,6 +78,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	mPromoPriceText = (EditText) getView().findViewById(R.id.promoPriceTxt);
     	mPromoStartDate = (EditText) getView().findViewById(R.id.promoStartDate);
     	mPromoEndDate = (EditText) getView().findViewById(R.id.promoEndDate);
+    	mStockText = (EditText) getView().findViewById(R.id.stockTxt);
+    	mMinStockText = (EditText) getView().findViewById(R.id.minStockTxt);
     	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
     	
     	registerField(mNameText);
@@ -88,6 +92,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	registerField(mPromoPriceText);
     	registerField(mPromoStartDate);
     	registerField(mPromoEndDate);
+    	registerField(mStockText);
+    	registerField(mMinStockText);
     	registerField(mStatusSp);
     	
     	enableInputFields(false);
@@ -100,6 +106,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	mCostPriceText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mCostPriceText));
     	mCommisionText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mCommisionText));
     	mPromoPriceText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mPromoPriceText));
+    	mStockText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mStockText));
+    	mMinStockText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mMinStockText));
     	
     	mPromoStartDate.setOnClickListener(getDateFieldOnClickListener(mPromoStartDate, "startDatePicker"));
     	mPromoEndDate.setOnClickListener(getDateFieldOnClickListener(mPromoEndDate, "endDatePicker"));
@@ -137,6 +145,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		mPromoPriceText.setText(CommonUtil.formatCurrency(product.getPromoPrice()));
     		mPromoStartDate.setText(CommonUtil.formatDate(product.getPromoStart()));
     		mPromoEndDate.setText(CommonUtil.formatDate(product.getPromoEnd()));
+    		mStockText.setText(CommonUtil.formatCurrencyUnsigned(product.getStock()));
+    		mMinStockText.setText(CommonUtil.formatCurrencyUnsigned(product.getMinStock()));
     		
     		mTypeSp.setSelection(typeIndex);
     		mProductGrpSp.setSelection(productGrpIndex);
@@ -164,6 +174,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	Integer promoPrice = CommonUtil.parseCurrency(mPromoPriceText.getText().toString());
     	Date startDate = CommonUtil.parseDate(mPromoStartDate.getText().toString());
     	Date endDate = CommonUtil.parseDate(mPromoEndDate.getText().toString());
+    	Integer stock = CommonUtil.parseCurrency(mStockText.getText().toString());
+    	Integer minStock = CommonUtil.parseCurrency(mMinStockText.getText().toString());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
     	if (mItem != null) {
@@ -180,6 +192,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		mItem.setPromoPrice(promoPrice);
     		mItem.setPromoStart(startDate);
     		mItem.setPromoEnd(endDate);
+    		mItem.setStock(stock);
+    		mItem.setMinStock(minStock);
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
@@ -214,6 +228,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
         mPromoPriceText.getText().clear();
         mPromoStartDate.getText().clear();
         mPromoEndDate.getText().clear();
+        mStockText.getText().clear();
+        mMinStockText.getText().clear();
         
         mItem = null;
     }

@@ -53,7 +53,8 @@ public class TransactionsDaoService {
 	public List<TransactionsBean> getTransactionsForUpload() {
 
 		QueryBuilder<Transactions> qb = mTransactionsDao.queryBuilder();
-		qb.where(TransactionsDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(TransactionsDao.Properties.Id);
+		qb.where(TransactionsDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				TransactionsDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(TransactionsDao.Properties.Id);
 		
 		Query<Transactions> q = qb.build();
 		
@@ -172,8 +173,8 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount) total_amount "
 				+ " FROM transactions " 
-				+ " WHERE merchant_id = ? AND "
-				+ " transaction_date BETWEEN ? AND ? "
+				+ " WHERE merchant_id = ? "
+				+ " AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] {merchantId, startDate, endDate });
 			
 		while(cursor.moveToNext()) {

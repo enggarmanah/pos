@@ -17,6 +17,8 @@ public class Product extends Base {
 	private Integer promo_price;
 	private java.util.Date promo_start;
 	private java.util.Date promo_end;
+	private Integer stock;
+	private Integer min_stock;
 	private String status;
 	
 	public void setBean(Product bean) {
@@ -32,6 +34,8 @@ public class Product extends Base {
 		this.promo_price = bean.getPromo_price();
 		this.promo_start = bean.getPromo_start();
 		this.promo_end = bean.getPromo_end();
+		this.stock = bean.getStock();
+		this.min_stock = bean.getMin_stock();
 		this.status = bean.getStatus();
 	}
 
@@ -113,6 +117,22 @@ public class Product extends Base {
 
 	public void setPromo_end(java.util.Date promo_end) {
 		this.promo_end = promo_end;
+	}
+	
+	public Integer getStock() {
+		return stock;
+	}
+
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
+	
+	public Integer getMin_stock() {
+		return min_stock;
+	}
+
+	public void setMin_stock(Integer min_stock) {
+		this.min_stock = min_stock;
 	}
 
 	public String getStatus() {

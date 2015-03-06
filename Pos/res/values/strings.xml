@@ -19,6 +19,7 @@
     
     <string-array name="app_menus_cashier">
         <item>Kasir</item>
+        <item>Pemesanan</item>
         <item>Laporan Transaksi</item>
         <item>Keluar</item>
     </string-array>
@@ -49,6 +50,7 @@
     <string name="pin">PIN</string>
     
     <string name="menu_cashier">Kasir</string>
+    <string name="menu_order">Pemesanan</string>
     <string name="menu_transaction">Laporan Transaksi</string>
     <string name="menu_statistic_product">Laporan Penjualan</string>
     <string name="menu_expense">Pengeluaran</string>
@@ -81,6 +83,7 @@
     <string name="confirmation">Konfirmasi</string>
     <string name="save">Simpan</string>
     <string name="select_printer">Pilih Printer</string>
+    <string name="remarks">Catatan</string>
     <string name="none"></string>
     
     <string name="sync">Sync</string>
@@ -101,6 +104,8 @@
     <string name="field_cost_price">Harga Beli :</string>
     <string name="field_pic_required">Butuh PIC :</string>
     <string name="field_commision">Komisi :</string>
+    <string name="field_stock">Jumlah Stock :</string>
+    <string name="field_min_stock">Min. Stock :</string>
     <string name="field_promo_price">Harga Promo :</string>
     <string name="field_promo_start">Awal Promo :</string>
     <string name="field_promo_end">Akhir Promo :</string>
@@ -114,6 +119,7 @@
     <string name="field_period_end">Akhir Akses :</string>
     <string name="field_tax_percentage">Pajak (%) :</string>
     <string name="field_service_charge_percentage">Bea Servis (%) :</string>
+    <string name="field_capacity">Kapasitas :</string>
     <string name="field_role">Hak Akses :</string>
     <string name="field_telephone">Telepon :</string>
     <string name="field_email">Email :</string>
@@ -138,8 +144,17 @@
     <string name="payment">Bayar</string>
     <string name="payment_type">Tipe</string>
     <string name="change">Kembali</string>
-    <string name="order">Daftar Penjualan</string>
+    <string name="order">Pesan</string>
     <string name="print">Print Nota</string>
+    <string name="transaction_items">Daftar Penjualan</string>
+    
+    <string name="reservation_no">No. Meja</string>
+    
+    <string name="order_info">Pemesan</string>
+    <string name="order_type">Tipe Order</string>
+    <string name="order_total">Jumlah</string>
+    <string name="order_list">Daftar Pemesanan</string>
+    <string name="order_detail">Rincian Pemesanan</string>
     
     <string name="product_group">Kategori</string>
     <string name="product">Produk</string>
@@ -149,13 +164,16 @@
     <string name="no_discount">Tanpa Diskon</string>
     <string name="tax">Pajak PPN</string>
     <string name="service_charge">Service Charge</string>
+    
     <string name="transaction_summary">Konfirmasi Transaksi</string>
+    <string name="order_summary">Konfirmasi Pesanan</string>
     
     <string name="customer">Pelanggan</string>
     <string name="search_customer">Cari Pelanggan</string>
     <string name="select_customer">Pilih Pelanggan</string>
     <string name="track_customer">Catat Pelanggan</string>
     <string name="no_customer">Tanpa Pelanggan</string>
+    <string name="customer_name">Nama Pelanggan</string>
     
     <string name="transaction">Transaksi</string>
     <string name="transaction_no">No. Transaksi</string>

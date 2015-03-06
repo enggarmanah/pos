@@ -14,7 +14,6 @@ import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.HttpAsyncProgressDlgFragment;
-import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.dao.Merchant;
 import com.android.pos.data.merchant.MerchantMgtActivity;
 import com.android.pos.service.MerchantDaoService;
@@ -29,7 +28,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	final Context context = this;
 	private HttpAsyncManager mHttpAsyncManager;
 	
-	private HttpAsyncProgressDlgFragment mProgressDialog;
+	private static HttpAsyncProgressDlgFragment mProgressDialog;
 	private MerchantDaoService mMerchantDaoService;
 	
 	Button mLoginBtn;
@@ -120,12 +119,11 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 						
 						if (merchant != null) {
 							
-							mLoginIdTxt.setText(Constant.EMPTY_STRING);
-							mPasswordTxt.setText(Constant.EMPTY_STRING);
-							
 							MerchantUtil.setMerchant(merchant);
 							Intent intent = new Intent(context, UserLoginActivity.class);
 							startActivity(intent);
+							
+							finish();
 						
 						} else {
 							
@@ -217,15 +215,11 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		
 		mProgressDialog.dismiss();
 		
-		AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
-		alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
-		alertDialogFragment.setAlertMessage("Tidak dapat terhubung ke Server!");
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
 	
 	private void showFailedAuthenticationMessage() {
 		
-		AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
-		alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
-		alertDialogFragment.setAlertMessage("ID Merchant & password anda salah!");
+		NotificationUtil.setAlertMessage(getFragmentManager(), "ID Merchant & password anda salah!");
 	}
 }

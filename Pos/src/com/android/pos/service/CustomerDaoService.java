@@ -10,13 +10,14 @@ import com.android.pos.model.CustomerBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class CustomerDaoService {
 	
-	private CustomerDao customerDao = DbUtil.getSession().getCustomerDao();
+	private static CustomerDao customerDao = DbUtil.getSession().getCustomerDao();
 	
 	public void addCustomer(Customer customer) {
 		
@@ -44,7 +45,8 @@ public class CustomerDaoService {
 	public List<Customer> getCustomers(String query) {
 
 		QueryBuilder<Customer> qb = customerDao.queryBuilder();
-		qb.where(CustomerDao.Properties.Name.like("%" + query + "%"), 
+		qb.where(CustomerDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				CustomerDao.Properties.Name.like("%" + query + "%"), 
 				CustomerDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(CustomerDao.Properties.Name);
 
 		Query<Customer> q = qb.build();
@@ -56,7 +58,8 @@ public class CustomerDaoService {
 	public List<CustomerBean> getCustomersForUpload() {
 
 		QueryBuilder<Customer> qb = customerDao.queryBuilder();
-		qb.where(CustomerDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(CustomerDao.Properties.Name);
+		qb.where(CustomerDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				CustomerDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(CustomerDao.Properties.Name);
 		
 		Query<Customer> q = qb.build();
 		

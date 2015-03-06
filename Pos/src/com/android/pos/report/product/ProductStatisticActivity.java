@@ -218,46 +218,49 @@ public class ProductStatisticActivity extends BaseActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		switch (item.getItemId()) {
-
-			case R.id.menu_revenue:
+		synchronized (CommonUtil.LOCK) {
+		
+			switch (item.getItemId()) {
+	
+				case R.id.menu_revenue:
+					
+					mSelectedProductInfo = Constant.PRODUCT_REVENUE;
+					
+					mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
+					mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
+					
+					refreshParentView();
+					hideSelectedMenu();
+					
+					return true;
 				
-				mSelectedProductInfo = Constant.PRODUCT_REVENUE;
+				case R.id.menu_profit:
+					
+					mSelectedProductInfo = Constant.PRODUCT_PROFIT;
+					
+					mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
+					mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
+					
+					refreshParentView();
+					hideSelectedMenu();
+					
+					return true;
 				
-				mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
-				mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
-				
-				refreshParentView();
-				hideSelectedMenu();
-				
-				return true;
-			
-			case R.id.menu_profit:
-				
-				mSelectedProductInfo = Constant.PRODUCT_PROFIT;
-				
-				mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
-				mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
-				
-				refreshParentView();
-				hideSelectedMenu();
-				
-				return true;
-			
-			case R.id.menu_quantity:
-				
-				mSelectedProductInfo = Constant.PRODUCT_QUANTITY;
-				
-				mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
-				mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
-				
-				refreshParentView();
-				hideSelectedMenu();
-				
-				return true;
-				
-			default:
-				return super.onOptionsItemSelected(item);
+				case R.id.menu_quantity:
+					
+					mSelectedProductInfo = Constant.PRODUCT_QUANTITY;
+					
+					mProductStatisticListFragment.setSelectedProductInfo(mSelectedProductInfo);
+					mProductStatisticDetailFragment.setProductInfo(mSelectedProductInfo);
+					
+					refreshParentView();
+					hideSelectedMenu();
+					
+					return true;
+					
+				default:
+					return super.onOptionsItemSelected(item);
+			}
 		}
 	}
 	
@@ -303,7 +306,9 @@ public class ProductStatisticActivity extends BaseActivity
 	@Override
 	public void onBackButtonClicked() {
 		
-		onBackToParent();
+		synchronized (CommonUtil.LOCK) {
+			onBackToParent();
+		}
 	}
 	
 	private void onBackToParent() {

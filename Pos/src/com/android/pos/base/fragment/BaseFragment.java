@@ -3,7 +3,6 @@ package com.android.pos.base.fragment;
 import java.util.List;
 
 import com.android.pos.Constant;
-import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.NotificationUtil;
 
@@ -39,9 +38,7 @@ public abstract class BaseFragment extends Fragment {
     			
     			String fieldLabel = getString(field.getLabel()).replace(" :", "");
     			
-    			AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
-    			alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
-    			alertDialogFragment.setAlertMessage(fieldLabel + " tidak boleh kosong.");
+    			NotificationUtil.setAlertMessage(getFragmentManager(), fieldLabel + " tidak boleh kosong.");
     			
     			input.requestFocus();
     			

@@ -8,6 +8,8 @@ import android.util.Log;
 import com.android.pos.dao.DaoMaster;
 import com.android.pos.dao.DaoSession;
 import com.android.pos.dao.DiscountDao;
+import com.android.pos.dao.OrderItemDao;
+import com.android.pos.dao.OrdersDao;
 import com.android.pos.dao.TransactionsDao;
 import com.android.pos.dao.DaoMaster.DevOpenHelper;
 import com.android.pos.dao.ProductGroupDao;
@@ -134,6 +136,59 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRINTER_ADDRESS' TEXT");
             }
             
+            // handle version 19 changes
+            if (oldVersion < 19) {
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'CAPACITY' INTEGER");
+            	db.execSQL("ALTER TABLE 'PRODUCT' ADD 'STOCK' INTEGER");
+            	db.execSQL("ALTER TABLE 'PRODUCT' ADD 'MIN_STOCK' INTEGER");
+            	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'COMMISION' INTEGER");
+            	
+            	//OrdersDao.dropTable(db, true);
+            	//OrdersDao.createTable(db, true);
+            	
+            	//OrderItemDao.dropTable(db, true);
+            	//OrderItemDao.createTable(db, true);
+            }
+            
+            // handle version 20 changes
+            if (oldVersion < 20) {
+            	//db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'DEBT_REFERENCE' TEXT");
+            }
+            
+            // handle version 21 changes
+            if (oldVersion < 21) {
+            	//db.execSQL("ALTER TABLE 'ORDERS' ADD 'ORDER_TYPE' TEXT");
+            	//db.execSQL("ALTER TABLE 'ORDERS' ADD 'REFERENCE_NO' TEXT");
+            	
+            	//TransactionsDao.dropTable(db, true);
+            	//TransactionsDao.createTable(db, true);
+            	
+            	//TransactionItemDao.dropTable(db, true);
+            	//TransactionItemDao.createTable(db, true);
+            }
+            
+            // handle version 22 changes
+            if (oldVersion < 22) {
+            	
+            	OrdersDao.dropTable(db, true);
+            	OrdersDao.createTable(db, true);
+            	
+            	OrderItemDao.dropTable(db, true);
+            	OrderItemDao.createTable(db, true);
+            }
+            
+            // handle version 23 changes
+            if (oldVersion < 23) {
+            	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'ORDER_TYPE' TEXT");
+            	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'ORDER_REFERENCE' TEXT");
+            }
+            
+            // handle version 24 changes
+            if (oldVersion < 24) {
+            	//db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'REMARKS' TEXT");
+            	//db.execSQL("ALTER TABLE 'ORDER_ITEM' ADD 'REMARKS' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -142,6 +197,11 @@ public class DbUtil {
     public static void initDb(Context ctx) {
     	
     	context = ctx;
+    	
+    	System.out.println("db : " + db);
+    	System.out.println("daoMaster : " + daoMaster);
+    	System.out.println("daoSession : " + daoSession);
+    	System.out.println("context : " + context);
     	
     	if (daoSession == null) {
     		

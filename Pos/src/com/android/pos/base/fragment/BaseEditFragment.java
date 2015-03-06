@@ -50,6 +50,11 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
         initViewReference();
     	
         updateView(mItem);
+        
+        // new item case
+        if (mItem != null && getItemId(mItem) == null) {
+        	enableInputFields(true);
+        }
     }
     
     protected abstract void initViewReference();

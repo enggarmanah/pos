@@ -99,6 +99,7 @@ public class BeanUtil {
 		bean.setPeriod_end(merchant.getPeriodEnd());
 		bean.setTax_percentage(merchant.getTaxPercentage());
 		bean.setService_charge_percentage(merchant.getServiceChargePercentage());
+		bean.setCapacity(merchant.getCapacity());
 		bean.setStatus(merchant.getStatus());
 		bean.setCreate_by(merchant.getCreateBy());
 		bean.setCreate_date(merchant.getCreateDate());
@@ -123,6 +124,7 @@ public class BeanUtil {
 		merchant.setPeriodEnd(bean.getPeriod_end());
 		merchant.setTaxPercentage(bean.getTax_percentage());
 		merchant.setServiceChargePercentage(bean.getService_charge_percentage());
+		merchant.setCapacity(bean.getCapacity());
 		merchant.setStatus(bean.getStatus());
 		merchant.setUploadStatus(Constant.STATUS_NO);
 		merchant.setCreateBy(bean.getCreate_by());
@@ -217,6 +219,8 @@ public class BeanUtil {
 		bean.setPromo_price(product.getPromoPrice());
 		bean.setPromo_start(product.getPromoStart());
 		bean.setPromo_end(product.getPromoEnd());
+		bean.setStock(product.getStock());
+		bean.setMin_stock(product.getMinStock());
 		bean.setStatus(product.getStatus());
 		bean.setCreate_by(product.getCreateBy());
 		bean.setCreate_date(product.getCreateDate());
@@ -240,6 +244,8 @@ public class BeanUtil {
 		product.setPromoPrice(bean.getPromo_price());
 		product.setPromoStart(bean.getPromo_start());
 		product.setPromoEnd(bean.getPromo_end());
+		product.setStock(bean.getStock());
+		product.setMinStock(bean.getMin_stock());
 		product.setStatus(bean.getStatus());
 		product.setUploadStatus(Constant.STATUS_NO);
 		product.setCreateBy(bean.getCreate_by());
@@ -291,6 +297,8 @@ public class BeanUtil {
 		bean.setRemote_id(transactions.getId());
 		bean.setTransaction_no(transactions.getTransactionNo());
 		bean.setTransaction_date(transactions.getTransactionDate());
+		bean.setOrder_type(transactions.getOrderType());
+		bean.setOrder_reference(transactions.getOrderReference());
 		bean.setBill_amount(transactions.getBillAmount());
 		bean.setDiscount_name(transactions.getDiscountName());
 		bean.setDiscount_percentage(transactions.getDiscountPercentage());
@@ -318,6 +326,8 @@ public class BeanUtil {
 		transactions.setId(bean.getRemote_id());
 		transactions.setTransactionNo(bean.getTransaction_no());
 		transactions.setTransactionDate(bean.getTransaction_date());
+		transactions.setOrderType(bean.getOrder_type());
+		transactions.setOrderReference(bean.getOrder_reference());
 		transactions.setBillAmount(bean.getBill_amount());
 		transactions.setDiscountName(bean.getDiscount_name());
 		transactions.setDiscountPercentage(bean.getDiscount_percentage());
@@ -352,6 +362,7 @@ public class BeanUtil {
 		bean.setCost_price(transactionItem.getCostPrice());
 		bean.setDiscount(transactionItem.getDiscount());
 		bean.setQuantity(transactionItem.getQuantity());
+		bean.setCommision(transactionItem.getCommision());
 		bean.setEmployee_id(transactionItem.getEmployeeId());
 		
 		return bean;
@@ -369,6 +380,7 @@ public class BeanUtil {
 		transactionItem.setCostPrice(bean.getCost_price());
 		transactionItem.setDiscount(bean.getDiscount());
 		transactionItem.setQuantity(bean.getQuantity());
+		transactionItem.setCommision(bean.getCommision());
 		transactionItem.setEmployeeId(bean.getEmployee_id());
 		transactionItem.setUploadStatus(Constant.STATUS_NO);
 	}

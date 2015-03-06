@@ -23,6 +23,8 @@ public class TransactionItem implements Serializable {
     private Integer costPrice;
     private Integer discount;
     private Integer quantity;
+    private Integer commision;
+    private String remarks;
     private long employeeId;
     private String uploadStatus;
 
@@ -52,7 +54,7 @@ public class TransactionItem implements Serializable {
         this.id = id;
     }
 
-    public TransactionItem(Long id, long merchantId, long transactionId, long productId, String productName, String productType, Integer price, Integer costPrice, Integer discount, Integer quantity, long employeeId, String uploadStatus) {
+    public TransactionItem(Long id, long merchantId, long transactionId, long productId, String productName, String productType, Integer price, Integer costPrice, Integer discount, Integer quantity, Integer commision, String remarks, long employeeId, String uploadStatus) {
         this.id = id;
         this.merchantId = merchantId;
         this.transactionId = transactionId;
@@ -63,6 +65,8 @@ public class TransactionItem implements Serializable {
         this.costPrice = costPrice;
         this.discount = discount;
         this.quantity = quantity;
+        this.commision = commision;
+        this.remarks = remarks;
         this.employeeId = employeeId;
         this.uploadStatus = uploadStatus;
     }
@@ -151,6 +155,22 @@ public class TransactionItem implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getCommision() {
+        return commision;
+    }
+
+    public void setCommision(Integer commision) {
+        this.commision = commision;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public long getEmployeeId() {

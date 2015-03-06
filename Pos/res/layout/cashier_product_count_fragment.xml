@@ -4,12 +4,26 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/productText"
-        style="@style/PopUpDialogHeaderStyle"
-        android:textSize="20sp"/>
-
+	
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/background_blue_dark">
+	    <TextView
+	        android:id="@+id/productText"
+	        style="@style/PopUpDialogHeaderStyle"
+	        android:textSize="20sp"/>
+	    <TextView
+	        android:id="@+id/remarksBtn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_marginRight="20dp"
+	        android:layout_marginEnd="20dp"
+	        android:drawableStart="@drawable/action_comment"
+	        android:drawableLeft="@drawable/action_comment"/>
+    </LinearLayout>
     <Spinner
         android:id="@+id/personInChargeSp"
         style="@style/CashierSpinnerRowTextStyle" />
@@ -32,7 +46,25 @@
             style="@style/CashierNumberValueStyle"
             android:gravity="center_vertical|end" />
     </LinearLayout>
-
+	
+    <TextView 
+        android:id="@+id/remarksDivider"
+        style="@style/SectionDividerStyle"/>
+    
+    <EditText 
+        android:id="@+id/remarksText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/remarks"
+        android:textSize="20sp"
+        android:textColor="@color/text_default"
+        android:textStyle="bold"
+        android:maxLength="30"
+        android:padding="15dp"
+        android:gravity="center"
+        android:background="@color/background"/>
+    
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="1dp"

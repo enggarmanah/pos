@@ -24,6 +24,7 @@ public class TransactionItem {
 	private Integer cost_price;
 	private Integer discount;
 	private Integer quantity;
+	private Integer commision;
 	private long employee_id;
 
 	public void setBean(TransactionItem bean) {
@@ -39,6 +40,7 @@ public class TransactionItem {
 		this.cost_price = bean.getCost_price();
 		this.discount = bean.getDiscount();
 		this.quantity = bean.getQuantity();
+		this.commision = bean.getCommision();
 		this.employee_id = bean.getEmployee_id();
 	}
 
@@ -128,6 +130,14 @@ public class TransactionItem {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+	
+	public Integer getCommision() {
+		return commision;
+	}
+
+	public void setCommision(Integer commision) {
+		this.commision = commision;
 	}
 
 	public long getEmployee_id() {

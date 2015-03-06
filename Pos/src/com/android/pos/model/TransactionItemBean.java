@@ -13,6 +13,7 @@ public class TransactionItemBean {
 	private Integer cost_price;
 	private Integer discount;
 	private Integer quantity;
+	private Integer commision;
 	private long employee_id;
 
 	public Long getId() {
@@ -101,6 +102,14 @@ public class TransactionItemBean {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public Integer getCommision() {
+		return commision;
+	}
+
+	public void setCommision(Integer commision) {
+		this.commision = commision;
 	}
 
 	public long getEmployee_id() {

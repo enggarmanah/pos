@@ -37,6 +37,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     EditText mPeriodEndDate;
     EditText mTaxText;
     EditText mServiceChargeText;
+    EditText mCapacityText;
     Spinner mStatusSp;
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
@@ -73,6 +74,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mPeriodEndDate = (EditText) getActivity().findViewById(R.id.periodEndDate);
     	mTaxText = (EditText) getActivity().findViewById(R.id.taxText);
     	mServiceChargeText = (EditText) getActivity().findViewById(R.id.serviceChargeText);
+    	mCapacityText = (EditText) getActivity().findViewById(R.id.capacityText);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
     	
     	registerField(mNameText);
@@ -87,6 +89,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mPeriodEndDate);
     	registerField(mTaxText);
     	registerField(mServiceChargeText);
+    	registerField(mCapacityText);
     	registerField(mStatusSp);
     	
     	enableInputFields(false);
@@ -137,6 +140,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		
     		mTaxText.setText(CommonUtil.formatString(merchant.getTaxPercentage()));
     		mServiceChargeText.setText(CommonUtil.formatString(merchant.getServiceChargePercentage()));
+    		mCapacityText.setText(CommonUtil.formatString(merchant.getCapacity()));
     		
     		mTypeSp.setSelection(typeIndex);
     		mStatusSp.setSelection(statusIndex);
@@ -164,6 +168,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	Integer serviceCharge = CommonUtil.parseInteger(mServiceChargeText.getText().toString());
     	Date startDate = CommonUtil.parseDate(mPeriodStartDate.getText().toString());
     	Date endDate = CommonUtil.parseDate(mPeriodEndDate.getText().toString());
+    	Integer capacity = CommonUtil.parseInteger(mCapacityText.getText().toString());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
     	if (mItem != null) {
@@ -180,6 +185,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setPeriodEnd(endDate);
     		mItem.setTaxPercentage(tax);
     		mItem.setServiceChargePercentage(serviceCharge);
+    		mItem.setCapacity(capacity);
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
@@ -209,6 +215,16 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
         
         mNameText.getText().clear();
         mAddressText.getText().clear();
+        mTelephoneText.getText().clear();
+        mContactNameText.getText().clear();
+        mContactTelephoneText.getText().clear();
+        mLoginIdText.getText().clear();
+        mPasswordText.getText().clear();
+        mPeriodStartDate.getText().clear();
+        mPeriodEndDate.getText().clear();
+        mTaxText.getText().clear();
+        mServiceChargeText.getText().clear();
+        mCapacityText.getText().clear();
         
         mItem = null;
     }

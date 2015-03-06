@@ -1,7 +1,6 @@
 package com.android.pos.cashier;
 
 import com.android.pos.R;
-import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.dao.Discount;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.NotificationUtil;
@@ -213,9 +212,7 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 				
 				if (mAmount == 0) {
 					
-					AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
-	    			alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
-	    			alertDialogFragment.setAlertMessage("Nominal diskon tidak boleh kosong.");
+					NotificationUtil.setAlertMessage(getFragmentManager(), "Nominal diskon tidak boleh kosong.");
 	    			
 	    			return;
 				}

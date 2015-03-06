@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(18, "com.android.pos.dao");
+        Schema schema = new Schema(25, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -57,6 +57,7 @@ public class PosDaoGenerator {
         merchant.addDateProperty("periodEnd");
         merchant.addIntProperty("taxPercentage");
         merchant.addIntProperty("serviceChargePercentage");
+        merchant.addIntProperty("capacity");
         merchant.addBooleanProperty("isLogin");
         merchant.addStringProperty("status");
         merchant.addStringProperty("uploadStatus");
@@ -99,6 +100,8 @@ public class PosDaoGenerator {
     	product.addIntProperty("promoPrice");
     	product.addDateProperty("promoStart");
         product.addDateProperty("promoEnd");
+    	product.addIntProperty("stock");
+    	product.addIntProperty("minStock");
         product.addStringProperty("status");
         product.addStringProperty("uploadStatus");
         product.addStringProperty("createBy");
@@ -183,6 +186,8 @@ public class PosDaoGenerator {
     	transactions.addToOne(merchant, merchantId);
     	
     	transactions.addStringProperty("transactionNo");
+    	transactions.addStringProperty("orderType");
+    	transactions.addStringProperty("orderReference");
     	Property trxDate = transactions.addDateProperty("transactionDate").notNull().getProperty();
         transactions.addIntProperty("billAmount");
         transactions.addStringProperty("discountName");
@@ -234,6 +239,8 @@ public class PosDaoGenerator {
     	transactionItem.addIntProperty("costPrice");
     	transactionItem.addIntProperty("discount");
     	transactionItem.addIntProperty("quantity");
+    	transactionItem.addIntProperty("commision");
+        transactionItem.addStringProperty("remarks");
     	
     	Property employeeId = transactionItem.addLongProperty("employeeId").notNull().getProperty();
     	transactionItem.addToOne(employee, employeeId);
@@ -262,5 +269,139 @@ public class PosDaoGenerator {
         discount.addDateProperty("createDate");
         discount.addStringProperty("updateBy");
         discount.addDateProperty("updateDate");
+        
+        Entity orders = schema.addEntity("Orders");
+    	
+        orders.addIdProperty();
+    	
+    	merchantId = orders.addLongProperty("merchantId").notNull().getProperty();
+    	orders.addToOne(merchant, merchantId);
+    	
+    	trxDate = orders.addDateProperty("orderDate").notNull().getProperty();
+    	orders.addStringProperty("orderType");
+    	orders.addStringProperty("orderReference");
+    	orders.addStringProperty("customerName");
+        orders.addStringProperty("status");
+    	
+    	Entity orderItem = schema.addEntity("OrderItem");
+    	
+        orderItem.addIdProperty();
+    	
+        merchantId = orderItem.addLongProperty("merchantId").notNull().getProperty();
+        orderItem.addToOne(merchant, merchantId);
+        
+    	Property orderId = orderItem.addLongProperty("orderId").notNull().getProperty();
+    	orderItem.addToOne(orders, orderId);
+    	
+    	productId = orderItem.addLongProperty("productId").notNull().getProperty();
+    	orderItem.addToOne(product, productId);
+    	
+    	productName = orderItem.addStringProperty("productName").getProperty();
+    	orderItem.addIntProperty("quantity");
+    	
+    	orderItem.addStringProperty("remarks");
+    	
+    	ToMany orderToItem = orders.addToMany(orderItem, orderId);
+        orderToItem.orderAsc(productName);
+        
+        Entity supplier = schema.addEntity("Supplier");
+    	
+        supplier.addIdProperty();
+    	
+    	merchantId = supplier.addLongProperty("merchantId").notNull().getProperty();
+    	supplier.addToOne(merchant, merchantId);
+    	
+    	supplier.addStringProperty("name");
+    	supplier.addStringProperty("telephone");
+    	supplier.addStringProperty("address");
+    	supplier.addStringProperty("picName");
+    	supplier.addStringProperty("picTelephone");
+    	supplier.addStringProperty("remarks");
+    	
+    	supplier.addStringProperty("status");
+    	supplier.addStringProperty("uploadStatus");
+    	supplier.addStringProperty("createBy");
+    	supplier.addDateProperty("createDate");
+    	supplier.addStringProperty("updateBy");
+    	supplier.addDateProperty("updateDate");
+    	
+    	Entity bills = schema.addEntity("Bills");
+    	
+    	bills.addIdProperty();
+    	
+    	merchantId = bills.addLongProperty("merchantId").notNull().getProperty();
+    	bills.addToOne(merchant, merchantId);
+    	
+    	bills.addStringProperty("billReference");
+    	bills.addStringProperty("billType");
+    	bills.addDateProperty("billDate");
+    	bills.addDateProperty("billDueDate");
+    	bills.addIntProperty("billAmount");
+    	bills.addIntProperty("payment");
+    	
+    	Property supplierId = bills.addLongProperty("supplierId").notNull().getProperty();
+    	bills.addToOne(supplier, supplierId);
+    	
+    	bills.addDateProperty("deliveryDate");
+    	bills.addStringProperty("remarks");
+    	
+        bills.addStringProperty("status");
+    	bills.addStringProperty("uploadStatus");
+    	bills.addStringProperty("createBy");
+    	bills.addDateProperty("createDate");
+    	bills.addStringProperty("updateBy");
+    	bills.addDateProperty("updateDate");
+    	
+    	Entity billsItem = schema.addEntity("BillsItem");
+    	
+    	billsItem.addIdProperty();
+    	
+        merchantId = billsItem.addLongProperty("merchantId").notNull().getProperty();
+        billsItem.addToOne(merchant, merchantId);
+        
+    	Property billsId = billsItem.addLongProperty("billsId").notNull().getProperty();
+    	billsItem.addToOne(bills, billsId);
+    	
+    	productId = billsItem.addLongProperty("productId").notNull().getProperty();
+    	billsItem.addToOne(product, productId);
+    	
+    	productName = billsItem.addStringProperty("productName").getProperty();
+    	
+    	billsItem.addIntProperty("quantity");
+    	billsItem.addIntProperty("unitPrice");
+    	billsItem.addStringProperty("remarks");
+    	
+    	ToMany billsToItem = bills.addToMany(billsItem, billsId);
+    	billsToItem.orderAsc(productName);
+    	
+    	Entity inventory = schema.addEntity("Inventory");
+    	
+    	inventory.addIdProperty();
+    	
+    	merchantId = inventory.addLongProperty("merchantId").notNull().getProperty();
+    	inventory.addToOne(merchant, merchantId);
+    	
+    	productId = inventory.addLongProperty("productId").notNull().getProperty();
+    	inventory.addToOne(product, productId);
+    	
+    	inventory.addStringProperty("productName");
+    	inventory.addStringProperty("quantityStr");
+    	inventory.addIntProperty("quantity");
+    	
+    	billsId = inventory.addLongProperty("billsId").notNull().getProperty();
+    	inventory.addToOne(bills, billsId);
+    	
+    	supplierId = inventory.addLongProperty("supplierId").notNull().getProperty();
+    	inventory.addToOne(supplier, supplierId);
+    	
+    	inventory.addStringProperty("deliveryDate");
+    	inventory.addStringProperty("remarks");
+    	
+    	inventory.addStringProperty("status");
+    	inventory.addStringProperty("uploadStatus");
+    	inventory.addStringProperty("createBy");
+    	inventory.addDateProperty("createDate");
+    	inventory.addStringProperty("updateBy");
+    	inventory.addDateProperty("updateDate");
     }
 }

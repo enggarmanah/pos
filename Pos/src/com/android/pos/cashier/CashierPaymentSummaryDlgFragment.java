@@ -3,6 +3,7 @@ package com.android.pos.cashier;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseDialogFragment;
@@ -126,10 +127,10 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 
 		if (mCustomer != null) {
 			mCustomerText.setText(mCustomer.getName());
-
+			mCustomerPanel.setVisibility(View.VISIBLE);
+			
 		} else {
-			ViewGroup.LayoutParams lp = mCustomerPanel.getLayoutParams();
-			lp.height = 0;
+			mCustomerPanel.setVisibility(View.GONE);
 		}
 
 		mPaymentTypeText.setText(CodeUtil.getPaymentTypeLabel(mPaymentType));
@@ -147,8 +148,9 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 				
 				Transactions transaction = getTransaction();
 				
-				mActionListener.onPrintReceipt(transaction);
 				mActionListener.onPaymentCompleted(transaction);
+				mActionListener.onPrintReceipt(transaction);
+				mActionListener.onClearTransaction();
 					
 				dismiss();
 			}
@@ -199,6 +201,8 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 		transaction.setTotalAmount(mTotalBill);
 		transaction.setPaymentAmount(mPayment);
 		transaction.setReturnAmount(mChange);
+		
+		transaction.setStatus(Constant.STATUS_ACTIVE);
 
 		return transaction;
 	}

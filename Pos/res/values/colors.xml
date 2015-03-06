@@ -31,6 +31,7 @@
     <color name="text_blue">#5e98c7</color>
     <color name="text_blue_dark">#285275</color>
     <color name="text_red">#d2232a</color>
+    <color name="text_orange">#f98c47</color>
     
     <color name="input_text">#484c56</color>
     
@@ -78,11 +79,11 @@
     <color name="button_number_pressed">#90b8d9</color>
     <color name="button_number_focused">#90b8d9</color>
     
-    <color name="button_menu_normal">#aac8e1</color>
+    <color name="button_menu_normal">#cee1f0</color>
     <color name="button_menu_pressed">#90b8d9</color>
     <color name="button_menu_focused">#90b8d9</color>
     
-    <color name="button_back_normal">#e9f1f7</color>
+    <color name="button_back_normal">#f5f9fc</color>
     <color name="button_back_pressed">#d0e1ee</color>
     
 </resources>

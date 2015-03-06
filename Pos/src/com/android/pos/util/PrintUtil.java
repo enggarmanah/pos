@@ -14,6 +14,8 @@ import com.android.pos.Constant;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.cashier.CashierPaymentDeviceListActivity;
 import com.android.pos.dao.Merchant;
+import com.android.pos.dao.OrderItem;
+import com.android.pos.dao.Orders;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
 
@@ -43,7 +45,7 @@ public class PrintUtil {
 	public static int revBytes = 0;
 	public static boolean isHex = false;
 	
-	public static int mPrinterLineSize = 30;
+	public static int mPrinterLineSize = 32;
 	
 	public static final int REFRESH = 8;
 
@@ -142,13 +144,19 @@ public class PrintUtil {
 		//if (mBluetoothAdapter != null && 
 		//	BluetoothPrintDriver.IsNoConnection()) {
 		
-		if (mBluetoothAdapter != null) {
+		if (mBluetoothAdapter != null && mChatService != null) {
 			
-			mChatService.stop();
-			mChatService.start();
-			
-			Intent serverIntent = new Intent(mActivity, CashierPaymentDeviceListActivity.class);
-			mActivity.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+			try {
+				
+				mChatService.stop();
+				mChatService.start();
+				
+				Intent serverIntent = new Intent(mActivity, CashierPaymentDeviceListActivity.class);
+				mActivity.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -240,7 +248,23 @@ public class PrintUtil {
 		}
 	};
 	
-	public static void print(Transactions transaction, List<TransactionItem> transactionItems) {
+	public static boolean isBluetoothEnabled() {
+		
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if (mBluetoothAdapter == null) {
+		    // Device does not support Bluetooth
+			return false;
+		} else {
+		    if (mBluetoothAdapter.isEnabled()) {
+		        // Bluetooth is enable :)
+		    	return true;
+		    } else {
+		    	return false;
+		    }
+		}
+	}
+	
+	public static void print(Transactions transaction) {
 
 		/*if (BluetoothPrintDriver.IsNoConnection()) {
 
@@ -277,7 +301,7 @@ public class PrintUtil {
 		
 		Merchant merchant = MerchantUtil.getMerchant();
 		
-		line.append(merchant.getName());
+		line.append(merchant.getName().toUpperCase(CommonUtil.getLocale()));
 		
 		line.append(spaces.substring(0, mPrinterLineSize - merchant.getName().length()));
 		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
@@ -313,7 +337,7 @@ public class PrintUtil {
 		}
 		
 		line.setLength(0);
-		line.append(addrAndTlpLine);
+		line.append(addrAndTlpLine.toUpperCase(CommonUtil.getLocale()));
 		line.append(spaces.substring(0, mPrinterLineSize - addrAndTlpLine.length()));
 		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
 		
@@ -335,7 +359,36 @@ public class PrintUtil {
 		
 		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
 		
+		if (!CommonUtil.isEmpty(transaction.getOrderType())) {
+		
+			String orderType = "Tipe Order : " + CodeUtil.getOrderTypeLabel(transaction.getOrderType());
+			
+			line.setLength(0);
+			line.append(orderType);
+			line.append(spaces.substring(0, mPrinterLineSize - orderType.length()));
+			BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+			
+			String orderReference = Constant.EMPTY_STRING;
+			
+			if (Constant.ORDER_TYPE_DINE_IN.equals(transaction.getOrderType())) {
+				orderReference = "No. Meja : " + transaction.getOrderReference();
+			} else {
+				orderReference = "Pelanggan : " + transaction.getOrderReference();
+			}
+			
+			line.setLength(0);
+			line.append(orderReference);
+			line.append(spaces.substring(0, mPrinterLineSize - orderReference.length()));
+			BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+			
+			BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		}
+		
+		List<TransactionItem> transactionItems = transaction.getTransactionItemList();
+		
 		for (TransactionItem item : transactionItems) {
+			
+			System.out.println("Print - Transaction Item Id : " + item.getId());
 			
 			String productName = item.getProductName();
 			
@@ -395,8 +448,6 @@ public class PrintUtil {
 			
 			BluetoothPrintDriver.BT_Write(line.toString() + "\r");
 		}
-		
-		
 		
 		if (transaction.getTaxAmount() != 0) {
 		
@@ -460,7 +511,156 @@ public class PrintUtil {
 		line.append(returnText);
 
 		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		
+		String thankYou = "Terima Kasih Atas Kunjungan Anda";
+		
+		line.setLength(0);
+		line.append(thankYou);
+		line.append(spaces.substring(0, mPrinterLineSize - thankYou.length()));
 
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");
+		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");
+	}
+	
+	public static void printOrder(Orders order) {
+
+		BluetoothPrintDriver.WakeUpPritner();
+		
+		BluetoothPrintDriver.Begin();
+
+		BluetoothPrintDriver.SetCharacterFont((byte) 0x01);
+
+		String spaces = "                                        ";
+		String divider = "----------------------------------------";
+		
+		StringBuffer line = new StringBuffer();
+		
+		Merchant merchant = MerchantUtil.getMerchant();
+		
+		line.append(merchant.getName().toUpperCase(CommonUtil.getLocale()));
+		
+		line.append(spaces.substring(0, mPrinterLineSize - merchant.getName().length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		
+		String addrAndTelp = merchant.getAddress();
+		
+		if (!CommonUtil.isEmpty(merchant.getTelephone())) {
+			 addrAndTelp += " Tlp. " + merchant.getTelephone();
+		}
+		
+		String[] addrAndTelps = addrAndTelp.split(" ");
+		
+		String addrAndTlpLine = Constant.EMPTY_STRING;
+		
+		for (String str : addrAndTelps) {
+			
+			if (addrAndTlpLine.length() + str.length() < mPrinterLineSize) {
+				
+				addrAndTlpLine = addrAndTlpLine + str + " "; 
+			
+			} else {
+				
+				line.setLength(0);
+				line.append(addrAndTlpLine);
+				line.append(spaces.substring(0, mPrinterLineSize - addrAndTlpLine.length()));
+				
+				BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+				
+				addrAndTlpLine = str + " ";
+			}
+		}
+		
+		line.setLength(0);
+		line.append(addrAndTlpLine.toUpperCase(CommonUtil.getLocale()));
+		line.append(spaces.substring(0, mPrinterLineSize - addrAndTlpLine.length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		
+		String transDateText = CommonUtil.formatDateTime(order.getOrderDate()); 
+		
+		line.setLength(0);
+		line.append(transDateText);
+		line.append(spaces.substring(0, mPrinterLineSize - transDateText.length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		String cashierText = "Kasir : " + UserUtil.getUser().getName();
+		
+		line.setLength(0);
+		line.append(cashierText);
+		line.append(spaces.substring(0, mPrinterLineSize - cashierText.length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		
+		String orderType = "Tipe Order : " + CodeUtil.getOrderTypeLabel(order.getOrderType());
+		
+		line.setLength(0);
+		line.append(orderType);
+		line.append(spaces.substring(0, mPrinterLineSize - orderType.length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		String orderReference = Constant.EMPTY_STRING;
+		
+		if (Constant.ORDER_TYPE_DINE_IN.equals(order.getOrderType())) {
+			orderReference = "No. Meja : " + order.getOrderReference();
+		} else {
+			orderReference = "Pelanggan : " + order.getOrderReference();
+		}
+		
+		line.setLength(0);
+		line.append(orderReference);
+		line.append(spaces.substring(0, mPrinterLineSize - orderReference.length()));
+		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+		
+		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
+		
+		List<OrderItem> orderItems = order.getOrderItemList();
+		
+		for (OrderItem item : orderItems) {
+			
+			String productName = item.getProductName();
+			
+			if (productName.length() > mPrinterLineSize) {
+				productName = productName.substring(0, mPrinterLineSize);
+			}
+			
+			int quantity = item.getQuantity();
+			
+			line.setLength(0);
+			
+			line.append(productName);
+			line.append(spaces.substring(0, mPrinterLineSize - productName.length()));
+			
+			String quantityStr = "  " + String.valueOf(quantity);
+			
+			line.setLength(mPrinterLineSize - quantityStr.length());
+			line.append(quantityStr);
+			
+			BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+			
+			if (!CommonUtil.isEmpty(item.getRemarks())) {
+				
+				String remarks = "* " + item.getRemarks();
+				
+				line.setLength(0);
+				line.append(remarks);
+				line.append(spaces.substring(0, mPrinterLineSize - remarks.length()));
+				
+				BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+			}
+		}
+		
+		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");
+		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");
 		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");
 		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");
 		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");

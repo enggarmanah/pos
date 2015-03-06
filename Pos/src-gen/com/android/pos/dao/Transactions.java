@@ -17,6 +17,8 @@ public class Transactions implements Serializable {
     private Long id;
     private long merchantId;
     private String transactionNo;
+    private String orderType;
+    private String orderReference;
     /** Not-null value. */
     private java.util.Date transactionDate;
     private Integer billAmount;
@@ -62,10 +64,12 @@ public class Transactions implements Serializable {
         this.id = id;
     }
 
-    public Transactions(Long id, long merchantId, String transactionNo, java.util.Date transactionDate, Integer billAmount, String discountName, Integer discountPercentage, Integer discountAmount, Integer taxPercentage, Integer taxAmount, Integer serviceChargePercentage, Integer serviceChargeAmount, Integer totalAmount, Integer paymentAmount, Integer returnAmount, String paymentType, long cashierId, String cashierName, long customerId, String customerName, String uploadStatus, String status) {
+    public Transactions(Long id, long merchantId, String transactionNo, String orderType, String orderReference, java.util.Date transactionDate, Integer billAmount, String discountName, Integer discountPercentage, Integer discountAmount, Integer taxPercentage, Integer taxAmount, Integer serviceChargePercentage, Integer serviceChargeAmount, Integer totalAmount, Integer paymentAmount, Integer returnAmount, String paymentType, long cashierId, String cashierName, long customerId, String customerName, String uploadStatus, String status) {
         this.id = id;
         this.merchantId = merchantId;
         this.transactionNo = transactionNo;
+        this.orderType = orderType;
+        this.orderReference = orderReference;
         this.transactionDate = transactionDate;
         this.billAmount = billAmount;
         this.discountName = discountName;
@@ -115,6 +119,22 @@ public class Transactions implements Serializable {
 
     public void setTransactionNo(String transactionNo) {
         this.transactionNo = transactionNo;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+
+    public String getOrderReference() {
+        return orderReference;
+    }
+
+    public void setOrderReference(String orderReference) {
+        this.orderReference = orderReference;
     }
 
     /** Not-null value. */

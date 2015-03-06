@@ -8,7 +8,6 @@ import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.HttpAsyncProgressDlgFragment;
 import com.android.pos.base.activity.BaseItemMgtActivity;
-import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.dao.Merchant;
 import com.android.pos.util.NotificationUtil;
 
@@ -46,7 +45,7 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		super.onStart();
 
 		setTitle(getString(R.string.module_merchant));
-		setSelectedMenu(getString(R.string.module_merchant));
+		setSelectedMenu(getString(R.string.menu_data_management));
 	}
 	
 	@Override
@@ -240,8 +239,6 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		
 		mProgressDialog.dismiss();
 		
-		AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
-		alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
-		alertDialogFragment.setAlertMessage("Tidak dapat terhubung ke Server!");
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
 }

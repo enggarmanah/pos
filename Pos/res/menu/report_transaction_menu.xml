@@ -27,4 +27,10 @@
         android:title="@string/product_group_list"
         android:showAsAction="ifRoom|collapseActionView">
     </item>
+    <item
+        android:id="@+id/menu_item_sync"
+        android:icon="@drawable/action_sync"
+        android:title="@string/sync"
+        android:showAsAction="ifRoom|collapseActionView">
+    </item>
 </menu>

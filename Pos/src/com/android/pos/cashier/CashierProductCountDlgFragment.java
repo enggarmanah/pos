@@ -7,14 +7,18 @@ import com.android.pos.R;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.Product;
 import com.android.pos.service.EmployeeDaoService;
+import com.android.pos.util.CommonUtil;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -22,11 +26,20 @@ import android.widget.TextView;
 
 public class CashierProductCountDlgFragment extends DialogFragment {
 	
+	public interface ProductActionListener {
+		
+		public void onProductQuantitySelected(Product product, Employee personInCharge, int quantity, String remarks);
+	}
+	
 	TextView mProductText;
 	Spinner mPersonInChargeSp;
 	TextView mQuantityText;
 	
 	LinearLayout mNumberBtnPanel;
+	
+	TextView mRemarksBtn;
+	TextView mRemarksDivider;
+	EditText mRemarksText;
 	
 	Button number0Btn;
 	Button number1Btn;
@@ -46,9 +59,10 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	Button mCancelBtn;
 	
 	Product mProduct;
+	String mRemarks;
 	int mQuantity;
 	
-	CashierActionListener mActionListener;
+	ProductActionListener mActionListener;
 	
 	CashierProductCountPicSpinnerArrayAdapter mPicArrayAdapter;
 	
@@ -98,6 +112,10 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		mPersonInChargeSp = (Spinner) getView().findViewById(R.id.personInChargeSp);
 		mQuantityText = (TextView) getView().findViewById(R.id.countText);
 		
+		mRemarksBtn = (TextView) getView().findViewById(R.id.remarksBtn);
+		mRemarksDivider = (TextView) getView().findViewById(R.id.remarksDivider);
+		mRemarksText = (EditText) getView().findViewById(R.id.remarksText);
+		
 		mNumberBtnPanel = (LinearLayout) getView().findViewById(R.id.numberBtnPanel);
 		
 		number0Btn = (Button) getView().findViewById(R.id.number0Btn);
@@ -116,6 +134,8 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		
 		mOkBtn = (Button) getView().findViewById(R.id.okBtn);
 		mCancelBtn = (Button) getView().findViewById(R.id.cancelBtn);
+		
+		mRemarksBtn.setOnClickListener(getRemarksBtnOnClickListener());
 		
 		number0Btn.setOnClickListener(getNumberBtnOnClickListener("0"));
 		number1Btn.setOnClickListener(getNumberBtnOnClickListener("1"));
@@ -146,7 +166,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
         super.onAttach(activity);
 
         try {
-            mActionListener = (CashierActionListener) activity;
+            mActionListener = (ProductActionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement CashierActionListener");
@@ -173,7 +193,10 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		}
 		
 		mProductText.setText(mProduct.getName());
+		mRemarksText.setText(mRemarks);
 		mQuantityText.setText(String.valueOf(mQuantity));
+		
+		displayRemarks(!CommonUtil.isEmpty(mRemarks));
 	}
 	
 	private Employee[] getPersonInCharge() {
@@ -245,7 +268,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 				}
 				
 				mQuantity = Integer.valueOf(mQuantityText.getText().toString());
-				mActionListener.onProductQuantitySelected(mProduct, personInCharge, mQuantity);
+				mActionListener.onProductQuantitySelected(mProduct, personInCharge, mQuantity, mRemarksText.getText().toString());
 				dismiss();
 			}
 		};
@@ -263,11 +286,50 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		};
 	}
 	
-	public void setProduct(Product product, int quantity) {
+	private View.OnClickListener getRemarksBtnOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if (mRemarksText.getVisibility() == View.VISIBLE) {
+					
+					mRemarksText.setText(Constant.EMPTY_STRING);
+					displayRemarks(false);
+					
+				} else {
+					
+					displayRemarks(true);
+				}
+			}
+		};
+	}
+	
+	public void setProduct(Product product, int quantity, String remarks) {
 		
 		this.mProduct = product;
+		this.mRemarks = remarks;
 		this.mQuantity = quantity;
 		
 		refreshDisplay();
+	}
+	
+	public void displayRemarks(boolean isDisplayed) {
+		
+		if (isDisplayed) {
+			
+			mRemarksDivider.setVisibility(View.VISIBLE);
+			mRemarksText.setVisibility(View.VISIBLE);
+			mRemarksText.requestFocus();
+			
+			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(mRemarksText, InputMethodManager.SHOW_IMPLICIT);
+			
+		} else {
+			
+			mRemarksDivider.setVisibility(View.GONE);
+			mRemarksText.setVisibility(View.GONE);
+		}
 	}
 }

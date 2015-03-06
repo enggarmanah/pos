@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.cashier.CashierActivity;
-import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.User;
 import com.android.pos.report.transaction.TransactionActivity;
@@ -93,22 +92,18 @@ public class UserLoginActivity extends Activity {
 				
 				if (merchant != null) {
 					
-					mLoginIdTxt.setText(Constant.EMPTY_STRING);
-					mPasswordTxt.setText(Constant.EMPTY_STRING);
-					
 					UserUtil.setMerchant(true);
 					
 					Intent intent = new Intent(context, UserMgtActivity.class);
 					startActivity(intent);
+					
+					finish();
 					
 				} else {
 					
 					User user = mUserDaoService.validateUser(mMerchant.getId(), loginId, password);
 					
 					if (user != null) {
-						
-						mLoginIdTxt.setText(Constant.EMPTY_STRING);
-						mPasswordTxt.setText(Constant.EMPTY_STRING);
 						
 						UserUtil.setUser(user);
 						
@@ -122,11 +117,12 @@ public class UserLoginActivity extends Activity {
 							Intent intent = new Intent(context, TransactionActivity.class);
 							startActivity(intent);
 						}
+						
+						finish();
+						
 					} else {
 						
-						AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
-		    			alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
-		    			alertDialogFragment.setAlertMessage("ID Pengguna & password salah!");
+						NotificationUtil.setAlertMessage(getFragmentManager(), "ID Pengguna & password salah!");
 		    			
 		    			mPasswordTxt.setText(Constant.EMPTY_STRING);
 		    			mPasswordTxt.requestFocus();

@@ -30,7 +30,7 @@ public class DiscountMgtActivity extends BaseItemMgtActivity<DiscountSearchFragm
 		super.onStart();
 
 		setTitle(getString(R.string.module_discount));
-		setSelectedMenu(getString(R.string.module_discount));
+		setSelectedMenu(getString(R.string.menu_data_management));
 	}
 	
 	@Override

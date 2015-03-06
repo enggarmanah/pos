@@ -10,6 +10,7 @@ import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -44,7 +45,8 @@ public class ProductGroupDaoService {
 	public List<ProductGroup> getProductGroups() {
 
 		QueryBuilder<ProductGroup> qb = productGroupDao.queryBuilder();
-		qb.where(ProductGroupDao.Properties.Status.eq(Constant.STATUS_ACTIVE)).orderAsc(ProductGroupDao.Properties.Name);
+		qb.where(ProductGroupDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				ProductGroupDao.Properties.Status.eq(Constant.STATUS_ACTIVE)).orderAsc(ProductGroupDao.Properties.Name);
 
 		Query<ProductGroup> q = qb.build();
 		List<ProductGroup> list = q.list();
@@ -55,7 +57,8 @@ public class ProductGroupDaoService {
 	public List<ProductGroup> getProductGroups(String query) {
 
 		QueryBuilder<ProductGroup> qb = productGroupDao.queryBuilder();
-		qb.where(ProductGroupDao.Properties.Name.like("%" + query + "%"), 
+		qb.where(ProductGroupDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				ProductGroupDao.Properties.Name.like("%" + query + "%"), 
 				ProductGroupDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductGroupDao.Properties.Name);
 
 		Query<ProductGroup> q = qb.build();
@@ -67,7 +70,8 @@ public class ProductGroupDaoService {
 	public List<ProductGroupBean> getProductGroupsForUpload() {
 
 		QueryBuilder<ProductGroup> qb = productGroupDao.queryBuilder();
-		qb.where(ProductGroupDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(ProductGroupDao.Properties.Name);
+		qb.where(ProductGroupDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				ProductGroupDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(ProductGroupDao.Properties.Name);
 		
 		Query<ProductGroup> q = qb.build();
 		

@@ -26,7 +26,7 @@ public class EmployeeMgtActivity extends BaseItemMgtActivity<EmployeeSearchFragm
 		super.onStart();
 
 		setTitle(getString(R.string.module_employee));
-		setSelectedMenu(getString(R.string.module_employee));
+		setSelectedMenu(getString(R.string.menu_data_management));
 	}
 	
 	@Override

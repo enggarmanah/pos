@@ -10,13 +10,14 @@ import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class EmployeeDaoService {
 	
-	private EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
+	private static EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
 	
 	public void addEmployee(Employee employee) {
 		
@@ -44,7 +45,8 @@ public class EmployeeDaoService {
 	public List<Employee> getEmployees(String query) {
 
 		QueryBuilder<Employee> qb = employeeDao.queryBuilder();
-		qb.where(EmployeeDao.Properties.Name.like("%" + query + "%"), 
+		qb.where(EmployeeDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				EmployeeDao.Properties.Name.like("%" + query + "%"), 
 				EmployeeDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(EmployeeDao.Properties.Name);
 
 		Query<Employee> q = qb.build();
@@ -56,7 +58,8 @@ public class EmployeeDaoService {
 	public List<EmployeeBean> getEmployeesForUpload() {
 
 		QueryBuilder<Employee> qb = employeeDao.queryBuilder();
-		qb.where(EmployeeDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(EmployeeDao.Properties.Name);
+		qb.where(EmployeeDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				EmployeeDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(EmployeeDao.Properties.Name);
 		
 		Query<Employee> q = qb.build();
 		

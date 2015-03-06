@@ -17,6 +17,8 @@ public class Transactions {
 	private Long remote_id;
 	private long merchant_id;
 	private String transaction_no;
+	private String order_type;
+	private String order_reference;
 	private java.util.Date transaction_date;
 	private Integer bill_amount;
 	private String discount_name;
@@ -42,6 +44,8 @@ public class Transactions {
 		this.merchant_id = bean.getMerchant_id();
 		this.remote_id = bean.getRemote_id();
 		this.transaction_no = bean.getTransaction_no();
+		this.order_type = bean.getOrder_type();
+		this.order_reference = bean.getOrder_reference();
 		this.transaction_date = bean.getTransaction_date();
 		this.bill_amount = bean.getBill_amount();
 		this.discount_name = bean.getDiscount_name();
@@ -92,6 +96,22 @@ public class Transactions {
 
 	public void setTransaction_no(String transaction_no) {
 		this.transaction_no = transaction_no;
+	}
+
+	public String getOrder_type() {
+		return order_type;
+	}
+
+	public void setOrder_type(String order_type) {
+		this.order_type = order_type;
+	}
+
+	public String getOrder_reference() {
+		return order_reference;
+	}
+
+	public void setOrder_reference(String order_reference) {
+		this.order_reference = order_reference;
 	}
 
 	public java.util.Date getTransaction_date() {

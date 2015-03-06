@@ -15,8 +15,8 @@
 	        style="@style/ListViewRowTransItemProductNameTextStyle" />
 	    
         <TextView
-	        android:id="@+id/picText"
-	        style="@style/ListViewRowTransItemProductPicStyle" />
+	        android:id="@+id/infoText"
+	        style="@style/ListViewRowTransItemProductInfoStyle" />
     
     </LinearLayout>
     

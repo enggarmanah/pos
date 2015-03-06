@@ -18,6 +18,7 @@ public class MerchantBean {
 	private java.util.Date period_end;
 	private Integer tax_percentage;
 	private Integer service_charge_percentage;
+	private Integer capacity;
 	private String status;
 
 	protected Long remote_id;
@@ -128,6 +129,14 @@ public class MerchantBean {
 
 	public void setService_charge_percentage(Integer service_charge_percentage) {
 		this.service_charge_percentage = service_charge_percentage;
+	}
+
+	public Integer getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
 	}
 
 	public String getStatus() {

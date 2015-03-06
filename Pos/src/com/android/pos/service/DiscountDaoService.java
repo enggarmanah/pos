@@ -10,13 +10,14 @@ import com.android.pos.model.DiscountBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class DiscountDaoService {
 	
-	private DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
+	private static DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
 	
 	public void addDiscount(Discount discount) {
 		
@@ -44,7 +45,8 @@ public class DiscountDaoService {
 	public List<Discount> getDiscounts() {
 
 		QueryBuilder<Discount> qb = discountDao.queryBuilder();
-		qb.where(DiscountDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(DiscountDao.Properties.Percentage);
+		qb.where(DiscountDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				DiscountDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(DiscountDao.Properties.Percentage);
 
 		Query<Discount> q = qb.build();
 		List<Discount> list = q.list();
@@ -55,7 +57,8 @@ public class DiscountDaoService {
 	public List<Discount> getDiscounts(String query) {
 
 		QueryBuilder<Discount> qb = discountDao.queryBuilder();
-		qb.where(DiscountDao.Properties.Name.like("%" + query + "%"), 
+		qb.where(DiscountDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				DiscountDao.Properties.Name.like("%" + query + "%"), 
 				DiscountDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(DiscountDao.Properties.Name);
 
 		Query<Discount> q = qb.build();
@@ -67,7 +70,8 @@ public class DiscountDaoService {
 	public List<DiscountBean> getDiscountsForUpload() {
 
 		QueryBuilder<Discount> qb = discountDao.queryBuilder();
-		qb.where(DiscountDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(DiscountDao.Properties.Name);
+		qb.where(DiscountDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
+				DiscountDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(DiscountDao.Properties.Name);
 		
 		Query<Discount> q = qb.build();
 		

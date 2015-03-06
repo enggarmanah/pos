@@ -16,7 +16,7 @@ import de.greenrobot.dao.query.QueryBuilder;
 
 public class MerchantDaoService {
 	
-	private MerchantDao merchantDao = DbUtil.getSession().getMerchantDao();
+	private static MerchantDao merchantDao = DbUtil.getSession().getMerchantDao();
 	
 	public void addMerchant(Merchant merchant) {
 		

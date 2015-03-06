@@ -54,6 +54,19 @@ public class TransactionItemDaoService {
 		return transactionItemBeans;
 	}
 	
+	public List<TransactionItem> getTransactionItemsByTransactionId(Long transactionId) {
+		
+		Long merchantId = MerchantUtil.getMerchant().getId();
+		
+		QueryBuilder<TransactionItem> qb = transactionItemDao.queryBuilder();
+		qb.where(TransactionItemDao.Properties.MerchantId.eq(merchantId),
+				TransactionItemDao.Properties.TransactionId.eq(transactionId)).orderAsc(TransactionItemDao.Properties.Id);
+		
+		Query<TransactionItem> q = qb.build();
+		
+		return q.list();
+	}
+	
 	public void updateTransactionItems(List<TransactionItemBean> transactionItems) {
 		
 		for (TransactionItemBean bean : transactionItems) {

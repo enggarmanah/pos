@@ -51,12 +51,14 @@ public class TransactionListFragment extends BaseFragment
 	
 	private TransactionActionListener mActionListener;
 	
-	private TransactionsDaoService mTransactionDaoService = new TransactionsDaoService();
+	private TransactionsDaoService mTransactionDaoService;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		
+		mTransactionDaoService = new TransactionsDaoService();
 	}
 	
 	@Override
@@ -109,7 +111,10 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionList.setItemsCanFocus(true);
 		mTransactionList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		if (mSelectedTransactionDay != null) {
+		if (mSelectedTransaction != null) {
+			onTransactionSelected(mSelectedTransaction);
+			
+		} else if (mSelectedTransactionDay != null) {
 			onTransactionDaySelected(mSelectedTransactionDay);
 			
 		} else if (mSelectedTransactionMonth != null) {
@@ -201,6 +206,11 @@ public class TransactionListFragment extends BaseFragment
 	
 	public void displayTransactionAllYears() {
 		
+		mSelectedTransaction = null;
+		mSelectedTransactionDay = null;
+		mSelectedTransactionMonth = null;
+		mSelectedTransactionYear = null;
+		
 		mTransactionYears.clear();
 		mTransactionYears.addAll(mTransactionDaoService.getTransactionYears());
 		
@@ -218,6 +228,10 @@ public class TransactionListFragment extends BaseFragment
 	
 	public void displayTransactionOnYear(TransactionYear transactionYear) {
 		
+		mSelectedTransaction = null;
+		mSelectedTransactionDay = null;
+		mSelectedTransactionMonth = null;
+		
 		mTransactionMonths.clear();
 		mTransactionMonths.addAll(mTransactionDaoService.getTransactionMonths(transactionYear));
 		
@@ -234,6 +248,9 @@ public class TransactionListFragment extends BaseFragment
 	}
 	
 	public void displayTransactionOnMonth(TransactionMonth transactionMonth) {
+		
+		mSelectedTransaction = null;
+		mSelectedTransactionDay = null;
 		
 		mTransactionDays.clear();
 		mTransactionDays.addAll(mTransactionDaoService.getTransactionDays(transactionMonth));

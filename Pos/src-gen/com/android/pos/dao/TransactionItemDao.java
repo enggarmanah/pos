@@ -38,8 +38,10 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         public final static Property CostPrice = new Property(7, Integer.class, "costPrice", false, "COST_PRICE");
         public final static Property Discount = new Property(8, Integer.class, "discount", false, "DISCOUNT");
         public final static Property Quantity = new Property(9, Integer.class, "quantity", false, "QUANTITY");
-        public final static Property EmployeeId = new Property(10, long.class, "employeeId", false, "EMPLOYEE_ID");
-        public final static Property UploadStatus = new Property(11, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property Commision = new Property(10, Integer.class, "commision", false, "COMMISION");
+        public final static Property Remarks = new Property(11, String.class, "remarks", false, "REMARKS");
+        public final static Property EmployeeId = new Property(12, long.class, "employeeId", false, "EMPLOYEE_ID");
+        public final static Property UploadStatus = new Property(13, String.class, "uploadStatus", false, "UPLOAD_STATUS");
     };
 
     private DaoSession daoSession;
@@ -70,8 +72,10 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
                 "'COST_PRICE' INTEGER," + // 7: costPrice
                 "'DISCOUNT' INTEGER," + // 8: discount
                 "'QUANTITY' INTEGER," + // 9: quantity
-                "'EMPLOYEE_ID' INTEGER NOT NULL ," + // 10: employeeId
-                "'UPLOAD_STATUS' TEXT);"); // 11: uploadStatus
+                "'COMMISION' INTEGER," + // 10: commision
+                "'REMARKS' TEXT," + // 11: remarks
+                "'EMPLOYEE_ID' INTEGER NOT NULL ," + // 12: employeeId
+                "'UPLOAD_STATUS' TEXT);"); // 13: uploadStatus
     }
 
     /** Drops the underlying database table. */
@@ -122,11 +126,21 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         if (quantity != null) {
             stmt.bindLong(10, quantity);
         }
-        stmt.bindLong(11, entity.getEmployeeId());
+ 
+        Integer commision = entity.getCommision();
+        if (commision != null) {
+            stmt.bindLong(11, commision);
+        }
+ 
+        String remarks = entity.getRemarks();
+        if (remarks != null) {
+            stmt.bindString(12, remarks);
+        }
+        stmt.bindLong(13, entity.getEmployeeId());
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(12, uploadStatus);
+            stmt.bindString(14, uploadStatus);
         }
     }
 
@@ -156,8 +170,10 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // costPrice
             cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // discount
             cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // quantity
-            cursor.getLong(offset + 10), // employeeId
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // uploadStatus
+            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // commision
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // remarks
+            cursor.getLong(offset + 12), // employeeId
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // uploadStatus
         );
         return entity;
     }
@@ -175,8 +191,10 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         entity.setCostPrice(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
         entity.setDiscount(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
         entity.setQuantity(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setEmployeeId(cursor.getLong(offset + 10));
-        entity.setUploadStatus(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setCommision(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
+        entity.setRemarks(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setEmployeeId(cursor.getLong(offset + 12));
+        entity.setUploadStatus(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     /** @inheritdoc */

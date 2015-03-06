@@ -1,9 +1,11 @@
 package com.android.pos.base.activity;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.auth.UserLoginActivity;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.data.DataMgtActivity;
+import com.android.pos.order.OrderActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
@@ -173,6 +175,11 @@ public abstract class BaseActivity extends Activity {
 			Intent intent = new Intent(this, CashierActivity.class);
 			startActivity(intent);
 
+		} else if (getString(R.string.menu_order).equals(menu)) {
+
+			Intent intent = new Intent(this, OrderActivity.class);
+			startActivity(intent);
+
 		} else if (getString(R.string.menu_transaction).equals(menu)) {
 
 			Intent intent = new Intent(this, TransactionActivity.class);
@@ -197,6 +204,7 @@ public abstract class BaseActivity extends Activity {
 
 			Intent intent = new Intent(this, UserLoginActivity.class);
 			startActivity(intent);	
+			finish();
 		}
 	}
 	
@@ -298,7 +306,7 @@ public abstract class BaseActivity extends Activity {
 
 				try {
 					if (!isRemoved) {
-						Thread.sleep(250);
+						Thread.sleep(Constant.WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD);
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();

@@ -14,7 +14,6 @@ import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.HttpAsyncProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
-import com.android.pos.common.AlertDlgFragment;
 import com.android.pos.data.customer.CustomerMgtActivity;
 import com.android.pos.data.discount.DiscountMgtActivity;
 import com.android.pos.data.employee.EmployeeMgtActivity;
@@ -29,7 +28,9 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 	final Context context = this;
 	private HttpAsyncManager mHttpAsyncManager;
 	
-	private HttpAsyncProgressDlgFragment mProgressDialog;
+	private static HttpAsyncProgressDlgFragment mProgressDialog;
+	
+	private static final String progressDialogTag = "progressDialogTag";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		
 		initDrawerMenu();
 		
-		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
+		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
 		
 		if (mProgressDialog == null) {
 			mProgressDialog = new HttpAsyncProgressDlgFragment();
@@ -57,6 +58,10 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 
 		setTitle(getString(R.string.menu_data_management));
 		setSelectedMenu(getString(R.string.menu_data_management));
+		
+		if (getFragmentManager().findFragmentByTag(progressDialogTag) != null) {
+			mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
+		}
 	}
 	
 	@Override
@@ -75,7 +80,7 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 
 		case R.id.menu_item_sync:
 			
-			mProgressDialog.show(getFragmentManager(), "progressDialogTag");
+			mProgressDialog.show(getFragmentManager(), progressDialogTag);
 			
 			mHttpAsyncManager.sync(); 
 			
@@ -157,8 +162,6 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		
 		mProgressDialog.dismiss();
 		
-		AlertDlgFragment alertDialogFragment = NotificationUtil.getAlertDialogInstance();
-		alertDialogFragment.show(getFragmentManager(), NotificationUtil.ALERT_DIALOG_FRAGMENT_TAG);
-		alertDialogFragment.setAlertMessage("Tidak dapat terhubung ke Server!");
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
 }
