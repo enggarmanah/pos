@@ -177,7 +177,7 @@ public class CodeUtil {
 		code.setLabel("Pembayaran Sebagian");
 		billStatus[2] = code;
 		
-		inventoryStatus = new CodeBean[6];
+		inventoryStatus = new CodeBean[7];
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_PURCHASE);
@@ -190,24 +190,29 @@ public class CodeUtil {
 		inventoryStatus[1] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.INVENTORY_STATUS_REFUND);
+		code.setLabel("Pembatalan Pembelian");
+		inventoryStatus[2] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_REPLACEMENT);
 		code.setLabel("Barang Pengganti");
-		inventoryStatus[2] = code;
+		inventoryStatus[3] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_NOT_OWNED_IN);
 		code.setLabel("Barang Titipan Masuk");
-		inventoryStatus[3] = code;
+		inventoryStatus[4] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_NOT_OWNED_OUT);
 		code.setLabel("Barang Titipan Keluar");
-		inventoryStatus[4] = code;
+		inventoryStatus[5] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_LOST);
 		code.setLabel("Barang Hilang");
-		inventoryStatus[5] = code;
+		inventoryStatus[6] = code;
 	}
 	
 	public static CodeBean[] getMerchantTypes() {

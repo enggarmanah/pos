@@ -5,11 +5,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
+import com.android.pos.dao.BillsDao;
+import com.android.pos.dao.BillsItemDao;
 import com.android.pos.dao.DaoMaster;
 import com.android.pos.dao.DaoSession;
 import com.android.pos.dao.DiscountDao;
+import com.android.pos.dao.InventoryDao;
 import com.android.pos.dao.OrderItemDao;
 import com.android.pos.dao.OrdersDao;
+import com.android.pos.dao.SupplierDao;
 import com.android.pos.dao.TransactionsDao;
 import com.android.pos.dao.DaoMaster.DevOpenHelper;
 import com.android.pos.dao.ProductGroupDao;
@@ -189,6 +193,22 @@ public class DbUtil {
             	//db.execSQL("ALTER TABLE 'ORDER_ITEM' ADD 'REMARKS' TEXT");
             }
             
+            // handle version 25 changes
+            if (oldVersion < 25) {
+            	
+            	SupplierDao.dropTable(db, true);
+            	SupplierDao.createTable(db, true);
+            	
+            	BillsDao.dropTable(db, true);
+            	BillsDao.createTable(db, true);
+            	
+            	BillsItemDao.dropTable(db, true);
+            	BillsItemDao.createTable(db, true);
+            	
+            	InventoryDao.dropTable(db, true);
+            	InventoryDao.createTable(db, true);
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -198,11 +218,6 @@ public class DbUtil {
     	
     	context = ctx;
     	
-    	System.out.println("db : " + db);
-    	System.out.println("daoMaster : " + daoMaster);
-    	System.out.println("daoSession : " + daoSession);
-    	System.out.println("context : " + context);
-    	
     	if (daoSession == null) {
     		
     		DevOpenHelper helper = new DbOpenHelper(context, "pos-db", null);
@@ -210,6 +225,18 @@ public class DbUtil {
             daoMaster = new DaoMaster(db);
             daoSession = daoMaster.newSession();
     	}
+    }
+    
+    public static void switchDb(Long merchantId) {
+    	
+    	db.close();
+    	
+    	String dbFile = (merchantId == null ? "pos-db" : "pos-db-" + merchantId);
+    	
+    	DevOpenHelper helper = new DbOpenHelper(context, dbFile, null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();        
     }
     
     public static DaoSession getSession() {

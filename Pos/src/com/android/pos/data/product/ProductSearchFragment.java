@@ -35,9 +35,19 @@ public class ProductSearchFragment extends BaseSearchFragment<Product> {
 		return item.getId();
 	}
 	
+	protected String getItemIndex(Product item) {
+		return item.getName();
+	}
+	
 	public List<Product> getItems(String query) {
 
-		return mProductDaoService.getProducts(query);
+		return mProductDaoService.getProducts(query, 0);
+	}
+	
+	@Override
+	public List<Product> getNextItems(String query, int lastIndex) {
+
+		return mProductDaoService.getProducts(query, lastIndex);
 	}
 
 	public void onItemDeleted(Product item) {

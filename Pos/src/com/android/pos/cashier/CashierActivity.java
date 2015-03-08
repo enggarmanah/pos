@@ -169,6 +169,10 @@ public class CashierActivity extends BaseActivity
 		setTitle(getString(R.string.menu_cashier));
 		setSelectedMenu(getString(R.string.menu_cashier));
 		
+		if (!PrintUtil.isPrinterConnected()) {
+			setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
+		}
+		
 		mOrderFragment.setCashierState(mState);
 	}
 	
@@ -182,12 +186,12 @@ public class CashierActivity extends BaseActivity
 			
 			if (!CommonUtil.isEmpty(printerAddress)) {
 				
-				setMessage("Melaksanakan koneksi ke Printer Bluetooth : " + printerAddress);
+				setMessage(Constant.MESSAGE_PRINTER_CONNECTED_TO + printerAddress);
 				connectToPrinter(printerType, printerAddress);
 			
 			} else {
 				
-				setMessage("Printer tidak terhubung, aktifkan Bluetooth Printer anda dan hubungkan ke sistem");
+				setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
 				PrintUtil.selectBluetoothPrinter();
 			}
 		}
@@ -345,15 +349,23 @@ public class CashierActivity extends BaseActivity
 
 		mSearchItem.setVisible(!isDrawerOpen);
 		mListItem.setVisible(!isDrawerOpen);
-		mSelectPrinterItem.setVisible(!isDrawerOpen);
 		
-		if (!isDrawerOpen && !PrintUtil.isBluetoothEnabled()) {
-			mSelectPrinterItem.setVisible(false);
+		mSelectPrinterItem.setVisible(false);
+		
+		if (!isDrawerOpen && !PrintUtil.isPrinterConnected()) {
+			mSelectPrinterItem.setVisible(true);
 		}
 
 		return super.onPrepareOptionsMenu(menu);
 	}
-
+	
+	public void setSelectPrinterVisible(boolean isVisible) {
+		
+		if (mSelectPrinterItem != null) {
+			mSelectPrinterItem.setVisible(isVisible);
+		}
+	}
+	
 	protected void doSearch(String query) {
 		
 		if (mIsMultiplesPane) {
@@ -551,6 +563,11 @@ public class CashierActivity extends BaseActivity
 	@Override
 	public void onProductSelected(Product product) {
 		
+		if (!PrintUtil.isPrinterConnected()) {
+			setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
+			setSelectPrinterVisible(true);
+		}
+		
 		onProductSelected(product, 0, Constant.EMPTY_STRING);
 	}
 
@@ -659,8 +676,6 @@ public class CashierActivity extends BaseActivity
 			transactionItem.setUploadStatus(Constant.STATUS_YES);
 			
 			mTransactionItemDaoService.addTransactionItem(transactionItem);
-			
-			System.out.println("Transaction Item Id : " + transactionItem.getId());
 		}
 		
 		// clear orders
@@ -717,7 +732,11 @@ public class CashierActivity extends BaseActivity
 		
 		transaction = mTransactionDaoService.getTransactions(transaction.getId());
 		
-		PrintUtil.print(transaction);
+		try {
+			PrintUtil.print(transaction);
+		} catch (Exception e) {
+			showMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+		}
 	}
 	
 	@Override
@@ -725,7 +744,11 @@ public class CashierActivity extends BaseActivity
 		
 		order = mOrderDaoService.getOrders(order.getId());
 		
-		PrintUtil.printOrder(order);
+		try {
+			PrintUtil.printOrder(order);
+		} catch (Exception e) {
+			showMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+		}
 		
 		String message = "Cetak nota untuk pelanggan ?";
 		
@@ -795,7 +818,11 @@ public class CashierActivity extends BaseActivity
 		
 		if (ConfirmationUtil.PRINT_ORDER.equals(task)) {
 			
-			PrintUtil.printOrder(mOrder);
+			try {
+				PrintUtil.printOrder(mOrder);
+			} catch (Exception e) {
+				showMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+			}
 		
 		} else if (ConfirmationUtil.CANCEL_TRANSACTION.equals(task)) {
 			

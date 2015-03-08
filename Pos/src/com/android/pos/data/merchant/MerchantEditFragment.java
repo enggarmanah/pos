@@ -12,6 +12,7 @@ import com.android.pos.dao.Merchant;
 import com.android.pos.service.MerchantDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
 import android.content.res.Configuration;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -37,8 +39,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     EditText mPeriodEndDate;
     EditText mTaxText;
     EditText mServiceChargeText;
-    EditText mCapacityText;
     Spinner mStatusSp;
+    
+    LinearLayout mStatusPanel;
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
@@ -62,20 +65,21 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     @Override
     protected void initViewReference() {
         
-        mNameText = (EditText) getActivity().findViewById(R.id.nameText);
-    	mTypeSp = (Spinner) getActivity().findViewById(R.id.typeSp);
-    	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
-    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneText);
-    	mContactNameText = (EditText) getActivity().findViewById(R.id.contactNameText);
-    	mContactTelephoneText = (EditText) getActivity().findViewById(R.id.contactTelephoneText);
-    	mLoginIdText = (EditText) getActivity().findViewById(R.id.loginIdText);
-    	mPasswordText = (EditText) getActivity().findViewById(R.id.passwordText);
-    	mPeriodStartDate = (EditText) getActivity().findViewById(R.id.periodStartDate);
-    	mPeriodEndDate = (EditText) getActivity().findViewById(R.id.periodEndDate);
-    	mTaxText = (EditText) getActivity().findViewById(R.id.taxText);
-    	mServiceChargeText = (EditText) getActivity().findViewById(R.id.serviceChargeText);
-    	mCapacityText = (EditText) getActivity().findViewById(R.id.capacityText);
-    	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
+        mNameText = (EditText) getView().findViewById(R.id.nameText);
+    	mTypeSp = (Spinner) getView().findViewById(R.id.typeSp);
+    	mAddressText = (EditText) getView().findViewById(R.id.addressText);
+    	mTelephoneText = (EditText) getView().findViewById(R.id.telephoneText);
+    	mContactNameText = (EditText) getView().findViewById(R.id.contactNameText);
+    	mContactTelephoneText = (EditText) getView().findViewById(R.id.contactTelephoneText);
+    	mLoginIdText = (EditText) getView().findViewById(R.id.loginIdText);
+    	mPasswordText = (EditText) getView().findViewById(R.id.passwordText);
+    	mPeriodStartDate = (EditText) getView().findViewById(R.id.periodStartDate);
+    	mPeriodEndDate = (EditText) getView().findViewById(R.id.periodEndDate);
+    	mTaxText = (EditText) getView().findViewById(R.id.taxText);
+    	mServiceChargeText = (EditText) getView().findViewById(R.id.serviceChargeText);
+    	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
+
+    	mStatusPanel = (LinearLayout) getView().findViewById(R.id.statusPanel);
     	
     	registerField(mNameText);
     	registerField(mTypeSp);
@@ -89,7 +93,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mPeriodEndDate);
     	registerField(mTaxText);
     	registerField(mServiceChargeText);
-    	registerField(mCapacityText);
     	registerField(mStatusSp);
     	
     	enableInputFields(false);
@@ -107,8 +110,13 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mandatoryFields.add(new FormField(mTaxText, R.string.field_tax_percentage));
     	mandatoryFields.add(new FormField(mServiceChargeText, R.string.field_service_charge_percentage));
     	
-    	mPeriodStartDate.setOnClickListener(getDateFieldOnClickListener(mPeriodStartDate, "startDatePicker"));
-    	mPeriodEndDate.setOnClickListener(getDateFieldOnClickListener(mPeriodEndDate, "endDatePicker"));
+    	// only root can access validity period
+    	
+    	if (UserUtil.isRoot()) {
+    		
+    		mPeriodStartDate.setOnClickListener(getDateFieldOnClickListener(mPeriodStartDate, "startDatePicker"));
+        	mPeriodEndDate.setOnClickListener(getDateFieldOnClickListener(mPeriodEndDate, "endDatePicker"));
+		}
     	
     	linkDatePickerWithInputField("startDatePicker", mPeriodStartDate);
     	linkDatePickerWithInputField("endDatePicker", mPeriodEndDate);
@@ -118,6 +126,12 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getStatus());
     	mStatusSp.setAdapter(statusArrayAdapter);
+    	
+    	if (UserUtil.isRoot()) {
+    		mStatusPanel.setVisibility(View.VISIBLE);
+		} else {
+			mStatusPanel.setVisibility(View.GONE);
+		}
     }
     
     @Override
@@ -140,7 +154,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		
     		mTaxText.setText(CommonUtil.formatString(merchant.getTaxPercentage()));
     		mServiceChargeText.setText(CommonUtil.formatString(merchant.getServiceChargePercentage()));
-    		mCapacityText.setText(CommonUtil.formatString(merchant.getCapacity()));
     		
     		mTypeSp.setSelection(typeIndex);
     		mStatusSp.setSelection(statusIndex);
@@ -168,7 +181,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	Integer serviceCharge = CommonUtil.parseInteger(mServiceChargeText.getText().toString());
     	Date startDate = CommonUtil.parseDate(mPeriodStartDate.getText().toString());
     	Date endDate = CommonUtil.parseDate(mPeriodEndDate.getText().toString());
-    	Integer capacity = CommonUtil.parseInteger(mCapacityText.getText().toString());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
     	if (mItem != null) {
@@ -185,7 +197,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setPeriodEnd(endDate);
     		mItem.setTaxPercentage(tax);
     		mItem.setServiceChargePercentage(serviceCharge);
-    		mItem.setCapacity(capacity);
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
@@ -209,30 +220,58 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     } 
     
     @Override
-    protected void addItem() {
+    protected boolean addItem() {
     	
-        mMerchantDaoService.addMerchant(mItem);
-        
-        mNameText.getText().clear();
-        mAddressText.getText().clear();
-        mTelephoneText.getText().clear();
-        mContactNameText.getText().clear();
-        mContactTelephoneText.getText().clear();
-        mLoginIdText.getText().clear();
-        mPasswordText.getText().clear();
-        mPeriodStartDate.getText().clear();
-        mPeriodEndDate.getText().clear();
-        mTaxText.getText().clear();
-        mServiceChargeText.getText().clear();
-        mCapacityText.getText().clear();
-        
-        mItem = null;
+    	boolean isUpdated = false;
+    	
+    	Merchant merchant = mMerchantDaoService.getMerchantByLoginId(mItem.getLoginId());
+    	
+    	// new provided login id is conflict with some other merchant
+    	if (merchant != null) {
+    		
+    		NotificationUtil.setAlertMessage(getFragmentManager(), "Login Id konflik dengan merchant lain");
+    		
+    	} else {
+    		
+	        mMerchantDaoService.addMerchant(mItem);
+	        
+	        mNameText.getText().clear();
+	        mAddressText.getText().clear();
+	        mTelephoneText.getText().clear();
+	        mContactNameText.getText().clear();
+	        mContactTelephoneText.getText().clear();
+	        mLoginIdText.getText().clear();
+	        mPasswordText.getText().clear();
+	        mPeriodStartDate.getText().clear();
+	        mPeriodEndDate.getText().clear();
+	        mTaxText.getText().clear();
+	        mServiceChargeText.getText().clear();
+	        
+	        mItem = null;
+    	}
+    	
+    	return isUpdated;
     }
     
     @Override
-    protected void updateItem() {
+    protected boolean updateItem() {
     	
-    	mMerchantDaoService.updateMerchant(mItem);
+    	boolean isUpdated = false;
+    	
+    	Merchant merchant = mMerchantDaoService.getMerchantByLoginId(mItem.getLoginId());
+    	
+    	// new provided login id is conflict with some other merchant
+    	if (merchant != null && merchant.getId() != mItem.getId()) {
+    		
+    		NotificationUtil.setAlertMessage(getFragmentManager(), "Login Id konflik dengan merchant lain");
+    	
+    	} else {
+    		
+    		mMerchantDaoService.updateMerchant(mItem);
+    		isUpdated = true;
+    	}
+    	
+    	return isUpdated;
     }
     
     @Override

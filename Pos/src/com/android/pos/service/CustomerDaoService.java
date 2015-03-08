@@ -3,21 +3,24 @@ package com.android.pos.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.android.pos.Constant;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.CustomerDao;
 import com.android.pos.model.CustomerBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
-import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class CustomerDaoService {
 	
-	private static CustomerDao customerDao = DbUtil.getSession().getCustomerDao();
+	private CustomerDao customerDao = DbUtil.getSession().getCustomerDao();
 	
 	public void addCustomer(Customer customer) {
 		
@@ -42,15 +45,29 @@ public class CustomerDaoService {
 		return customerDao.load(id);
 	}
 	
-	public List<Customer> getCustomers(String query) {
+	public List<Customer> getCustomers(String query, int lastIndex) {
 
-		QueryBuilder<Customer> qb = customerDao.queryBuilder();
-		qb.where(CustomerDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				CustomerDao.Properties.Name.like("%" + query + "%"), 
-				CustomerDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(CustomerDao.Properties.Name);
-
-		Query<Customer> q = qb.build();
-		List<Customer> list = q.list();
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM customer "
+				+ " WHERE name like ? AND status <> ? "
+				+ " ORDER BY name LIMIT ? OFFSET ? ",
+				new String[] { queryStr, status, limit, lastIdx});
+		
+		List<Customer> list = new ArrayList<Customer>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Customer item = getCustomer(id);
+			list.add(item);
+		}
 
 		return list;
 	}
@@ -58,8 +75,7 @@ public class CustomerDaoService {
 	public List<CustomerBean> getCustomersForUpload() {
 
 		QueryBuilder<Customer> qb = customerDao.queryBuilder();
-		qb.where(CustomerDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				CustomerDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(CustomerDao.Properties.Name);
+		qb.where(CustomerDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(CustomerDao.Properties.Name);
 		
 		Query<Customer> q = qb.build();
 		

@@ -24,6 +24,12 @@
         <item>Keluar</item>
     </string-array>
     
+    <string-array name="app_menus_cashier_shop">
+        <item>Kasir</item>
+        <item>Laporan Transaksi</item>
+        <item>Keluar</item>
+    </string-array>
+    
     <string-array name="app_menus_admin">
         <item>Laporan Transaksi</item>
         <item>Laporan Penjualan</item>
@@ -95,7 +101,7 @@
     <string name="product_group_list">Kategori Produk</string>
     
     <string name="msg_notification_search_action">Masukkan kata pencarian pada kolom di atas.</string>
-    <string name="msg_product_success">Produk telah berhasil disimpan.</string>
+    <string name="msg_data_save_success">Data telah berhasil disimpan.</string>
     
     <string name="field_name">Nama :</string>
     <string name="field_type">Tipe :</string>

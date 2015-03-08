@@ -148,10 +148,11 @@ public class UserLoginActivity extends Activity {
 
 		case R.id.menu_item_exit:
 			
-			mMerchantDaoService.logoutMerchant(mMerchant);
-			
 			Intent intent = new Intent(context, MerchantLoginActivity.class);
+			intent.putExtra("logout", true);
 			startActivity(intent);
+			
+			finish();
 			
 			return true;
 

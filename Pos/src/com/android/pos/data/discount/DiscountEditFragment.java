@@ -110,19 +110,23 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     } 
     
     @Override
-    protected void addItem() {
+    protected boolean addItem() {
     	
     	mDiscountDaoService.addDiscount(mItem);
     	
         mNameText.getText().clear();
         
         mItem = null;
+        
+        return true;
     }
     
     @Override
-    protected void updateItem() {
+    protected boolean updateItem() {
     	
     	mDiscountDaoService.updateDiscount(mItem);
+    	
+    	return true;
     }
     
     @Override

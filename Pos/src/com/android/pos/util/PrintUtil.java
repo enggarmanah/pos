@@ -123,8 +123,6 @@ public class PrintUtil {
 	
 	public static void connectToBluetoothPrinter(String address) {
 		
-		System.out.println("Connecting to BT Printer : " + address);
-		
 		// Get Bluetooth driver
 		if (mBluetoothAdapter == null) {
 			mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -141,10 +139,9 @@ public class PrintUtil {
 		
 		setupChat();
 		
-		//if (mBluetoothAdapter != null && 
-		//	BluetoothPrintDriver.IsNoConnection()) {
+		if (mBluetoothAdapter != null && BluetoothPrintDriver.IsNoConnection()) {
 		
-		if (mBluetoothAdapter != null && mChatService != null) {
+		//if (mBluetoothAdapter != null && mChatService != null) {
 			
 			try {
 				
@@ -174,24 +171,25 @@ public class PrintUtil {
 				
 				case BluetoothPrintDriver.STATE_CONNECTED:
 
-					mActivity.showMessage("Terkoneksi dengan Printer Bluetooth : " + mConnectedDeviceName);
+					mActivity.showMessage(Constant.MESSAGE_PRINTER_CONNECTED_TO + mConnectedDeviceName);
 					mActivity.clearMessage();
+					
+					mActivity.setSelectPrinterVisible(false);
 					
 					break;
 
 				case BluetoothPrintDriver.STATE_CONNECTING:
 
-					mActivity.showMessage("Melaksanakan koneksi ke Printer Bluetooth");
+					mActivity.showMessage(Constant.MESSAGE_PRINTER_CONNECTING);
+					
 					break;
 
 				case BluetoothPrintDriver.STATE_LISTEN:
 
 				case BluetoothPrintDriver.STATE_NONE:
 					
-					String message = "Tidak dapat terhubung ke Printer Bluetooth. Pastikan Printer Bluetooth anda aktif.";
-					
-					//mActivity.showMessage(message);
-					mActivity.setMessage(message);
+					mActivity.setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
+					mActivity.setSelectPrinterVisible(true);
 
 					break;
 				}
@@ -237,7 +235,7 @@ public class PrintUtil {
 			case MESSAGE_DEVICE_NAME:
 
 				mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-				mActivity.showMessage("Connected to " + mConnectedDeviceName);
+				mActivity.showMessage(Constant.MESSAGE_PRINTER_CONNECTED_TO + mConnectedDeviceName);
 				break;
 
 			case MESSAGE_TOAST:
@@ -264,7 +262,12 @@ public class PrintUtil {
 		}
 	}
 	
-	public static void print(Transactions transaction) {
+	public static boolean isPrinterConnected() {
+		
+		return !BluetoothPrintDriver.IsNoConnection();
+	}
+	
+	public static void print(Transactions transaction) throws Exception {
 
 		/*if (BluetoothPrintDriver.IsNoConnection()) {
 
@@ -388,8 +391,6 @@ public class PrintUtil {
 		
 		for (TransactionItem item : transactionItems) {
 			
-			System.out.println("Print - Transaction Item Id : " + item.getId());
-			
 			String productName = item.getProductName();
 			
 			if (productName.length() > mPrinterLineSize) {
@@ -426,10 +427,12 @@ public class PrintUtil {
 		
 		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
 		
+		String billLabel = "Sub Total";
 		String billAmount = CommonUtil.formatCurrency(transaction.getBillAmount()); 
 		
 		line.setLength(0);
-		line.append(spaces.substring(0, mPrinterLineSize - billAmount.length()));
+		line.append(billLabel);
+		line.append(spaces.substring(0, mPrinterLineSize - billLabel.length() - billAmount.length()));
 		line.append(billAmount);
 		
 		BluetoothPrintDriver.BT_Write(line.toString() + "\r");
@@ -528,7 +531,7 @@ public class PrintUtil {
 		BluetoothPrintDriver.BT_Write(spaces.substring(0, mPrinterLineSize) + "\r");
 	}
 	
-	public static void printOrder(Orders order) {
+	public static void printOrder(Orders order) throws Exception {
 
 		BluetoothPrintDriver.WakeUpPritner();
 		

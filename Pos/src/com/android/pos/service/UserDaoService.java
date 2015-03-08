@@ -3,12 +3,16 @@ package com.android.pos.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.android.pos.Constant;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserDao;
 import com.android.pos.model.UserBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
@@ -45,8 +49,7 @@ public class UserDaoService {
 		
 		QueryBuilder<User> qb = userDao.queryBuilder();
 		
-		qb.where(UserDao.Properties.MerchantId.eq(merchantId),
-				UserDao.Properties.UserId.eq(loginId), 
+		qb.where(UserDao.Properties.UserId.eq(loginId), 
 				UserDao.Properties.Password.eq(password));
 
 		Query<User> q = qb.build();
@@ -55,14 +58,29 @@ public class UserDaoService {
 		return user;
 	}
 	
-	public List<User> getUsers(String query) {
-
-		QueryBuilder<User> qb = userDao.queryBuilder();
-		qb.where(UserDao.Properties.Name.like("%" + query + "%"), 
-				UserDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(UserDao.Properties.Name);
-
-		Query<User> q = qb.build();
-		List<User> list = q.list();
+	public List<User> getUsers(String query, int lastIndex) {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM user "
+				+ " WHERE name like ? AND status <> ? "
+				+ " ORDER BY name LIMIT ? OFFSET ? ",
+				new String[] { queryStr, status, limit, lastIdx});
+		
+		List<User> list = new ArrayList<User>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			User item = getUser(id);
+			list.add(item);
+		}
 
 		return list;
 	}

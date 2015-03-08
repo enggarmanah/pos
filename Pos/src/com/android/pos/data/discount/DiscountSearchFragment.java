@@ -37,7 +37,12 @@ public class DiscountSearchFragment extends BaseSearchFragment<Discount> {
 	
 	public List<Discount> getItems(String query) {
 
-		return mDiscountDaoService.getDiscounts(query);
+		return mDiscountDaoService.getDiscounts(query, 0);
+	}
+	
+	public List<Discount> getNextItems(String query, int lastIndex) {
+
+		return mDiscountDaoService.getDiscounts(query, lastIndex);
 	}
 
 	public void onItemDeleted(Discount item) {

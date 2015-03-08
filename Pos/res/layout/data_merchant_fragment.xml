@@ -136,19 +136,10 @@
                 android:id="@+id/serviceChargeText"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
-        
-        <LinearLayout style="@style/FormRowStyle" >
-
-            <TextView
-                style="@style/FormTextStyle"
-                android:text="@string/field_capacity" />
-
-            <EditText
-                android:id="@+id/capacityText"
-                style="@style/FormInputNumericStyle" />
-        </LinearLayout>
-        
-        <LinearLayout style="@style/FormRowStyle" >
+                
+        <LinearLayout 
+            android:id="@+id/statusPanel"
+            style="@style/FormRowStyle" >
 
             <TextView
                 style="@style/FormTextStyle"

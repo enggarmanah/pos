@@ -37,7 +37,12 @@ public class ProductGrpSearchFragment extends BaseSearchFragment<ProductGroup> {
 	
 	public List<ProductGroup> getItems(String query) {
 
-		return mProductGroupDaoService.getProductGroups(query);
+		return mProductGroupDaoService.getProductGroups(query, 0);
+	}
+	
+	public List<ProductGroup> getNextItems(String query, int lastIndex) {
+
+		return mProductGroupDaoService.getProductGroups(query, lastIndex);
 	}
 
 	public void onItemDeleted(ProductGroup item) {

@@ -2,6 +2,7 @@ package com.android.pos.order;
 
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.Orders;
@@ -30,6 +31,8 @@ public class OrderItemArrayAdapter extends ArrayAdapter<OrderItem> {
 		public void setOrderStatus(Long orderId, boolean isSelected);
 		
 		public void onOrderItemSelected(OrderItem orderItem);
+		
+		public void onSetMessage(String message);
 	}
 
 	class ViewHolder {
@@ -119,7 +122,17 @@ public class OrderItemArrayAdapter extends ArrayAdapter<OrderItem> {
 				public void onClick(View v) {
 					
 					Orders order = new OrdersDaoService().getOrders(orderItem.getOrderId());
-					PrintUtil.printOrder(order);
+					
+					if (!PrintUtil.isPrinterConnected()) {
+						mCallback.onSetMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+						return;
+					}
+					
+					try {
+						PrintUtil.printOrder(order);
+					} catch (Exception e) {
+						mCallback.onSetMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+					}
 				}
 			});
 			

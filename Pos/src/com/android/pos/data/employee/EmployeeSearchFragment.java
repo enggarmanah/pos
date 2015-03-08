@@ -37,7 +37,12 @@ public class EmployeeSearchFragment extends BaseSearchFragment<Employee> {
 	
 	public List<Employee> getItems(String query) {
 
-		return mEmployeeDaoService.getEmployees(query);
+		return mEmployeeDaoService.getEmployees(query, 0);
+	}
+	
+	public List<Employee> getNextItems(String query, int lastIndex) {
+
+		return mEmployeeDaoService.getEmployees(query, lastIndex);
 	}
 
 	public void onItemDeleted(Employee item) {

@@ -137,8 +137,8 @@
                 <TextView
                     android:id="@+id/orderText"
                     style="@style/CashierButtonStyle"
-                    android:drawableLeft="@drawable/action_shopping"
-                    android:drawableStart="@drawable/action_shopping"
+                    android:drawableLeft="@drawable/action_write"
+                    android:drawableStart="@drawable/action_write"
                     android:drawablePadding="10dp"
                     android:text="@string/order" />
             </FrameLayout>

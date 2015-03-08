@@ -123,7 +123,13 @@ public class UserEditFragment extends BaseEditFragment<User> {
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
     		
-    		String loginId = UserUtil.getUser().getUserId();
+    		String loginId = null;
+    		
+    		if (UserUtil.isMerchant()) {
+    			loginId = MerchantUtil.getMerchant().getLoginId();
+    		} else {
+    			loginId = UserUtil.getUser().getUserId();
+    		} 
     		
     		if (mItem.getCreateBy() == null) {
     			mItem.setCreateBy(loginId);
@@ -142,7 +148,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
     } 
     
     @Override
-    protected void addItem() {
+    protected boolean addItem() {
     	
         mUserDaoService.addUser(mItem);
         
@@ -150,12 +156,16 @@ public class UserEditFragment extends BaseEditFragment<User> {
         mUserIdText.getText().clear();
         
         mItem = null;
+        
+        return true;
     }
     
     @Override
-    protected void updateItem() {
+    protected boolean updateItem() {
     	
     	mUserDaoService.updateUser(mItem);
+    	
+    	return true;
     }
     
     @Override

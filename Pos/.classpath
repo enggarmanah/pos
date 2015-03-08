@@ -6,9 +6,9 @@
 	<classpathentry kind="src" path="src-gen"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="src" path="src-bt"/>
 	<classpathentry exported="true" kind="lib" path="libs/android-support-v4.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/greendao-1.3.0-beta-1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/RT_Android_Bluetooth_SDK_140417.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jackson-annotations-2.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jackson-core-2.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jackson-databind-2.0.0.jar"/>

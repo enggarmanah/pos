@@ -2,6 +2,7 @@ package com.android.pos.report.transaction;
 
 import java.io.Serializable;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
@@ -220,7 +221,15 @@ public class TransactionActivity extends BaseActivity
 			
 			case R.id.menu_item_print:
 				
-				PrintUtil.print(mSelectedTransaction);
+				if (PrintUtil.isPrinterConnected()) {
+					try {
+						PrintUtil.print(mSelectedTransaction);
+					} catch (Exception e) {
+						showMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+					}
+				} else {
+					NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_PRINTER_CONNECT_PRINTER_FROM_CASHIER);
+				}
 				
 				return true;
 		

@@ -5,14 +5,13 @@ import java.util.List;
 import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.OrderItemDao;
 import com.android.pos.util.DbUtil;
-import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class OrderItemDaoService {
 	
-	private static OrderItemDao mOrderItemDao = DbUtil.getSession().getOrderItemDao();
+	private OrderItemDao mOrderItemDao = DbUtil.getSession().getOrderItemDao();
 	
 	public void addOrderItem(OrderItem orderItem) {
 		
@@ -38,8 +37,7 @@ public class OrderItemDaoService {
 		
 		QueryBuilder<OrderItem> qb = mOrderItemDao.queryBuilder();
 		
-		qb.where(OrderItemDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				OrderItemDao.Properties.OrderId.eq(orderId)).orderAsc(OrderItemDao.Properties.Id);
+		qb.where(OrderItemDao.Properties.OrderId.eq(orderId)).orderAsc(OrderItemDao.Properties.Id);
 		
 		Query<OrderItem> q = qb.build();
 		

@@ -6,7 +6,7 @@ import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Merchant;
 import com.android.pos.service.MerchantDaoService;
-import com.android.pos.util.AdminUtil;
+import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
 import android.view.View;
@@ -19,7 +19,7 @@ public class MerchantSearchFragment extends BaseSearchFragment<Merchant> {
 	public void onStart() {
 		super.onStart();
 		
-		if (!AdminUtil.isRoot()) {
+		if (!UserUtil.isRoot()) {
 			getAddBtn().setVisibility(View.GONE);
 		}
 	}
@@ -48,7 +48,12 @@ public class MerchantSearchFragment extends BaseSearchFragment<Merchant> {
 	
 	public List<Merchant> getItems(String query) {
 
-		return mMerchantDaoService.getMerchants(query);
+		return mMerchantDaoService.getMerchants(query, 0);
+	}
+	
+	public List<Merchant> getNextItems(String query, int lastIndex) {
+
+		return mMerchantDaoService.getMerchants(query, lastIndex);
 	}
 
 	public void onItemDeleted(Merchant item) {

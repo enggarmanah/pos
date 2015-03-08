@@ -339,7 +339,13 @@ public class HttpAsyncManager {
 			Long merchantId = null;
 			
 			if (merchant != null) {
+			
 				merchantId = merchant.getId();
+			
+			} else {
+				
+				// when the login id is root
+				merchantId = Long.valueOf(-1);
 			}
 			
 			String url = Constant.EMPTY_STRING;
@@ -364,6 +370,7 @@ public class HttpAsyncManager {
 				url = Config.SERVER_URL + "/merchantGetAllJsonServlet";
 
 				SyncRequestBean request = new SyncRequestBean();
+				
 				request.setLast_sync_date(mDevice.getLast_sync_date());
 				
 				obj = request;
@@ -545,7 +552,7 @@ public class HttpAsyncManager {
 				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
 
 				DeviceBean bean = new DeviceBean();
-				bean.setMerchant_id(MerchantUtil.getMerchant().getId());
+				bean.setMerchant_id(merchantId);
 				bean.setUuid(Installation.getInstallationId(mContext));
 				obj = bean;
 			}
@@ -639,7 +646,7 @@ public class HttpAsyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
 
 					mMerchantDaoService.updateMerchantStatus(syncStatusBeans);
-					syncCompleted();
+					updateLastSync();
 					
 					if (mContext instanceof LoginListener) {
 						

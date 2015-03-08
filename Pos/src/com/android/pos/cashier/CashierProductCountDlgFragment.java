@@ -201,7 +201,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	
 	private Employee[] getPersonInCharge() {
 
-		List<Employee> list = mEmployeeDaoService.getEmployees(Constant.EMPTY_STRING);
+		List<Employee> list = mEmployeeDaoService.getEmployees(Constant.EMPTY_STRING, 0);
 		
 		return list.toArray(new Employee[list.size()]);
 	}

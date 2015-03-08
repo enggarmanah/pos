@@ -10,7 +10,6 @@ import com.android.pos.model.TransactionItemBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.DbUtil;
-import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -36,11 +35,8 @@ public class TransactionItemDaoService {
 	
 	public List<TransactionItemBean> getTransactionItemsForUpload() {
 		
-		Long merchantId = MerchantUtil.getMerchant().getId();
-		
 		QueryBuilder<TransactionItem> qb = transactionItemDao.queryBuilder();
-		qb.where(TransactionItemDao.Properties.MerchantId.eq(merchantId),
-				TransactionItemDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(TransactionItemDao.Properties.Id);
+		qb.where(TransactionItemDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(TransactionItemDao.Properties.Id);
 		
 		Query<TransactionItem> q = qb.build();
 		
@@ -56,11 +52,8 @@ public class TransactionItemDaoService {
 	
 	public List<TransactionItem> getTransactionItemsByTransactionId(Long transactionId) {
 		
-		Long merchantId = MerchantUtil.getMerchant().getId();
-		
 		QueryBuilder<TransactionItem> qb = transactionItemDao.queryBuilder();
-		qb.where(TransactionItemDao.Properties.MerchantId.eq(merchantId),
-				TransactionItemDao.Properties.TransactionId.eq(transactionId)).orderAsc(TransactionItemDao.Properties.Id);
+		qb.where(TransactionItemDao.Properties.TransactionId.eq(transactionId)).orderAsc(TransactionItemDao.Properties.Id);
 		
 		Query<TransactionItem> q = qb.build();
 		

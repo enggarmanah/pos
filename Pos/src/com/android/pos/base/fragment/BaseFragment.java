@@ -2,12 +2,10 @@ package com.android.pos.base.fragment;
 
 import java.util.List;
 
-import com.android.pos.Constant;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.NotificationUtil;
 
 import android.app.Fragment;
-import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -48,14 +46,6 @@ public abstract class BaseFragment extends Fragment {
     	
     	return true;
     }
-	
-	public void afterStart() {};
-	
-	public void initWaitAfterStartTask() {
-		
-		WaitAfterStartTask task = new WaitAfterStartTask();
-		task.execute();
-	}
 	
 	public void showMessage(int resourceId) {
 		
@@ -98,31 +88,6 @@ public abstract class BaseFragment extends Fragment {
 			this.label = label;
 		}
     }
-	
-	public class WaitAfterStartTask extends AsyncTask<Void, Void, Boolean> {
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-
-			try {
-				Thread.sleep(Constant.WAIT_ON_LOAD_PERIOD);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			return true;
-		}
-
-		@Override
-		protected void onProgressUpdate(Void... progress) {
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-
-			afterStart();
-		}
-	}
 	
 	protected boolean isViewInitialized() {
 		

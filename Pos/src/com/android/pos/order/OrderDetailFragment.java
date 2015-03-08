@@ -22,6 +22,7 @@ import com.android.pos.dao.TransactionMonth;
 import com.android.pos.service.OrderItemDaoService;
 import com.android.pos.service.OrdersDaoService;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.NotificationUtil;
 
 public class OrderDetailFragment extends BaseFragment implements OrderItemArrayAdapter.ItemActionListener {
 	
@@ -212,5 +213,11 @@ public class OrderDetailFragment extends BaseFragment implements OrderItemArrayA
 	public void onOrderItemSelected(OrderItem orderItem) {
 		
 		mActionListener.onOrderItemSelected(orderItem);
+	}
+	
+	@Override
+	public void onSetMessage(String message) {
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), message);
 	}
 }

@@ -101,19 +101,23 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     } 
     
     @Override
-    protected void addItem() {
+    protected boolean addItem() {
     	
         mProductGroupDaoService.addProductGroup(mItem);
         
         mNameText.getText().clear();
         
         mItem = null;
+        
+        return true;
     }
     
     @Override
-    protected void updateItem() {
+    protected boolean updateItem() {
     	
     	mProductGroupDaoService.updateProductGroup(mItem);
+    	
+    	return true;
     }
     
     @Override

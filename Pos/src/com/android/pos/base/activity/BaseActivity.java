@@ -2,6 +2,7 @@ package com.android.pos.base.activity;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
+import com.android.pos.auth.MerchantLoginActivity;
 import com.android.pos.auth.UserLoginActivity;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.data.DataMgtActivity;
@@ -9,6 +10,7 @@ import com.android.pos.order.OrderActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
@@ -48,8 +50,12 @@ public abstract class BaseActivity extends Activity {
 			mAppMenus = getResources().getStringArray(R.array.app_menus_merchant);
 			
 		} else if (UserUtil.isCashier()) {
-			mAppMenus = getResources().getStringArray(R.array.app_menus_cashier);			
-		
+			
+			if (Constant.MERCHANT_TYPE_TOKO.equals(MerchantUtil.getMerchant().getType())) {
+				mAppMenus = getResources().getStringArray(R.array.app_menus_cashier_shop);
+			} else {
+				mAppMenus = getResources().getStringArray(R.array.app_menus_cashier);
+			}
 		} else if (UserUtil.isAdmin()) {
 			mAppMenus = getResources().getStringArray(R.array.app_menus_admin);
 			
@@ -201,8 +207,15 @@ public abstract class BaseActivity extends Activity {
 			startActivity(intent);
 			
 		} else if (getString(R.string.menu_logout).equals(menu)) {
-
-			Intent intent = new Intent(this, UserLoginActivity.class);
+			
+			Intent intent = null;
+			
+			if (UserUtil.isRoot()) {
+				intent = new Intent(this, MerchantLoginActivity.class);
+			} else {
+				intent = new Intent(this, UserLoginActivity.class);
+			}
+			
 			startActivity(intent);	
 			finish();
 		}

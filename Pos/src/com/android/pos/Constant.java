@@ -2,7 +2,11 @@ package com.android.pos;
 
 public class Constant {
 	
+	public static final String ROOT = "root";
+	
 	public static final int TIMEOUT = 60000;
+	
+	public static final String QUERY_LIMIT = "50";
 	
 	public static final String EMPTY_STRING = "";
 	
@@ -29,9 +33,14 @@ public class Constant {
 	public static final String MERCHANT_TYPE_TOKO = "S";
 	
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 250;
-	public static int WAIT_ON_LOAD_PERIOD = 250;
 	
-	public static int LIST_SELECTED_ITEM_GAP = 5;
+	public static final String MESSAGE_PRINTER_CANT_CONNECT = "Tidak dapat terhubung ke Printer";
+	public static final String MESSAGE_PRINTER_CONNECTION_LOST = "Koneksi ke Printer telah terputus";
+	public static final String MESSAGE_PRINTER_CONNECTED_TO = "Terkoneksi dengan Printer : ";
+	public static final String MESSAGE_PRINTER_CONNECTING = "Melaksanakan koneksi ke Printer ...";
+	public static final String MESSAGE_PRINTER_PLEASE_CHECK_PRINTER = "Tidak dapat terhubung ke Printer. Pastikan Printer anda aktif.";
+	public static final String MESSAGE_PRINTER_CONNECT_PRINTER_FROM_CASHIER = "Tidak dapat terhubung ke Printer.\nKoneksikan printer anda dari modul kasir.";
+	public static final String MESSAGE_PRINTER_CANT_PRINT = "Tidak dapat terhubung ke printer.\nStruk tidak dapat dicetak";
 	
 	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	
@@ -90,6 +99,7 @@ public class Constant {
 	
 	public static final String INVENTORY_STATUS_PURCHASE = "PURCHASE";
 	public static final String INVENTORY_STATUS_RETURN = "RETURN";
+	public static final String INVENTORY_STATUS_REFUND = "REFUND";
 	public static final String INVENTORY_STATUS_REPLACEMENT = "REPLACEMENT";
 	public static final String INVENTORY_STATUS_NOT_OWNED_IN = "NOT_OWNED_IN";
 	public static final String INVENTORY_STATUS_NOT_OWNED_OUT = "NOT_OWNED_OUT";

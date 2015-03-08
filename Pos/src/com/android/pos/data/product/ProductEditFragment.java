@@ -217,7 +217,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     } 
     
     @Override
-    protected void addItem() {
+    protected boolean addItem() {
     	
         mProductDaoService.addProduct(mItem);
         
@@ -232,12 +232,16 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
         mMinStockText.getText().clear();
         
         mItem = null;
+        
+        return true;
     }
     
     @Override
-    protected void updateItem() {
+    protected boolean updateItem() {
     	
     	mProductDaoService.updateProduct(mItem);
+    	
+    	return true;
     }
     
     @Override

@@ -130,7 +130,7 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     } 
     
     @Override
-    protected void addItem() {
+    protected boolean addItem() {
     	
     	mEmployeeDaoService.addEmployee(mItem);
     	
@@ -138,12 +138,16 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
         mTelephoneText.getText().clear();
         
         mItem = null;
+        
+        return true;
     }
     
     @Override
-    protected void updateItem() {
+    protected boolean updateItem() {
     	
     	mEmployeeDaoService.updateEmployee(mItem);
+    	
+    	return true;
     }
     
     @Override

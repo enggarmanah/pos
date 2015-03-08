@@ -37,7 +37,12 @@ public class UserSearchFragment extends BaseSearchFragment<User> {
 	
 	public List<User> getItems(String query) {
 
-		return mUserDaoService.getUsers(query);
+		return mUserDaoService.getUsers(query, 0);
+	}
+	
+	public List<User> getNextItems(String query, int lastIndex) {
+
+		return mUserDaoService.getUsers(query, lastIndex);
 	}
 
 	public void onItemDeleted(User item) {

@@ -69,25 +69,17 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				// TODO Auto-generated method stub
-				
-				System.out.println("Search Customer : " + s.toString());
 				
 				mCustomers.clear();
-				mCustomers.addAll(mCustomerDaoService.getCustomers(s.toString()));
+				mCustomers.addAll(mCustomerDaoService.getCustomers(s.toString(), 0));
 				customerArrayAdapter.notifyDataSetChanged();
 			}
 			
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 			
 			@Override
-			public void afterTextChanged(Editable s) {
-				
-			}
+			public void afterTextChanged(Editable s) {}
 		});
 		
 		mCustomerListView = (ListView) getView().findViewById(R.id.customerListView);

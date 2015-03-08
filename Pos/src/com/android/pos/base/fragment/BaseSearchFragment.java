@@ -9,11 +9,14 @@ import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.base.listener.BaseItemListener;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public abstract class BaseSearchFragment<T> extends BaseFragment 
 	implements BaseSearchArrayAdapter.ItemActionListener<T> {
@@ -27,6 +30,10 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 
 	protected List<T> mItems;
 	protected T mSelectedItem;
+	
+	private boolean mIsLoadData = false;
+	private boolean mIsEndOfList = false;
+	private String mQuery = Constant.EMPTY_STRING;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +46,65 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 		
 		initAdapter();
 		
+		mAddButton = (ImageButton) view.findViewById(R.id.addButton);
+		mAddButton.setOnClickListener(getAddButtonOnClickListener());
+		
+		mSearchResultList = (ListView) view.findViewById(R.id.searchResultList);
+		
+		mSearchResultList.setAdapter(mAdapter);
+		mSearchResultList.setItemsCanFocus(true);
+		mSearchResultList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		
+		mSearchResultList.setOnScrollListener(getListOnScrollListener());
+		
 		return view;
+	}
+	
+	private AbsListView.OnScrollListener getListOnScrollListener() {
+		
+		return new AbsListView.OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				
+				if (firstVisibleItem == 0) {
+					return;
+				}
+				
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				
+				if((lastInScreen == totalItemCount) && !mIsLoadData && !mIsEndOfList) {
+					
+					mIsLoadData = true;
+					
+					List<T> list = getNextItems(mQuery, mItems.size());
+					
+					if (list.size() == 0) {
+						mIsEndOfList = true;
+					}
+					
+					String message = Constant.EMPTY_STRING;
+					
+					if (mIsEndOfList) {
+						message = "Tidak lagi terdapat data untuk ditampilkan!";
+					} else {
+						message = "Menampilkan data selanjutnya ...";
+					}
+					
+					Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+					toast.show();
+						
+					mItems.addAll(list);
+					mAdapter.notifyDataSetChanged();
+					
+					mIsLoadData = false;
+				}
+			}
+		};
 	}
 	
 	public abstract void initAdapter();
@@ -49,16 +114,7 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 		
 		super.onStart();
 		
-		mAddButton = (ImageButton) getView().findViewById(R.id.addButton);
-		mAddButton.setOnClickListener(getAddButtonOnClickListener());
-		
-		mSearchResultList = (ListView) getView().findViewById(R.id.searchResultList);
-
-		mSearchResultList.setAdapter(mAdapter);
-		mSearchResultList.setItemsCanFocus(true);
-		mSearchResultList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		
-		initWaitAfterStartTask();
+		updateContent();
 	}
 	
 	private View.OnClickListener getAddButtonOnClickListener() {
@@ -73,53 +129,41 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 		};
 	}
 	
-	@Override
-	public void afterStart() {
-		
-		if (getSelectedItemIndex() > Constant.LIST_SELECTED_ITEM_GAP) {
-			mSearchResultList.setSelection(getSelectedItemIndex() + Constant.LIST_SELECTED_ITEM_GAP);
-		}
-	}
-	
 	protected abstract Long getItemId(T item);
 	
-	private int getSelectedItemIndex() {
+	protected String getItemIndex(T item) {
 		
-		int index = -1;
-		
-		if (mSelectedItem != null && mItems != null) {
-			
-			index = 0;
-			
-			for (T item : mItems) {
-				
-				if (getItemId(item) == getItemId(mSelectedItem)) {
-					break; 
-				}
-				
-				index++;
-			}
-		}
-		
-		return index;
+		return null;
 	}
 	
 	public void searchItem(String query) {
+		
+		mQuery = query;
+		mIsEndOfList = false;
 		
 		if (!isViewInitialized()) {
 			mSelectedItem = null;
 			return;
 		}
 		
+		updateContent();
+	}
+	
+	protected void updateContent() {
+		
 		unSelectItem();
 		
 		mItems.clear();
-		mItems.addAll(getItems(query));
+		mItems.addAll(getItems(mQuery));
 		
 		mAdapter.notifyDataSetChanged();
 	}
 	
 	public abstract List<T> getItems(String query);
+	
+	public List<T> getNextItems(String query, int lastIndex) {
+		return null;
+	}
 
 	public abstract void onItemDeleted(T item);
 

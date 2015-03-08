@@ -18,7 +18,6 @@ import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
-import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
@@ -53,8 +52,7 @@ public class TransactionsDaoService {
 	public List<TransactionsBean> getTransactionsForUpload() {
 
 		QueryBuilder<Transactions> qb = mTransactionsDao.queryBuilder();
-		qb.where(TransactionsDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				TransactionsDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(TransactionsDao.Properties.Id);
+		qb.where(TransactionsDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(TransactionsDao.Properties.Id);
 		
 		Query<Transactions> q = qb.build();
 		
@@ -110,12 +108,9 @@ public class TransactionsDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		String merchantId = MerchantUtil.getMerchantId().toString();
-		
 		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount) total_amount "
 				+ " FROM transactions "
-				+ " WHERE merchant_id = ? "
-				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { merchantId });
+				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
 			
 		while(cursor.moveToNext()) {
 			
@@ -134,8 +129,6 @@ public class TransactionsDaoService {
 		
 		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
 		
-		String merchantId = MerchantUtil.getMerchantId().toString();
-		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(transactionYear.getYear()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(transactionYear.getYear()).getTime());
 		
@@ -143,9 +136,8 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount) total_amount "
 				+ " FROM transactions "
-				+ " WHERE merchant_id = ? AND "
-				+ " transaction_date BETWEEN ? AND ? "
-				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { merchantId, startDate, endDate });
+				+ " WHERE transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { startDate, endDate });
 			
 		while(cursor.moveToNext()) {
 			
@@ -164,8 +156,6 @@ public class TransactionsDaoService {
 		
 		ArrayList<TransactionDay> transactionDays = new ArrayList<TransactionDay>();
 		
-		String merchantId = MerchantUtil.getMerchantId().toString();
-		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
 		
@@ -173,9 +163,8 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount) total_amount "
 				+ " FROM transactions " 
-				+ " WHERE merchant_id = ? "
-				+ " AND transaction_date BETWEEN ? AND ? "
-				+ " GROUP BY strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] {merchantId, startDate, endDate });
+				+ " WHERE transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { startDate, endDate });
 			
 		while(cursor.moveToNext()) {
 			
@@ -192,14 +181,11 @@ public class TransactionsDaoService {
 	
 	public List<Transactions> getTransactions(Date transactionDate) {
 		
-		String merchantId = MerchantUtil.getMerchantId().toString();
-		
 		Date startDate = transactionDate;
 		Date endDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000 - 1);
 		
 		QueryBuilder<Transactions> qb = mTransactionsDao.queryBuilder();
-		qb.where(TransactionsDao.Properties.MerchantId.eq(merchantId),
-				TransactionsDao.Properties.TransactionDate.between(startDate, endDate))
+		qb.where(TransactionsDao.Properties.TransactionDate.between(startDate, endDate))
 		  .orderAsc(TransactionsDao.Properties.TransactionDate);
 
 		Query<Transactions> q = qb.build();

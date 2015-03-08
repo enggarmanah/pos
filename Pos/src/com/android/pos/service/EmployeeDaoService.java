@@ -3,21 +3,24 @@ package com.android.pos.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.android.pos.Constant;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.EmployeeDao;
 import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
-import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class EmployeeDaoService {
 	
-	private static EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
+	private EmployeeDao employeeDao = DbUtil.getSession().getEmployeeDao();
 	
 	public void addEmployee(Employee employee) {
 		
@@ -42,15 +45,29 @@ public class EmployeeDaoService {
 		return employeeDao.load(id);
 	}
 	
-	public List<Employee> getEmployees(String query) {
+	public List<Employee> getEmployees(String query, int lastIndex) {
 
-		QueryBuilder<Employee> qb = employeeDao.queryBuilder();
-		qb.where(EmployeeDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				EmployeeDao.Properties.Name.like("%" + query + "%"), 
-				EmployeeDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(EmployeeDao.Properties.Name);
-
-		Query<Employee> q = qb.build();
-		List<Employee> list = q.list();
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM employee "
+				+ " WHERE name like ? AND status <> ? "
+				+ " ORDER BY name LIMIT ? OFFSET ? ",
+				new String[] { queryStr, status, limit, lastIdx});
+		
+		List<Employee> list = new ArrayList<Employee>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Employee item = getEmployee(id);
+			list.add(item);
+		}
 
 		return list;
 	}
@@ -58,8 +75,7 @@ public class EmployeeDaoService {
 	public List<EmployeeBean> getEmployeesForUpload() {
 
 		QueryBuilder<Employee> qb = employeeDao.queryBuilder();
-		qb.where(EmployeeDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				EmployeeDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(EmployeeDao.Properties.Name);
+		qb.where(EmployeeDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(EmployeeDao.Properties.Name);
 		
 		Query<Employee> q = qb.build();
 		

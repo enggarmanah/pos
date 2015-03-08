@@ -45,6 +45,15 @@ public class CommonUtil {
 		}
 	}
 	
+	public static String getNvlString(String value) {
+		
+		if (value == null) {
+			return Constant.EMPTY_STRING;
+		} else {
+			return value;
+		}
+	}
+	
 	public static Integer strToInt(String s) {
 		
 		Integer number = null;

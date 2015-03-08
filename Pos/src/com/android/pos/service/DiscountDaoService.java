@@ -3,21 +3,24 @@ package com.android.pos.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.android.pos.Constant;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.DiscountDao;
 import com.android.pos.model.DiscountBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
-import com.android.pos.util.MerchantUtil;
 
 import de.greenrobot.dao.query.Query;
 import de.greenrobot.dao.query.QueryBuilder;
 
 public class DiscountDaoService {
 	
-	private static DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
+	private DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
 	
 	public void addDiscount(Discount discount) {
 		
@@ -45,8 +48,7 @@ public class DiscountDaoService {
 	public List<Discount> getDiscounts() {
 
 		QueryBuilder<Discount> qb = discountDao.queryBuilder();
-		qb.where(DiscountDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				DiscountDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(DiscountDao.Properties.Percentage);
+		qb.where(DiscountDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(DiscountDao.Properties.Percentage);
 
 		Query<Discount> q = qb.build();
 		List<Discount> list = q.list();
@@ -54,15 +56,29 @@ public class DiscountDaoService {
 		return list;
 	}
 	
-	public List<Discount> getDiscounts(String query) {
+	public List<Discount> getDiscounts(String query, int lastIndex) {
 
-		QueryBuilder<Discount> qb = discountDao.queryBuilder();
-		qb.where(DiscountDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				DiscountDao.Properties.Name.like("%" + query + "%"), 
-				DiscountDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(DiscountDao.Properties.Name);
-
-		Query<Discount> q = qb.build();
-		List<Discount> list = q.list();
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM discount "
+				+ " WHERE name like ? AND status <> ? "
+				+ " ORDER BY name LIMIT ? OFFSET ? ",
+				new String[] { queryStr, status, limit, lastIdx});
+		
+		List<Discount> list = new ArrayList<Discount>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Discount item = getDiscount(id);
+			list.add(item);
+		}
 
 		return list;
 	}
@@ -70,8 +86,7 @@ public class DiscountDaoService {
 	public List<DiscountBean> getDiscountsForUpload() {
 
 		QueryBuilder<Discount> qb = discountDao.queryBuilder();
-		qb.where(DiscountDao.Properties.MerchantId.eq(MerchantUtil.getMerchantId()),
-				DiscountDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(DiscountDao.Properties.Name);
+		qb.where(DiscountDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(DiscountDao.Properties.Name);
 		
 		Query<Discount> q = qb.build();
 		

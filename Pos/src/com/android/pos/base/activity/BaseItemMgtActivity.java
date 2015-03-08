@@ -9,8 +9,8 @@ import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.common.ConfirmDeleteDlgFragment;
 import com.android.pos.dao.Merchant;
-import com.android.pos.util.AdminUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.UserUtil;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
@@ -139,7 +139,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	}
 	
 	private void loadFragments() {
-
+		
 		if (isFragmentHasBeenLoaded()) {
 			return;
 		}
@@ -209,18 +209,16 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
-		if (AdminUtil.isRoot()) {
+		if (mSelectedItem == null && UserUtil.isRoot()) {
 			mSyncMenu.setVisible(!isDrawerOpen);
 		} else {
 			mSyncMenu.setVisible(false);
 		}
 		
-		if (mSelectedItem instanceof Merchant && !AdminUtil.isRoot()) {
-			mDeleteMenu.setVisible(false);
+		if (mSelectedItem instanceof Merchant && UserUtil.isRoot()) {
+			mDeleteMenu.setVisible(!isDrawerOpen);
 		} else {
-			if (mSelectedItem != null) {
-				mDeleteMenu.setVisible(!isDrawerOpen);
-			}
+			mDeleteMenu.setVisible(false);
 		}
 		
 		if (mSearchMenu.isVisible()) {
@@ -304,6 +302,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 				
 			} else {
 				showNavigationAndItemMenu();
+				refreshEditView();
 			}
 			
 			return true;
@@ -392,6 +391,16 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	private void showNavigationMenu() {
 		
+		if (mSyncMenu == null) {
+			return;
+		}
+		
+		if (UserUtil.isRoot()) {
+			mSyncMenu.setVisible(true);
+		} else {
+			mSyncMenu.setVisible(false);
+		}
+		
 		mSearchMenu.setVisible(true);
 		mListMenu.setVisible(false);
 		
@@ -408,6 +417,12 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		enableEditFragmentInputFields(false);
 		
+		if (UserUtil.isRoot()) {
+			mSyncMenu.setVisible(true);
+		} else {
+			mSyncMenu.setVisible(false);
+		}
+		
 		if (mIsMultiplesPane) {
 			mSearchMenu.setVisible(true);
 			mListMenu.setVisible(false);
@@ -417,7 +432,12 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		}
 		
 		mEditMenu.setVisible(true);
-		mDeleteMenu.setVisible(true);
+		
+		if (mSelectedItem instanceof Merchant && UserUtil.isRoot()) {
+			mDeleteMenu.setVisible(true);
+		} else {
+			mDeleteMenu.setVisible(false);
+		}
 		
 		mSaveMenu.setVisible(false);
 		mDiscardMenu.setVisible(false);
@@ -428,6 +448,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	private void showEditMenu() {
 		
 		enableEditFragmentInputFields(true);
+		
+		mSyncMenu.setVisible(false);
 		
 		mSearchMenu.setVisible(false);
 		mListMenu.setVisible(false);
@@ -448,7 +470,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		showNavigationAndItemMenu();
 		
-		if (item instanceof Merchant && !AdminUtil.isAdmin()) {
+		if (item instanceof Merchant && !UserUtil.isRoot()) {
 			mDeleteMenu.setVisible(false);
 		}
 		
@@ -472,9 +494,9 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	@Override
 	public void addItem() {
 		
-		showEditMenu();
-		
 		unSelectItem();
+		
+		showEditMenu();
 		
 		mSearchMenu.collapseActionView();
 
@@ -549,6 +571,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	@Override
 	public void onItemUnselected() {
+		
+		showNavigationMenu();
 		
 		mSelectedItem = null;
 

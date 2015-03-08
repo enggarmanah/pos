@@ -37,7 +37,12 @@ public class CustomerSearchFragment extends BaseSearchFragment<Customer> {
 	
 	public List<Customer> getItems(String query) {
 
-		return mCustomerDaoService.getCustomers(query);
+		return mCustomerDaoService.getCustomers(query, 0);
+	}
+	
+	public List<Customer> getNextItems(String query, int lastIndex) {
+
+		return mCustomerDaoService.getCustomers(query, lastIndex);
 	}
 
 	public void onItemDeleted(Customer item) {

@@ -146,7 +146,7 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     } 
     
     @Override
-    protected void addItem() {
+    protected boolean addItem() {
     	
         mCustomerDaoService.addCustomer(mItem);
         
@@ -154,12 +154,16 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
         mTelephoneText.getText().clear();
         
         mItem = null;
+        
+        return true;
     }
     
     @Override
-    protected void updateItem() {
+    protected boolean updateItem() {
     	
     	mCustomerDaoService.updateCustomer(mItem);
+    	
+    	return true;
     }
     
     @Override

@@ -181,19 +181,18 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     	
     	if (getItemId(mItem) == null) {
     		
-    		addItem();
-    		
-            mItemListener.onAddCompleted();
-            
+    		if (addItem()) {
+    			mItemListener.onAddCompleted();
+    			showMessage(R.string.msg_data_save_success);
+    		}
     	} else {
     		
-    		updateItem();
-    		
-    		mItemListener.onUpdateCompleted();
+    		if (updateItem()) {
+    			mItemListener.onUpdateCompleted();
+    			showMessage(R.string.msg_data_save_success);
+    		}
     	}
-    	
-    	showMessage(R.string.msg_product_success);
-    	
+   
     	hideKeyboard();
     }
     
@@ -207,9 +206,9 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 		hideKeyboard();
     }
     
-    protected abstract void addItem();
+    protected abstract boolean addItem();
     
-    protected abstract void updateItem();
+    protected abstract boolean updateItem();
     
     protected abstract TextView getFirstField();
     
