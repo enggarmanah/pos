@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
-import com.android.pos.dao.TransactionMonth;
+import com.android.pos.model.TransactionMonthBean;
 import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -14,17 +14,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionMonth> {
+public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionMonthBean> {
 
 	private Context context;
-	private List<TransactionMonth> transactioMonths;
+	private List<TransactionMonthBean> transactioMonths;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onTransactionMonthSelected(TransactionMonth item);
+		public void onTransactionMonthSelected(TransactionMonthBean item);
 		
-		public TransactionMonth getSelectedTransactionMonth();
+		public TransactionMonthBean getSelectedTransactionMonth();
 		
 		public String getSelectedProductInfo();
 	}
@@ -34,7 +34,7 @@ public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionM
 		TextView totalAmountText;
 	}
 
-	public ProductStatisticMonthArrayAdapter(Context context, List<TransactionMonth> transactionMonths, ItemActionListener listener) {
+	public ProductStatisticMonthArrayAdapter(Context context, List<TransactionMonthBean> transactionMonths, ItemActionListener listener) {
 
 		super(context, R.layout.report_transaction_list_item, transactionMonths);
 		
@@ -46,7 +46,7 @@ public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionM
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final TransactionMonth transactionMonth = transactioMonths.get(position);
+		final TransactionMonthBean transactionMonth = transactioMonths.get(position);
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -87,7 +87,7 @@ public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionM
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionMonth, transDate));
 		
-		TransactionMonth selectedTransactionMonth = mCallback.getSelectedTransactionMonth();
+		TransactionMonthBean selectedTransactionMonth = mCallback.getSelectedTransactionMonth();
 		
 		if (selectedTransactionMonth != null && selectedTransactionMonth.getMonth().getTime() == transactionMonth.getMonth().getTime()) {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
@@ -98,7 +98,7 @@ public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionM
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final TransactionMonth item, final TextView itemNameView) {
+	private View.OnClickListener getItemOnClickListener(final TransactionMonthBean item, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			

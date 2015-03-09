@@ -10,6 +10,7 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table INVENTORY.
  */
+
 @SuppressWarnings("serial")
 public class Inventory implements Serializable {
 
@@ -20,8 +21,10 @@ public class Inventory implements Serializable {
     private String quantityStr;
     private Integer quantity;
     private long billsId;
+    private String billsReferenceNo;
     private long supplierId;
-    private String deliveryDate;
+    private String supplierName;
+    private java.util.Date deliveryDate;
     private String remarks;
     private String status;
     private String uploadStatus;
@@ -56,7 +59,7 @@ public class Inventory implements Serializable {
         this.id = id;
     }
 
-    public Inventory(Long id, long merchantId, long productId, String productName, String quantityStr, Integer quantity, long billsId, long supplierId, String deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Inventory(Long id, long merchantId, long productId, String productName, String quantityStr, Integer quantity, long billsId, String billsReferenceNo, long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.productId = productId;
@@ -64,7 +67,9 @@ public class Inventory implements Serializable {
         this.quantityStr = quantityStr;
         this.quantity = quantity;
         this.billsId = billsId;
+        this.billsReferenceNo = billsReferenceNo;
         this.supplierId = supplierId;
+        this.supplierName = supplierName;
         this.deliveryDate = deliveryDate;
         this.remarks = remarks;
         this.status = status;
@@ -137,6 +142,14 @@ public class Inventory implements Serializable {
         this.billsId = billsId;
     }
 
+    public String getBillsReferenceNo() {
+        return billsReferenceNo;
+    }
+
+    public void setBillsReferenceNo(String billsReferenceNo) {
+        this.billsReferenceNo = billsReferenceNo;
+    }
+
     public long getSupplierId() {
         return supplierId;
     }
@@ -145,11 +158,19 @@ public class Inventory implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public String getDeliveryDate() {
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public java.util.Date getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(String deliveryDate) {
+    public void setDeliveryDate(java.util.Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 

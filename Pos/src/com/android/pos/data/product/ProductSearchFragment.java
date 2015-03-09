@@ -5,7 +5,7 @@ import java.util.List;
 import com.android.pos.base.fragment.BaseSearchFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Product;
-import com.android.pos.service.ProductDaoService;
+import com.android.pos.dao.ProductDaoService;
 
 import android.app.Activity;
 

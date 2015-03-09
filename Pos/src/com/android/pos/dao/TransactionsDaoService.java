@@ -1,4 +1,4 @@
-package com.android.pos.service;
+package com.android.pos.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,11 +8,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
-import com.android.pos.dao.TransactionDay;
-import com.android.pos.dao.TransactionMonth;
-import com.android.pos.dao.TransactionYear;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDao;
+import com.android.pos.model.TransactionDayBean;
+import com.android.pos.model.TransactionMonthBean;
+import com.android.pos.model.TransactionYearBean;
 import com.android.pos.model.TransactionsBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
@@ -102,9 +102,9 @@ public class TransactionsDaoService {
 		} 
 	}
 	
-	public List<TransactionYear> getTransactionYears() {
+	public List<TransactionYearBean> getTransactionYears() {
 		
-		ArrayList<TransactionYear> transactionYears = new ArrayList<TransactionYear>();
+		ArrayList<TransactionYearBean> transactionYears = new ArrayList<TransactionYearBean>();
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -116,7 +116,7 @@ public class TransactionsDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
 			Long amount = cursor.getLong(1);
-			TransactionYear transactionYear = new TransactionYear();
+			TransactionYearBean transactionYear = new TransactionYearBean();
 			transactionYear.setYear(date);
 			transactionYear.setAmount(amount);
 			transactionYears.add(transactionYear);
@@ -125,9 +125,9 @@ public class TransactionsDaoService {
 		return transactionYears;
 	}
 	
-	public List<TransactionMonth> getTransactionMonths(TransactionYear transactionYear) {
+	public List<TransactionMonthBean> getTransactionMonths(TransactionYearBean transactionYear) {
 		
-		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
+		ArrayList<TransactionMonthBean> transactionMonths = new ArrayList<TransactionMonthBean>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(transactionYear.getYear()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(transactionYear.getYear()).getTime());
@@ -143,7 +143,7 @@ public class TransactionsDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
 			Long amount = cursor.getLong(1);
-			TransactionMonth transactionMonth = new TransactionMonth();
+			TransactionMonthBean transactionMonth = new TransactionMonthBean();
 			transactionMonth.setMonth(date);
 			transactionMonth.setAmount(amount);
 			transactionMonths.add(transactionMonth);
@@ -152,9 +152,9 @@ public class TransactionsDaoService {
 		return transactionMonths;
 	}
 	
-	public List<TransactionDay> getTransactionDays(TransactionMonth transactionMonth) {
+	public List<TransactionDayBean> getTransactionDays(TransactionMonthBean transactionMonth) {
 		
-		ArrayList<TransactionDay> transactionDays = new ArrayList<TransactionDay>();
+		ArrayList<TransactionDayBean> transactionDays = new ArrayList<TransactionDayBean>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
@@ -170,7 +170,7 @@ public class TransactionsDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "dd-MM-yyyy");
 			Long amount = cursor.getLong(1);
-			TransactionDay summary = new TransactionDay();
+			TransactionDayBean summary = new TransactionDayBean();
 			summary.setDate(date);
 			summary.setAmount(amount);
 			transactionDays.add(summary);

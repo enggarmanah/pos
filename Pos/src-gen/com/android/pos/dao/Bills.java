@@ -16,7 +16,7 @@ public class Bills implements Serializable {
 
     private Long id;
     private long merchantId;
-    private String billReference;
+    private String billReferenceNo;
     private String billType;
     private java.util.Date billDate;
     private java.util.Date billDueDate;
@@ -53,10 +53,10 @@ public class Bills implements Serializable {
         this.id = id;
     }
 
-    public Bills(Long id, long merchantId, String billReference, String billType, java.util.Date billDate, java.util.Date billDueDate, Integer billAmount, Integer payment, long supplierId, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Bills(Long id, long merchantId, String billReferenceNo, String billType, java.util.Date billDate, java.util.Date billDueDate, Integer billAmount, Integer payment, long supplierId, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
-        this.billReference = billReference;
+        this.billReferenceNo = billReferenceNo;
         this.billType = billType;
         this.billDate = billDate;
         this.billDueDate = billDueDate;
@@ -95,12 +95,12 @@ public class Bills implements Serializable {
         this.merchantId = merchantId;
     }
 
-    public String getBillReference() {
-        return billReference;
+    public String getBillReferenceNo() {
+        return billReferenceNo;
     }
 
-    public void setBillReference(String billReference) {
-        this.billReference = billReference;
+    public void setBillReferenceNo(String billReferenceNo) {
+        this.billReferenceNo = billReferenceNo;
     }
 
     public String getBillType() {

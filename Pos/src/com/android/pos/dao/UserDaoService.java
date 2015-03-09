@@ -1,4 +1,4 @@
-package com.android.pos.service;
+package com.android.pos.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,9 +94,9 @@ public class UserDaoService {
 		
 		ArrayList<UserBean> userBeans = new ArrayList<UserBean>();
 		
-		for (User prdGroup : q.list()) {
+		for (User user : q.list()) {
 			
-			userBeans.add(BeanUtil.getBean(prdGroup));
+			userBeans.add(BeanUtil.getBean(user));
 		}
 		
 		return userBeans;

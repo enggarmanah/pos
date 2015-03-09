@@ -36,10 +36,6 @@
             android:name="com.android.pos.auth.MerchantLoginActivity"
             android:label="@string/app_name"
             android:launchMode="standard" >
-            <intent-filter android:label="@string/app_name">
-            	<action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.auth.UserLoginActivity"
@@ -96,6 +92,15 @@
             android:name="com.android.pos.data.customer.CustomerMgtActivity"
             android:label="@string/module_customer" 
             android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.data.supplier.SupplierMgtActivity"
+            android:label="@string/module_supplier" 
+            android:launchMode="singleTask" >
+            <intent-filter android:label="@string/app_name">
+            	<action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.data.discount.DiscountMgtActivity"

@@ -7,7 +7,7 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Discount;
-import com.android.pos.service.DiscountDaoService;
+import com.android.pos.dao.DiscountDaoService;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;

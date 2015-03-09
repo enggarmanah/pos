@@ -1,20 +1,20 @@
-package com.android.pos.dao;
+package com.android.pos.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class TransactionYear implements Serializable {
+public class TransactionDayBean implements Serializable {
 
-	private Date year;
+	private Date date;
 	private Long amount;
 
-	public Date getYear() {
-		return year;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setYear(Date year) {
-		this.year = year;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public Long getAmount() {

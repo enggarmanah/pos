@@ -9,7 +9,7 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Merchant;
-import com.android.pos.service.MerchantDaoService;
+import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.NotificationUtil;

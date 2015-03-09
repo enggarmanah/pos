@@ -6,7 +6,7 @@ import java.util.List;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Customer;
-import com.android.pos.service.CustomerDaoService;
+import com.android.pos.dao.CustomerDaoService;
 
 import android.app.Activity;
 import android.app.DialogFragment;

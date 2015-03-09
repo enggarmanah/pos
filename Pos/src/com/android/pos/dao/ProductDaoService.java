@@ -1,4 +1,4 @@
-package com.android.pos.service;
+package com.android.pos.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,11 +11,11 @@ import com.android.pos.Constant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
-import com.android.pos.dao.ProductStatistic;
-import com.android.pos.dao.TransactionMonth;
-import com.android.pos.dao.TransactionYear;
 import com.android.pos.model.ProductBean;
+import com.android.pos.model.ProductStatisticBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.model.TransactionMonthBean;
+import com.android.pos.model.TransactionYearBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
@@ -149,9 +149,9 @@ public class ProductDaoService {
 		} 
 	}
 	
-	public List<ProductStatistic> getProductStatisticsQuantity(TransactionMonth transactionMonth) {
+	public List<ProductStatisticBean> getProductStatisticsQuantity(TransactionMonthBean transactionMonth) {
 		
-		ArrayList<ProductStatistic> productStatistics = new ArrayList<ProductStatistic>();
+		ArrayList<ProductStatisticBean> productStatistics = new ArrayList<ProductStatisticBean>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
@@ -169,7 +169,7 @@ public class ProductDaoService {
 			String productName = cursor.getString(0);
 			Long value = cursor.getLong(1);
 			
-			ProductStatistic productStatistic = new ProductStatistic();
+			ProductStatisticBean productStatistic = new ProductStatisticBean();
 			
 			productStatistic.setProduct_name(productName);
 			productStatistic.setValue(value);
@@ -180,9 +180,9 @@ public class ProductDaoService {
 		return productStatistics;
 	}
 	
-	public List<ProductStatistic> getProductStatisticsRevenue(TransactionMonth transactionMonth) {
+	public List<ProductStatisticBean> getProductStatisticsRevenue(TransactionMonthBean transactionMonth) {
 		
-		ArrayList<ProductStatistic> productStatistics = new ArrayList<ProductStatistic>();
+		ArrayList<ProductStatisticBean> productStatistics = new ArrayList<ProductStatisticBean>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
@@ -200,7 +200,7 @@ public class ProductDaoService {
 			String productName = cursor.getString(0);
 			Long value = cursor.getLong(1);
 			
-			ProductStatistic productStatistic = new ProductStatistic();
+			ProductStatisticBean productStatistic = new ProductStatisticBean();
 			
 			productStatistic.setProduct_name(productName);
 			productStatistic.setValue(value);
@@ -211,9 +211,9 @@ public class ProductDaoService {
 		return productStatistics;
 	}
 	
-	public List<ProductStatistic> getProductStatisticsProfit(TransactionMonth transactionMonth) {
+	public List<ProductStatisticBean> getProductStatisticsProfit(TransactionMonthBean transactionMonth) {
 		
-		ArrayList<ProductStatistic> productStatistics = new ArrayList<ProductStatistic>();
+		ArrayList<ProductStatisticBean> productStatistics = new ArrayList<ProductStatisticBean>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(transactionMonth.getMonth()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(transactionMonth.getMonth()).getTime());
@@ -231,7 +231,7 @@ public class ProductDaoService {
 			String productName = cursor.getString(0);
 			Long value = cursor.getLong(1);
 			
-			ProductStatistic productStatistic = new ProductStatistic();
+			ProductStatisticBean productStatistic = new ProductStatisticBean();
 			
 			productStatistic.setProduct_name(productName);
 			productStatistic.setValue(value);
@@ -242,9 +242,9 @@ public class ProductDaoService {
 		return productStatistics;
 	}
 	
-	public List<TransactionYear> getTransactionYearsQuantity() {
+	public List<TransactionYearBean> getTransactionYearsQuantity() {
 		
-		ArrayList<TransactionYear> transactionYears = new ArrayList<TransactionYear>();
+		ArrayList<TransactionYearBean> transactionYears = new ArrayList<TransactionYearBean>();
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -257,7 +257,7 @@ public class ProductDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
 			Long value = cursor.getLong(1);
-			TransactionYear transactionYear = new TransactionYear();
+			TransactionYearBean transactionYear = new TransactionYearBean();
 			transactionYear.setYear(date);
 			transactionYear.setAmount(value);
 			transactionYears.add(transactionYear);
@@ -266,9 +266,9 @@ public class ProductDaoService {
 		return transactionYears;
 	}
 	
-	public List<TransactionYear> getTransactionYearsRevenue() {
+	public List<TransactionYearBean> getTransactionYearsRevenue() {
 		
-		ArrayList<TransactionYear> transactionYears = new ArrayList<TransactionYear>();
+		ArrayList<TransactionYearBean> transactionYears = new ArrayList<TransactionYearBean>();
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -281,7 +281,7 @@ public class ProductDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
 			Long value = cursor.getLong(1);
-			TransactionYear transactionYear = new TransactionYear();
+			TransactionYearBean transactionYear = new TransactionYearBean();
 			transactionYear.setYear(date);
 			transactionYear.setAmount(value);
 			transactionYears.add(transactionYear);
@@ -290,9 +290,9 @@ public class ProductDaoService {
 		return transactionYears;
 	}
 	
-	public List<TransactionYear> getTransactionYearsProfit() {
+	public List<TransactionYearBean> getTransactionYearsProfit() {
 		
-		ArrayList<TransactionYear> transactionYears = new ArrayList<TransactionYear>();
+		ArrayList<TransactionYearBean> transactionYears = new ArrayList<TransactionYearBean>();
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -305,7 +305,7 @@ public class ProductDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
 			Long value = cursor.getLong(1);
-			TransactionYear transactionYear = new TransactionYear();
+			TransactionYearBean transactionYear = new TransactionYearBean();
 			transactionYear.setYear(date);
 			transactionYear.setAmount(value);
 			transactionYears.add(transactionYear);
@@ -314,9 +314,9 @@ public class ProductDaoService {
 		return transactionYears;
 	}
 	
-	public List<TransactionMonth> getTransactionMonthsQuantity(TransactionYear transactionYear) {
+	public List<TransactionMonthBean> getTransactionMonthsQuantity(TransactionYearBean transactionYear) {
 		
-		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
+		ArrayList<TransactionMonthBean> transactionMonths = new ArrayList<TransactionMonthBean>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(transactionYear.getYear()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(transactionYear.getYear()).getTime());
@@ -333,7 +333,7 @@ public class ProductDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
 			Long value = cursor.getLong(1);
-			TransactionMonth transactionMonth = new TransactionMonth();
+			TransactionMonthBean transactionMonth = new TransactionMonthBean();
 			transactionMonth.setMonth(date);
 			transactionMonth.setAmount(value);
 			transactionMonths.add(transactionMonth);
@@ -342,9 +342,9 @@ public class ProductDaoService {
 		return transactionMonths;
 	}
 	
-	public List<TransactionMonth> getTransactionMonthsRevenue(TransactionYear transactionYear) {
+	public List<TransactionMonthBean> getTransactionMonthsRevenue(TransactionYearBean transactionYear) {
 		
-		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
+		ArrayList<TransactionMonthBean> transactionMonths = new ArrayList<TransactionMonthBean>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(transactionYear.getYear()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(transactionYear.getYear()).getTime());
@@ -361,7 +361,7 @@ public class ProductDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
 			Long value = cursor.getLong(1);
-			TransactionMonth transactionMonth = new TransactionMonth();
+			TransactionMonthBean transactionMonth = new TransactionMonthBean();
 			transactionMonth.setMonth(date);
 			transactionMonth.setAmount(value);
 			transactionMonths.add(transactionMonth);
@@ -370,9 +370,9 @@ public class ProductDaoService {
 		return transactionMonths;
 	}
 	
-	public List<TransactionMonth> getTransactionMonthsProfit(TransactionYear transactionYear) {
+	public List<TransactionMonthBean> getTransactionMonthsProfit(TransactionYearBean transactionYear) {
 		
-		ArrayList<TransactionMonth> transactionMonths = new ArrayList<TransactionMonth>();
+		ArrayList<TransactionMonthBean> transactionMonths = new ArrayList<TransactionMonthBean>();
 		
 		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(transactionYear.getYear()).getTime());
 		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(transactionYear.getYear()).getTime());
@@ -389,7 +389,7 @@ public class ProductDaoService {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
 			Long value = cursor.getLong(1);
-			TransactionMonth transactionMonth = new TransactionMonth();
+			TransactionMonthBean transactionMonth = new TransactionMonthBean();
 			transactionMonth.setMonth(date);
 			transactionMonth.setAmount(value);
 			transactionMonths.add(transactionMonth);

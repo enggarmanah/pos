@@ -5,8 +5,8 @@ import java.util.List;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Employee;
+import com.android.pos.dao.EmployeeDaoService;
 import com.android.pos.dao.Product;
-import com.android.pos.service.EmployeeDaoService;
 import com.android.pos.util.CommonUtil;
 
 import android.app.Activity;

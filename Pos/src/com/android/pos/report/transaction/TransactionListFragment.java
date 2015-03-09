@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
-import com.android.pos.dao.TransactionDay;
-import com.android.pos.dao.TransactionMonth;
-import com.android.pos.dao.TransactionYear;
 import com.android.pos.dao.Transactions;
-import com.android.pos.service.TransactionsDaoService;
+import com.android.pos.dao.TransactionsDaoService;
+import com.android.pos.model.TransactionDayBean;
+import com.android.pos.model.TransactionMonthBean;
+import com.android.pos.model.TransactionYearBean;
 import com.android.pos.util.CommonUtil;
 
 import android.app.Activity;
@@ -34,14 +34,14 @@ public class TransactionListFragment extends BaseFragment
 	
 	private ListView mTransactionList;
 	
-	private List<TransactionYear> mTransactionYears;
-	private List<TransactionMonth> mTransactionMonths;
-	private List<TransactionDay> mTransactionDays;
+	private List<TransactionYearBean> mTransactionYears;
+	private List<TransactionMonthBean> mTransactionMonths;
+	private List<TransactionDayBean> mTransactionDays;
 	private List<Transactions> mTransactions;
 	
-	private TransactionYear mSelectedTransactionYear;
-	private TransactionMonth mSelectedTransactionMonth;
-	private TransactionDay mSelectedTransactionDay;
+	private TransactionYearBean mSelectedTransactionYear;
+	private TransactionMonthBean mSelectedTransactionMonth;
+	private TransactionDayBean mSelectedTransactionDay;
 	private Transactions mSelectedTransaction;
 	
 	private TransactionYearArrayAdapter mTransactionYearAdapter;
@@ -73,15 +73,15 @@ public class TransactionListFragment extends BaseFragment
 		View view = inflater.inflate(R.layout.report_transaction_list_fragment, container, false);
 		
 		if (mTransactionYears == null) {
-			mTransactionYears = new ArrayList<TransactionYear>();
+			mTransactionYears = new ArrayList<TransactionYearBean>();
 		}
 		
 		if (mTransactionMonths == null) {
-			mTransactionMonths = new ArrayList<TransactionMonth>();
+			mTransactionMonths = new ArrayList<TransactionMonthBean>();
 		}
 		
 		if (mTransactionDays == null) {
-			mTransactionDays = new ArrayList<TransactionDay>();
+			mTransactionDays = new ArrayList<TransactionDayBean>();
 		}
 		
 		if (mTransactions == null) {
@@ -140,17 +140,17 @@ public class TransactionListFragment extends BaseFragment
         }
     }
 	
-	public void setSelectedTransactionYear(TransactionYear transactionYear) {
+	public void setSelectedTransactionYear(TransactionYearBean transactionYear) {
 		
 		mSelectedTransactionYear = transactionYear;
 	}
 	
-	public void setSelectedTransactionMonth(TransactionMonth transactionMonth) {
+	public void setSelectedTransactionMonth(TransactionMonthBean transactionMonth) {
 		
 		mSelectedTransactionMonth = transactionMonth;
 	}
 	
-	public void setSelectedTransactionDay(TransactionDay transactionDay) {
+	public void setSelectedTransactionDay(TransactionDayBean transactionDay) {
 		
 		mSelectedTransactionDay = transactionDay;
 	}
@@ -160,33 +160,33 @@ public class TransactionListFragment extends BaseFragment
 		mSelectedTransaction = transaction;
 	}
 	
-	private int getTransactionYearsTotalAmount(List<TransactionYear> transactionYears) {
+	private int getTransactionYearsTotalAmount(List<TransactionYearBean> transactionYears) {
 		
 		int totalAmount = 0;
 		
-		for (TransactionYear transactionYear : transactionYears) {
+		for (TransactionYearBean transactionYear : transactionYears) {
 			totalAmount += transactionYear.getAmount();
 		}
 		
 		return totalAmount;
 	}
 	
-	private int getTransactionMonthsTotalAmount(List<TransactionMonth> transactionMonths) {
+	private int getTransactionMonthsTotalAmount(List<TransactionMonthBean> transactionMonths) {
 		
 		int totalAmount = 0;
 		
-		for (TransactionMonth transactionMonth : transactionMonths) {
+		for (TransactionMonthBean transactionMonth : transactionMonths) {
 			totalAmount += transactionMonth.getAmount();
 		}
 		
 		return totalAmount;
 	}
 	
-	private int getTransactionDaysTotalAmount(List<TransactionDay> transactionDays) {
+	private int getTransactionDaysTotalAmount(List<TransactionDayBean> transactionDays) {
 		
 		int totalAmount = 0;
 		
-		for (TransactionDay transactionDay : transactionDays) {
+		for (TransactionDayBean transactionDay : transactionDays) {
 			totalAmount += transactionDay.getAmount();
 		}
 		
@@ -226,7 +226,7 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionList.setAdapter(mTransactionYearAdapter);
 	}
 	
-	public void displayTransactionOnYear(TransactionYear transactionYear) {
+	public void displayTransactionOnYear(TransactionYearBean transactionYear) {
 		
 		mSelectedTransaction = null;
 		mSelectedTransactionDay = null;
@@ -247,7 +247,7 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionList.setAdapter(mTransactionMonthAdapter);
 	}
 	
-	public void displayTransactionOnMonth(TransactionMonth transactionMonth) {
+	public void displayTransactionOnMonth(TransactionMonthBean transactionMonth) {
 		
 		mSelectedTransaction = null;
 		mSelectedTransactionDay = null;
@@ -267,7 +267,7 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionList.setAdapter(mTransactionDayAdapter);
 	}
 	
-	public void displayTransactionOnDay(TransactionDay transactionDay) {
+	public void displayTransactionOnDay(TransactionDayBean transactionDay) {
 		
 		mSelectedTransaction = null;
 		
@@ -293,7 +293,7 @@ public class TransactionListFragment extends BaseFragment
 	}
 	
 	@Override
-	public void onTransactionYearSelected(TransactionYear transactionYear) {
+	public void onTransactionYearSelected(TransactionYearBean transactionYear) {
 		
 		setBackButtonVisible(true);
 		
@@ -312,13 +312,13 @@ public class TransactionListFragment extends BaseFragment
 	}
 	
 	@Override
-	public TransactionYear getSelectedTransactionYear() {
+	public TransactionYearBean getSelectedTransactionYear() {
 		
 		return mSelectedTransactionYear;
 	}
 	
 	@Override
-	public void onTransactionMonthSelected(TransactionMonth transactionMonth) {
+	public void onTransactionMonthSelected(TransactionMonthBean transactionMonth) {
 		
 		setBackButtonVisible(true);
 		
@@ -337,13 +337,13 @@ public class TransactionListFragment extends BaseFragment
 	}
 	
 	@Override
-	public TransactionMonth getSelectedTransactionMonth() {
+	public TransactionMonthBean getSelectedTransactionMonth() {
 		
 		return mSelectedTransactionMonth;
 	}
 	
 	@Override
-	public void onTransactionDaySelected(TransactionDay transactionDay) {
+	public void onTransactionDaySelected(TransactionDayBean transactionDay) {
 		
 		setBackButtonVisible(true);
 		
@@ -362,7 +362,7 @@ public class TransactionListFragment extends BaseFragment
 	}
 	
 	@Override
-	public TransactionDay getSelectedTransactionDay() {
+	public TransactionDayBean getSelectedTransactionDay() {
 		
 		return mSelectedTransactionDay;
 	}

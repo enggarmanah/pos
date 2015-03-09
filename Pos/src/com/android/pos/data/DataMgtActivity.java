@@ -20,6 +20,7 @@ import com.android.pos.data.employee.EmployeeMgtActivity;
 import com.android.pos.data.merchant.MerchantMgtActivity;
 import com.android.pos.data.product.ProductMgtActivity;
 import com.android.pos.data.productGrp.ProductGrpMgtActivity;
+import com.android.pos.data.supplier.SupplierMgtActivity;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
 
@@ -119,6 +120,12 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 	public void goToModuleCustomer(View view) {
 		
 		Intent intent = new Intent(this, CustomerMgtActivity.class);
+		startActivity(intent);
+	}
+	
+	public void goToModuleSupplier(View view) {
+		
+		Intent intent = new Intent(this, SupplierMgtActivity.class);
 		startActivity(intent);
 	}
 	

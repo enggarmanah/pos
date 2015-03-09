@@ -15,9 +15,9 @@ import android.widget.TextView;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
-import com.android.pos.dao.ProductStatistic;
-import com.android.pos.dao.TransactionMonth;
-import com.android.pos.service.ProductDaoService;
+import com.android.pos.dao.ProductDaoService;
+import com.android.pos.model.ProductStatisticBean;
+import com.android.pos.model.TransactionMonthBean;
 import com.android.pos.util.CommonUtil;
 
 public class ProductStatisticDetailFragment extends BaseFragment implements ProductStatisticDetailArrayAdapter.ItemActionListener {
@@ -29,8 +29,8 @@ public class ProductStatisticDetailFragment extends BaseFragment implements Prod
 	
 	protected ListView mProductStatisticList;
 
-	protected TransactionMonth mTransactionMonth;
-	protected List<ProductStatistic> mProductStatistics;
+	protected TransactionMonthBean mTransactionMonth;
+	protected List<ProductStatisticBean> mProductStatistics;
 	
 	protected String mProductInfo = Constant.PRODUCT_REVENUE;
 	
@@ -46,7 +46,7 @@ public class ProductStatisticDetailFragment extends BaseFragment implements Prod
 		View view = inflater.inflate(R.layout.report_product_statistic_detail_fragment, container, false);
 		
 		if (mProductStatistics == null) {
-			mProductStatistics = new ArrayList<ProductStatistic>();
+			mProductStatistics = new ArrayList<ProductStatisticBean>();
 		} 
 		
 		mAdapter = new ProductStatisticDetailArrayAdapter(getActivity(), mProductStatistics, this);
@@ -110,7 +110,7 @@ public class ProductStatisticDetailFragment extends BaseFragment implements Prod
 		return mProductInfo;
 	}
 	
-	public void setTransactionMonth(TransactionMonth transactionMonth) {
+	public void setTransactionMonth(TransactionMonthBean transactionMonth) {
 		
 		mTransactionMonth = transactionMonth;
 		

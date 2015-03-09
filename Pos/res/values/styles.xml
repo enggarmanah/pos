@@ -365,7 +365,11 @@
         <item name="android:singleLine">true</item>
         <item name="android:background">@drawable/selector_input_text</item>
     </style>
-
+	
+    <style name="FormInputTextAreaStyle" parent="@style/FormInputStyle">
+        <item name="android:singleLine">false</item>
+    </style>
+    
     <style name="FormInputNumericStyle" parent="@style/FormInputStyle">
         <item name="android:inputType">number</item>
     </style>

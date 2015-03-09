@@ -6,7 +6,7 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.Orders;
-import com.android.pos.service.OrdersDaoService;
+import com.android.pos.dao.OrdersDaoService;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.PrintUtil;
 

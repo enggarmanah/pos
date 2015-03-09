@@ -88,20 +88,21 @@ public class Constant {
 	public static final String CASHIER_STATE_ORDER_PAYMENT = "CASHIER_STATE_ORDER_PAYMENT";
 	public static final String CASHIER_STATE_ORDER_NEW_ITEM = "CASHIER_STATE_ORDER_NEW_ITEM";
 	
-	public static final String BILL_TYPE_EXPENSE_REGULAR = "EXPENSE_REGULAR";
-	public static final String BILL_TYPE_EXPENSE_ADHOC = "EXPENSE_ADHOC";
-	public static final String BILL_TYPE_PRODUCT_PURCHASE = "PRODUCT_PURCHASE";
-	public static final String BILL_TYPE_PRODUCT_SUPPORT = "PRODUCT_SUPPORT";
+	public static final String BILL_TYPE_EXPENSE_REGULAR = "REGL";
+	public static final String BILL_TYPE_EXPENSE_ADHOC = "ADHC";
+	public static final String BILL_TYPE_PRODUCT_PURCHASE = "PRCH";
+	public static final String BILL_TYPE_PRODUCT_SUPPORT = "SUPT";
 	
 	public static final String BILL_STATUS_PAID = "PAID";
-	public static final String BILL_STATUS_UNPAID = "UNPAID";
-	public static final String BILL_STATUS_PARTIAL = "PARTIAL";
+	public static final String BILL_STATUS_UNPAID = "UNPD";
+	public static final String BILL_STATUS_PARTIAL = "PART";
 	
-	public static final String INVENTORY_STATUS_PURCHASE = "PURCHASE";
-	public static final String INVENTORY_STATUS_RETURN = "RETURN";
-	public static final String INVENTORY_STATUS_REFUND = "REFUND";
-	public static final String INVENTORY_STATUS_REPLACEMENT = "REPLACEMENT";
-	public static final String INVENTORY_STATUS_NOT_OWNED_IN = "NOT_OWNED_IN";
-	public static final String INVENTORY_STATUS_NOT_OWNED_OUT = "NOT_OWNED_OUT";
+	public static final String INVENTORY_STATUS_PURCHASE = "PRCH";
+	public static final String INVENTORY_STATUS_SALE = "SALE";
+	public static final String INVENTORY_STATUS_RETURN = "RETR";
+	public static final String INVENTORY_STATUS_REFUND = "REFD";
+	public static final String INVENTORY_STATUS_REPLACEMENT = "REPL";
+	public static final String INVENTORY_STATUS_NOT_OWNED_IN = "NOIN";
+	public static final String INVENTORY_STATUS_NOT_OWNED_OUT = "NOUT";
 	public static final String INVENTORY_STATUS_LOST = "LOST";
 }

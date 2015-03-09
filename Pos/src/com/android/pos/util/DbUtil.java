@@ -209,6 +209,16 @@ public class DbUtil {
             	InventoryDao.createTable(db, true);
             }
             
+            // handle version 26 changes
+            if (oldVersion < 26) {
+            	
+            	BillsDao.dropTable(db, true);
+            	BillsDao.createTable(db, true);
+            	
+            	InventoryDao.dropTable(db, true);
+            	InventoryDao.createTable(db, true);
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

@@ -28,7 +28,7 @@ public class BillsDao extends AbstractDao<Bills, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property BillReference = new Property(2, String.class, "billReference", false, "BILL_REFERENCE");
+        public final static Property BillReferenceNo = new Property(2, String.class, "billReferenceNo", false, "BILL_REFERENCE_NO");
         public final static Property BillType = new Property(3, String.class, "billType", false, "BILL_TYPE");
         public final static Property BillDate = new Property(4, java.util.Date.class, "billDate", false, "BILL_DATE");
         public final static Property BillDueDate = new Property(5, java.util.Date.class, "billDueDate", false, "BILL_DUE_DATE");
@@ -63,7 +63,7 @@ public class BillsDao extends AbstractDao<Bills, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'BILLS' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'BILL_REFERENCE' TEXT," + // 2: billReference
+                "'BILL_REFERENCE_NO' TEXT," + // 2: billReferenceNo
                 "'BILL_TYPE' TEXT," + // 3: billType
                 "'BILL_DATE' INTEGER," + // 4: billDate
                 "'BILL_DUE_DATE' INTEGER," + // 5: billDueDate
@@ -97,9 +97,9 @@ public class BillsDao extends AbstractDao<Bills, Long> {
         }
         stmt.bindLong(2, entity.getMerchantId());
  
-        String billReference = entity.getBillReference();
-        if (billReference != null) {
-            stmt.bindString(3, billReference);
+        String billReferenceNo = entity.getBillReferenceNo();
+        if (billReferenceNo != null) {
+            stmt.bindString(3, billReferenceNo);
         }
  
         String billType = entity.getBillType();
@@ -187,7 +187,7 @@ public class BillsDao extends AbstractDao<Bills, Long> {
         Bills entity = new Bills( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getLong(offset + 1), // merchantId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // billReference
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // billReferenceNo
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // billType
             cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // billDate
             cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // billDueDate
@@ -211,7 +211,7 @@ public class BillsDao extends AbstractDao<Bills, Long> {
     public void readEntity(Cursor cursor, Bills entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setBillReference(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setBillReferenceNo(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setBillType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setBillDate(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
         entity.setBillDueDate(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));

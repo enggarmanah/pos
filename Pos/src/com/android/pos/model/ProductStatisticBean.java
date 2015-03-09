@@ -1,9 +1,9 @@
-package com.android.pos.dao;
+package com.android.pos.model;
 
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class ProductStatistic implements Serializable {
+public class ProductStatisticBean implements Serializable {
 
 	private String product_name;
 	private long value;

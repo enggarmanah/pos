@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
-import com.android.pos.service.OrdersDaoService;
+import com.android.pos.dao.OrdersDaoService;
 
 import android.app.Activity;
 import android.os.Bundle;

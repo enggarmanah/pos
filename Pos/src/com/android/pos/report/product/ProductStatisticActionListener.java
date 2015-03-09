@@ -1,13 +1,13 @@
 package com.android.pos.report.product;
 
-import com.android.pos.dao.TransactionMonth;
-import com.android.pos.dao.TransactionYear;
+import com.android.pos.model.TransactionMonthBean;
+import com.android.pos.model.TransactionYearBean;
 
 public interface ProductStatisticActionListener {
 	
-	public void onTransactionYearSelected(TransactionYear transactionYear);
+	public void onTransactionYearSelected(TransactionYearBean transactionYear);
 	
-	public void onTransactionMonthSelected(TransactionMonth transactionMonth);
+	public void onTransactionMonthSelected(TransactionMonthBean transactionMonth);
 	
 	public void onBackButtonClicked();
 }

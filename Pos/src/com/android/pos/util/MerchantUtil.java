@@ -1,7 +1,7 @@
 package com.android.pos.util;
 
 import com.android.pos.dao.Merchant;
-import com.android.pos.service.MerchantDaoService;
+import com.android.pos.dao.MerchantDaoService;
 
 public class MerchantUtil {
 	

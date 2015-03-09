@@ -3,7 +3,7 @@ package com.android.pos.report.transaction;
 import java.util.List;
 
 import com.android.pos.R;
-import com.android.pos.dao.TransactionDay;
+import com.android.pos.model.TransactionDayBean;
 import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -13,17 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
+public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDayBean> {
 
 	private Context context;
-	private List<TransactionDay> transactionDays;
+	private List<TransactionDayBean> transactionDays;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onTransactionDaySelected(TransactionDay item);
+		public void onTransactionDaySelected(TransactionDayBean item);
 		
-		public TransactionDay getSelectedTransactionDay();
+		public TransactionDayBean getSelectedTransactionDay();
 	}
 
 	class ViewHolder {
@@ -31,7 +31,7 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 		TextView totalAmountText;
 	}
 
-	public TransactionDayArrayAdapter(Context context, List<TransactionDay> transactions, ItemActionListener listener) {
+	public TransactionDayArrayAdapter(Context context, List<TransactionDayBean> transactions, ItemActionListener listener) {
 
 		super(context, R.layout.report_transaction_list_item, transactions);
 		
@@ -43,7 +43,7 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final TransactionDay transactionDay = transactionDays.get(position);
+		final TransactionDayBean transactionDay = transactionDays.get(position);
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -79,7 +79,7 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionDay, transDate));
 		
-		TransactionDay selectedTransactionDay = mCallback.getSelectedTransactionDay();
+		TransactionDayBean selectedTransactionDay = mCallback.getSelectedTransactionDay();
 		
 		if (selectedTransactionDay != null && selectedTransactionDay.getDate() == transactionDay.getDate()) {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
@@ -90,7 +90,7 @@ public class TransactionDayArrayAdapter extends ArrayAdapter<TransactionDay> {
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final TransactionDay item, final TextView itemNameView) {
+	private View.OnClickListener getItemOnClickListener(final TransactionDayBean item, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			

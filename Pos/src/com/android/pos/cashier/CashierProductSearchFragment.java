@@ -8,9 +8,9 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.Product;
+import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.ProductGroup;
-import com.android.pos.service.ProductDaoService;
-import com.android.pos.service.ProductGroupDaoService;
+import com.android.pos.dao.ProductGroupDaoService;
 
 import android.app.Activity;
 import android.os.Bundle;

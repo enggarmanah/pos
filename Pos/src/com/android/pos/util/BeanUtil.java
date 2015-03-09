@@ -7,6 +7,7 @@ import com.android.pos.dao.Employee;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
+import com.android.pos.dao.Supplier;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.User;
@@ -16,6 +17,7 @@ import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.MerchantBean;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.ProductGroupBean;
+import com.android.pos.model.SupplierBean;
 import com.android.pos.model.TransactionItemBean;
 import com.android.pos.model.TransactionsBean;
 import com.android.pos.model.UserBean;
@@ -383,5 +385,44 @@ public class BeanUtil {
 		transactionItem.setCommision(bean.getCommision());
 		transactionItem.setEmployeeId(bean.getEmployee_id());
 		transactionItem.setUploadStatus(Constant.STATUS_NO);
+	}
+	
+	public static SupplierBean getBean(Supplier supplier) {
+		
+		SupplierBean bean = new SupplierBean();
+		
+		bean.setMerchant_id(supplier.getMerchantId());
+		bean.setRemote_id(supplier.getId());
+		bean.setName(supplier.getName());
+		bean.setTelephone(supplier.getTelephone());
+		bean.setAddress(supplier.getAddress());
+		bean.setPicName(supplier.getPicName());
+		bean.setPicTelephone(supplier.getPicTelephone());
+		bean.setRemarks(supplier.getRemarks());
+		bean.setStatus(supplier.getStatus());
+		bean.setCreate_by(supplier.getCreateBy());
+		bean.setCreate_date(supplier.getCreateDate());
+		bean.setUpdate_by(supplier.getUpdateBy());
+		bean.setUpdate_date(supplier.getUpdateDate());
+		
+		return bean;
+	}
+	
+	public static void updateBean(Supplier supplier, SupplierBean bean) {
+		
+		supplier.setMerchantId(bean.getMerchant_id());
+		supplier.setId(bean.getRemote_id());
+		supplier.setName(bean.getName());
+		supplier.setTelephone(bean.getTelephone());
+		supplier.setAddress(bean.getAddress());
+		supplier.setPicName(bean.getPicName());
+		supplier.setPicTelephone(bean.getPicTelephone());
+		supplier.setStatus(bean.getStatus());
+		supplier.setRemarks(bean.getRemarks());
+		supplier.setUploadStatus(Constant.STATUS_NO);
+		supplier.setCreateBy(bean.getCreate_by());
+		supplier.setCreateDate(bean.getCreate_date());
+		supplier.setUpdateBy(bean.getUpdate_by());
+		supplier.setUpdateDate(bean.getUpdate_date());
 	}
 }

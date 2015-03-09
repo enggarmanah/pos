@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(25, "com.android.pos.dao");
+        Schema schema = new Schema(26, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -332,7 +332,7 @@ public class PosDaoGenerator {
     	merchantId = bills.addLongProperty("merchantId").notNull().getProperty();
     	bills.addToOne(merchant, merchantId);
     	
-    	bills.addStringProperty("billReference");
+    	bills.addStringProperty("billReferenceNo");
     	bills.addStringProperty("billType");
     	bills.addDateProperty("billDate");
     	bills.addDateProperty("billDueDate");
@@ -391,10 +391,14 @@ public class PosDaoGenerator {
     	billsId = inventory.addLongProperty("billsId").notNull().getProperty();
     	inventory.addToOne(bills, billsId);
     	
+    	inventory.addStringProperty("billsReferenceNo");
+    	
     	supplierId = inventory.addLongProperty("supplierId").notNull().getProperty();
     	inventory.addToOne(supplier, supplierId);
     	
-    	inventory.addStringProperty("deliveryDate");
+    	inventory.addStringProperty("supplierName");
+    	
+    	inventory.addDateProperty("deliveryDate");
     	inventory.addStringProperty("remarks");
     	
     	inventory.addStringProperty("status");

@@ -2,7 +2,7 @@ package com.android.pos.util;
 
 import com.android.pos.Constant;
 import com.android.pos.dao.User;
-import com.android.pos.service.UserDaoService;
+import com.android.pos.dao.UserDaoService;
 
 public class UserUtil {
 	

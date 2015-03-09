@@ -10,9 +10,9 @@ import com.android.pos.cashier.CashierActivity;
 import com.android.pos.cashier.CashierProductCountDlgFragment;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.OrderItem;
+import com.android.pos.dao.OrderItemDaoService;
 import com.android.pos.dao.Orders;
 import com.android.pos.dao.Product;
-import com.android.pos.service.OrderItemDaoService;
 import com.android.pos.util.DbUtil;
 
 import android.annotation.SuppressLint;

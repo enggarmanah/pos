@@ -72,6 +72,7 @@
     <string name="module_employee">Data Pegawai</string>
     <string name="module_customer">Data Pelanggan</string>
     <string name="module_discount">Data Diskon</string>
+    <string name="module_supplier">Data Supplier</string>
     
     <string name="info_quantity">Jumlah</string>
     <string name="info_revenue">Pendapatan</string>
@@ -131,6 +132,9 @@
     <string name="field_email">Email :</string>
     <string name="field_emailStatus">Status Email :</string>
     <string name="field_percentage">Persentase :</string>
+    <string name="field_remarks">Keterangan :</string>
+    <string name="field_pic_name">Nama PIC :</string>
+    <string name="field_pic_telephone">Telepon PIC :</string>
     
     <string name="count">Jumlah</string>
     <string name="number_0">0</string>

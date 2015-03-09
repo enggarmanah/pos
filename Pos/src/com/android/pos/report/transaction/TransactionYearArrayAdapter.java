@@ -3,7 +3,7 @@ package com.android.pos.report.transaction;
 import java.util.List;
 
 import com.android.pos.R;
-import com.android.pos.dao.TransactionYear;
+import com.android.pos.model.TransactionYearBean;
 import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -13,17 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
+public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYearBean> {
 
 	private Context context;
-	private List<TransactionYear> transactioYears;
+	private List<TransactionYearBean> transactioYears;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onTransactionYearSelected(TransactionYear item);
+		public void onTransactionYearSelected(TransactionYearBean item);
 		
-		public TransactionYear getSelectedTransactionYear();
+		public TransactionYearBean getSelectedTransactionYear();
 	}
 
 	class ViewHolder {
@@ -31,7 +31,7 @@ public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
 		TextView totalAmountText;
 	}
 
-	public TransactionYearArrayAdapter(Context context, List<TransactionYear> transactionYears, ItemActionListener listener) {
+	public TransactionYearArrayAdapter(Context context, List<TransactionYearBean> transactionYears, ItemActionListener listener) {
 
 		super(context, R.layout.report_transaction_list_item, transactionYears);
 		
@@ -43,7 +43,7 @@ public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final TransactionYear transactionYear = transactioYears.get(position);
+		final TransactionYearBean transactionYear = transactioYears.get(position);
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -79,7 +79,7 @@ public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionYear, transDate));
 		
-		TransactionYear selectedTransactionYear = mCallback.getSelectedTransactionYear();
+		TransactionYearBean selectedTransactionYear = mCallback.getSelectedTransactionYear();
 		
 		if (selectedTransactionYear != null && selectedTransactionYear.getYear() == transactionYear.getYear()) {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
@@ -90,7 +90,7 @@ public class TransactionYearArrayAdapter extends ArrayAdapter<TransactionYear> {
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final TransactionYear item, final TextView itemNameView) {
+	private View.OnClickListener getItemOnClickListener(final TransactionYearBean item, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			

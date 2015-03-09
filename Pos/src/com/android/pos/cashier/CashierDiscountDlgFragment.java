@@ -2,7 +2,7 @@ package com.android.pos.cashier;
 
 import com.android.pos.R;
 import com.android.pos.dao.Discount;
-import com.android.pos.service.DiscountDaoService;
+import com.android.pos.dao.DiscountDaoService;
 
 import android.app.Activity;
 import android.app.DialogFragment;

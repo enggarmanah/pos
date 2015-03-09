@@ -8,10 +8,10 @@ import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.HttpAsyncProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
-import com.android.pos.dao.TransactionDay;
-import com.android.pos.dao.TransactionMonth;
-import com.android.pos.dao.TransactionYear;
 import com.android.pos.dao.Transactions;
+import com.android.pos.model.TransactionDayBean;
+import com.android.pos.model.TransactionMonthBean;
+import com.android.pos.model.TransactionYearBean;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
@@ -31,9 +31,9 @@ public class TransactionActivity extends BaseActivity
 	
 	boolean mIsMultiplesPane = false;
 	
-	private TransactionYear mSelectedTransactionYear;
-	private TransactionMonth mSelectedTransactionMonth;
-	private TransactionDay mSelectedTransactionDay;
+	private TransactionYearBean mSelectedTransactionYear;
+	private TransactionMonthBean mSelectedTransactionMonth;
+	private TransactionDayBean mSelectedTransactionDay;
 	private Transactions mSelectedTransaction;
 	
 	private static String SELECTED_TRANSACTION_YEAR = "SELECTED_TRANSACTION_YEAR";
@@ -96,9 +96,9 @@ public class TransactionActivity extends BaseActivity
 		
 		if (savedInstanceState != null) {
 			
-			mSelectedTransactionYear = (TransactionYear) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
-			mSelectedTransactionMonth = (TransactionMonth) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
-			mSelectedTransactionDay = (TransactionDay) savedInstanceState.getSerializable(SELECTED_TRANSACTION_DAY);
+			mSelectedTransactionYear = (TransactionYearBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
+			mSelectedTransactionMonth = (TransactionMonthBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
+			mSelectedTransactionDay = (TransactionDayBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_DAY);
 			mSelectedTransaction = (Transactions) savedInstanceState.getSerializable(SELECTED_TRANSACTION);
 			
 			if (mSelectedTransaction != null) {
@@ -117,10 +117,10 @@ public class TransactionActivity extends BaseActivity
 			
 			mIsDisplayTransactionMonth = true;
 			
-			mSelectedTransactionMonth = new TransactionMonth();
+			mSelectedTransactionMonth = new TransactionMonthBean();
 			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
 				
-			mSelectedTransactionYear = new TransactionYear();
+			mSelectedTransactionYear = new TransactionYearBean();
 			mSelectedTransactionYear.setYear(CommonUtil.getCurrentYear());
 		} 
 	}
@@ -260,7 +260,7 @@ public class TransactionActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onTransactionYearSelected(TransactionYear transactionYear) {
+	public void onTransactionYearSelected(TransactionYearBean transactionYear) {
 		
 		mSelectedTransactionYear = transactionYear;
 		
@@ -271,7 +271,7 @@ public class TransactionActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onTransactionMonthSelected(TransactionMonth transactionMonth) {
+	public void onTransactionMonthSelected(TransactionMonthBean transactionMonth) {
 		
 		mSelectedTransactionMonth = transactionMonth;
 		
@@ -282,7 +282,7 @@ public class TransactionActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onTransactionDaySelected(TransactionDay transactionDay) {
+	public void onTransactionDaySelected(TransactionDayBean transactionDay) {
 		
 		mSelectedTransactionDay = transactionDay;
 		

@@ -17,10 +17,10 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.OrderItem;
+import com.android.pos.dao.OrderItemDaoService;
 import com.android.pos.dao.Orders;
-import com.android.pos.dao.TransactionMonth;
-import com.android.pos.service.OrderItemDaoService;
-import com.android.pos.service.OrdersDaoService;
+import com.android.pos.dao.OrdersDaoService;
+import com.android.pos.model.TransactionMonthBean;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.NotificationUtil;
 
@@ -31,7 +31,7 @@ public class OrderDetailFragment extends BaseFragment implements OrderItemArrayA
 	private ImageButton mBackButton;
 	private ImageButton mAddButton;
 	
-	protected TransactionMonth mTransactionMonth;
+	protected TransactionMonthBean mTransactionMonth;
 	
 	protected String mOrderReference;
 	

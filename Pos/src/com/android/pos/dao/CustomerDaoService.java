@@ -1,4 +1,4 @@
-package com.android.pos.service;
+package com.android.pos.dao;
 
 import java.util.ArrayList;
 import java.util.List;

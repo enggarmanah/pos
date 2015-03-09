@@ -5,8 +5,8 @@ import java.io.Serializable;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
-import com.android.pos.dao.TransactionMonth;
-import com.android.pos.dao.TransactionYear;
+import com.android.pos.model.TransactionMonthBean;
+import com.android.pos.model.TransactionYearBean;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 
@@ -23,8 +23,8 @@ public class ProductStatisticActivity extends BaseActivity
 	
 	boolean mIsMultiplesPane = false;
 	
-	private TransactionYear mSelectedTransactionYear;
-	private TransactionMonth mSelectedTransactionMonth;
+	private TransactionYearBean mSelectedTransactionYear;
+	private TransactionMonthBean mSelectedTransactionMonth;
 	
 	private String mSelectedProductInfo = Constant.PRODUCT_QUANTITY;
 	
@@ -79,8 +79,8 @@ public class ProductStatisticActivity extends BaseActivity
 			
 			mSelectedProductInfo = (String) savedInstanceState.getSerializable(SELECTED_PRODUCT_INFO);
 			
-			mSelectedTransactionYear = (TransactionYear) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
-			mSelectedTransactionMonth = (TransactionMonth) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
+			mSelectedTransactionYear = (TransactionYearBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
+			mSelectedTransactionMonth = (TransactionMonthBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
 			
 			mIsDisplayTransactionAllYears = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ALL_YEARS);
 			mIsDisplayTransactionYear = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ON_YEAR);
@@ -88,10 +88,10 @@ public class ProductStatisticActivity extends BaseActivity
 		
 		} else {
 			
-			mSelectedTransactionMonth = new TransactionMonth();
+			mSelectedTransactionMonth = new TransactionMonthBean();
 			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
 			
-			mSelectedTransactionYear = new TransactionYear();
+			mSelectedTransactionYear = new TransactionYearBean();
 			mSelectedTransactionYear.setYear(CommonUtil.getCurrentYear());
 		} 
 	}
@@ -265,7 +265,7 @@ public class ProductStatisticActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onTransactionYearSelected(TransactionYear transactionYear) {
+	public void onTransactionYearSelected(TransactionYearBean transactionYear) {
 		
 		mSelectedTransactionYear = transactionYear;
 		
@@ -276,7 +276,7 @@ public class ProductStatisticActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onTransactionMonthSelected(TransactionMonth transactionMonth) {
+	public void onTransactionMonthSelected(TransactionMonthBean transactionMonth) {
 		
 		mSelectedTransactionMonth = transactionMonth;
 		

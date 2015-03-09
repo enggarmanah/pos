@@ -36,6 +36,11 @@
             style="@style/DataManagementMenuStyle"/>
         
         <Button
+            android:text="@string/module_supplier"
+            android:onClick="goToModuleSupplier"
+            style="@style/DataManagementMenuStyle"/>
+        
+        <Button
             android:text="@string/module_discount"
             android:onClick="goToModuleDiscount"
             style="@style/DataManagementMenuStyle"/>
