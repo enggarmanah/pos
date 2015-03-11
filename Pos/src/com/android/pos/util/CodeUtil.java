@@ -177,42 +177,47 @@ public class CodeUtil {
 		code.setLabel("Pembayaran Sebagian");
 		billStatus[2] = code;
 		
-		inventoryStatus = new CodeBean[7];
+		inventoryStatus = new CodeBean[8];
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_PURCHASE);
-		code.setLabel("Barang Pembelian");
+		code.setLabel("Pembelian Produk");
 		inventoryStatus[0] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_RETURN);
-		code.setLabel("Barang Retur");
+		code.setCode(Constant.INVENTORY_STATUS_SALE);
+		code.setLabel("Penjualan Produk");
 		inventoryStatus[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.INVENTORY_STATUS_RETURN);
+		code.setLabel("Retur Produk Rusak");
+		inventoryStatus[2] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_REFUND);
 		code.setLabel("Pembatalan Pembelian");
-		inventoryStatus[2] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_REPLACEMENT);
-		code.setLabel("Barang Pengganti");
 		inventoryStatus[3] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_NOT_OWNED_IN);
-		code.setLabel("Barang Titipan Masuk");
+		code.setCode(Constant.INVENTORY_STATUS_REPLACEMENT);
+		code.setLabel("Penggantian Produk Rusak");
 		inventoryStatus[4] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_NOT_OWNED_OUT);
-		code.setLabel("Barang Titipan Keluar");
+		code.setCode(Constant.INVENTORY_STATUS_NOT_OWNED_IN);
+		code.setLabel("Produk Titipan Masuk");
 		inventoryStatus[5] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_LOST);
-		code.setLabel("Barang Hilang");
+		code.setCode(Constant.INVENTORY_STATUS_NOT_OWNED_OUT);
+		code.setLabel("Produk Titipan Keluar");
 		inventoryStatus[6] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.INVENTORY_STATUS_LOST);
+		code.setLabel("Produk Hilang");
+		inventoryStatus[7] = code;
 	}
 	
 	public static CodeBean[] getMerchantTypes() {
@@ -282,6 +287,20 @@ public class CodeUtil {
 		String label = Constant.EMPTY_STRING;
 		
 		for (CodeBean codeBean : orderTypes) {
+			if (codeBean.getCode().equals(code)) {
+				label = codeBean.getLabel();
+				break;
+			}
+		}
+		
+		return label;
+	}
+	
+	public static String getInvetoriStatusLabel(String code) {
+		
+		String label = Constant.EMPTY_STRING;
+		
+		for (CodeBean codeBean : inventoryStatus) {
 			if (codeBean.getCode().equals(code)) {
 				label = codeBean.getLabel();
 				break;

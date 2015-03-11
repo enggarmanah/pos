@@ -4,6 +4,7 @@ import com.android.pos.Constant;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.Employee;
+import com.android.pos.dao.Inventory;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
@@ -14,6 +15,7 @@ import com.android.pos.dao.User;
 import com.android.pos.model.CustomerBean;
 import com.android.pos.model.DiscountBean;
 import com.android.pos.model.EmployeeBean;
+import com.android.pos.model.InventoryBean;
 import com.android.pos.model.MerchantBean;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.ProductGroupBean;
@@ -424,5 +426,52 @@ public class BeanUtil {
 		supplier.setCreateDate(bean.getCreate_date());
 		supplier.setUpdateBy(bean.getUpdate_by());
 		supplier.setUpdateDate(bean.getUpdate_date());
+	}
+	
+	public static InventoryBean getBean(Inventory inventory) {
+		
+		InventoryBean bean = new InventoryBean();
+		
+		bean.setMerchant_id(inventory.getMerchantId());
+		bean.setRemote_id(inventory.getId());
+		bean.setProductId(inventory.getProductId());
+		bean.setProductName(inventory.getProductName());
+		bean.setQuantityStr(inventory.getQuantityStr());
+		bean.setQuantity(inventory.getQuantity());
+		bean.setBillsId(inventory.getBillsId());
+		bean.setBillsReferenceNo(inventory.getBillsReferenceNo());
+		bean.setSupplierId(inventory.getSupplierId());
+		bean.setSupplierName(inventory.getSupplierName());
+		bean.setDeliveryDate(inventory.getDeliveryDate());
+		bean.setRemarks(inventory.getRemarks());
+		bean.setStatus(inventory.getStatus());
+		bean.setCreate_by(inventory.getCreateBy());
+		bean.setCreate_date(inventory.getCreateDate());
+		bean.setUpdate_by(inventory.getUpdateBy());
+		bean.setUpdate_date(inventory.getUpdateDate());
+		
+		return bean;
+	}
+	
+	public static void updateBean(Inventory inventory, InventoryBean bean) {
+		
+		inventory.setMerchantId(bean.getMerchant_id());
+		inventory.setId(bean.getRemote_id());
+		inventory.setProductId(bean.getProductId());
+		inventory.setProductName(bean.getProductName());
+		inventory.setQuantityStr(bean.getQuantityStr());
+		inventory.setQuantity(bean.getQuantity());
+		inventory.setBillsId(bean.getBillsId());
+		inventory.setBillsReferenceNo(bean.getBillsReferenceNo());
+		inventory.setSupplierId(bean.getSupplierId());
+		inventory.setSupplierName(bean.getSupplierName());
+		inventory.setDeliveryDate(bean.getDeliveryDate());
+		inventory.setRemarks(bean.getRemarks());
+		inventory.setStatus(bean.getStatus());
+		inventory.setUploadStatus(Constant.STATUS_NO);
+		inventory.setCreateBy(bean.getCreate_by());
+		inventory.setCreateDate(bean.getCreate_date());
+		inventory.setUpdateBy(bean.getUpdate_by());
+		inventory.setUpdateDate(bean.getUpdate_date());
 	}
 }

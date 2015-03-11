@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 
-	private Context context;
-	private List<T> items;
-	private T selectedItem;
-	private ItemActionListener<T> mCallback;
+	protected Context context;
+	protected List<T> items;
+	protected T selectedItem;
+	protected ItemActionListener<T> mCallback;
 
-	private View selectedView;
+	protected View selectedView;
 
 	public interface ItemActionListener<T> {
 
@@ -32,8 +32,16 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 	}
 
 	public BaseSearchArrayAdapter(Context context, List<T> items, T selectedItem, ItemActionListener<T> listener) {
-
 		super(context, R.layout.app_list_item, items);
+		
+		this.context = context;
+		this.items = items;
+		this.selectedItem = selectedItem;
+		this.mCallback = listener;
+	}
+	
+	public BaseSearchArrayAdapter(Context context, int layoutId, List<T> items, T selectedItem, ItemActionListener<T> listener) {
+		super(context, layoutId, items);
 		
 		this.context = context;
 		this.items = items;
@@ -90,7 +98,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final T item, final TextView itemNameView) {
+	protected View.OnClickListener getItemOnClickListener(final T item, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			

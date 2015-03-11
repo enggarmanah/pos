@@ -219,6 +219,13 @@ public class DbUtil {
             	InventoryDao.createTable(db, true);
             }
             
+            // handle version 27 changes
+            if (oldVersion < 27) {
+            	
+            	InventoryDao.dropTable(db, true);
+            	InventoryDao.createTable(db, true);
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -246,7 +253,7 @@ public class DbUtil {
     	DevOpenHelper helper = new DbOpenHelper(context, dbFile, null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();        
+        daoSession = daoMaster.newSession();
     }
     
     public static DaoSession getSession() {

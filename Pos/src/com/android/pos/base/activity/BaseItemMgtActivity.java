@@ -49,14 +49,15 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	private static String LIST = "LIST";
 	private static String SELECTED_ITEM = "SELECTED_ITEM";
 
-	private String searchFragmentTag = "searchFragment";
-	private String editFragmentTag = "editFragment";
-	private String confirmDeleteFragmentTag = "confirmDeleteFragment";
+	private String mSearchFragmentTag = "searchFragment";
+	private String mEditFragmentTag = "editFragment";
+	private String mConfirmDeleteFragmentTag = "confirmDeleteFragment";
 	
 	private String prevQuery = Constant.EMPTY_STRING;
 	
 	private boolean mIsOnEdit = false;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,9 +70,13 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 		initFragments(savedInstanceState);
 
-		initWaitAfterFragmentRemovedTask(searchFragmentTag, editFragmentTag);
+		initWaitAfterFragmentRemovedTask(mSearchFragmentTag, mEditFragmentTag);
 		
-		mConfirmDeleteFragment = new ConfirmDeleteDlgFragment<T>();
+		mConfirmDeleteFragment = (ConfirmDeleteDlgFragment<T>) getFragmentManager().findFragmentByTag(mConfirmDeleteFragmentTag);
+		
+		if (mConfirmDeleteFragment == null) {
+			mConfirmDeleteFragment = new ConfirmDeleteDlgFragment<T>();
+		}
 	}
 
 	protected abstract S getSearchFragmentInstance();
@@ -83,8 +88,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 		mIsMultiplesPane = getResources().getBoolean(R.bool.has_multiple_panes);
 
-		mSearchFragment = (S) getFragmentManager().findFragmentByTag(searchFragmentTag);
-		mEditFragment = (E) getFragmentManager().findFragmentByTag(editFragmentTag);
+		mSearchFragment = (S) getFragmentManager().findFragmentByTag(mSearchFragmentTag);
+		mEditFragment = (E) getFragmentManager().findFragmentByTag(mEditFragmentTag);
 
 		if (mSearchFragment == null) {
 			mSearchFragment = getSearchFragmentInstance();
@@ -134,8 +139,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	private boolean isFragmentHasBeenLoaded() {
 		
-		return (getFragmentManager().findFragmentByTag(searchFragmentTag) != null ||
-				getFragmentManager().findFragmentByTag(editFragmentTag) != null);  
+		return (getFragmentManager().findFragmentByTag(mSearchFragmentTag) != null ||
+				getFragmentManager().findFragmentByTag(mEditFragmentTag) != null);  
 	}
 	
 	private void loadFragments() {
@@ -145,16 +150,16 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		}
 
 		if (mIsMultiplesPane) {
-			addFragment(mSearchFragment, searchFragmentTag);
-			addFragment(mEditFragment, editFragmentTag);
+			addFragment(mSearchFragment, mSearchFragmentTag);
+			addFragment(mEditFragment, mEditFragmentTag);
 
 		} else {
 
 			if (mSelectedItem == null) {
-				addFragment(mSearchFragment, searchFragmentTag);
+				addFragment(mSearchFragment, mSearchFragmentTag);
 				
 			} else {
-				addFragment(mEditFragment, editFragmentTag);
+				addFragment(mEditFragment, mEditFragmentTag);
 			}
 		}
 	}
@@ -259,7 +264,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			showNavigationMenu();
 
 			if (getSearchFragmentView() == null) {
-				replaceFragment(mSearchFragment, searchFragmentTag);
+				replaceFragment(mSearchFragment, mSearchFragmentTag);
 			}
 
 			doSearch(Constant.EMPTY_STRING);
@@ -322,7 +327,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	
 	private void confirmDelete(final T item) {
 		
-		mConfirmDeleteFragment.show(getFragmentManager(), confirmDeleteFragmentTag);
+		mConfirmDeleteFragment.show(getFragmentManager(), mConfirmDeleteFragmentTag);
 		mConfirmDeleteFragment.setItemToBeDeleted(item, getItemName(item));
 	}
 	
@@ -340,7 +345,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 				doSearch(query);
 			} else {
 				if (!isSearchVisible()) {
-					replaceFragment(mSearchFragment, searchFragmentTag);
+					replaceFragment(mSearchFragment, mSearchFragmentTag);
 				}
 				doSearch(query);
 			}
@@ -361,7 +366,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 	private boolean isSearchVisible() {
 
-		if (getFragmentManager().findFragmentByTag(searchFragmentTag) != null) {
+		if (getFragmentManager().findFragmentByTag(mSearchFragmentTag) != null) {
 			return true;
 		} else {
 			return false;
@@ -381,7 +386,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		} else {
 			
-			replaceFragment(mSearchFragment, searchFragmentTag);
+			replaceFragment(mSearchFragment, mSearchFragmentTag);
 		}
 	}
 
@@ -484,7 +489,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			mSearchMenu.collapseActionView();
 			mIsEnableSearch = true;
 			
-			replaceFragment(mEditFragment, editFragmentTag);
+			replaceFragment(mEditFragment, mEditFragmentTag);
 			updateEditFragmentItem(item);
 		}
 	}
@@ -507,7 +512,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		if (mIsMultiplesPane) {
 			refreshEditView();
 		} else {
-			replaceFragment(mEditFragment, editFragmentTag);
+			replaceFragment(mEditFragment, mEditFragmentTag);
 			refreshEditView();
 		}
 	}
@@ -526,7 +531,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		if (mIsMultiplesPane) {
 			getEditFragmentView().setVisibility(View.INVISIBLE);
 		} else {
-			replaceFragment(mSearchFragment, searchFragmentTag);
+			replaceFragment(mSearchFragment, mSearchFragmentTag);
 		}
 	}
 	
@@ -544,7 +549,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		if (mIsMultiplesPane) {
 			getEditFragmentView().setVisibility(View.INVISIBLE);
 		} else {
-			replaceFragment(mSearchFragment, searchFragmentTag);
+			replaceFragment(mSearchFragment, mSearchFragmentTag);
 		}
 	}
 
@@ -603,8 +608,12 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			refreshSearchFragmentItems();
 		} else {
 			if (getSearchFragmentView() == null) {
-				replaceFragment(mSearchFragment, searchFragmentTag);
+				replaceFragment(mSearchFragment, mSearchFragmentTag);
 			}
 		}
 	}
+	
+	public void onSelectProduct(boolean isMandatory) {}
+	
+	public void onSelectSupplier(boolean isMandatory) {}
 }

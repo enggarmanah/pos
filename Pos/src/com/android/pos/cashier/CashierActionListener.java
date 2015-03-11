@@ -38,7 +38,5 @@ public interface CashierActionListener {
 	
 	public void onSelectCustomer();
 	
-	public void onCustomerSelected(Customer customer);
-	
 	public void onClearTransaction();
 }

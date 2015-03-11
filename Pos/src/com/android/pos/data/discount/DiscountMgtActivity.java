@@ -17,11 +17,13 @@ public class DiscountMgtActivity extends BaseItemMgtActivity<DiscountSearchFragm
 	List<Discount> mDiscounts;
 	Discount mSelectedDiscount;
 	
-	DiscountDao discountDao = DbUtil.getSession().getDiscountDao();
+	DiscountDao discountDao;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		discountDao = DbUtil.getSession().getDiscountDao();
 	}
 	
 	@Override

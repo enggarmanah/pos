@@ -125,6 +125,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingLeft">15dp</item>
@@ -141,6 +142,63 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/list_row_normal_text</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="ListViewRowInventoryNameTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/list_row_normal_text</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="ListViewRowInventoryRemarksTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_light</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="ListViewRowInventoryQuantityTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center|end</item>
+        <item name="android:gravity">top|end</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:paddingLeft">7dp</item>
+        <item name="android:paddingRight">7dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_default</item>
+        <item name="android:background">@drawable/bg_inventory_quantity</item>
+    </style>
+    
+    <style name="ListViewRowInventoryDeliveryDateTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_gravity">top|end</item>
+        <item name="android:gravity">center|end</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_light</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="ListViewRowInventorySupplierTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_default</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
 
@@ -652,6 +710,14 @@
         <item name="android:textColor">@color/dialog_header_text</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="PopUpDialogHeaderBtnStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">right|center_vertical</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:background">@drawable/selector_btn</item>
     </style>
 
     <style name="PaymentSummaryRowStyle">

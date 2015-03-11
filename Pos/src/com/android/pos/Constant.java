@@ -30,7 +30,7 @@ public class Constant {
 	
 	public static final String MERCHANT_TYPE_RESTO = "R";
 	public static final String MERCHANT_TYPE_BEAUTY_N_SPA = "B";
-	public static final String MERCHANT_TYPE_TOKO = "S";
+	public static final String MERCHANT_TYPE_SHOP = "S";
 	
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 250;
 	

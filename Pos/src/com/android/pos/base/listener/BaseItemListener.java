@@ -17,4 +17,8 @@ public interface BaseItemListener<T> {
 	public void onItemUnselected();
 	
 	public void onDeleteCompleted();
+	
+	public void onSelectProduct(boolean isMandatory);
+	
+	public void onSelectSupplier(boolean isMandatory);
 }

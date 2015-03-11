@@ -30,6 +30,8 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     
     List<Object> mInputFields = new ArrayList<Object>();
     
+    protected boolean isEnableInputFields = false;
+    
     @SuppressWarnings("unchecked")
 	@Override
     public void onAttach(Activity activity) {
@@ -73,6 +75,8 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     }
     
     public void enableInputFields(boolean isEnabled) {
+    	
+    	isEnableInputFields = isEnabled;
     	
     	for (Object field : mInputFields) {
     		
@@ -121,7 +125,7 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 		};
     }
     
-    protected View.OnFocusChangeListener getNumberFieldOnFocusChangeListener(final EditText numberInput) {
+    protected View.OnFocusChangeListener getCurrencyFieldOnFocusChangeListener(final EditText numberInput) {
     	
     	return new View.OnFocusChangeListener() {
 			
@@ -145,6 +149,30 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 		};
     }
     
+    protected View.OnFocusChangeListener getNumberFieldOnFocusChangeListener(final EditText numberInput) {
+    	
+    	return new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				
+				String digits = numberInput.getText().toString();
+				
+				String value = Constant.EMPTY_STRING;
+				
+				if (hasFocus) {
+                	value = CommonUtil.formatString(CommonUtil.parseCurrency(digits));
+                	numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                	numberInput.setText(value);
+				} else {
+					value = CommonUtil.formatCurrencyUnsigned(digits);
+					numberInput.setInputType(InputType.TYPE_CLASS_TEXT);
+					numberInput.setText(value);
+				}
+			}
+		};
+    }
+    
     protected abstract void updateView(T product);
     
     protected void showView() {
@@ -154,7 +182,9 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     		getView().setVisibility(View.VISIBLE);
     	}
     	
-    	getFirstField().requestFocus();
+    	if (getFirstField() != null) {
+    		getFirstField().requestFocus();
+    	}
     }
     
     protected void hideView() {
@@ -175,7 +205,9 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 			return;
 		}
 		
-    	getFirstField().requestFocus();
+    	if (getFirstField() != null) {
+    		getFirstField().requestFocus();
+    	}
     	
 		saveItem();
     	
@@ -214,8 +246,10 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     
     protected void hideKeyboard() {
     	
-    	InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-    	imm.hideSoftInputFromWindow(getFirstField().getWindowToken(), 0);
+    	if (getFirstField() != null) {
+        	InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        	imm.hideSoftInputFromWindow(getFirstField().getWindowToken(), 0);
+    	}
     }
     
     public void setItem(T item) {

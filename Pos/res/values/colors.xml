@@ -14,7 +14,7 @@
     <color name="section_header_text">#31343a</color>
     
     <color name="border_gray">#AAA</color>
-    <color name="border_gray_dark">#999</color>
+    <color name="border_gray_dark">#888</color>
     <color name="border_gray_light">#E1E1E1</color>
     <color name="border_white">#FFF</color>
     <color name="border_blue_light">#c3d8ea</color>
@@ -25,7 +25,7 @@
     <color name="menu_pressed">#aac8e1</color>
     <color name="menu_border">#a9c8e2</color>
     
-    <color name="text_light">#9ca0ac</color>
+    <color name="text_light">#9397a4</color>
     <color name="text_default">#4f5460</color>
     <color name="text_dark">#484c56</color>
     <color name="text_blue">#5e98c7</color>
@@ -55,6 +55,9 @@
     
     <color name="list_divider">#EEE</color>
     <color name="button_divider">#999</color>
+    
+    <color name="flow_out">#fc82a4</color>
+    <color name="flow_in">#85e97a</color>
     
     <color name="search_row_start">#DEDEDE</color>
     <color name="search_row_end">#DEDEDE</color>

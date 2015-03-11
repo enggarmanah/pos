@@ -54,6 +54,28 @@ public class CommonUtil {
 		}
 	}
 	
+	public static String getSqlLikeString(String value) {
+		
+		if (isEmpty(value)) {
+			return "%";
+		} else {
+			
+			String[] queries = value.split(" ");
+			String likeStr = "";
+			
+			for (String str : queries) {
+				
+				if (isEmpty(likeStr)) {
+					likeStr += "%" + str + "%";
+				} else {
+					likeStr += " %" + str + "%";
+				}
+			}
+			
+			return likeStr;
+		}
+	}
+	
 	public static Integer strToInt(String s) {
 		
 		Integer number = null;
@@ -363,7 +385,7 @@ public class CommonUtil {
 	
 	public static String formatCurrencyUnsigned(String inputStr) {
 		
-		String formatted = inputStr;
+		String formatted = getNvlString(inputStr);
 		
 		NumberFormat nf = NumberFormat.getCurrencyInstance(getLocale());
 		
@@ -409,10 +431,21 @@ public class CommonUtil {
 		try {
 			number = Integer.valueOf(unformatted);
 		} catch (Exception e) {
-			e.printStackTrace();
+			// do nothing
 		}
 		
         return number; 
+	}
+	
+	public static String parseCurrencyAsString(String inputStr) {
+		
+		String unformatted = inputStr;
+		
+		if (!isEmpty(inputStr)) {
+			unformatted = inputStr.replaceAll("\\D", "");
+		}
+        
+		return unformatted; 
 	}
 	
 	public static Integer parseInteger(String inputStr) {

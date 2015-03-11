@@ -1,4 +1,4 @@
-package com.android.pos.cashier;
+package com.android.pos.popup.search;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +20,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CashierCustomerDlgFragment extends DialogFragment implements CashierCustomerArrayAdapter.ItemActionListener {
+public class CustomerDlgFragment extends DialogFragment implements CustomerArrayAdapter.ItemActionListener {
 	
+	TextView mCancelBtn;
 	EditText mCustomerSearchText;
-	
 	ListView mCustomerListView;
-	
 	TextView mNoCustomerText;
 	
-	CashierActionListener mActionListener;
+	CustomerSelectionListener mActionListener;
 	
-	CashierCustomerArrayAdapter customerArrayAdapter;
+	CustomerArrayAdapter customerArrayAdapter;
 	
 	List<Customer> mCustomers;
 	
@@ -46,13 +45,13 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
         
         mCustomers = new ArrayList<Customer>();
         
-        customerArrayAdapter = new CashierCustomerArrayAdapter(getActivity(), mCustomers, this);
+        customerArrayAdapter = new CustomerArrayAdapter(getActivity(), mCustomers, this);
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.cashier_customer_fragment, container, false);
+		View view = inflater.inflate(R.layout.popup_customer_fragment, container, false);
 
 		return view;
 	}
@@ -87,6 +86,9 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
 		
 		mNoCustomerText = (TextView) getView().findViewById(R.id.noCustomerText);
 		mNoCustomerText.setOnClickListener(getNoCustomerTextOnClickListener());
+		
+		mCancelBtn = (TextView) getView().findViewById(R.id.cancelBtn);
+		mCancelBtn.setOnClickListener(getCancelBtnOnClickListener());
 	}
 	
 	@Override
@@ -94,7 +96,7 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
         super.onAttach(activity);
 
         try {
-            mActionListener = (CashierActionListener) activity;
+            mActionListener = (CustomerSelectionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement CashierActionListener");
@@ -122,6 +124,18 @@ public class CashierCustomerDlgFragment extends DialogFragment implements Cashie
 			public void onClick(View v) {
 				
 				mActionListener.onCustomerSelected(null);
+				dismiss();
+			}
+		};
+	}
+	
+	private View.OnClickListener getCancelBtnOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
 				dismiss();
 			}
 		};

@@ -10,20 +10,37 @@
         android:id="@+id/searchPanel"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="@color/dialog_header_background">
 
-        <TextView
-            style="@style/PopUpDialogHeaderStyle"
-            android:text="@string/select_customer" >
-        </TextView>
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:background="@color/background_blue_dark">
+	        <TextView
+	            style="@style/PopUpDialogHeaderStyle"
+	            android:gravity="start|center_vertical"
+	            android:text="@string/select_product" >
+	        </TextView>
+		    <TextView
+		        android:id="@+id/cancelBtn"
+		        style="@style/PopUpDialogHeaderBtnStyle"
+		        android:layout_marginStart="10dp"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginEnd="0dp"
+		        android:layout_marginRight="0dp"
+		        android:drawableStart="@drawable/action_cancel"
+		        android:drawableLeft="@drawable/action_cancel"/>
+		</LinearLayout>
 
         <EditText
-            android:id="@+id/customerSearchText"
+            android:id="@+id/productSearchText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@color/background_blue_light"
             android:gravity="center_vertical|start"
-            android:hint="@string/search_customer"
+            android:hint="@string/search_product"
             android:textColorHint="#9397a4"
             android:textColor="@color/text_dark"
             android:textSize="18sp"
@@ -36,19 +53,19 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/customerListView"
+        android:id="@+id/productListView"
         style="@style/ListViewStyle"
         android:layout_height="350dp">
     </ListView>
 
     <TextView
-        android:id="@+id/noCustomerText"
+        android:id="@+id/noProductText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:background="@color/dialog_button_background"
         android:gravity="center"
-        android:text="@string/no_customer"
+        android:text="@string/no_product"
         android:textColor="@color/dialog_button_text"
         android:textSize="18sp"
         android:textStyle="bold" >

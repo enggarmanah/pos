@@ -33,8 +33,17 @@
     <string-array name="app_menus_admin">
         <item>Laporan Transaksi</item>
         <item>Laporan Penjualan</item>
-        <item>Manajemen Pengguna</item>
-        <item>Manajemen Data</item>
+        <item>Data Inventori</item>
+        <item>Data Pengguna</item>
+        <item>Data Referensi</item>
+        <item>Keluar</item>
+    </string-array>
+    
+    <string-array name="app_menus_admin_resto">
+        <item>Laporan Transaksi</item>
+        <item>Laporan Penjualan</item>
+        <item>Data Pengguna</item>
+        <item>Data Referensi</item>
         <item>Keluar</item>
     </string-array>
     
@@ -59,11 +68,9 @@
     <string name="menu_order">Pemesanan</string>
     <string name="menu_transaction">Laporan Transaksi</string>
     <string name="menu_statistic_product">Laporan Penjualan</string>
-    <string name="menu_expense">Pengeluaran</string>
-    <string name="menu_profit_lost">Rekap Untung Rugi</string>
-    <string name="menu_statistic">Statistik</string>
-    <string name="menu_user_management">Manajemen Pengguna</string>
-    <string name="menu_data_management">Manajemen Data</string>
+    <string name="menu_inventory">Data Inventori</string>
+    <string name="menu_user_management">Data Pengguna</string>
+    <string name="menu_data_management">Data Referensi</string>
     <string name="menu_logout">Keluar</string> 
     
     <string name="module_merchant">Data Merchant</string>
@@ -73,6 +80,7 @@
     <string name="module_customer">Data Pelanggan</string>
     <string name="module_discount">Data Diskon</string>
     <string name="module_supplier">Data Supplier</string>
+    <string name="module_inventory">Data Inventori</string>
     
     <string name="info_quantity">Jumlah</string>
     <string name="info_revenue">Pendapatan</string>
@@ -88,7 +96,7 @@
     <string name="edit">Edit</string>
     <string name="select">Pilih</string>
     <string name="confirmation">Konfirmasi</string>
-    <string name="save">Simpan</string>
+    <string name="save">Simpan&#160;</string>
     <string name="select_printer">Pilih Printer</string>
     <string name="remarks">Catatan</string>
     <string name="none"></string>
@@ -136,6 +144,12 @@
     <string name="field_pic_name">Nama PIC :</string>
     <string name="field_pic_telephone">Telepon PIC :</string>
     
+    <string name="field_product">Produk :</string>
+    <string name="field_quantity">Jumlah :</string>
+    <string name="field_bills_reference_no">No. Nota :</string>
+    <string name="field_supplier">Supplier :</string>
+    <string name="field_delivery_date">Tanggal :</string>
+   
     <string name="count">Jumlah</string>
     <string name="number_0">0</string>
     <string name="number_1">1</string>
@@ -184,6 +198,12 @@
     <string name="track_customer">Catat Pelanggan</string>
     <string name="no_customer">Tanpa Pelanggan</string>
     <string name="customer_name">Nama Pelanggan</string>
+    <string name="search_product">Cari Produk</string>
+    <string name="select_product">Pilih Produk</string>
+    <string name="no_product">Tanpa Produk</string>
+    <string name="search_supplier">Cari Supplier</string>
+    <string name="select_supplier">Pilih Supplier</string>
+    <string name="no_supplier">Tanpa Supplier</string>
     
     <string name="transaction">Transaksi</string>
     <string name="transaction_no">No. Transaksi</string>

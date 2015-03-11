@@ -25,6 +25,8 @@ import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.TransactionItemDaoService;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDaoService;
+import com.android.pos.popup.search.CustomerDlgFragment;
+import com.android.pos.popup.search.CustomerSelectionListener;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.ConfirmationUtil;
 import com.android.pos.util.DbUtil;
@@ -51,21 +53,21 @@ import android.widget.TextView;
 
 public class CashierActivity extends BaseActivity 
 	implements CashierActionListener, SearchView.OnQueryTextListener, ConfirmListener,
-		CashierProductCountDlgFragment.ProductActionListener {
+		CashierProductCountDlgFragment.ProductActionListener, CustomerSelectionListener {
 	
 	LinearLayout messagePanel;
 	TextView messageText;
 
-	protected CashierProductSearchFragment mProductSearchFragment;
-	protected CashierOrderFragment mOrderFragment;
-	protected CashierOrderDlgFragment mOrderDlgFragment;
+	private CashierProductSearchFragment mProductSearchFragment;
+	private CashierOrderFragment mOrderFragment;
+	private CashierOrderDlgFragment mOrderDlgFragment;
 	private CashierProductCountDlgFragment mProductCountDlgFragment;
 	private CashierPaymentDlgFragment mPaymentDlgFragment;
 	private CashierOrderSummaryDlgFragment mOrderSummaryDlgFragment;
 	private CashierPaymentSummaryDlgFragment mPaymentSummaryDlgFragment;
 	private CashierDiscountDlgFragment mDiscountDlgFragment;
 	private CashierDiscountAmountDlgFragment mDiscountAmountDlgFragment;
-	private CashierCustomerDlgFragment mCustomerDlgFragment;
+	private CustomerDlgFragment mCustomerDlgFragment;
 	
 	boolean mIsMultiplesPane = false;
 	boolean mIsEnableSearch = true;
@@ -276,7 +278,7 @@ public class CashierActivity extends BaseActivity
 		}
 		
 		if (mCustomerDlgFragment == null) {
-			mCustomerDlgFragment = new CashierCustomerDlgFragment();
+			mCustomerDlgFragment = new CustomerDlgFragment();
 		}
 	}
 

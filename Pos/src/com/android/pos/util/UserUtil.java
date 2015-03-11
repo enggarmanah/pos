@@ -17,7 +17,7 @@ public class UserUtil {
 			
 			DbUtil.switchDb(MerchantUtil.getMerchantId());
 			mUserDaoService = new UserDaoService();
-			mUser = mUserDaoService.getUser(Long.valueOf(2));
+			mUser = mUserDaoService.getUser(Long.valueOf(1));
 		}
 		
 		return mUser;

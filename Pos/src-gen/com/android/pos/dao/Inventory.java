@@ -20,9 +20,9 @@ public class Inventory implements Serializable {
     private String productName;
     private String quantityStr;
     private Integer quantity;
-    private long billsId;
+    private Long billsId;
     private String billsReferenceNo;
-    private long supplierId;
+    private Long supplierId;
     private String supplierName;
     private java.util.Date deliveryDate;
     private String remarks;
@@ -59,7 +59,7 @@ public class Inventory implements Serializable {
         this.id = id;
     }
 
-    public Inventory(Long id, long merchantId, long productId, String productName, String quantityStr, Integer quantity, long billsId, String billsReferenceNo, long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Inventory(Long id, long merchantId, long productId, String productName, String quantityStr, Integer quantity, Long billsId, String billsReferenceNo, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.productId = productId;
@@ -134,11 +134,11 @@ public class Inventory implements Serializable {
         this.quantity = quantity;
     }
 
-    public long getBillsId() {
+    public Long getBillsId() {
         return billsId;
     }
 
-    public void setBillsId(long billsId) {
+    public void setBillsId(Long billsId) {
         this.billsId = billsId;
     }
 
@@ -150,11 +150,11 @@ public class Inventory implements Serializable {
         this.billsReferenceNo = billsReferenceNo;
     }
 
-    public long getSupplierId() {
+    public Long getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(long supplierId) {
+    public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
     }
 
@@ -288,7 +288,7 @@ public class Inventory implements Serializable {
 
     /** To-one relationship, resolved on first access. */
     public Bills getBills() {
-        long __key = this.billsId;
+        Long __key = this.billsId;
         if (bills__resolvedKey == null || !bills__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -304,19 +304,16 @@ public class Inventory implements Serializable {
     }
 
     public void setBills(Bills bills) {
-        if (bills == null) {
-            throw new DaoException("To-one property 'billsId' has not-null constraint; cannot set to-one to null");
-        }
         synchronized (this) {
             this.bills = bills;
-            billsId = bills.getId();
+            billsId = bills == null ? null : bills.getId();
             bills__resolvedKey = billsId;
         }
     }
 
     /** To-one relationship, resolved on first access. */
     public Supplier getSupplier() {
-        long __key = this.supplierId;
+        Long __key = this.supplierId;
         if (supplier__resolvedKey == null || !supplier__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -332,12 +329,9 @@ public class Inventory implements Serializable {
     }
 
     public void setSupplier(Supplier supplier) {
-        if (supplier == null) {
-            throw new DaoException("To-one property 'supplierId' has not-null constraint; cannot set to-one to null");
-        }
         synchronized (this) {
             this.supplier = supplier;
-            supplierId = supplier.getId();
+            supplierId = supplier == null ? null : supplier.getId();
             supplier__resolvedKey = supplierId;
         }
     }

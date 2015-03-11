@@ -1,9 +1,9 @@
-package com.android.pos.cashier;
+package com.android.pos.popup.search;
 
 import java.util.List;
 
 import com.android.pos.R;
-import com.android.pos.dao.Customer;
+import com.android.pos.dao.Supplier;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,64 +12,64 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class CashierCustomerArrayAdapter extends ArrayAdapter<Customer> {
+public class SupplierArrayAdapter extends ArrayAdapter<Supplier> {
 
 	private Context context;
-	private List<Customer> customers;
+	private List<Supplier> suppliers;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onCustomerSelected(Customer item);
+		public void onSupplierSelected(Supplier item);
 	}
 
 	class ViewHolder {
 		TextView itemText;
 	}
 
-	public CashierCustomerArrayAdapter(Context context, List<Customer> customers, ItemActionListener listener) {
+	public SupplierArrayAdapter(Context context, List<Supplier> suppliers, ItemActionListener listener) {
 
-		super(context, R.layout.cashier_customer_list_item, customers);
+		super(context, R.layout.popup_supplier_list_item, suppliers);
 		
 		this.context = context;
-		this.customers = customers;
+		this.suppliers = suppliers;
 		this.mCallback = listener;
 	}
 	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final Customer customer = customers.get(position);
+		final Supplier supplier = suppliers.get(position);
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView = convertView;
-		TextView prdGroupName = null;
+		TextView supplierName = null;
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.cashier_customer_list_item, parent, false);
-			prdGroupName = (TextView) rowView.findViewById(R.id.nameTxt);
+			rowView = inflater.inflate(R.layout.popup_supplier_list_item, parent, false);
+			supplierName = (TextView) rowView.findViewById(R.id.nameTxt);
 
 			ViewHolder viewHolder = new ViewHolder();
-			viewHolder.itemText = prdGroupName;
+			viewHolder.itemText = supplierName;
 
 			rowView.setTag(viewHolder);
 
 		} else {
 
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
-			prdGroupName = viewHolder.itemText;
+			supplierName = viewHolder.itemText;
 		}
 		
-		prdGroupName.setText(customer.getName());
+		supplierName.setText(supplier.getName());
 
-		rowView.setOnClickListener(getItemOnClickListener(customer, prdGroupName));
+		rowView.setOnClickListener(getItemOnClickListener(supplier, supplierName));
 
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final Customer customer, final TextView itemNameView) {
+	private View.OnClickListener getItemOnClickListener(final Supplier supplier, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			
@@ -78,7 +78,7 @@ public class CashierCustomerArrayAdapter extends ArrayAdapter<Customer> {
 				
 				v.setSelected(true);
 
-				mCallback.onCustomerSelected(customer);
+				mCallback.onSupplierSelected(supplier);
 			}
 		};
 	}

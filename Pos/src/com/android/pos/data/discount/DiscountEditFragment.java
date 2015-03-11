@@ -77,7 +77,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     protected void saveItem() {
     	
     	String name = mNameText.getText().toString();
-    	int percentage = CommonUtil.strToInt(mPercentageText.getText().toString());
+    	Integer percentage = CommonUtil.strToInt(mPercentageText.getText().toString());
     	
     	if (mItem != null) {
     		

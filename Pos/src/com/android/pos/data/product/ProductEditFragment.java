@@ -102,10 +102,10 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormField(mPriceText, R.string.field_price));
     	
-    	mPriceText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mPriceText));
-    	mCostPriceText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mCostPriceText));
-    	mCommisionText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mCommisionText));
-    	mPromoPriceText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mPromoPriceText));
+    	mPriceText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mPriceText));
+    	mCostPriceText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mCostPriceText));
+    	mCommisionText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mCommisionText));
+    	mPromoPriceText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mPromoPriceText));
     	mStockText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mStockText));
     	mMinStockText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener(mMinStockText));
     	
