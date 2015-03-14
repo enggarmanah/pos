@@ -4,12 +4,12 @@
     <item>        
         <shape>
             <gradient
-                android:startColor="@color/background_grey"
-                android:endColor="@color/background_grey"
+                android:startColor="@color/background_blue_medium"
+                android:endColor="@color/background_blue_medium"
                 android:angle="270" />
             <stroke
                 android:width="0.5dp"
-                android:color="@color/border_gray" />
+                android:color="@color/border_gray_dark" />
             <corners android:radius="0dp" />
         </shape>
     </item>

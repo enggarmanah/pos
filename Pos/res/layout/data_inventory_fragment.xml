@@ -5,7 +5,11 @@
     <LinearLayout style="@style/FormStyle" >
 		
         <LinearLayout style="@style/FormRowStyle" >
-
+			
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_type" />
@@ -16,7 +20,11 @@
         </LinearLayout>
         
         <LinearLayout style="@style/FormRowStyle" >
-
+			
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_P" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_product" />
@@ -27,7 +35,27 @@
         </LinearLayout>
         
         <LinearLayout style="@style/FormRowStyle" >
+			
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_H" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_cost_price" />
 
+            <EditText
+                android:id="@+id/productCostPriceTxt"
+                style="@style/FormInputNumericStyle"
+                android:hint="@string/hint_cost_price" />
+        </LinearLayout>
+        
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_J" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_quantity" />
@@ -40,6 +68,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_bills_reference_no" />
 
@@ -48,8 +80,13 @@
                 style="@style/FormInputStyle" />
         </LinearLayout>
 
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout style="@style/FormRowStyle"
+            android:id="@+id/supplierPanel">
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_S" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_supplier" />
@@ -62,16 +99,26 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
                 style="@style/FormTextStyle"
-                android:text="@string/field_delivery_date" />
+                android:text="@string/field_date" />
 
             <EditText
                 android:id="@+id/deliveryDate"
                 style="@style/FormInputDateStyle" />
         </LinearLayout>
         
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout 
+            android:id="@+id/remarksPanel"
+            style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_K" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_remarks" />

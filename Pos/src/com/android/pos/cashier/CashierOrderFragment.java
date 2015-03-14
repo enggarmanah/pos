@@ -103,10 +103,10 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		mDiscountText.setText(Constant.EMPTY_STRING);
 		
 		mTaxText = (TextView) view.findViewById(R.id.taxText);
-		mTaxText.setText(CommonUtil.formatCurrencyUnsigned(0));
+		mTaxText.setText(CommonUtil.formatNumber(0));
 		
 		mServiceChargeText = (TextView) view.findViewById(R.id.serviceChargeText);
-		mServiceChargeText.setText(CommonUtil.formatCurrencyUnsigned(0));
+		mServiceChargeText.setText(CommonUtil.formatNumber(0));
 		
 		mTotalBillText = (TextView) view.findViewById(R.id.totalOrderText);
 		mTotalBillText.setText(CommonUtil.formatCurrency(0));

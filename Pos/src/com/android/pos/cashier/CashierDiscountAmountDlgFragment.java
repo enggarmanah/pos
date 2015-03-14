@@ -146,7 +146,7 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 		}
 		
 		mDiscountText.setText(mDiscount.getName());
-		mAmountText.setText(CommonUtil.formatCurrencyUnsigned(mAmount));
+		mAmountText.setText(CommonUtil.formatNumber(mAmount));
 	}
 		
 	private View.OnClickListener getNumberBtnOnClickListener(final String numberText) {
@@ -162,7 +162,7 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 				if (number.equals("0")) {
 					mAmountText.setText(numberText);
 				} else {
-					number = CommonUtil.formatCurrencyUnsigned(number + numberText);
+					number = CommonUtil.formatNumber(number + numberText);
 					mAmountText.setText(number);
 				}
 			}
@@ -194,7 +194,7 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 				if (number.length() == 1) {
 					mAmountText.setText("0");
 				} else {
-					number = CommonUtil.formatCurrencyUnsigned(number.substring(0, number.length()-1));
+					number = CommonUtil.formatNumber(number.substring(0, number.length()-1));
 					mAmountText.setText(number);
 				}
 			}

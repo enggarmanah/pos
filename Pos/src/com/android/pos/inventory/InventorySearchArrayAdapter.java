@@ -103,7 +103,7 @@ public class InventorySearchArrayAdapter extends BaseSearchArrayAdapter<Inventor
 		remarksText.setText(remarks);
 		
 		if (!CommonUtil.isEmpty(item.getSupplierName())) {
-			supplierText.setText(CommonUtil.formatCurrencyUnsigned(item.getSupplierName()));
+			supplierText.setText(CommonUtil.formatNumber(item.getSupplierName()));
 			supplierText.setVisibility(View.VISIBLE);
 		} else {
 			supplierText.setVisibility(View.GONE);

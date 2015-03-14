@@ -165,7 +165,7 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
                 	numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
                 	numberInput.setText(value);
 				} else {
-					value = CommonUtil.formatCurrencyUnsigned(digits);
+					value = CommonUtil.formatNumber(digits);
 					numberInput.setInputType(InputType.TYPE_CLASS_TEXT);
 					numberInput.setText(value);
 				}

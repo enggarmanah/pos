@@ -32,7 +32,7 @@ public class Constant {
 	public static final String MERCHANT_TYPE_BEAUTY_N_SPA = "B";
 	public static final String MERCHANT_TYPE_SHOP = "S";
 	
-	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 250;
+	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 200;
 	
 	public static final String MESSAGE_PRINTER_CANT_CONNECT = "Tidak dapat terhubung ke Printer";
 	public static final String MESSAGE_PRINTER_CONNECTION_LOST = "Koneksi ke Printer telah terputus";
@@ -88,10 +88,9 @@ public class Constant {
 	public static final String CASHIER_STATE_ORDER_PAYMENT = "CASHIER_STATE_ORDER_PAYMENT";
 	public static final String CASHIER_STATE_ORDER_NEW_ITEM = "CASHIER_STATE_ORDER_NEW_ITEM";
 	
-	public static final String BILL_TYPE_EXPENSE_REGULAR = "REGL";
-	public static final String BILL_TYPE_EXPENSE_ADHOC = "ADHC";
+	public static final String BILL_TYPE_EXPENSE_WITH_RECEIPT = "RCPT";
+	public static final String BILL_TYPE_EXPENSE_WITHOUT_RECEIPT = "NORC";
 	public static final String BILL_TYPE_PRODUCT_PURCHASE = "PRCH";
-	public static final String BILL_TYPE_PRODUCT_SUPPORT = "SUPT";
 	
 	public static final String BILL_STATUS_PAID = "PAID";
 	public static final String BILL_STATUS_UNPAID = "UNPD";
@@ -105,4 +104,6 @@ public class Constant {
 	public static final String INVENTORY_STATUS_NOT_OWNED_IN = "NOIN";
 	public static final String INVENTORY_STATUS_NOT_OWNED_OUT = "NOUT";
 	public static final String INVENTORY_STATUS_LOST = "LOST";
+	public static final String INVENTORY_STATUS_DAMAGE = "DAMG";
+	public static final String INVENTORY_STATUS_INITIAL_STOCK = "INIT";
 }

@@ -7,6 +7,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_name" />
 
@@ -14,6 +18,7 @@
                 android:id="@+id/nameTxt"
                 style="@style/FormInputStyle" />
         </LinearLayout>
+        
     </LinearLayout>
 
 </ScrollView>

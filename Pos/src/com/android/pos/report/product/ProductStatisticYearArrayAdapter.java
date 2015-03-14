@@ -80,7 +80,7 @@ public class ProductStatisticYearArrayAdapter extends ArrayAdapter<TransactionYe
 		transDate.setText(CommonUtil.formatYear(transactionYear.getYear()));
 		
 		if (Constant.PRODUCT_QUANTITY.equals(mCallback.getSelectedProductInfo())) {
-			totalAmount.setText(CommonUtil.formatCurrencyUnsigned(transactionYear.getAmount()));
+			totalAmount.setText(CommonUtil.formatNumber(transactionYear.getAmount()));
 		} else {
 			totalAmount.setText(CommonUtil.formatCurrency(transactionYear.getAmount()));	
 		}

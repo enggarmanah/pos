@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/RightFragmentStyle" >
+
+    <LinearLayout style="@style/FormStyle" >
+		
+        <LinearLayout style="@style/FormRowStyle" >
+			
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_type" />
+
+            <Spinner
+                android:id="@+id/typeSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/supplierPanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_S" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_supplier" />
+
+            <EditText
+                android:id="@+id/supplierNameTxt"
+                style="@style/FormInputStyle" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/billReferenceNoPanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_bills_reference_no" />
+
+            <EditText
+                android:id="@+id/billsReferenceNoTxt"
+                style="@style/FormInputStyle" />
+        </LinearLayout>
+        
+		<LinearLayout 
+		    android:id="@+id/billDatePanel"
+		    style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_bills_date" />
+
+            <EditText
+                android:id="@+id/billsDate"
+                style="@style/FormInputDateStyle" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/billAmountPanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_total" />
+
+            <EditText
+                android:id="@+id/billsAmountTxt"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
+		
+        <LinearLayout 
+            android:id="@+id/billStatusPanel"
+            style="@style/FormRowStyle" >
+			
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_S" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_status" />
+
+            <Spinner
+                android:id="@+id/statusSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/billDueDatePanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_J" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_bills_due_date" />
+
+            <EditText
+                android:id="@+id/billsDueDate"
+                style="@style/FormInputDateStyle" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/paymentDatePanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_payment_date" />
+
+            <EditText
+                android:id="@+id/paymentDate"
+                style="@style/FormInputDateStyle" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/paymentAmountPanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_B" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_payment" />
+
+            <EditText
+                android:id="@+id/paymentTxt"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/deliveryDatePanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_delivery_date" />
+
+            <EditText
+                android:id="@+id/deliveryDate"
+                style="@style/FormInputDateStyle" />
+        </LinearLayout>
+        
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_K" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_remarks" />
+
+            <EditText
+                android:id="@+id/remarksTxt"
+                style="@style/FormInputTextAreaStyle" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

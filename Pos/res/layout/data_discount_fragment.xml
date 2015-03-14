@@ -5,7 +5,11 @@
     <LinearLayout style="@style/FormStyle" >
 		
         <LinearLayout style="@style/FormRowStyle" >
-
+			
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_name" />
@@ -16,7 +20,11 @@
         </LinearLayout>
         
         <LinearLayout style="@style/FormRowStyle" >
-
+			
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_P" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_percentage" />

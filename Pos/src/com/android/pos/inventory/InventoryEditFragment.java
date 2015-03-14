@@ -9,9 +9,11 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.base.listener.BaseItemListener;
+import com.android.pos.dao.Bills;
 import com.android.pos.dao.Inventory;
 import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Product;
+import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.Supplier;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
@@ -25,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,17 +35,24 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     
 	Spinner mStatusSp;
 	EditText mProductNameText;
+	EditText mProductCostPriceText;
 	EditText mQuantityText;
     EditText mBillsReferenceNoText;
     EditText mSupplierNameText;
     EditText mDeliveryDate;
     EditText mRemarksText;
-
+    
+    LinearLayout mSupplierPanel;
+    LinearLayout mRemarksPanel;
+    	
     CodeSpinnerArrayAdapter statusArrayAdapter;
     
     private InventoryDaoService mInventoryDaoService = new InventoryDaoService();
+    private ProductDaoService mProductDaoService = new ProductDaoService();
     
     BaseItemListener<Inventory> mInventoryItemListener;
+    
+    String mStatus;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -74,15 +84,21 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     @Override
     protected void initViewReference() {
         
-    	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
-    	mProductNameText = (EditText) getActivity().findViewById(R.id.productNameTxt);
-    	mQuantityText = (EditText) getActivity().findViewById(R.id.quantityTxt);
-    	mBillsReferenceNoText = (EditText) getActivity().findViewById(R.id.billsReferenceNoTxt);
-    	mSupplierNameText = (EditText) getActivity().findViewById(R.id.supplierNameTxt);
-    	mDeliveryDate = (EditText) getActivity().findViewById(R.id.deliveryDate);
-    	mRemarksText = (EditText) getActivity().findViewById(R.id.remarksTxt);
+    	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
+    	mProductNameText = (EditText) getView().findViewById(R.id.productNameTxt);
+    	mProductCostPriceText = (EditText) getView().findViewById(R.id.productCostPriceTxt);
+    	mQuantityText = (EditText) getView().findViewById(R.id.quantityTxt);
+    	mBillsReferenceNoText = (EditText) getView().findViewById(R.id.billsReferenceNoTxt);
+    	mSupplierNameText = (EditText) getView().findViewById(R.id.supplierNameTxt);
+    	mDeliveryDate = (EditText) getView().findViewById(R.id.deliveryDate);
+    	mRemarksText = (EditText) getView().findViewById(R.id.remarksTxt);
+    	
+    	mSupplierPanel = (LinearLayout) getView().findViewById(R.id.supplierPanel);
+        mRemarksPanel = (LinearLayout) getView().findViewById(R.id.remarksPanel);
     	
     	registerField(mStatusSp);
+    	registerField(mProductNameText);
+    	registerField(mProductCostPriceText);
     	registerField(mQuantityText);
     	registerField(mBillsReferenceNoText);
     	registerField(mSupplierNameText);
@@ -109,6 +125,9 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	mProductNameText.setFocusable(false);
     	mProductNameText.setOnClickListener(getProductOnClickListener());
     	
+    	mBillsReferenceNoText.setFocusable(false);
+    	mBillsReferenceNoText.setOnClickListener(getBillOnClickListener());
+    	
     	mSupplierNameText.setFocusable(false);
     	mSupplierNameText.setOnClickListener(getSupplierOnClickListener());
     }
@@ -122,7 +141,8 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		mStatusSp.setSelection(statusIndex);
     		
     		mProductNameText.setText(inventory.getProductName());
-    		mQuantityText.setText(CommonUtil.formatCurrencyUnsigned(inventory.getQuantityStr()));
+    		mProductCostPriceText.setText(CommonUtil.formatNumber(inventory.getProductCostPrice()));
+    		mQuantityText.setText(CommonUtil.formatNumber(inventory.getQuantityStr()));
     		mBillsReferenceNoText.setText(inventory.getBillsReferenceNo());
     		mSupplierNameText.setText(inventory.getSupplierName());
     		mDeliveryDate.setText(CommonUtil.formatDate(inventory.getDeliveryDate()));
@@ -134,13 +154,17 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		
     		hideView();
     	}
+    	
+        mStatus = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
+        refreshVisibleField();
     }
     
     @Override
     protected void saveItem() {
     	
     	String productName = mProductNameText.getText().toString();
-    	String quantity = CommonUtil.parseCurrencyAsString(mQuantityText.getText().toString());
+    	Integer productCostPrice = CommonUtil.parseNumber(mProductCostPriceText.getText().toString());
+    	Integer quantity = CommonUtil.parseNumber(mQuantityText.getText().toString());
     	String billsReferenceNo = mBillsReferenceNoText.getText().toString();
     	String supplierName = mSupplierNameText.getText().toString();
     	Date deliveryDate = CommonUtil.parseDate(mDeliveryDate.getText().toString());
@@ -152,17 +176,24 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		mItem.setMerchantId(MerchantUtil.getMerchantId());
     		
     		mItem.setProductName(productName);
-    		mItem.setQuantityStr(quantity);
+    		mItem.setProductCostPrice(productCostPrice);
+    		mItem.setQuantityStr(CommonUtil.formatString(quantity));
     		
-    		if (!CommonUtil.isEmpty(quantity)) {
+    		if (quantity != null) {
     			
     			if (Constant.INVENTORY_STATUS_PURCHASE.equals(status) ||
-    				Constant.INVENTORY_STATUS_PURCHASE.equals(status)) {
+    				Constant.INVENTORY_STATUS_REPLACEMENT.equals(status) ||
+    				Constant.INVENTORY_STATUS_REFUND.equals(status) ||
+    				Constant.INVENTORY_STATUS_INITIAL_STOCK.equals(status)) {
     				
-    				mItem.setQuantity(CommonUtil.parseInteger(quantity));
+    				mItem.setQuantity(quantity);
     			} else {
-    				mItem.setQuantity(-CommonUtil.parseInteger(quantity));
+    				mItem.setQuantity(-quantity);
     			}
+    			
+    		} else {
+    			
+    			mItem.setQuantity(0);
     		}
      		
     		mItem.setBillsReferenceNo(billsReferenceNo);
@@ -213,6 +244,15 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	
     	mInventoryDaoService.updateInventory(mItem);
     	
+    	// update product cost price
+    	
+    	if (mItem.getProductCostPrice() != null || mItem.getProductCostPrice() == 0) {
+    	
+	    	Product product = mProductDaoService.getProduct(mItem.getProductId());
+	    	product.setCostPrice(mItem.getProductCostPrice());
+	    	mProductDaoService.updateProduct(product);
+    	}
+    	
     	return true;
     }
     
@@ -240,6 +280,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     			
     			mItem.setProductId(product.getId());
     			mItem.setProductName(product.getName());
+    			mItem.setProductCostPrice(product.getCostPrice());
     			
     		} else {
     			
@@ -269,6 +310,43 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		updateView(mItem);
     	}
 	}
+    
+    public void setBill(Bills bill) {
+		
+    	if (mItem != null) {
+    		
+    		if (bill != null) {
+    			
+    			mItem.setBillsId(bill.getId());
+    			mItem.setBillsReferenceNo(bill.getBillReferenceNo());
+    			mItem.setSupplierId(bill.getSupplierId());
+    			mItem.setSupplierName(bill.getSupplierName());
+    			mItem.setDeliveryDate(bill.getDeliveryDate());
+    			
+    		} else {
+    			
+    			mItem.setBills(null);
+    			mItem.setBillsReferenceNo(Constant.EMPTY_STRING);
+    			mItem.setSupplier(null);
+    			mItem.setSupplierName(Constant.EMPTY_STRING);
+    			mItem.setDeliveryDate(null);
+    		}
+    		
+    		updateView(mItem);
+    	}
+	}
+    
+    private void refreshVisibleField() {
+    	
+    	mSupplierPanel.setVisibility(View.VISIBLE);
+		mRemarksPanel.setVisibility(View.VISIBLE);
+		
+		if (Constant.INVENTORY_STATUS_SALE.equals(mStatus)) {
+			
+			mSupplierPanel.setVisibility(View.GONE);
+			mRemarksPanel.setVisibility(View.GONE);
+		}
+    }
     
     public View.OnClickListener getProductOnClickListener() {
     	
@@ -306,6 +384,27 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
 						
 						boolean isMandatory = true;
 						mInventoryItemListener.onSelectSupplier(isMandatory);
+					}
+				}
+			}
+		};
+    }
+    
+    public View.OnClickListener getBillOnClickListener() {
+    	
+    	return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if (mBillsReferenceNoText.isEnabled()) {
+					
+					if (isEnableInputFields) {
+						
+						saveItem();
+						
+						boolean isMandatory = true;
+						mInventoryItemListener.onSelectBill(isMandatory);
 					}
 				}
 			}

@@ -104,10 +104,10 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		mDiscountText.setText(Constant.EMPTY_STRING);
 		
 		mTaxText = (TextView) getView().findViewById(R.id.taxText);
-		mTaxText.setText(CommonUtil.formatCurrencyUnsigned(0));
+		mTaxText.setText(CommonUtil.formatNumber(0));
 		
 		mServiceChargeText = (TextView) getView().findViewById(R.id.serviceChargeText);
-		mServiceChargeText.setText(CommonUtil.formatCurrencyUnsigned(0));
+		mServiceChargeText.setText(CommonUtil.formatNumber(0));
 		
 		mPaymentTypeText = (TextView) getView().findViewById(R.id.paymentTypeText);
 		

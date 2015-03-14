@@ -76,7 +76,7 @@ public class ProductStatisticDetailArrayAdapter extends ArrayAdapter<ProductStat
 		productName.setText(productStatistic.getProduct_name());
 		
 		if (Constant.PRODUCT_QUANTITY.equals(mCallback.getProductInfo())) {
-			saleCount.setText(CommonUtil.formatCurrencyUnsigned(productStatistic.getValue()));
+			saleCount.setText(CommonUtil.formatNumber(productStatistic.getValue()));
 		} else {
 			saleCount.setText(CommonUtil.formatCurrency(productStatistic.getValue()));
 		}

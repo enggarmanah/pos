@@ -8,6 +8,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_name" />
 
@@ -18,6 +22,10 @@
 
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_type" />
@@ -30,6 +38,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_A" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_address" />
 
@@ -40,6 +52,10 @@
 		
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_telephone" />
@@ -52,6 +68,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_contact_name" />
 
@@ -62,6 +82,10 @@
 
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_contact_telephone" />
@@ -74,6 +98,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_L" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_login_id" />
 
@@ -84,6 +112,10 @@
 
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_P" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_password" />
@@ -96,6 +128,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_A" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_period_start" />
 
@@ -106,6 +142,10 @@
 
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_A" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_period_end" />
@@ -118,29 +158,43 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_P" />
+            
+            <TextView
                 style="@style/FormTextStyle"
-                android:text="@string/field_tax_percentage" />
+                android:text="@string/field_tax_percentage"/>
 
             <EditText
                 android:id="@+id/taxText"
-                style="@style/FormInputNumericStyle" />
+                style="@style/FormInputNumericStyle"
+                android:hint="@string/hint_percentage" />
         </LinearLayout>
         
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_B" />
+            
+            <TextView
                 style="@style/FormTextStyle"
-                android:text="@string/field_service_charge_percentage" />
+                android:text="@string/field_service_charge_percentage"/>
 
             <EditText
                 android:id="@+id/serviceChargeText"
-                style="@style/FormInputNumericStyle" />
+                style="@style/FormInputNumericStyle"
+                android:hint="@string/hint_percentage"/>
         </LinearLayout>
                 
         <LinearLayout 
             android:id="@+id/statusPanel"
             style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_S" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_status" />

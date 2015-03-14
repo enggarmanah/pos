@@ -1,7 +1,6 @@
 package com.android.pos.dao;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.android.pos.dao.DaoSession;
 
@@ -21,8 +20,10 @@ public class Bills implements Serializable {
     private java.util.Date billDate;
     private java.util.Date billDueDate;
     private Integer billAmount;
+    private java.util.Date paymentDate;
     private Integer payment;
-    private long supplierId;
+    private Long supplierId;
+    private String supplierName;
     private java.util.Date deliveryDate;
     private String remarks;
     private String status;
@@ -44,7 +45,6 @@ public class Bills implements Serializable {
     private Supplier supplier;
     private Long supplier__resolvedKey;
 
-    private List<BillsItem> billsItemList;
 
     public Bills() {
     }
@@ -53,7 +53,7 @@ public class Bills implements Serializable {
         this.id = id;
     }
 
-    public Bills(Long id, long merchantId, String billReferenceNo, String billType, java.util.Date billDate, java.util.Date billDueDate, Integer billAmount, Integer payment, long supplierId, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Bills(Long id, long merchantId, String billReferenceNo, String billType, java.util.Date billDate, java.util.Date billDueDate, Integer billAmount, java.util.Date paymentDate, Integer payment, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.billReferenceNo = billReferenceNo;
@@ -61,8 +61,10 @@ public class Bills implements Serializable {
         this.billDate = billDate;
         this.billDueDate = billDueDate;
         this.billAmount = billAmount;
+        this.paymentDate = paymentDate;
         this.payment = payment;
         this.supplierId = supplierId;
+        this.supplierName = supplierName;
         this.deliveryDate = deliveryDate;
         this.remarks = remarks;
         this.status = status;
@@ -135,6 +137,14 @@ public class Bills implements Serializable {
         this.billAmount = billAmount;
     }
 
+    public java.util.Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(java.util.Date paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
     public Integer getPayment() {
         return payment;
     }
@@ -143,12 +153,20 @@ public class Bills implements Serializable {
         this.payment = payment;
     }
 
-    public long getSupplierId() {
+    public Long getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(long supplierId) {
+    public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     public java.util.Date getDeliveryDate() {
@@ -245,7 +263,7 @@ public class Bills implements Serializable {
 
     /** To-one relationship, resolved on first access. */
     public Supplier getSupplier() {
-        long __key = this.supplierId;
+        Long __key = this.supplierId;
         if (supplier__resolvedKey == null || !supplier__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -261,36 +279,11 @@ public class Bills implements Serializable {
     }
 
     public void setSupplier(Supplier supplier) {
-        if (supplier == null) {
-            throw new DaoException("To-one property 'supplierId' has not-null constraint; cannot set to-one to null");
-        }
         synchronized (this) {
             this.supplier = supplier;
-            supplierId = supplier.getId();
+            supplierId = supplier == null ? null : supplier.getId();
             supplier__resolvedKey = supplierId;
         }
-    }
-
-    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
-    public List<BillsItem> getBillsItemList() {
-        if (billsItemList == null) {
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            BillsItemDao targetDao = daoSession.getBillsItemDao();
-            List<BillsItem> billsItemListNew = targetDao._queryBills_BillsItemList(id);
-            synchronized (this) {
-                if(billsItemList == null) {
-                    billsItemList = billsItemListNew;
-                }
-            }
-        }
-        return billsItemList;
-    }
-
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    public synchronized void resetBillsItemList() {
-        billsItemList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

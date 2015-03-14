@@ -201,10 +201,10 @@ public class CashierOrderDlgFragment extends DialogFragment {
 		
 		int orderTypeIndex = orderTypeArrayAdapter.getPosition(mOrderType);
 		
-		mTotalItemText.setText(CommonUtil.formatCurrencyUnsigned(mTotalItem));
+		mTotalItemText.setText(CommonUtil.formatNumber(mTotalItem));
 		mOrderTypeSp.setSelection(orderTypeIndex);
 		mCustomerText.setText(mCustomerName);
-		mReservationNoText.setText(CommonUtil.formatCurrencyUnsigned(mReservationNo));
+		mReservationNoText.setText(CommonUtil.formatNumber(mReservationNo));
 		
 		if (mOrderType == null) {
 			mOrderType = Constant.ORDER_TYPE_DINE_IN;
@@ -239,7 +239,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 				if (number.equals("0")) {
 					mReservationNoText.setText(numberText);
 				} else {
-					number = CommonUtil.formatCurrencyUnsigned(number + numberText);
+					number = CommonUtil.formatNumber(number + numberText);
 					mReservationNoText.setText(number);
 				}
 			}
@@ -271,7 +271,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 				if (number.length() == 1) {
 					mReservationNoText.setText("0");
 				} else {
-					number = CommonUtil.formatCurrencyUnsigned(number.substring(0, number.length()-1));
+					number = CommonUtil.formatNumber(number.substring(0, number.length()-1));
 					mReservationNoText.setText(number);
 				}
 			}

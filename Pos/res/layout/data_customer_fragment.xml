@@ -7,6 +7,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_name" />
 
@@ -17,6 +21,10 @@
         
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_telephone" />
@@ -29,6 +37,10 @@
 		<LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_E" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_email" />
 
@@ -39,6 +51,10 @@
         
 		<LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_S" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_emailStatus" />
@@ -51,6 +67,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_A" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_address" />
 
@@ -61,6 +81,10 @@
 
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_S" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_status" />

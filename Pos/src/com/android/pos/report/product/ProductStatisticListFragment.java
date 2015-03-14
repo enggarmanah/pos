@@ -230,7 +230,7 @@ public class ProductStatisticListFragment extends BaseFragment
 		mNavigationTitle.setText(getString(R.string.transaction_total));
 		
 		if (Constant.PRODUCT_QUANTITY.equals(mSelectedProductInfo)) {
-			mNavText.setText("Total   " + CommonUtil.formatCurrencyUnsigned(getTransactionYearsTotalAmount(mTransactionYears)));
+			mNavText.setText("Total   " + CommonUtil.formatNumber(getTransactionYearsTotalAmount(mTransactionYears)));
 		} else {
 			mNavText.setText(CommonUtil.formatCurrency(getTransactionYearsTotalAmount(mTransactionYears)));
 		}
@@ -263,7 +263,7 @@ public class ProductStatisticListFragment extends BaseFragment
 		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
 		
 		if (Constant.PRODUCT_QUANTITY.equals(mSelectedProductInfo)) {
-			mNavText.setText("Total   " + CommonUtil.formatCurrencyUnsigned(getTransactionMonthsTotalAmount(mTransactionMonths)));
+			mNavText.setText("Total   " + CommonUtil.formatNumber(getTransactionMonthsTotalAmount(mTransactionMonths)));
 		} else {
 			mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
 		}

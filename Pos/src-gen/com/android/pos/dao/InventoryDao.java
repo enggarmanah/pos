@@ -30,20 +30,21 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
         public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
         public final static Property ProductId = new Property(2, long.class, "productId", false, "PRODUCT_ID");
         public final static Property ProductName = new Property(3, String.class, "productName", false, "PRODUCT_NAME");
-        public final static Property QuantityStr = new Property(4, String.class, "quantityStr", false, "QUANTITY_STR");
-        public final static Property Quantity = new Property(5, Integer.class, "quantity", false, "QUANTITY");
-        public final static Property BillsId = new Property(6, Long.class, "billsId", false, "BILLS_ID");
-        public final static Property BillsReferenceNo = new Property(7, String.class, "billsReferenceNo", false, "BILLS_REFERENCE_NO");
-        public final static Property SupplierId = new Property(8, Long.class, "supplierId", false, "SUPPLIER_ID");
-        public final static Property SupplierName = new Property(9, String.class, "supplierName", false, "SUPPLIER_NAME");
-        public final static Property DeliveryDate = new Property(10, java.util.Date.class, "deliveryDate", false, "DELIVERY_DATE");
-        public final static Property Remarks = new Property(11, String.class, "remarks", false, "REMARKS");
-        public final static Property Status = new Property(12, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(13, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(14, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(15, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(16, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(17, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property ProductCostPrice = new Property(4, Integer.class, "productCostPrice", false, "PRODUCT_COST_PRICE");
+        public final static Property QuantityStr = new Property(5, String.class, "quantityStr", false, "QUANTITY_STR");
+        public final static Property Quantity = new Property(6, Integer.class, "quantity", false, "QUANTITY");
+        public final static Property BillsId = new Property(7, Long.class, "billsId", false, "BILLS_ID");
+        public final static Property BillsReferenceNo = new Property(8, String.class, "billsReferenceNo", false, "BILLS_REFERENCE_NO");
+        public final static Property SupplierId = new Property(9, Long.class, "supplierId", false, "SUPPLIER_ID");
+        public final static Property SupplierName = new Property(10, String.class, "supplierName", false, "SUPPLIER_NAME");
+        public final static Property DeliveryDate = new Property(11, java.util.Date.class, "deliveryDate", false, "DELIVERY_DATE");
+        public final static Property Remarks = new Property(12, String.class, "remarks", false, "REMARKS");
+        public final static Property Status = new Property(13, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(14, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(15, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(16, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(17, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(18, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
 
     private DaoSession daoSession;
@@ -66,20 +67,21 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
                 "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
                 "'PRODUCT_ID' INTEGER NOT NULL ," + // 2: productId
                 "'PRODUCT_NAME' TEXT," + // 3: productName
-                "'QUANTITY_STR' TEXT," + // 4: quantityStr
-                "'QUANTITY' INTEGER," + // 5: quantity
-                "'BILLS_ID' INTEGER," + // 6: billsId
-                "'BILLS_REFERENCE_NO' TEXT," + // 7: billsReferenceNo
-                "'SUPPLIER_ID' INTEGER," + // 8: supplierId
-                "'SUPPLIER_NAME' TEXT," + // 9: supplierName
-                "'DELIVERY_DATE' INTEGER," + // 10: deliveryDate
-                "'REMARKS' TEXT," + // 11: remarks
-                "'STATUS' TEXT," + // 12: status
-                "'UPLOAD_STATUS' TEXT," + // 13: uploadStatus
-                "'CREATE_BY' TEXT," + // 14: createBy
-                "'CREATE_DATE' INTEGER," + // 15: createDate
-                "'UPDATE_BY' TEXT," + // 16: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 17: updateDate
+                "'PRODUCT_COST_PRICE' INTEGER," + // 4: productCostPrice
+                "'QUANTITY_STR' TEXT," + // 5: quantityStr
+                "'QUANTITY' INTEGER," + // 6: quantity
+                "'BILLS_ID' INTEGER," + // 7: billsId
+                "'BILLS_REFERENCE_NO' TEXT," + // 8: billsReferenceNo
+                "'SUPPLIER_ID' INTEGER," + // 9: supplierId
+                "'SUPPLIER_NAME' TEXT," + // 10: supplierName
+                "'DELIVERY_DATE' INTEGER," + // 11: deliveryDate
+                "'REMARKS' TEXT," + // 12: remarks
+                "'STATUS' TEXT," + // 13: status
+                "'UPLOAD_STATUS' TEXT," + // 14: uploadStatus
+                "'CREATE_BY' TEXT," + // 15: createBy
+                "'CREATE_DATE' INTEGER," + // 16: createDate
+                "'UPDATE_BY' TEXT," + // 17: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 18: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -105,74 +107,79 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
             stmt.bindString(4, productName);
         }
  
+        Integer productCostPrice = entity.getProductCostPrice();
+        if (productCostPrice != null) {
+            stmt.bindLong(5, productCostPrice);
+        }
+ 
         String quantityStr = entity.getQuantityStr();
         if (quantityStr != null) {
-            stmt.bindString(5, quantityStr);
+            stmt.bindString(6, quantityStr);
         }
  
         Integer quantity = entity.getQuantity();
         if (quantity != null) {
-            stmt.bindLong(6, quantity);
+            stmt.bindLong(7, quantity);
         }
  
         Long billsId = entity.getBillsId();
         if (billsId != null) {
-            stmt.bindLong(7, billsId);
+            stmt.bindLong(8, billsId);
         }
  
         String billsReferenceNo = entity.getBillsReferenceNo();
         if (billsReferenceNo != null) {
-            stmt.bindString(8, billsReferenceNo);
+            stmt.bindString(9, billsReferenceNo);
         }
  
         Long supplierId = entity.getSupplierId();
         if (supplierId != null) {
-            stmt.bindLong(9, supplierId);
+            stmt.bindLong(10, supplierId);
         }
  
         String supplierName = entity.getSupplierName();
         if (supplierName != null) {
-            stmt.bindString(10, supplierName);
+            stmt.bindString(11, supplierName);
         }
  
         java.util.Date deliveryDate = entity.getDeliveryDate();
         if (deliveryDate != null) {
-            stmt.bindLong(11, deliveryDate.getTime());
+            stmt.bindLong(12, deliveryDate.getTime());
         }
  
         String remarks = entity.getRemarks();
         if (remarks != null) {
-            stmt.bindString(12, remarks);
+            stmt.bindString(13, remarks);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(13, status);
+            stmt.bindString(14, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(14, uploadStatus);
+            stmt.bindString(15, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(15, createBy);
+            stmt.bindString(16, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(16, createDate.getTime());
+            stmt.bindLong(17, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(17, updateBy);
+            stmt.bindString(18, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(18, updateDate.getTime());
+            stmt.bindLong(19, updateDate.getTime());
         }
     }
 
@@ -196,20 +203,21 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
             cursor.getLong(offset + 1), // merchantId
             cursor.getLong(offset + 2), // productId
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // productName
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // quantityStr
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // quantity
-            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // billsId
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // billsReferenceNo
-            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // supplierId
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // supplierName
-            cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)), // deliveryDate
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // remarks
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // status
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // uploadStatus
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // createBy
-            cursor.isNull(offset + 15) ? null : new java.util.Date(cursor.getLong(offset + 15)), // createDate
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // updateBy
-            cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)) // updateDate
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // productCostPrice
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // quantityStr
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // quantity
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // billsId
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // billsReferenceNo
+            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // supplierId
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // supplierName
+            cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)), // deliveryDate
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // remarks
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // status
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // uploadStatus
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // createBy
+            cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)), // createDate
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // updateBy
+            cursor.isNull(offset + 18) ? null : new java.util.Date(cursor.getLong(offset + 18)) // updateDate
         );
         return entity;
     }
@@ -221,20 +229,21 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
         entity.setMerchantId(cursor.getLong(offset + 1));
         entity.setProductId(cursor.getLong(offset + 2));
         entity.setProductName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setQuantityStr(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setQuantity(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setBillsId(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
-        entity.setBillsReferenceNo(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setSupplierId(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
-        entity.setSupplierName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setDeliveryDate(cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)));
-        entity.setRemarks(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setStatus(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setUploadStatus(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setCreateBy(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setCreateDate(cursor.isNull(offset + 15) ? null : new java.util.Date(cursor.getLong(offset + 15)));
-        entity.setUpdateBy(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setUpdateDate(cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)));
+        entity.setProductCostPrice(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setQuantityStr(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setQuantity(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setBillsId(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
+        entity.setBillsReferenceNo(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setSupplierId(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
+        entity.setSupplierName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setDeliveryDate(cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)));
+        entity.setRemarks(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setStatus(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setUploadStatus(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setCreateBy(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setCreateDate(cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)));
+        entity.setUpdateBy(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setUpdateDate(cursor.isNull(offset + 18) ? null : new java.util.Date(cursor.getLong(offset + 18)));
      }
     
     /** @inheritdoc */

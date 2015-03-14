@@ -108,6 +108,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.android.pos.bills.BillsMgtActivity"
+            android:label="@string/module_bills" 
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
             android:name="com.android.pos.data.discount.DiscountMgtActivity"
             android:label="@string/module_discount" 
             android:launchMode="singleTask" >

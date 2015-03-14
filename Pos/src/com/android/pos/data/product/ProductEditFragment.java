@@ -145,8 +145,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		mPromoPriceText.setText(CommonUtil.formatCurrency(product.getPromoPrice()));
     		mPromoStartDate.setText(CommonUtil.formatDate(product.getPromoStart()));
     		mPromoEndDate.setText(CommonUtil.formatDate(product.getPromoEnd()));
-    		mStockText.setText(CommonUtil.formatCurrencyUnsigned(product.getStock()));
-    		mMinStockText.setText(CommonUtil.formatCurrencyUnsigned(product.getMinStock()));
+    		mStockText.setText(CommonUtil.formatNumber(product.getStock()));
+    		mMinStockText.setText(CommonUtil.formatNumber(product.getMinStock()));
     		
     		mTypeSp.setSelection(typeIndex);
     		mProductGrpSp.setSelection(productGrpIndex);

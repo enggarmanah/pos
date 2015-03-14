@@ -4,6 +4,7 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.auth.MerchantLoginActivity;
 import com.android.pos.auth.UserLoginActivity;
+import com.android.pos.bills.BillsMgtActivity;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.data.DataMgtActivity;
 import com.android.pos.inventory.InventoryMgtActivity;
@@ -202,6 +203,11 @@ public abstract class BaseActivity extends Activity {
 		} else if (getString(R.string.menu_statistic_product).equals(menu)) {
 
 			Intent intent = new Intent(this, ProductStatisticActivity.class);
+			startActivity(intent);
+
+		} else if (getString(R.string.menu_bills).equals(menu)) {
+
+			Intent intent = new Intent(this, BillsMgtActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_inventory).equals(menu)) {

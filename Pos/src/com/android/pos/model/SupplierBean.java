@@ -5,8 +5,8 @@ public class SupplierBean extends BaseBean {
 	private String name;
 	private String telephone;
 	private String address;
-	private String picName;
-	private String picTelephone;
+	private String pic_name;
+	private String pic_telephone;
 	private String remarks;
 	private String status;
 
@@ -34,20 +34,20 @@ public class SupplierBean extends BaseBean {
 		this.address = address;
 	}
 
-	public String getPicName() {
-		return picName;
+	public String getPic_name() {
+		return pic_name;
 	}
 
-	public void setPicName(String picName) {
-		this.picName = picName;
+	public void setPic_name(String pic_name) {
+		this.pic_name = pic_name;
 	}
 
-	public String getPicTelephone() {
-		return picTelephone;
+	public String getPic_telephone() {
+		return pic_telephone;
 	}
 
-	public void setPicTelephone(String picTelephone) {
-		this.picTelephone = picTelephone;
+	public void setPic_telephone(String pic_telephone) {
+		this.pic_telephone = pic_telephone;
 	}
 
 	public String getRemarks() {

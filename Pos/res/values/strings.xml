@@ -33,6 +33,7 @@
     <string-array name="app_menus_admin">
         <item>Laporan Transaksi</item>
         <item>Laporan Penjualan</item>
+        <item>Data Pengeluaran</item>
         <item>Data Inventori</item>
         <item>Data Pengguna</item>
         <item>Data Referensi</item>
@@ -41,7 +42,8 @@
     
     <string-array name="app_menus_admin_resto">
         <item>Laporan Transaksi</item>
-        <item>Laporan Penjualan</item>
+        <item>Laporan Penjualan</item>       
+        <item>Laporan Pengeluaran</item>
         <item>Data Pengguna</item>
         <item>Data Referensi</item>
         <item>Keluar</item>
@@ -55,8 +57,8 @@
         <item>Keluar</item>
     </string-array>
     
-    <string name="login_merchant">Login ke TokoKu :</string>
-    <string name="login_user">Login :</string>
+    <string name="login_merchant">Login ke TokoKu</string>
+    <string name="login_user">Login</string>
     
     <string name="merchant_id">ID Merchant</string>
     <string name="password">Password</string>
@@ -69,6 +71,7 @@
     <string name="menu_transaction">Laporan Transaksi</string>
     <string name="menu_statistic_product">Laporan Penjualan</string>
     <string name="menu_inventory">Data Inventori</string>
+    <string name="menu_bills">Data Pengeluaran</string>
     <string name="menu_user_management">Data Pengguna</string>
     <string name="menu_data_management">Data Referensi</string>
     <string name="menu_logout">Keluar</string> 
@@ -81,6 +84,7 @@
     <string name="module_discount">Data Diskon</string>
     <string name="module_supplier">Data Supplier</string>
     <string name="module_inventory">Data Inventori</string>
+    <string name="module_bills">Data Pengeluaran</string>
     
     <string name="info_quantity">Jumlah</string>
     <string name="info_revenue">Pendapatan</string>
@@ -112,43 +116,80 @@
     <string name="msg_notification_search_action">Masukkan kata pencarian pada kolom di atas.</string>
     <string name="msg_data_save_success">Data telah berhasil disimpan.</string>
     
-    <string name="field_name">Nama :</string>
-    <string name="field_type">Tipe :</string>
-    <string name="field_group">Kategori :</string>
-    <string name="field_price">Harga Jual :</string>
-    <string name="field_cost_price">Harga Beli :</string>
-    <string name="field_pic_required">Butuh PIC :</string>
-    <string name="field_commision">Komisi :</string>
-    <string name="field_stock">Jumlah Stock :</string>
-    <string name="field_min_stock">Min. Stock :</string>
-    <string name="field_promo_price">Harga Promo :</string>
-    <string name="field_promo_start">Awal Promo :</string>
-    <string name="field_promo_end">Akhir Promo :</string>
-    <string name="field_status">Status :</string>
-    <string name="field_address">Alamat :</string>
-    <string name="field_contact_name">Manajer :</string>
-    <string name="field_contact_telephone">Telepon :</string>
-    <string name="field_login_id">Login Id :</string>
-    <string name="field_password">Password :</string>
-    <string name="field_period_start">Awal Akses :</string>
-    <string name="field_period_end">Akhir Akses :</string>
-    <string name="field_tax_percentage">Pajak (%) :</string>
-    <string name="field_service_charge_percentage">Bea Servis (%) :</string>
-    <string name="field_capacity">Kapasitas :</string>
-    <string name="field_role">Hak Akses :</string>
-    <string name="field_telephone">Telepon :</string>
-    <string name="field_email">Email :</string>
-    <string name="field_emailStatus">Status Email :</string>
-    <string name="field_percentage">Persentase :</string>
-    <string name="field_remarks">Keterangan :</string>
-    <string name="field_pic_name">Nama PIC :</string>
-    <string name="field_pic_telephone">Telepon PIC :</string>
+    <string name="field_name">Nama</string>
+    <string name="field_type">Tipe</string>
+    <string name="field_group">Kategori</string>
+    <string name="field_price">Harga Jual</string>
+    <string name="field_cost_price">Harga Beli</string>
+    <string name="field_pic_required">Butuh PIC</string>
+    <string name="field_commision">Komisi</string>
+    <string name="field_stock">Jumlah Stock</string>
+    <string name="field_min_stock">Min. Stock</string>
+    <string name="field_promo_price">Harga Promo</string>
+    <string name="field_promo_start">Awal Promo</string>
+    <string name="field_promo_end">Akhir Promo</string>
+    <string name="field_status">Status</string>
+    <string name="field_address">Alamat</string>
+    <string name="field_contact_name">Manajer</string>
+    <string name="field_contact_telephone">Telepon</string>
+    <string name="field_login_id">Login Id</string>
+    <string name="field_password">Password</string>
+    <string name="field_period_start">Awal Akses</string>
+    <string name="field_period_end">Akhir Akses</string>
+    <string name="field_tax_percentage">Pajak</string>
+    <string name="field_service_charge_percentage">Bea Servis</string>
+    <string name="field_capacity">Kapasitas</string>
+    <string name="field_role">Hak Akses</string>
+    <string name="field_telephone">Telepon</string>
+    <string name="field_email">Email</string>
+    <string name="field_emailStatus">Status Email</string>
+    <string name="field_percentage">Persentase</string>
+    <string name="field_remarks">Keterangan</string>
+    <string name="field_pic_name">Nama PIC</string>
+    <string name="field_pic_telephone">Telepon PIC</string>
     
-    <string name="field_product">Produk :</string>
-    <string name="field_quantity">Jumlah :</string>
-    <string name="field_bills_reference_no">No. Nota :</string>
-    <string name="field_supplier">Supplier :</string>
-    <string name="field_delivery_date">Tanggal :</string>
+    <string name="field_product">Produk</string>
+    <string name="field_quantity">Jumlah</string>
+    <string name="field_bills_reference_no">No. Nota</string>
+    <string name="field_supplier">Supplier</string>
+    <string name="field_delivery_date">Tgl. Terima</string>
+    
+    <string name="field_bills_date">Tgl. Nota</string>
+    <string name="field_bills_due_date">Jatuh Tempo</string>
+    <string name="field_total">Total</string>
+    <string name="field_payment_date">Tgl. Bayar</string>
+    <string name="field_payment">Bayar</string>
+    <string name="field_date">Tanggal</string>
+    
+    <string name="hint_percentage">Persentase %</string>
+    <string name="hint_cost_price">Harga Beli Satuan</string>  
+    
+    <string name="letter_A">A</string>
+    <string name="letter_B">B</string>
+    <string name="letter_C">C</string>
+    <string name="letter_D">D</string>
+    <string name="letter_E">E</string>
+    <string name="letter_F">F</string>
+    <string name="letter_G">G</string>
+    <string name="letter_H">H</string>
+    <string name="letter_I">I</string>
+    <string name="letter_J">J</string>
+    <string name="letter_K">K</string>
+    <string name="letter_L">L</string>
+    <string name="letter_M">M</string>
+    <string name="letter_N">N</string>
+    <string name="letter_O">O</string>
+    <string name="letter_P">P</string>
+    <string name="letter_Q">Q</string>
+    <string name="letter_R">R</string>
+    <string name="letter_S">S</string>
+    <string name="letter_T">T</string>
+    <string name="letter_U">U</string>
+    <string name="letter_V">V</string>
+    <string name="letter_W">W</string>
+    <string name="letter_X">X</string>
+    <string name="letter_Y">Y</string>
+    <string name="letter_Z">Z</string>
    
     <string name="count">Jumlah</string>
     <string name="number_0">0</string>
@@ -204,6 +245,9 @@
     <string name="search_supplier">Cari Supplier</string>
     <string name="select_supplier">Pilih Supplier</string>
     <string name="no_supplier">Tanpa Supplier</string>
+    <string name="search_bill">Cari Nota</string>
+    <string name="select_bill">Pilih Nota</string>
+    <string name="no_bill">Tanpa Nota</string>
     
     <string name="transaction">Transaksi</string>
     <string name="transaction_no">No. Transaksi</string>

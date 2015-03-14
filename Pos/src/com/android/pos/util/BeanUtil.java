@@ -1,6 +1,7 @@
 package com.android.pos.util;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.Bills;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.Employee;
@@ -12,6 +13,7 @@ import com.android.pos.dao.Supplier;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.User;
+import com.android.pos.model.BillsBean;
 import com.android.pos.model.CustomerBean;
 import com.android.pos.model.DiscountBean;
 import com.android.pos.model.EmployeeBean;
@@ -398,8 +400,8 @@ public class BeanUtil {
 		bean.setName(supplier.getName());
 		bean.setTelephone(supplier.getTelephone());
 		bean.setAddress(supplier.getAddress());
-		bean.setPicName(supplier.getPicName());
-		bean.setPicTelephone(supplier.getPicTelephone());
+		bean.setPic_name(supplier.getPicName());
+		bean.setPic_telephone(supplier.getPicTelephone());
 		bean.setRemarks(supplier.getRemarks());
 		bean.setStatus(supplier.getStatus());
 		bean.setCreate_by(supplier.getCreateBy());
@@ -417,8 +419,8 @@ public class BeanUtil {
 		supplier.setName(bean.getName());
 		supplier.setTelephone(bean.getTelephone());
 		supplier.setAddress(bean.getAddress());
-		supplier.setPicName(bean.getPicName());
-		supplier.setPicTelephone(bean.getPicTelephone());
+		supplier.setPicName(bean.getPic_name());
+		supplier.setPicTelephone(bean.getPic_telephone());
 		supplier.setStatus(bean.getStatus());
 		supplier.setRemarks(bean.getRemarks());
 		supplier.setUploadStatus(Constant.STATUS_NO);
@@ -435,14 +437,15 @@ public class BeanUtil {
 		bean.setMerchant_id(inventory.getMerchantId());
 		bean.setRemote_id(inventory.getId());
 		bean.setProductId(inventory.getProductId());
-		bean.setProductName(inventory.getProductName());
-		bean.setQuantityStr(inventory.getQuantityStr());
+		bean.setProduct_name(inventory.getProductName());
+		bean.setProduct_cost_price(inventory.getProductCostPrice());
+		bean.setQuantity_str(inventory.getQuantityStr());
 		bean.setQuantity(inventory.getQuantity());
-		bean.setBillsId(inventory.getBillsId());
-		bean.setBillsReferenceNo(inventory.getBillsReferenceNo());
-		bean.setSupplierId(inventory.getSupplierId());
-		bean.setSupplierName(inventory.getSupplierName());
-		bean.setDeliveryDate(inventory.getDeliveryDate());
+		bean.setBills_id(inventory.getBillsId());
+		bean.setBills_reference_no(inventory.getBillsReferenceNo());
+		bean.setSupplier_id(inventory.getSupplierId());
+		bean.setSupplier_name(inventory.getSupplierName());
+		bean.setDelivery_date(inventory.getDeliveryDate());
 		bean.setRemarks(inventory.getRemarks());
 		bean.setStatus(inventory.getStatus());
 		bean.setCreate_by(inventory.getCreateBy());
@@ -458,14 +461,15 @@ public class BeanUtil {
 		inventory.setMerchantId(bean.getMerchant_id());
 		inventory.setId(bean.getRemote_id());
 		inventory.setProductId(bean.getProductId());
-		inventory.setProductName(bean.getProductName());
-		inventory.setQuantityStr(bean.getQuantityStr());
+		inventory.setProductName(bean.getProduct_name());
+		inventory.setProductCostPrice(bean.getProduct_cost_price());
+		inventory.setQuantityStr(bean.getQuantity_str());
 		inventory.setQuantity(bean.getQuantity());
-		inventory.setBillsId(bean.getBillsId());
-		inventory.setBillsReferenceNo(bean.getBillsReferenceNo());
-		inventory.setSupplierId(bean.getSupplierId());
-		inventory.setSupplierName(bean.getSupplierName());
-		inventory.setDeliveryDate(bean.getDeliveryDate());
+		inventory.setBillsId(bean.getBills_id());
+		inventory.setBillsReferenceNo(bean.getBills_reference_no());
+		inventory.setSupplierId(bean.getSupplier_id());
+		inventory.setSupplierName(bean.getSupplier_name());
+		inventory.setDeliveryDate(bean.getDelivery_date());
 		inventory.setRemarks(bean.getRemarks());
 		inventory.setStatus(bean.getStatus());
 		inventory.setUploadStatus(Constant.STATUS_NO);
@@ -473,5 +477,60 @@ public class BeanUtil {
 		inventory.setCreateDate(bean.getCreate_date());
 		inventory.setUpdateBy(bean.getUpdate_by());
 		inventory.setUpdateDate(bean.getUpdate_date());
+	}
+	
+	public static BillsBean getBean(Bills bills) {
+		
+		BillsBean bean = new BillsBean();
+		
+		bean.setMerchant_id(bills.getMerchantId());
+		bean.setRemote_id(bills.getId());
+		
+		bean.setSupplier_id(bills.getSupplierId());
+		bean.setSupplier_name(bills.getSupplierName());
+		bean.setBill_reference_no(bills.getBillReferenceNo());
+		bean.setBill_date(bills.getBillDate());
+		bean.setBill_due_date(bills.getBillDueDate());
+		bean.setBill_amount(bills.getBillAmount());
+		bean.setStatus(bills.getStatus());
+		bean.setPayment_date(bills.getPaymentDate());
+		bean.setPayment(bills.getPayment());
+		
+		bean.setDelivery_date(bills.getDeliveryDate());
+		bean.setRemarks(bills.getRemarks());
+		bean.setStatus(bills.getStatus());
+		
+		bean.setCreate_by(bills.getCreateBy());
+		bean.setCreate_date(bills.getCreateDate());
+		bean.setUpdate_by(bills.getUpdateBy());
+		bean.setUpdate_date(bills.getUpdateDate());
+		
+		return bean;
+	}
+	
+	public static void updateBean(Bills bills, BillsBean bean) {
+		
+		bills.setMerchantId(bean.getMerchant_id());
+		bills.setId(bean.getRemote_id());
+		
+		bills.setSupplierId(bean.getSupplier_id());
+		bills.setSupplierName(bean.getSupplier_name());
+		bills.setBillReferenceNo(bean.getBill_reference_no());
+		bills.setBillDate(bean.getBill_date());
+		bills.setBillDueDate(bean.getBill_due_date());
+		bills.setBillAmount(bean.getBill_amount());
+		bills.setStatus(bean.getStatus());
+		bills.setPaymentDate(bean.getPayment_date());
+		bills.setPayment(bean.getPayment());
+		
+		bills.setDeliveryDate(bean.getDelivery_date());
+		bills.setRemarks(bean.getRemarks());
+		bills.setStatus(bean.getStatus());
+		
+		bills.setUploadStatus(Constant.STATUS_NO);
+		bills.setCreateBy(bean.getCreate_by());
+		bills.setCreateDate(bean.getCreate_date());
+		bills.setUpdateBy(bean.getUpdate_by());
+		bills.setUpdateDate(bean.getUpdate_date());
 	}
 }

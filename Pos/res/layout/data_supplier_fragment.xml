@@ -5,7 +5,11 @@
     <LinearLayout style="@style/FormStyle" >
 		
         <LinearLayout style="@style/FormRowStyle" >
-
+			
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_name" />
@@ -18,6 +22,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_telephone" />
 
@@ -28,6 +36,10 @@
         
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_A" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_address" />
@@ -40,6 +52,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_N" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_pic_name" />
 
@@ -51,6 +67,10 @@
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_pic_telephone" />
 
@@ -61,6 +81,10 @@
         
         <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_K" />
+            
             <TextView
                 style="@style/FormTextStyle"
                 android:text="@string/field_remarks" />

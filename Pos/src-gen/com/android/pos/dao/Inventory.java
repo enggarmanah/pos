@@ -10,7 +10,6 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table INVENTORY.
  */
-
 @SuppressWarnings("serial")
 public class Inventory implements Serializable {
 
@@ -18,6 +17,7 @@ public class Inventory implements Serializable {
     private long merchantId;
     private long productId;
     private String productName;
+    private Integer productCostPrice;
     private String quantityStr;
     private Integer quantity;
     private Long billsId;
@@ -59,11 +59,12 @@ public class Inventory implements Serializable {
         this.id = id;
     }
 
-    public Inventory(Long id, long merchantId, long productId, String productName, String quantityStr, Integer quantity, Long billsId, String billsReferenceNo, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Inventory(Long id, long merchantId, long productId, String productName, Integer productCostPrice, String quantityStr, Integer quantity, Long billsId, String billsReferenceNo, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.productId = productId;
         this.productName = productName;
+        this.productCostPrice = productCostPrice;
         this.quantityStr = quantityStr;
         this.quantity = quantity;
         this.billsId = billsId;
@@ -116,6 +117,14 @@ public class Inventory implements Serializable {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public Integer getProductCostPrice() {
+        return productCostPrice;
+    }
+
+    public void setProductCostPrice(Integer productCostPrice) {
+        this.productCostPrice = productCostPrice;
     }
 
     public String getQuantityStr() {

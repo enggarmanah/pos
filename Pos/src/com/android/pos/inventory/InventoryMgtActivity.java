@@ -5,9 +5,12 @@ import java.util.List;
 
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
+import com.android.pos.dao.Bills;
 import com.android.pos.dao.Inventory;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.Supplier;
+import com.android.pos.popup.search.BillDlgFragment;
+import com.android.pos.popup.search.BillSelectionListener;
 import com.android.pos.popup.search.ProductDlgFragment;
 import com.android.pos.popup.search.ProductSelectionListener;
 import com.android.pos.popup.search.SupplierDlgFragment;
@@ -17,16 +20,18 @@ import android.os.Bundle;
 import android.view.View;
 
 public class InventoryMgtActivity extends BaseItemMgtActivity<InventorySearchFragment, InventoryEditFragment, Inventory> 
-	implements ProductSelectionListener, SupplierSelectionListener {
+	implements ProductSelectionListener, SupplierSelectionListener, BillSelectionListener {
 	
 	List<Inventory> mInventories;
 	Inventory mSelectedInventory;
 	
 	private ProductDlgFragment mProductDlgFragment;
 	private SupplierDlgFragment mSupplierDlgFragment;
+	private BillDlgFragment mBillDlgFragment;
 	
 	private static String mProductDlgFragmentTag = "mProductDlgFragmentTag";
 	private static String mSupplierDlgFragmentTag = "mSupplierDlgFragmentTag";
+	private static String mBillDlgFragmentTag = "mBillDlgFragmentTag";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,12 @@ public class InventoryMgtActivity extends BaseItemMgtActivity<InventorySearchFra
 		
 		if (mSupplierDlgFragment == null) {
 			mSupplierDlgFragment = new SupplierDlgFragment();
+		}
+		
+		mBillDlgFragment = (BillDlgFragment) getFragmentManager().findFragmentByTag(mBillDlgFragmentTag);
+		
+		if (mBillDlgFragment == null) {
+			mBillDlgFragment = new BillDlgFragment();
 		}
 	}
 	
@@ -212,5 +223,16 @@ public class InventoryMgtActivity extends BaseItemMgtActivity<InventorySearchFra
 	public void onSupplierSelected(Supplier supplier) {
 		
 		mEditFragment.setSupplier(supplier);
+	}
+	
+	public void onSelectBill(boolean isMandatory) {
+		
+		mBillDlgFragment.setMandatory(isMandatory);
+		mBillDlgFragment.show(getFragmentManager(), mBillDlgFragmentTag);
+	}
+	
+	public void onBillSelected(Bills bill) {
+		
+		mEditFragment.setBill(bill);
 	}
 }

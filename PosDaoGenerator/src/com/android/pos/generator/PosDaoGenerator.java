@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(27, "com.android.pos.dao");
+        Schema schema = new Schema(28, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -337,10 +337,13 @@ public class PosDaoGenerator {
     	bills.addDateProperty("billDate");
     	bills.addDateProperty("billDueDate");
     	bills.addIntProperty("billAmount");
+    	bills.addDateProperty("paymentDate");
     	bills.addIntProperty("payment");
     	
-    	Property supplierId = bills.addLongProperty("supplierId").notNull().getProperty();
+    	Property supplierId = bills.addLongProperty("supplierId").getProperty();
     	bills.addToOne(supplier, supplierId);
+    	
+    	bills.addStringProperty("supplierName");
     	
     	bills.addDateProperty("deliveryDate");
     	bills.addStringProperty("remarks");
@@ -351,28 +354,6 @@ public class PosDaoGenerator {
     	bills.addDateProperty("createDate");
     	bills.addStringProperty("updateBy");
     	bills.addDateProperty("updateDate");
-    	
-    	Entity billsItem = schema.addEntity("BillsItem");
-    	
-    	billsItem.addIdProperty();
-    	
-        merchantId = billsItem.addLongProperty("merchantId").notNull().getProperty();
-        billsItem.addToOne(merchant, merchantId);
-        
-    	Property billsId = billsItem.addLongProperty("billsId").notNull().getProperty();
-    	billsItem.addToOne(bills, billsId);
-    	
-    	productId = billsItem.addLongProperty("productId").notNull().getProperty();
-    	billsItem.addToOne(product, productId);
-    	
-    	productName = billsItem.addStringProperty("productName").getProperty();
-    	
-    	billsItem.addIntProperty("quantity");
-    	billsItem.addIntProperty("unitPrice");
-    	billsItem.addStringProperty("remarks");
-    	
-    	ToMany billsToItem = bills.addToMany(billsItem, billsId);
-    	billsToItem.orderAsc(productName);
     	
     	Entity inventory = schema.addEntity("Inventory");
     	
@@ -385,10 +366,11 @@ public class PosDaoGenerator {
     	inventory.addToOne(product, productId);
     	
     	inventory.addStringProperty("productName");
+    	inventory.addIntProperty("productCostPrice");
     	inventory.addStringProperty("quantityStr");
     	inventory.addIntProperty("quantity");
     	
-    	billsId = inventory.addLongProperty("billsId").getProperty();
+    	Property billsId = inventory.addLongProperty("billsId").getProperty();
     	inventory.addToOne(bills, billsId);
     	
     	inventory.addStringProperty("billsReferenceNo");

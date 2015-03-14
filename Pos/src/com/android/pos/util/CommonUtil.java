@@ -383,7 +383,7 @@ public class CommonUtil {
         return formatted;
 	}
 	
-	public static String formatCurrencyUnsigned(String inputStr) {
+	public static String formatNumber(String inputStr) {
 		
 		String formatted = getNvlString(inputStr);
 		
@@ -409,14 +409,32 @@ public class CommonUtil {
 		return formatCurrency(formatString(inputInt));
 	}
 	
-	public static String formatCurrencyUnsigned(Integer inputInt) {
+	public static String formatNumber(Integer inputInt) {
 		
-		return formatCurrencyUnsigned(formatString(inputInt));
+		return formatNumber(formatString(inputInt));
 	}
 	
-	public static String formatCurrencyUnsigned(Long inputInt) {
+	public static String formatNumber(Long inputInt) {
 		
-		return formatCurrencyUnsigned(formatString(inputInt));
+		return formatNumber(formatString(inputInt));
+	}
+	
+	public static Integer parseNumber(String inputStr) {
+		
+		String unformatted = inputStr;
+		Integer number = null;
+		
+		if (!isEmpty(inputStr)) {
+			unformatted = inputStr.replaceAll("\\D", "");
+		}
+        
+		try {
+			number = Integer.valueOf(unformatted);
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+        return number; 
 	}
 	
 	public static Integer parseCurrency(String inputStr) {

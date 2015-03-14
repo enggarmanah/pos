@@ -138,46 +138,41 @@ public class CodeUtil {
 		code.setLabel("Take Away");
 		orderTypes[1] = code;
 		
-		billTypes = new CodeBean[4];
-		
-		code = new CodeBean();
-		code.setCode(Constant.BILL_TYPE_EXPENSE_REGULAR);
-		code.setLabel("Pengeluaran Rutin");
-		billTypes[0] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.BILL_TYPE_EXPENSE_ADHOC);
-		code.setLabel("Pengeluaran Tidak Rutin");
-		billTypes[1] = code;
+		billTypes = new CodeBean[3];
 		
 		code = new CodeBean();
 		code.setCode(Constant.BILL_TYPE_PRODUCT_PURCHASE);
-		code.setLabel("Pembelian Barang Dagang");
-		billTypes[2] = code;
+		code.setLabel("Pembelian Produk");
+		billTypes[0] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.BILL_TYPE_PRODUCT_SUPPORT);
-		code.setLabel("Pembelian Barang Penunjang");
-		billTypes[3] = code;
+		code.setCode(Constant.BILL_TYPE_EXPENSE_WITH_RECEIPT);
+		code.setLabel("Pengeluaran Dengan Nota");
+		billTypes[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT);
+		code.setLabel("Pengeluaran Tanpa Nota");
+		billTypes[2] = code;
 		
 		billStatus = new CodeBean[3];
 		
 		code = new CodeBean();
-		code.setCode(Constant.BILL_STATUS_PAID);
-		code.setLabel("Lunas");
-		billStatus[0] = code;
-		
-		code = new CodeBean();
 		code.setCode(Constant.BILL_STATUS_UNPAID);
 		code.setLabel("Belum Dibayar");
-		billStatus[1] = code;
+		billStatus[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.BILL_STATUS_PARTIAL);
 		code.setLabel("Pembayaran Sebagian");
+		billStatus[1] = code;
+
+		code = new CodeBean();
+		code.setCode(Constant.BILL_STATUS_PAID);
+		code.setLabel("Lunas");
 		billStatus[2] = code;
 		
-		inventoryStatus = new CodeBean[8];
+		inventoryStatus = new CodeBean[10];
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_PURCHASE);
@@ -218,6 +213,16 @@ public class CodeUtil {
 		code.setCode(Constant.INVENTORY_STATUS_LOST);
 		code.setLabel("Produk Hilang");
 		inventoryStatus[7] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.INVENTORY_STATUS_DAMAGE);
+		code.setLabel("Produk Rusak");
+		inventoryStatus[8] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.INVENTORY_STATUS_INITIAL_STOCK);
+		code.setLabel("Stok Awal");
+		inventoryStatus[9] = code;
 	}
 	
 	public static CodeBean[] getMerchantTypes() {
@@ -301,6 +306,34 @@ public class CodeUtil {
 		String label = Constant.EMPTY_STRING;
 		
 		for (CodeBean codeBean : inventoryStatus) {
+			if (codeBean.getCode().equals(code)) {
+				label = codeBean.getLabel();
+				break;
+			}
+		}
+		
+		return label;
+	}
+	
+	public static String getBillsTypeLabel(String code) {
+		
+		String label = Constant.EMPTY_STRING;
+		
+		for (CodeBean codeBean : billTypes) {
+			if (codeBean.getCode().equals(code)) {
+				label = codeBean.getLabel();
+				break;
+			}
+		}
+		
+		return label;
+	}
+	
+	public static String getBillsStatusLabel(String code) {
+		
+		String label = Constant.EMPTY_STRING;
+		
+		for (CodeBean codeBean : billStatus) {
 			if (codeBean.getCode().equals(code)) {
 				label = codeBean.getLabel();
 				break;

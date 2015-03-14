@@ -188,7 +188,7 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 		
 		mTotalBillText.setText(CommonUtil.formatCurrency(mTotalBill));
 		mPaymentTypeSp.setSelection(picPaymentTypeIndex);
-		mPaymentText.setText(CommonUtil.formatCurrencyUnsigned(mPayment));
+		mPaymentText.setText(CommonUtil.formatNumber(mPayment));
 		
 		if (mCustomer != null) {
 			mCustomerText.setText(mCustomer.getName());
@@ -210,7 +210,7 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 				if (number.equals("0")) {
 					mPaymentText.setText(numberText);
 				} else {
-					number = CommonUtil.formatCurrencyUnsigned(number + numberText);
+					number = CommonUtil.formatNumber(number + numberText);
 					mPaymentText.setText(number);
 				}
 			}
@@ -242,7 +242,7 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 				if (number.length() == 1) {
 					mPaymentText.setText("0");
 				} else {
-					number = CommonUtil.formatCurrencyUnsigned(number.substring(0, number.length()-1));
+					number = CommonUtil.formatNumber(number.substring(0, number.length()-1));
 					mPaymentText.setText(number);
 				}
 			}

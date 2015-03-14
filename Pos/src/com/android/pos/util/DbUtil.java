@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
 import com.android.pos.dao.BillsDao;
-import com.android.pos.dao.BillsItemDao;
 import com.android.pos.dao.DaoMaster;
 import com.android.pos.dao.DaoSession;
 import com.android.pos.dao.DiscountDao;
@@ -202,9 +201,6 @@ public class DbUtil {
             	BillsDao.dropTable(db, true);
             	BillsDao.createTable(db, true);
             	
-            	BillsItemDao.dropTable(db, true);
-            	BillsItemDao.createTable(db, true);
-            	
             	InventoryDao.dropTable(db, true);
             	InventoryDao.createTable(db, true);
             }
@@ -224,6 +220,15 @@ public class DbUtil {
             	
             	InventoryDao.dropTable(db, true);
             	InventoryDao.createTable(db, true);
+            	
+            	BillsDao.dropTable(db, true);
+            	BillsDao.createTable(db, true);
+            }
+            
+            // handle version 28 changes
+            if (oldVersion < 28) {
+            	
+            	db.execSQL("ALTER TABLE 'INVENTORY' ADD 'PRODUCT_COST_PRICE' INTEGER");
             }
             
             //DaoMaster.dropAllTables(db, true);

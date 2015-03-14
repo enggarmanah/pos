@@ -27,10 +27,12 @@
     
     <color name="text_light">#9397a4</color>
     <color name="text_default">#4f5460</color>
+    <color name="text_medium">#6e7585</color>
     <color name="text_dark">#484c56</color>
     <color name="text_blue">#5e98c7</color>
+    <color name="text_blue_medium">#68a5ba</color>
     <color name="text_blue_dark">#285275</color>
-    <color name="text_red">#d2232a</color>
+    <color name="text_red">#e3565c</color>
     <color name="text_orange">#f98c47</color>
     
     <color name="input_text">#484c56</color>
@@ -40,6 +42,7 @@
     <color name="background_red">#d2232a</color>
     <color name="background_red_light">#fbe8e8</color>
     <color name="background_blue">#aac8e1</color>
+    <color name="background_blue_medium">#dbe9f4</color>
     <color name="background_blue_light">#f5f9fc</color>
     <color name="background_blue_dark">#285275</color>
     
@@ -57,7 +60,7 @@
     <color name="button_divider">#999</color>
     
     <color name="flow_out">#fc82a4</color>
-    <color name="flow_in">#85e97a</color>
+    <color name="flow_in">#7bfbb8</color>
     
     <color name="search_row_start">#DEDEDE</color>
     <color name="search_row_end">#DEDEDE</color>

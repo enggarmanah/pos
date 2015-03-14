@@ -5,17 +5,11 @@ import java.util.Date;
 public class BaseBean {
 
 	protected Long id;
-
 	protected Long merchant_id;
-
 	protected Long remote_id;
-
 	protected String create_by;
-
 	protected Date create_date;
-
 	protected String update_by;
-	
 	protected Date update_date;
 
 	public Long getId() {

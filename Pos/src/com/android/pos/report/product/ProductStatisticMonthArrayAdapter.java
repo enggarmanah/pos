@@ -80,7 +80,7 @@ public class ProductStatisticMonthArrayAdapter extends ArrayAdapter<TransactionM
 		transDate.setText(CommonUtil.formatMonth(transactionMonth.getMonth()));
 		
 		if (Constant.PRODUCT_QUANTITY.equals(mCallback.getSelectedProductInfo())) {
-			totalAmount.setText(CommonUtil.formatCurrencyUnsigned(transactionMonth.getAmount()));
+			totalAmount.setText(CommonUtil.formatNumber(transactionMonth.getAmount()));
 		} else {
 			totalAmount.setText(CommonUtil.formatCurrency(transactionMonth.getAmount()));	
 		}
