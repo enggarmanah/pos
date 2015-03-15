@@ -96,6 +96,16 @@ public class ProductDaoService {
 		return list;
 	}
 	
+	public List<Product> getProducts() {
+
+		QueryBuilder<Product> qb = productDao.queryBuilder();
+		qb.where(ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
+		
+		Query<Product> q = qb.build();
+		
+		return q.list();
+	}
+	
 	public List<ProductBean> getProductsForUpload() {
 
 		QueryBuilder<Product> qb = productDao.queryBuilder();

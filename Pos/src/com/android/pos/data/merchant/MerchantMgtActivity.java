@@ -6,7 +6,7 @@ import java.util.List;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
-import com.android.pos.async.HttpAsyncProgressDlgFragment;
+import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Merchant;
 import com.android.pos.util.NotificationUtil;
@@ -24,7 +24,7 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	
 	HttpAsyncManager mHttpAsyncManager;
 	
-	private HttpAsyncProgressDlgFragment mProgressDialog;
+	private ProgressDlgFragment mProgressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +32,10 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		
 		mHttpAsyncManager = new HttpAsyncManager(this);
 		
-		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
+		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
 		
 		if (mProgressDialog == null) {
-			mProgressDialog = new HttpAsyncProgressDlgFragment();
+			mProgressDialog = new ProgressDlgFragment();
 		}
 	}
 	

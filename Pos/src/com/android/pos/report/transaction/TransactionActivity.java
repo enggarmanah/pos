@@ -6,7 +6,7 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
-import com.android.pos.async.HttpAsyncProgressDlgFragment;
+import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Transactions;
 import com.android.pos.model.TransactionDayBean;
@@ -54,7 +54,7 @@ public class TransactionActivity extends BaseActivity
 	private MenuItem mUpItem;
 	private MenuItem mSyncItem;
 	
-	private static HttpAsyncProgressDlgFragment mProgressDialog;
+	private static ProgressDlgFragment mProgressDialog;
 
 	private HttpAsyncManager mHttpAsyncManager;
 	
@@ -76,10 +76,10 @@ public class TransactionActivity extends BaseActivity
 		
 		initWaitAfterFragmentRemovedTask(mTransactionListFragmentTag, mTransactionDetailFragmentTag);
 		
-		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
+		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
 		
 		if (mProgressDialog == null) {
-			mProgressDialog = new HttpAsyncProgressDlgFragment();
+			mProgressDialog = new ProgressDlgFragment();
 		}
 	}
 	

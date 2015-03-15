@@ -13,7 +13,7 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
-import com.android.pos.async.HttpAsyncProgressDlgFragment;
+import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.User;
@@ -29,7 +29,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	final Context context = this;
 	private HttpAsyncManager mHttpAsyncManager;
 	
-	private static HttpAsyncProgressDlgFragment mProgressDialog;
+	private static ProgressDlgFragment mProgressDialog;
 	private MerchantDaoService mMerchantDaoService;
 	
 	Button mLoginBtn;
@@ -67,10 +67,10 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		
 		mHttpAsyncManager = new HttpAsyncManager(context);
 		
-		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
+		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
 		
 		if (mProgressDialog == null) {
-			mProgressDialog = new HttpAsyncProgressDlgFragment();
+			mProgressDialog = new ProgressDlgFragment();
 		}
 		
 		mLoginIdTxt = (EditText) findViewById(R.id.loginIdTxt);

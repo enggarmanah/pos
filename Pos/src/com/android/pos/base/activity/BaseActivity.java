@@ -9,6 +9,7 @@ import com.android.pos.cashier.CashierActivity;
 import com.android.pos.data.DataMgtActivity;
 import com.android.pos.inventory.InventoryMgtActivity;
 import com.android.pos.order.OrderActivity;
+import com.android.pos.report.inventory.InventoryReportActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
@@ -203,6 +204,11 @@ public abstract class BaseActivity extends Activity {
 		} else if (getString(R.string.menu_statistic_product).equals(menu)) {
 
 			Intent intent = new Intent(this, ProductStatisticActivity.class);
+			startActivity(intent);
+
+		} else if (getString(R.string.menu_report_inventory).equals(menu)) {
+
+			Intent intent = new Intent(this, InventoryReportActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_bills).equals(menu)) {

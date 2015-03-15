@@ -72,6 +72,55 @@ public class InventoryDaoService {
 		return list;
 	}
 	
+	public List<Inventory> getInventories(Product product, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String productId = String.valueOf(product.getId());
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM inventory "
+				+ " WHERE product_id = ? AND status <> ? "
+				+ " ORDER BY delivery_date DESC LIMIT ? OFFSET ? ",
+				new String[] { productId, status, limit, lastIdx});
+		
+		List<Inventory> list = new ArrayList<Inventory>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Inventory item = getInventory(id);
+			list.add(item);
+		}
+
+		return list;
+	}
+	
+	public Integer getProductQuantity(Product product) {
+
+		Integer quantity = Integer.valueOf(0);
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String productId = String.valueOf(product.getId());
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT SUM(quantity) "
+				+ " FROM inventory "
+				+ " WHERE product_id = ? AND status <> ? ",
+				new String[] { productId, status });
+		
+		while(cursor.moveToNext()) {
+			
+			quantity = cursor.getInt(0);
+		}
+
+		return quantity;
+	}
+	
 	public List<InventoryBean> getInventoriesForUpload() {
 
 		QueryBuilder<Inventory> qb = inventoryDao.queryBuilder();

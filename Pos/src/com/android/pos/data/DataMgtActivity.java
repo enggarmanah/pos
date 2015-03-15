@@ -12,7 +12,7 @@ import android.view.View;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
-import com.android.pos.async.HttpAsyncProgressDlgFragment;
+import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.data.customer.CustomerMgtActivity;
 import com.android.pos.data.discount.DiscountMgtActivity;
@@ -29,7 +29,7 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 	final Context context = this;
 	private HttpAsyncManager mHttpAsyncManager;
 	
-	private static HttpAsyncProgressDlgFragment mProgressDialog;
+	private static ProgressDlgFragment mProgressDialog;
 	
 	private static final String progressDialogTag = "progressDialogTag";
 	
@@ -45,10 +45,10 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		
 		initDrawerMenu();
 		
-		mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
+		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
 		
 		if (mProgressDialog == null) {
-			mProgressDialog = new HttpAsyncProgressDlgFragment();
+			mProgressDialog = new ProgressDlgFragment();
 		}
     }
 	
@@ -61,7 +61,7 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		setSelectedMenu(getString(R.string.menu_data_management));
 		
 		if (getFragmentManager().findFragmentByTag(progressDialogTag) != null) {
-			mProgressDialog = (HttpAsyncProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
+			mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
 		}
 	}
 	

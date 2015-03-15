@@ -33,6 +33,7 @@
     <string-array name="app_menus_admin">
         <item>Laporan Transaksi</item>
         <item>Laporan Penjualan</item>
+        <item>Laporan Inventori</item>
         <item>Data Pengeluaran</item>
         <item>Data Inventori</item>
         <item>Data Pengguna</item>
@@ -43,7 +44,7 @@
     <string-array name="app_menus_admin_resto">
         <item>Laporan Transaksi</item>
         <item>Laporan Penjualan</item>       
-        <item>Laporan Pengeluaran</item>
+        <item>Data Pengeluaran</item>
         <item>Data Pengguna</item>
         <item>Data Referensi</item>
         <item>Keluar</item>
@@ -70,6 +71,7 @@
     <string name="menu_order">Pemesanan</string>
     <string name="menu_transaction">Laporan Transaksi</string>
     <string name="menu_statistic_product">Laporan Penjualan</string>
+    <string name="menu_report_inventory">Laporan Inventori</string>
     <string name="menu_inventory">Data Inventori</string>
     <string name="menu_bills">Data Pengeluaran</string>
     <string name="menu_user_management">Data Pengguna</string>
@@ -123,8 +125,8 @@
     <string name="field_cost_price">Harga Beli</string>
     <string name="field_pic_required">Butuh PIC</string>
     <string name="field_commision">Komisi</string>
-    <string name="field_stock">Jumlah Stock</string>
-    <string name="field_min_stock">Min. Stock</string>
+    <string name="field_stock">Jumlah Stok</string>
+    <string name="field_min_stock">Min. Stok</string>
     <string name="field_promo_price">Harga Promo</string>
     <string name="field_promo_start">Awal Promo</string>
     <string name="field_promo_end">Akhir Promo</string>
@@ -160,6 +162,9 @@
     <string name="field_payment_date">Tgl. Bayar</string>
     <string name="field_payment">Bayar</string>
     <string name="field_date">Tanggal</string>
+    
+    <string name="report_inventory_product">Produk</string>
+    <string name="report_inventory_product_stock">Jumlah</string>
     
     <string name="hint_percentage">Persentase %</string>
     <string name="hint_cost_price">Harga Beli Satuan</string>  

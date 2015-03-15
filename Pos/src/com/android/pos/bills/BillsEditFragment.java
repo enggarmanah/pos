@@ -204,7 +204,7 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	Date billDate = CommonUtil.parseDate(mBillDate.getText().toString());
     	Date billDueDate = CommonUtil.parseDate(mBillDueDate.getText().toString());
     	Integer billAmount = CommonUtil.parseCurrency(mBillAmountText.getText().toString());
-    	String status = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
+    	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	Date paymentDate = CommonUtil.parseDate(mPaymentDate.getText().toString());
     	Integer payment = CommonUtil.parseCurrency(mPaymentText.getText().toString());
     	Date deliveryDate = CommonUtil.parseDate(mDeliveryDate.getText().toString());

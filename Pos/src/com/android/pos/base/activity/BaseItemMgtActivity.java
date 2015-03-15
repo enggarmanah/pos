@@ -331,6 +331,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		mConfirmDeleteFragment.setItemToBeDeleted(item, getItemName(item));
 	}
 	
+	@Override
 	public boolean onQueryTextChange(String query) {
 		
 		boolean isQuerySimilar = query.equals(prevQuery);
@@ -353,7 +354,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 
 		return true;
 	}
-
+	
+	@Override
 	public boolean onQueryTextSubmit(String query) {
 
 		doSearch(query);

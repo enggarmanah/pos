@@ -33,6 +33,7 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 	
 	private boolean mIsLoadData = false;
 	private boolean mIsEndOfList = false;
+	
 	private String mQuery = Constant.EMPTY_STRING;
 
 	@Override
@@ -161,9 +162,7 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 	
 	public abstract List<T> getItems(String query);
 	
-	public List<T> getNextItems(String query, int lastIndex) {
-		return null;
-	}
+	public abstract List<T> getNextItems(String query, int lastIndex);
 
 	public abstract void onItemDeleted(T item);
 

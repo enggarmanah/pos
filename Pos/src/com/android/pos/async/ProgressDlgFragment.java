@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.android.pos.Constant;
 import com.android.pos.R;
 
-public class HttpAsyncProgressDlgFragment extends DialogFragment {
+public class ProgressDlgFragment extends DialogFragment {
 	
 	private static final String PROGRESS_PERCENTAGE = "PROGRESS_PERCENTAGE";
 	private static final String PROGRESS_MESSAGE = "PROGRESS_MESSAGE";
