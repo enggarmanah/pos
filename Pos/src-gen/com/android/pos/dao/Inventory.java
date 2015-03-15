@@ -10,6 +10,7 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table INVENTORY.
  */
+
 @SuppressWarnings("serial")
 public class Inventory implements Serializable {
 
@@ -20,8 +21,8 @@ public class Inventory implements Serializable {
     private Integer productCostPrice;
     private String quantityStr;
     private Integer quantity;
-    private Long billsId;
-    private String billsReferenceNo;
+    private Long billId;
+    private String billReferenceNo;
     private Long supplierId;
     private String supplierName;
     private java.util.Date deliveryDate;
@@ -59,7 +60,7 @@ public class Inventory implements Serializable {
         this.id = id;
     }
 
-    public Inventory(Long id, long merchantId, long productId, String productName, Integer productCostPrice, String quantityStr, Integer quantity, Long billsId, String billsReferenceNo, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Inventory(Long id, long merchantId, long productId, String productName, Integer productCostPrice, String quantityStr, Integer quantity, Long billId, String billReferenceNo, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.productId = productId;
@@ -67,8 +68,8 @@ public class Inventory implements Serializable {
         this.productCostPrice = productCostPrice;
         this.quantityStr = quantityStr;
         this.quantity = quantity;
-        this.billsId = billsId;
-        this.billsReferenceNo = billsReferenceNo;
+        this.billId = billId;
+        this.billReferenceNo = billReferenceNo;
         this.supplierId = supplierId;
         this.supplierName = supplierName;
         this.deliveryDate = deliveryDate;
@@ -143,20 +144,20 @@ public class Inventory implements Serializable {
         this.quantity = quantity;
     }
 
-    public Long getBillsId() {
-        return billsId;
+    public Long getBillId() {
+        return billId;
     }
 
-    public void setBillsId(Long billsId) {
-        this.billsId = billsId;
+    public void setBillId(Long billId) {
+        this.billId = billId;
     }
 
-    public String getBillsReferenceNo() {
-        return billsReferenceNo;
+    public String getBillReferenceNo() {
+        return billReferenceNo;
     }
 
-    public void setBillsReferenceNo(String billsReferenceNo) {
-        this.billsReferenceNo = billsReferenceNo;
+    public void setBillReferenceNo(String billReferenceNo) {
+        this.billReferenceNo = billReferenceNo;
     }
 
     public Long getSupplierId() {
@@ -297,7 +298,7 @@ public class Inventory implements Serializable {
 
     /** To-one relationship, resolved on first access. */
     public Bills getBills() {
-        Long __key = this.billsId;
+        Long __key = this.billId;
         if (bills__resolvedKey == null || !bills__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -315,8 +316,8 @@ public class Inventory implements Serializable {
     public void setBills(Bills bills) {
         synchronized (this) {
             this.bills = bills;
-            billsId = bills == null ? null : bills.getId();
-            bills__resolvedKey = billsId;
+            billId = bills == null ? null : bills.getId();
+            bills__resolvedKey = billId;
         }
     }
 

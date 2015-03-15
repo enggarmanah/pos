@@ -11,6 +11,7 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table MERCHANT.
  */
+
 @SuppressWarnings("serial")
 public class Merchant implements Serializable {
 
@@ -30,7 +31,6 @@ public class Merchant implements Serializable {
     private java.util.Date periodEnd;
     private Integer taxPercentage;
     private Integer serviceChargePercentage;
-    private Integer capacity;
     private Boolean isLogin;
     private String status;
     private String uploadStatus;
@@ -57,7 +57,7 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String loginId, String printerType, String printerAddress, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Integer capacity, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String loginId, String printerType, String printerAddress, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -73,7 +73,6 @@ public class Merchant implements Serializable {
         this.periodEnd = periodEnd;
         this.taxPercentage = taxPercentage;
         this.serviceChargePercentage = serviceChargePercentage;
-        this.capacity = capacity;
         this.isLogin = isLogin;
         this.status = status;
         this.uploadStatus = uploadStatus;
@@ -209,14 +208,6 @@ public class Merchant implements Serializable {
 
     public void setServiceChargePercentage(Integer serviceChargePercentage) {
         this.serviceChargePercentage = serviceChargePercentage;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
     }
 
     public Boolean getIsLogin() {

@@ -38,14 +38,13 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
         public final static Property PeriodEnd = new Property(12, java.util.Date.class, "periodEnd", false, "PERIOD_END");
         public final static Property TaxPercentage = new Property(13, Integer.class, "taxPercentage", false, "TAX_PERCENTAGE");
         public final static Property ServiceChargePercentage = new Property(14, Integer.class, "serviceChargePercentage", false, "SERVICE_CHARGE_PERCENTAGE");
-        public final static Property Capacity = new Property(15, Integer.class, "capacity", false, "CAPACITY");
-        public final static Property IsLogin = new Property(16, Boolean.class, "isLogin", false, "IS_LOGIN");
-        public final static Property Status = new Property(17, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(18, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(19, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(20, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(21, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(22, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property IsLogin = new Property(15, Boolean.class, "isLogin", false, "IS_LOGIN");
+        public final static Property Status = new Property(16, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(17, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(18, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(19, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(20, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(21, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
 
     private DaoSession daoSession;
@@ -79,14 +78,13 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
                 "'PERIOD_END' INTEGER," + // 12: periodEnd
                 "'TAX_PERCENTAGE' INTEGER," + // 13: taxPercentage
                 "'SERVICE_CHARGE_PERCENTAGE' INTEGER," + // 14: serviceChargePercentage
-                "'CAPACITY' INTEGER," + // 15: capacity
-                "'IS_LOGIN' INTEGER," + // 16: isLogin
-                "'STATUS' TEXT," + // 17: status
-                "'UPLOAD_STATUS' TEXT," + // 18: uploadStatus
-                "'CREATE_BY' TEXT," + // 19: createBy
-                "'CREATE_DATE' INTEGER," + // 20: createDate
-                "'UPDATE_BY' TEXT," + // 21: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 22: updateDate
+                "'IS_LOGIN' INTEGER," + // 15: isLogin
+                "'STATUS' TEXT," + // 16: status
+                "'UPLOAD_STATUS' TEXT," + // 17: uploadStatus
+                "'CREATE_BY' TEXT," + // 18: createBy
+                "'CREATE_DATE' INTEGER," + // 19: createDate
+                "'UPDATE_BY' TEXT," + // 20: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 21: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -171,44 +169,39 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
             stmt.bindLong(15, serviceChargePercentage);
         }
  
-        Integer capacity = entity.getCapacity();
-        if (capacity != null) {
-            stmt.bindLong(16, capacity);
-        }
- 
         Boolean isLogin = entity.getIsLogin();
         if (isLogin != null) {
-            stmt.bindLong(17, isLogin ? 1l: 0l);
+            stmt.bindLong(16, isLogin ? 1l: 0l);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(18, status);
+            stmt.bindString(17, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(19, uploadStatus);
+            stmt.bindString(18, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(20, createBy);
+            stmt.bindString(19, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(21, createDate.getTime());
+            stmt.bindLong(20, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(22, updateBy);
+            stmt.bindString(21, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(23, updateDate.getTime());
+            stmt.bindLong(22, updateDate.getTime());
         }
     }
 
@@ -243,14 +236,13 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
             cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)), // periodEnd
             cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // taxPercentage
             cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // serviceChargePercentage
-            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // capacity
-            cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0, // isLogin
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // status
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // uploadStatus
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // createBy
-            cursor.isNull(offset + 20) ? null : new java.util.Date(cursor.getLong(offset + 20)), // createDate
-            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // updateBy
-            cursor.isNull(offset + 22) ? null : new java.util.Date(cursor.getLong(offset + 22)) // updateDate
+            cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0, // isLogin
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // status
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // uploadStatus
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // createBy
+            cursor.isNull(offset + 19) ? null : new java.util.Date(cursor.getLong(offset + 19)), // createDate
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // updateBy
+            cursor.isNull(offset + 21) ? null : new java.util.Date(cursor.getLong(offset + 21)) // updateDate
         );
         return entity;
     }
@@ -273,14 +265,13 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
         entity.setPeriodEnd(cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)));
         entity.setTaxPercentage(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
         entity.setServiceChargePercentage(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
-        entity.setCapacity(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
-        entity.setIsLogin(cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0);
-        entity.setStatus(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setUploadStatus(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setCreateBy(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setCreateDate(cursor.isNull(offset + 20) ? null : new java.util.Date(cursor.getLong(offset + 20)));
-        entity.setUpdateBy(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setUpdateDate(cursor.isNull(offset + 22) ? null : new java.util.Date(cursor.getLong(offset + 22)));
+        entity.setIsLogin(cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0);
+        entity.setStatus(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setUploadStatus(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setCreateBy(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setCreateDate(cursor.isNull(offset + 19) ? null : new java.util.Date(cursor.getLong(offset + 19)));
+        entity.setUpdateBy(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setUpdateDate(cursor.isNull(offset + 21) ? null : new java.util.Date(cursor.getLong(offset + 21)));
      }
     
     /** @inheritdoc */

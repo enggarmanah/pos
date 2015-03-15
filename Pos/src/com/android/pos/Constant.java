@@ -78,6 +78,15 @@ public class Constant {
 	public static final String TASK_GET_TRANSACTION_ITEM = "TASK_GET_TRANSACTION_ITEM";
 	public static final String TASK_UPDATE_TRANSACTION_ITEM = "TASK_UPDATE_TRANSACTION_ITEM";
 	
+	public static final String TASK_GET_SUPPLIER = "TASK_GET_SUPPLIER";
+	public static final String TASK_UPDATE_SUPPLIER = "TASK_UPDATE_SUPPLIER";
+	
+	public static final String TASK_GET_BILL = "TASK_GET_BILLS";
+	public static final String TASK_UPDATE_BILL = "TASK_UPDATE_BILLS";
+	
+	public static final String TASK_GET_INVENTORY = "TASK_GET_INVENTORY";
+	public static final String TASK_UPDATE_INVENTORY = "TASK_UPDATE_INVENTORY";
+	
 	public static final String ORDER_TYPE_DINE_IN = "DINE_IN";
 	public static final String ORDER_TYPE_TAKEWAY = "TAKE_AWAY";
 	

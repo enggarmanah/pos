@@ -57,7 +57,6 @@ public class PosDaoGenerator {
         merchant.addDateProperty("periodEnd");
         merchant.addIntProperty("taxPercentage");
         merchant.addIntProperty("serviceChargePercentage");
-        merchant.addIntProperty("capacity");
         merchant.addBooleanProperty("isLogin");
         merchant.addStringProperty("status");
         merchant.addStringProperty("uploadStatus");
@@ -370,10 +369,10 @@ public class PosDaoGenerator {
     	inventory.addStringProperty("quantityStr");
     	inventory.addIntProperty("quantity");
     	
-    	Property billsId = inventory.addLongProperty("billsId").getProperty();
+    	Property billsId = inventory.addLongProperty("billId").getProperty();
     	inventory.addToOne(bills, billsId);
     	
-    	inventory.addStringProperty("billsReferenceNo");
+    	inventory.addStringProperty("billReferenceNo");
     	
     	supplierId = inventory.addLongProperty("supplierId").getProperty();
     	inventory.addToOne(supplier, supplierId);

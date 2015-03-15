@@ -16,6 +16,9 @@
 		<class>com.app.posweb.server.model.User</class>
 		<class>com.app.posweb.server.model.Transactions</class>
 		<class>com.app.posweb.server.model.TransactionItem</class>
+		<class>com.app.posweb.server.model.Supplier</class>
+		<class>com.app.posweb.server.model.Bills</class>
+		<class>com.app.posweb.server.model.Inventory</class>
 		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		

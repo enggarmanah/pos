@@ -56,7 +56,7 @@ public class InventoryDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM inventory "
-				+ " WHERE (bills_reference_no like ? OR product_name like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? "
+				+ " WHERE (bill_reference_no like ? OR product_name like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? "
 				+ " ORDER BY delivery_date DESC LIMIT ? OFFSET ? ",
 				new String[] { queryStr, queryStr, queryStr, queryStr, status, limit, lastIdx});
 		
@@ -72,7 +72,7 @@ public class InventoryDaoService {
 		return list;
 	}
 	
-	public List<InventoryBean> getInventorysForUpload() {
+	public List<InventoryBean> getInventoriesForUpload() {
 
 		QueryBuilder<Inventory> qb = inventoryDao.queryBuilder();
 		qb.where(InventoryDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(InventoryDao.Properties.DeliveryDate);
@@ -89,7 +89,7 @@ public class InventoryDaoService {
 		return inventoryBeans;
 	}
 	
-	public void updateInventorys(List<InventoryBean> inventorys) {
+	public void updateInventories(List<InventoryBean> inventorys) {
 		
 		for (InventoryBean bean : inventorys) {
 			

@@ -7,4 +7,6 @@ public interface HttpAsyncListener {
 	public void setSyncMessage(String message);
 	
 	public void onTimeOut();
+	
+	public void onSyncError();
 }

@@ -93,6 +93,30 @@
 		<servlet-name>transactionItemUpdateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.TransactionItemUpdateJsonServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>supplierGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.SupplierGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>supplierUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.SupplierUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>billGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.BillGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>billUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.BillUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>inventoryGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.InventoryGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>inventoryUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.InventoryUpdateJsonServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>merchantValidateJsonServlet</servlet-name>
@@ -181,6 +205,30 @@
 	<servlet-mapping>
 		<servlet-name>transactionItemUpdateJsonServlet</servlet-name>
 		<url-pattern>/transactionItemUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>supplierGetJsonServlet</servlet-name>
+		<url-pattern>/supplierGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>supplierUpdateJsonServlet</servlet-name>
+		<url-pattern>/supplierUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>billGetJsonServlet</servlet-name>
+		<url-pattern>/billGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>billUpdateJsonServlet</servlet-name>
+		<url-pattern>/billUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>inventoryGetJsonServlet</servlet-name>
+		<url-pattern>/inventoryGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>inventoryUpdateJsonServlet</servlet-name>
+		<url-pattern>/inventoryUpdateJsonServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>

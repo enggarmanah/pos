@@ -241,4 +241,12 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
+	
+	@Override
+	public void onSyncError() {
+		
+		mProgressDialog.dismiss();
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
+	}
 }

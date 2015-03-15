@@ -143,7 +143,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		mProductNameText.setText(inventory.getProductName());
     		mProductCostPriceText.setText(CommonUtil.formatNumber(inventory.getProductCostPrice()));
     		mQuantityText.setText(CommonUtil.formatNumber(inventory.getQuantityStr()));
-    		mBillsReferenceNoText.setText(inventory.getBillsReferenceNo());
+    		mBillsReferenceNoText.setText(inventory.getBillReferenceNo());
     		mSupplierNameText.setText(inventory.getSupplierName());
     		mDeliveryDate.setText(CommonUtil.formatDate(inventory.getDeliveryDate()));
     		mRemarksText.setText(inventory.getRemarks());
@@ -165,7 +165,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	String productName = mProductNameText.getText().toString();
     	Integer productCostPrice = CommonUtil.parseNumber(mProductCostPriceText.getText().toString());
     	Integer quantity = CommonUtil.parseNumber(mQuantityText.getText().toString());
-    	String billsReferenceNo = mBillsReferenceNoText.getText().toString();
+    	String billReferenceNo = mBillsReferenceNoText.getText().toString();
     	String supplierName = mSupplierNameText.getText().toString();
     	Date deliveryDate = CommonUtil.parseDate(mDeliveryDate.getText().toString());
     	String remarks = mRemarksText.getText().toString();
@@ -196,7 +196,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     			mItem.setQuantity(0);
     		}
      		
-    		mItem.setBillsReferenceNo(billsReferenceNo);
+    		mItem.setBillReferenceNo(billReferenceNo);
     		mItem.setSupplierName(supplierName);
     		mItem.setDeliveryDate(deliveryDate);
     		mItem.setRemarks(remarks);
@@ -317,8 +317,8 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		
     		if (bill != null) {
     			
-    			mItem.setBillsId(bill.getId());
-    			mItem.setBillsReferenceNo(bill.getBillReferenceNo());
+    			mItem.setBillId(bill.getId());
+    			mItem.setBillReferenceNo(bill.getBillReferenceNo());
     			mItem.setSupplierId(bill.getSupplierId());
     			mItem.setSupplierName(bill.getSupplierName());
     			mItem.setDeliveryDate(bill.getDeliveryDate());
@@ -326,7 +326,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		} else {
     			
     			mItem.setBills(null);
-    			mItem.setBillsReferenceNo(Constant.EMPTY_STRING);
+    			mItem.setBillReferenceNo(Constant.EMPTY_STRING);
     			mItem.setSupplier(null);
     			mItem.setSupplierName(Constant.EMPTY_STRING);
     			mItem.setDeliveryDate(null);

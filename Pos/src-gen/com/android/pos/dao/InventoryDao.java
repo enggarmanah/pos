@@ -33,8 +33,8 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
         public final static Property ProductCostPrice = new Property(4, Integer.class, "productCostPrice", false, "PRODUCT_COST_PRICE");
         public final static Property QuantityStr = new Property(5, String.class, "quantityStr", false, "QUANTITY_STR");
         public final static Property Quantity = new Property(6, Integer.class, "quantity", false, "QUANTITY");
-        public final static Property BillsId = new Property(7, Long.class, "billsId", false, "BILLS_ID");
-        public final static Property BillsReferenceNo = new Property(8, String.class, "billsReferenceNo", false, "BILLS_REFERENCE_NO");
+        public final static Property BillId = new Property(7, Long.class, "billId", false, "BILL_ID");
+        public final static Property BillReferenceNo = new Property(8, String.class, "billReferenceNo", false, "BILL_REFERENCE_NO");
         public final static Property SupplierId = new Property(9, Long.class, "supplierId", false, "SUPPLIER_ID");
         public final static Property SupplierName = new Property(10, String.class, "supplierName", false, "SUPPLIER_NAME");
         public final static Property DeliveryDate = new Property(11, java.util.Date.class, "deliveryDate", false, "DELIVERY_DATE");
@@ -70,8 +70,8 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
                 "'PRODUCT_COST_PRICE' INTEGER," + // 4: productCostPrice
                 "'QUANTITY_STR' TEXT," + // 5: quantityStr
                 "'QUANTITY' INTEGER," + // 6: quantity
-                "'BILLS_ID' INTEGER," + // 7: billsId
-                "'BILLS_REFERENCE_NO' TEXT," + // 8: billsReferenceNo
+                "'BILL_ID' INTEGER," + // 7: billId
+                "'BILL_REFERENCE_NO' TEXT," + // 8: billReferenceNo
                 "'SUPPLIER_ID' INTEGER," + // 9: supplierId
                 "'SUPPLIER_NAME' TEXT," + // 10: supplierName
                 "'DELIVERY_DATE' INTEGER," + // 11: deliveryDate
@@ -122,14 +122,14 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
             stmt.bindLong(7, quantity);
         }
  
-        Long billsId = entity.getBillsId();
-        if (billsId != null) {
-            stmt.bindLong(8, billsId);
+        Long billId = entity.getBillId();
+        if (billId != null) {
+            stmt.bindLong(8, billId);
         }
  
-        String billsReferenceNo = entity.getBillsReferenceNo();
-        if (billsReferenceNo != null) {
-            stmt.bindString(9, billsReferenceNo);
+        String billReferenceNo = entity.getBillReferenceNo();
+        if (billReferenceNo != null) {
+            stmt.bindString(9, billReferenceNo);
         }
  
         Long supplierId = entity.getSupplierId();
@@ -206,8 +206,8 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // productCostPrice
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // quantityStr
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // quantity
-            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // billsId
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // billsReferenceNo
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // billId
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // billReferenceNo
             cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // supplierId
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // supplierName
             cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)), // deliveryDate
@@ -232,8 +232,8 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
         entity.setProductCostPrice(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
         entity.setQuantityStr(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setQuantity(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setBillsId(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
-        entity.setBillsReferenceNo(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setBillId(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
+        entity.setBillReferenceNo(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setSupplierId(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
         entity.setSupplierName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setDeliveryDate(cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)));
@@ -286,7 +286,7 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
             builder.append(" FROM INVENTORY T");
             builder.append(" LEFT JOIN MERCHANT T0 ON T.'MERCHANT_ID'=T0.'_id'");
             builder.append(" LEFT JOIN PRODUCT T1 ON T.'PRODUCT_ID'=T1.'_id'");
-            builder.append(" LEFT JOIN BILLS T2 ON T.'BILLS_ID'=T2.'_id'");
+            builder.append(" LEFT JOIN BILLS T2 ON T.'BILL_ID'=T2.'_id'");
             builder.append(" LEFT JOIN SUPPLIER T3 ON T.'SUPPLIER_ID'=T3.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();

@@ -2,25 +2,25 @@ package com.android.pos.model;
 
 public class InventoryBean extends BaseBean {
 
-	private long productId;
+	private long product_id;
 	private String product_name;
 	private Integer product_cost_price;
 	private String quantity_str;
 	private Integer quantity;
-	private long bills_id;
-	private String bills_reference_no;
+	private long bill_id;
+	private String bill_reference_no;
 	private long supplier_id;
 	private String supplier_name;
 	private java.util.Date delivery_date;
 	private String remarks;
 	private String status;
 
-	public long getProductId() {
-		return productId;
+	public long getProduct_id() {
+		return product_id;
 	}
 
-	public void setProductId(long productId) {
-		this.productId = productId;
+	public void setProduct_id(long productId) {
+		this.product_id = productId;
 	}
 
 	public String getProduct_name() {
@@ -55,20 +55,20 @@ public class InventoryBean extends BaseBean {
 		this.quantity = quantity;
 	}
 
-	public long getBills_id() {
-		return bills_id;
+	public long getBill_id() {
+		return bill_id;
 	}
 
-	public void setBills_id(long bills_id) {
-		this.bills_id = bills_id;
+	public void setBill_id(long bill_id) {
+		this.bill_id = bill_id;
 	}
 
-	public String getBills_reference_no() {
-		return bills_reference_no;
+	public String getBill_reference_no() {
+		return bill_reference_no;
 	}
 
-	public void setBills_reference_no(String bills_reference_no) {
-		this.bills_reference_no = bills_reference_no;
+	public void setBill_reference_no(String bill_reference_no) {
+		this.bill_reference_no = bill_reference_no;
 	}
 
 	public long getSupplier_id() {

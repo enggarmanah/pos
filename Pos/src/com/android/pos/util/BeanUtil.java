@@ -105,7 +105,6 @@ public class BeanUtil {
 		bean.setPeriod_end(merchant.getPeriodEnd());
 		bean.setTax_percentage(merchant.getTaxPercentage());
 		bean.setService_charge_percentage(merchant.getServiceChargePercentage());
-		bean.setCapacity(merchant.getCapacity());
 		bean.setStatus(merchant.getStatus());
 		bean.setCreate_by(merchant.getCreateBy());
 		bean.setCreate_date(merchant.getCreateDate());
@@ -130,7 +129,6 @@ public class BeanUtil {
 		merchant.setPeriodEnd(bean.getPeriod_end());
 		merchant.setTaxPercentage(bean.getTax_percentage());
 		merchant.setServiceChargePercentage(bean.getService_charge_percentage());
-		merchant.setCapacity(bean.getCapacity());
 		merchant.setStatus(bean.getStatus());
 		merchant.setUploadStatus(Constant.STATUS_NO);
 		merchant.setCreateBy(bean.getCreate_by());
@@ -436,13 +434,13 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(inventory.getMerchantId());
 		bean.setRemote_id(inventory.getId());
-		bean.setProductId(inventory.getProductId());
+		bean.setProduct_id(inventory.getProductId());
 		bean.setProduct_name(inventory.getProductName());
 		bean.setProduct_cost_price(inventory.getProductCostPrice());
 		bean.setQuantity_str(inventory.getQuantityStr());
 		bean.setQuantity(inventory.getQuantity());
-		bean.setBills_id(inventory.getBillsId());
-		bean.setBills_reference_no(inventory.getBillsReferenceNo());
+		bean.setBill_id(inventory.getBillId());
+		bean.setBill_reference_no(inventory.getBillReferenceNo());
 		bean.setSupplier_id(inventory.getSupplierId());
 		bean.setSupplier_name(inventory.getSupplierName());
 		bean.setDelivery_date(inventory.getDeliveryDate());
@@ -460,13 +458,13 @@ public class BeanUtil {
 		
 		inventory.setMerchantId(bean.getMerchant_id());
 		inventory.setId(bean.getRemote_id());
-		inventory.setProductId(bean.getProductId());
+		inventory.setProductId(bean.getProduct_id());
 		inventory.setProductName(bean.getProduct_name());
 		inventory.setProductCostPrice(bean.getProduct_cost_price());
 		inventory.setQuantityStr(bean.getQuantity_str());
 		inventory.setQuantity(bean.getQuantity());
-		inventory.setBillsId(bean.getBills_id());
-		inventory.setBillsReferenceNo(bean.getBills_reference_no());
+		inventory.setBillId(bean.getBill_id());
+		inventory.setBillReferenceNo(bean.getBill_reference_no());
 		inventory.setSupplierId(bean.getSupplier_id());
 		inventory.setSupplierName(bean.getSupplier_name());
 		inventory.setDeliveryDate(bean.getDelivery_date());

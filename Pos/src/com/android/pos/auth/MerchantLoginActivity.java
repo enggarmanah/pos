@@ -267,6 +267,14 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
 	
+	@Override
+	public void onSyncError() {
+		
+		mProgressDialog.dismiss();
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
+	}
+	
 	private void showFailedAuthenticationMessage() {
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "ID Merchant & password anda salah!");

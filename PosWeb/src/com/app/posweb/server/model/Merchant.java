@@ -32,7 +32,6 @@ public class Merchant {
 	private java.util.Date period_end;
 	private Integer tax_percentage;
 	private Integer service_charge_percentage;
-	private Integer capacity;
 	private String status;
 	
 	protected String create_by;
@@ -157,14 +156,6 @@ public class Merchant {
 		this.service_charge_percentage = service_charge_percentage;
 	}
 	
-	public Integer getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(Integer capacity) {
-		this.capacity = capacity;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -221,7 +212,6 @@ public class Merchant {
 		this.period_end = bean.getPeriod_end();
 		this.tax_percentage = bean.getTax_percentage();
 		this.service_charge_percentage = bean.getService_charge_percentage();
-		this.capacity = bean.getCapacity();
 		this.status = bean.getStatus();
 
 		this.remote_id = bean.getRemote_id();

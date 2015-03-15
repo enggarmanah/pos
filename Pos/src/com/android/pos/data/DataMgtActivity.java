@@ -171,4 +171,12 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
+	
+	@Override
+	public void onSyncError() {
+		
+		mProgressDialog.dismiss();
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
+	}
 }
