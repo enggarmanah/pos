@@ -10,6 +10,7 @@ import com.android.pos.dao.DaoMaster;
 import com.android.pos.dao.DaoSession;
 import com.android.pos.dao.DiscountDao;
 import com.android.pos.dao.InventoryDao;
+import com.android.pos.dao.MerchantAccessDao;
 import com.android.pos.dao.OrderItemDao;
 import com.android.pos.dao.OrdersDao;
 import com.android.pos.dao.SupplierDao;
@@ -231,6 +232,13 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'INVENTORY' ADD 'PRODUCT_COST_PRICE' INTEGER");
             }
             
+            // handle version 29 changes
+            if (oldVersion < 29) {
+            	
+            	MerchantAccessDao.dropTable(db, true);
+            	MerchantAccessDao.createTable(db, true);
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -246,6 +254,8 @@ public class DbUtil {
             db = helper.getWritableDatabase();
             daoMaster = new DaoMaster(db);
             daoSession = daoMaster.newSession();
+            
+            System.out.println("db : " + db);
     	}
     }
     
@@ -259,6 +269,8 @@ public class DbUtil {
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
+        
+        System.out.println("db : " + db);
     }
     
     public static DaoSession getSession() {

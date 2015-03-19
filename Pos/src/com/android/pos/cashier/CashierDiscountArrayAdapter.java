@@ -49,7 +49,7 @@ public class CashierDiscountArrayAdapter extends ArrayAdapter<Discount> {
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.cashier_discount_list_item, parent, false);
-			discountName = (TextView) rowView.findViewById(R.id.nameTxt);
+			discountName = (TextView) rowView.findViewById(R.id.nameText);
 
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.itemText = discountName;

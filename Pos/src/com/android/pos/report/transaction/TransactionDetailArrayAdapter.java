@@ -27,7 +27,7 @@ public class TransactionDetailArrayAdapter extends ArrayAdapter<TransactionItem>
 	class ViewHolder {
 		TextView quantityText;
 		TextView nameText;
-		TextView picText;
+		TextView remarksText;
 		TextView priceText;
 		TextView totalPriceText;
 	}
@@ -50,29 +50,29 @@ public class TransactionDetailArrayAdapter extends ArrayAdapter<TransactionItem>
 
 		View rowView = convertView;
 		
-		TextView productQuantity = null;
-		TextView productName = null;
-		TextView picName = null;
-		TextView productPrice = null;
-		TextView totalProductPrice = null;
+		TextView quantityText = null;
+		TextView nameText = null;
+		TextView remarksText = null;
+		TextView priceText = null;
+		TextView totalPriceText = null;
 		
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.cashier_order_list_item, parent, false);
 			
-			productQuantity = (TextView) rowView.findViewById(R.id.quantityText);
-			productName = (TextView) rowView.findViewById(R.id.nameText);
-			picName = (TextView) rowView.findViewById(R.id.infoText);
-			productPrice = (TextView) rowView.findViewById(R.id.priceText);
-			totalProductPrice = (TextView) rowView.findViewById(R.id.totalPriceText);
+			quantityText = (TextView) rowView.findViewById(R.id.quantityText);
+			nameText = (TextView) rowView.findViewById(R.id.nameText);
+			remarksText = (TextView) rowView.findViewById(R.id.infoText);
+			priceText = (TextView) rowView.findViewById(R.id.priceText);
+			totalPriceText = (TextView) rowView.findViewById(R.id.totalPriceText);
 			
 			ViewHolder viewHolder = new ViewHolder();
 			
-			viewHolder.quantityText = productQuantity;
-			viewHolder.nameText = productName;
-			viewHolder.picText = picName;
-			viewHolder.priceText = productPrice;
-			viewHolder.totalPriceText = totalProductPrice;
+			viewHolder.quantityText = quantityText;
+			viewHolder.nameText = nameText;
+			viewHolder.remarksText = remarksText;
+			viewHolder.priceText = priceText;
+			viewHolder.totalPriceText = totalPriceText;
 
 			rowView.setTag(viewHolder);
 
@@ -80,30 +80,28 @@ public class TransactionDetailArrayAdapter extends ArrayAdapter<TransactionItem>
 
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
 			
-			productQuantity = viewHolder.quantityText;
-			productName = viewHolder.nameText;
-			picName = viewHolder.picText;
-			productPrice = viewHolder.priceText;
-			totalProductPrice = viewHolder.totalPriceText;
+			quantityText = viewHolder.quantityText;
+			nameText = viewHolder.nameText;
+			remarksText = viewHolder.remarksText;
+			priceText = viewHolder.priceText;
+			totalPriceText = viewHolder.totalPriceText;
 		}
 		
-		productQuantity.setText(String.valueOf(transactionItem.getQuantity()));
-		productName.setText(transactionItem.getProductName());
+		quantityText.setText(String.valueOf(transactionItem.getQuantity()));
+		nameText.setText(transactionItem.getProductName());
 		
-		if (transactionItem.getEmployeeId() != 0) {
+		if (transactionItem.getEmployee() != null) {
 			
-			picName.setText(transactionItem.getEmployee().getName());
-			ViewGroup.LayoutParams lp = picName.getLayoutParams();
-			lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+			remarksText.setText(transactionItem.getEmployee().getName());
+			remarksText.setVisibility(View.VISIBLE);
 			
 		} else {
 			
-			ViewGroup.LayoutParams lp = picName.getLayoutParams();
-			lp.height = 0;
+			remarksText.setVisibility(View.GONE);
 		}
 		
-		productPrice.setText(CommonUtil.formatCurrency(transactionItem.getPrice()));
-		totalProductPrice.setText(CommonUtil.formatCurrency(transactionItem.getQuantity() * transactionItem.getPrice()));
+		priceText.setText(CommonUtil.formatCurrency(transactionItem.getPrice()));
+		totalPriceText.setText(CommonUtil.formatCurrency(transactionItem.getQuantity() * transactionItem.getPrice()));
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionItem));
 

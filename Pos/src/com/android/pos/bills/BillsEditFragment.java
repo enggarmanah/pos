@@ -96,15 +96,15 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	mTypeSp = (Spinner) getView().findViewById(R.id.typeSp);
     	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
     	
-    	mSupplierNameText = (EditText) getView().findViewById(R.id.supplierNameTxt);
-    	mBillReferenceNoText = (EditText) getView().findViewById(R.id.billsReferenceNoTxt);
+    	mSupplierNameText = (EditText) getView().findViewById(R.id.supplierNameText);
+    	mBillReferenceNoText = (EditText) getView().findViewById(R.id.billsReferenceNoText);
     	mBillDate = (EditText) getView().findViewById(R.id.billsDate);
     	mBillDueDate = (EditText) getView().findViewById(R.id.billsDueDate);
-    	mBillAmountText = (EditText) getView().findViewById(R.id.billsAmountTxt);
+    	mBillAmountText = (EditText) getView().findViewById(R.id.billsAmountText);
     	mPaymentDate = (EditText) getView().findViewById(R.id.paymentDate);
-    	mPaymentText = (EditText) getView().findViewById(R.id.paymentTxt);
+    	mPaymentText = (EditText) getView().findViewById(R.id.paymentText);
     	mDeliveryDate = (EditText) getView().findViewById(R.id.deliveryDate);
-    	mRemarksText = (EditText) getView().findViewById(R.id.remarksTxt);
+    	mRemarksText = (EditText) getView().findViewById(R.id.remarksText);
     	
     	registerField(mTypeSp);
     	registerField(mSupplierNameText);
@@ -169,7 +169,7 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     		int typeIndex = typeArrayAdapter.getPosition(bills.getBillType());
     		mTypeSp.setSelection(typeIndex);
     		
-    		int statusIndex = typeArrayAdapter.getPosition(bills.getStatus());
+    		int statusIndex = statusArrayAdapter.getPosition(bills.getStatus());
     		mStatusSp.setSelection(statusIndex);
     		
     		mSupplierNameText.setText(bills.getSupplierName());
@@ -315,6 +315,19 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	}
 	}
     
+    @Override
+    protected boolean isValidated() {
+    	
+    	String type = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
+    	
+    	if (Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT.equals(type)) {
+    		mBillDate.setText(mPaymentDate.getText().toString());
+    		mBillAmountText.setText(mPaymentText.getText().toString());
+    	}
+    	
+    	return super.isValidated();
+    }
+    
     private void refreshVisibleField() {
     	
     	mSupplierPanel.setVisibility(View.VISIBLE);
@@ -383,6 +396,15 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				
 		    	mBillType = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
+		    	
+		    	if (Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT.equals(mBillType)) {
+		    		
+		    		mBillStatus = Constant.BILL_STATUS_PAID;
+		    		
+		    		int statusIndex = statusArrayAdapter.getPosition(mBillStatus);
+		    		mStatusSp.setSelection(statusIndex);
+		    	}
+		    	
 		    	refreshVisibleField();
 		    }
 

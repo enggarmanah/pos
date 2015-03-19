@@ -42,7 +42,7 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     @Override
     protected void initViewReference() {
         
-    	mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
+    	mNameText = (EditText) getActivity().findViewById(R.id.nameText);
     	
     	registerField(mNameText);
     	

@@ -15,7 +15,7 @@
                 android:text="@string/field_name" />
 
             <EditText
-                android:id="@+id/nameTxt"
+                android:id="@+id/nameText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
 
@@ -60,7 +60,7 @@
                 android:text="@string/field_price" />
 
             <EditText
-                android:id="@+id/priceTxt"
+                android:id="@+id/priceText"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
         
@@ -75,7 +75,7 @@
                 android:text="@string/field_cost_price" />
 
             <EditText
-                android:id="@+id/costPriceTxt"
+                android:id="@+id/costPriceText"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
 
@@ -105,7 +105,7 @@
                 android:text="@string/field_commision" />
 
             <EditText
-                android:id="@+id/commisionTxt"
+                android:id="@+id/commisionText"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
 
@@ -120,7 +120,7 @@
                 android:text="@string/field_promo_price" />
 
             <EditText
-                android:id="@+id/promoPriceTxt"
+                android:id="@+id/promoPriceText"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
 
@@ -165,7 +165,7 @@
                 android:text="@string/field_stock" />
 
             <EditText
-                android:id="@+id/stockTxt"
+                android:id="@+id/stockText"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
         
@@ -180,7 +180,7 @@
                 android:text="@string/field_min_stock" />
 
             <EditText
-                android:id="@+id/minStockTxt"
+                android:id="@+id/minStockText"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
         

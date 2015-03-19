@@ -52,11 +52,11 @@ public class InventorySearchArrayAdapter extends BaseSearchArrayAdapter<Inventor
 			rowView = inflater.inflate(R.layout.inventory_list_item, parent, false);
 			
 			flowImage = (ImageView) rowView.findViewById(R.id.flowImage);
-			nameText = (TextView) rowView.findViewById(R.id.nameTxt);
-			remarksText = (TextView) rowView.findViewById(R.id.remarksTxt);
-			quantityText = (TextView) rowView.findViewById(R.id.quantityTxt);
+			nameText = (TextView) rowView.findViewById(R.id.nameText);
+			remarksText = (TextView) rowView.findViewById(R.id.remarksText);
+			quantityText = (TextView) rowView.findViewById(R.id.quantityText);
 			deliveryDateText = (TextView) rowView.findViewById(R.id.deliveryDate);
-			supplierText = (TextView) rowView.findViewById(R.id.supplierTxt);
+			supplierText = (TextView) rowView.findViewById(R.id.supplierText);
 			
 			ViewHolder viewHolder = new ViewHolder();
 			

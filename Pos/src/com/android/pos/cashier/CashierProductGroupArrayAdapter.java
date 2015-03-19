@@ -49,7 +49,7 @@ public class CashierProductGroupArrayAdapter extends ArrayAdapter<ProductGroup> 
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.cashier_product_group_list_item, parent, false);
-			prdGroupName = (TextView) rowView.findViewById(R.id.nameTxt);
+			prdGroupName = (TextView) rowView.findViewById(R.id.nameText);
 
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.itemText = prdGroupName;

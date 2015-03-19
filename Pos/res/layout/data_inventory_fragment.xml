@@ -30,7 +30,7 @@
                 android:text="@string/field_product" />
 
             <EditText
-                android:id="@+id/productNameTxt"
+                android:id="@+id/productNameText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
@@ -45,7 +45,7 @@
                 android:text="@string/field_cost_price" />
 
             <EditText
-                android:id="@+id/productCostPriceTxt"
+                android:id="@+id/productCostPriceText"
                 style="@style/FormInputNumericStyle"
                 android:hint="@string/hint_cost_price" />
         </LinearLayout>
@@ -61,7 +61,7 @@
                 android:text="@string/field_quantity" />
 
             <EditText
-                android:id="@+id/quantityTxt"
+                android:id="@+id/quantityText"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
         
@@ -76,7 +76,7 @@
                 android:text="@string/field_bills_reference_no" />
 
             <EditText
-                android:id="@+id/billsReferenceNoTxt"
+                android:id="@+id/billsReferenceNoText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
 
@@ -92,7 +92,7 @@
                 android:text="@string/field_supplier" />
 
             <EditText
-                android:id="@+id/supplierNameTxt"
+                android:id="@+id/supplierNameText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
@@ -124,7 +124,7 @@
                 android:text="@string/field_remarks" />
 
             <EditText
-                android:id="@+id/remarksTxt"
+                android:id="@+id/remarksText"
                 style="@style/FormInputTextAreaStyle" />
         </LinearLayout>
 

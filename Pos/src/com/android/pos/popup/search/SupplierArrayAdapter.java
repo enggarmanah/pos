@@ -49,7 +49,7 @@ public class SupplierArrayAdapter extends ArrayAdapter<Supplier> {
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.popup_supplier_list_item, parent, false);
-			supplierName = (TextView) rowView.findViewById(R.id.nameTxt);
+			supplierName = (TextView) rowView.findViewById(R.id.nameText);
 
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.itemText = supplierName;

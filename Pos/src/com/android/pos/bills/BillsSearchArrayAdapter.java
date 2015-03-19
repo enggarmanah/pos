@@ -46,11 +46,11 @@ public class BillsSearchArrayAdapter extends BaseSearchArrayAdapter<Bills> {
 
 			rowView = inflater.inflate(R.layout.bills_list_item, parent, false);
 			
-			nameText = (TextView) rowView.findViewById(R.id.nameTxt);
-			remarksText = (TextView) rowView.findViewById(R.id.remarksTxt);
-			billAmountText = (TextView) rowView.findViewById(R.id.billAmountTxt);
+			nameText = (TextView) rowView.findViewById(R.id.nameText);
+			remarksText = (TextView) rowView.findViewById(R.id.remarksText);
+			billAmountText = (TextView) rowView.findViewById(R.id.billAmountText);
 			billDateText = (TextView) rowView.findViewById(R.id.billDate);
-			supplierText = (TextView) rowView.findViewById(R.id.supplierTxt);
+			supplierText = (TextView) rowView.findViewById(R.id.supplierText);
 			
 			ViewHolder viewHolder = new ViewHolder();
 			
@@ -76,7 +76,12 @@ public class BillsSearchArrayAdapter extends BaseSearchArrayAdapter<Bills> {
 		String remarks = item.getRemarks();
 	    
 	    nameText.setText(getItemName(item));
-		billDateText.setText(CommonUtil.formatDate(item.getDeliveryDate()));
+	    
+	    if (CommonUtil.isEmpty(item.getBillReferenceNo())) {
+	    	nameText.setText("Tanpa Nota");
+		}
+	    
+		billDateText.setText(CommonUtil.formatDate(item.getBillDate()));
 		remarksText.setText(remarks);
 		
 		int payment = CommonUtil.getNvl(item.getPayment());
@@ -90,8 +95,9 @@ public class BillsSearchArrayAdapter extends BaseSearchArrayAdapter<Bills> {
 			billAmountText.setTextColor(context.getResources().getColor(R.color.text_blue));
 		}
 		
+		supplierText.setText(item.getSupplierName());
+		
 		if (!CommonUtil.isEmpty(item.getSupplierName())) {
-			supplierText.setText(CommonUtil.formatNumber(item.getSupplierName()));
 			supplierText.setVisibility(View.VISIBLE);
 		} else {
 			supplierText.setVisibility(View.GONE);

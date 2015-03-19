@@ -53,9 +53,9 @@ public class UserEditFragment extends BaseEditFragment<User> {
     @Override
     protected void initViewReference() {
         
-    	mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
-    	mUserIdText = (EditText) getActivity().findViewById(R.id.userIdTxt);
-    	mPasswordText = (EditText) getActivity().findViewById(R.id.passwordTxt);
+    	mNameText = (EditText) getActivity().findViewById(R.id.nameText);
+    	mUserIdText = (EditText) getActivity().findViewById(R.id.userIdText);
+    	mPasswordText = (EditText) getActivity().findViewById(R.id.passwordText);
     	mRoleSp = (Spinner) getActivity().findViewById(R.id.roleSp);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
     	

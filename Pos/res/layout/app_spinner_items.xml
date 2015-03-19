@@ -4,7 +4,7 @@
     style="@style/SpinnerRowStyle">
 
     <TextView
-        android:id="@+id/nameTxt"
+        android:id="@+id/nameText"
         style="@style/SpinnerRowDropDownTextStyle"/>
 
 </LinearLayout>

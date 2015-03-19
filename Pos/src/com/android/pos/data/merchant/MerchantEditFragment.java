@@ -2,6 +2,7 @@ package com.android.pos.data.merchant;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.android.pos.CodeBean;
 import com.android.pos.Constant;
@@ -9,9 +10,12 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Merchant;
+import com.android.pos.dao.MerchantAccess;
+import com.android.pos.dao.MerchantAccessDaoService;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
@@ -21,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,17 +47,32 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     Spinner mStatusSp;
     
     LinearLayout mStatusPanel;
+    LinearLayout accessRightPanel;
+    
+    List<MerchantAccess> mMerchantAccesses;
+    List<ImageButton> mCheckedButtons;
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
     
     private MerchantDaoService mMerchantDaoService = new MerchantDaoService();
+    private MerchantAccessDaoService mMerchantAccessDaoService = new MerchantAccessDaoService();
+    
+    LayoutInflater mInflater;
+    ViewGroup mContainer;
+    
+    View accessView;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
     	
+    	mInflater = inflater;
+    	mContainer = container;
+    	
     	View view = inflater.inflate(R.layout.data_merchant_fragment, container, false);
+    	
+    	accessRightPanel = (LinearLayout) view.findViewById(R.id.accessRightPanel);
     	
     	return view;
     }
@@ -158,6 +178,56 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mTypeSp.setSelection(typeIndex);
     		mStatusSp.setSelection(statusIndex);
     		
+    		accessRightPanel.removeAllViews();
+    		
+    		mMerchantAccesses = mMerchantAccessDaoService.getMerchantAccessList(MerchantUtil.getMerchantId());
+    		
+    		mCheckedButtons = new ArrayList<ImageButton>();
+    		
+    		for (final MerchantAccess merchantAccess : mMerchantAccesses) {
+        		
+        		accessView = mInflater.inflate(R.layout.data_merchant_access_list_item, mContainer, false);
+        		
+        		TextView nameText = (TextView) accessView.findViewById(R.id.nameText);
+    			final ImageButton checkedButton = (ImageButton) accessView.findViewById(R.id.checkedButton);
+    			
+    			checkedButton.setEnabled(false);
+    			mCheckedButtons.add(checkedButton);
+    			
+    			nameText.setText(merchantAccess.getName());
+    			
+    			boolean isChecked = Constant.STATUS_YES.equals(merchantAccess.getStatus());
+    			
+    			if (isChecked) {
+					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_checked_black));
+				} else {
+					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_cancel_black));
+				}
+    			
+    			checkedButton.setOnClickListener(new View.OnClickListener() {
+    				
+    				@Override
+    				public void onClick(View v) {
+    					
+    					if (!isEnableInputFields) {
+    						return;
+    					}
+    					
+    					boolean isSelected = Constant.STATUS_YES.equals(merchantAccess.getStatus());
+    					
+    					if (!isSelected) {
+    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_checked_black));
+    						merchantAccess.setStatus(Constant.STATUS_YES);
+    					} else {
+    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_cancel_black));
+    						merchantAccess.setStatus(Constant.STATUS_NO);
+    					}
+    				}
+    			});
+    			
+    			accessRightPanel.addView(accessView);
+        	}
+    		
     		showView();
     		
     	} else {
@@ -210,6 +280,19 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		
     		mItem.setUpdateBy(userId);
     		mItem.setUpdateDate(new Date());
+    	}
+    	
+    	for (MerchantAccess merchantAccess : mMerchantAccesses) {
+    		
+    		String userId = UserUtil.getUser().getUserId();
+    		
+    		if (merchantAccess.getCreateBy() == null) {
+    			merchantAccess.setCreateBy(userId);
+    			merchantAccess.setCreateDate(new Date());
+    		}
+    		
+    		merchantAccess.setUpdateBy(userId);
+    		merchantAccess.setUpdateDate(new Date());
     	}
     }
     
@@ -268,6 +351,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	} else {
     		
     		mMerchantDaoService.updateMerchant(mItem);
+    		mMerchantAccessDaoService.updateMerchantAccess(mMerchantAccesses);
+    		
     		isUpdated = true;
     	}
     	
@@ -288,5 +373,19 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	this.mItem = merchant;
     	
     	return merchant;
+    }
+    
+    @Override
+    public void enableInputFields(boolean isEnabled) {
+    	
+    	super.enableInputFields(isEnabled);
+    	
+    	if (mCheckedButtons == null) {
+    		return;
+    	}
+    	
+    	for (ImageButton button : mCheckedButtons) {
+    		button.setEnabled(isEnabled);
+    	}
     }
 }

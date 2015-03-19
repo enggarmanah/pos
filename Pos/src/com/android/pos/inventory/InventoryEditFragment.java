@@ -85,13 +85,13 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     protected void initViewReference() {
         
     	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
-    	mProductNameText = (EditText) getView().findViewById(R.id.productNameTxt);
-    	mProductCostPriceText = (EditText) getView().findViewById(R.id.productCostPriceTxt);
-    	mQuantityText = (EditText) getView().findViewById(R.id.quantityTxt);
-    	mBillsReferenceNoText = (EditText) getView().findViewById(R.id.billsReferenceNoTxt);
-    	mSupplierNameText = (EditText) getView().findViewById(R.id.supplierNameTxt);
+    	mProductNameText = (EditText) getView().findViewById(R.id.productNameText);
+    	mProductCostPriceText = (EditText) getView().findViewById(R.id.productCostPriceText);
+    	mQuantityText = (EditText) getView().findViewById(R.id.quantityText);
+    	mBillsReferenceNoText = (EditText) getView().findViewById(R.id.billsReferenceNoText);
+    	mSupplierNameText = (EditText) getView().findViewById(R.id.supplierNameText);
     	mDeliveryDate = (EditText) getView().findViewById(R.id.deliveryDate);
-    	mRemarksText = (EditText) getView().findViewById(R.id.remarksTxt);
+    	mRemarksText = (EditText) getView().findViewById(R.id.remarksText);
     	
     	mSupplierPanel = (LinearLayout) getView().findViewById(R.id.supplierPanel);
         mRemarksPanel = (LinearLayout) getView().findViewById(R.id.remarksPanel);

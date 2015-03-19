@@ -13,6 +13,8 @@ import com.android.pos.common.ConfirmListener;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.Employee;
+import com.android.pos.dao.Inventory;
+import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.OrderItem;
@@ -33,6 +35,7 @@ import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.PrintUtil;
+import com.android.pos.util.UserUtil;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -111,6 +114,7 @@ public class CashierActivity extends BaseActivity
 	private TransactionsDaoService mTransactionDaoService;
 	private TransactionItemDaoService mTransactionItemDaoService;
 	private ProductDaoService mProductDaoService;
+	private InventoryDaoService mInventoryDaoService;
 	
 	private OrdersDaoService mOrderDaoService;
 	private OrderItemDaoService mOrderItemDaoService;
@@ -138,6 +142,7 @@ public class CashierActivity extends BaseActivity
 		mTransactionDaoService = new TransactionsDaoService();
 		mTransactionItemDaoService = new TransactionItemDaoService();
 		mProductDaoService = new ProductDaoService();
+		mInventoryDaoService = new InventoryDaoService();
 		
 		mOrderDaoService = new OrdersDaoService();
 		mOrderItemDaoService = new OrderItemDaoService();
@@ -677,7 +682,30 @@ public class CashierActivity extends BaseActivity
 			transactionItem.setMerchant(MerchantUtil.getMerchant());
 			transactionItem.setUploadStatus(Constant.STATUS_YES);
 			
-			mTransactionItemDaoService.addTransactionItem(transactionItem);
+			if (transactionItem.getQuantity() != 0) {
+				mTransactionItemDaoService.addTransactionItem(transactionItem);
+			}
+			
+			// track the product movement in inventory
+			Inventory inventory = new Inventory();
+			inventory.setMerchant(MerchantUtil.getMerchant());
+			inventory.setBillReferenceNo(transaction.getTransactionNo());
+			inventory.setProduct(transactionItem.getProduct());
+			inventory.setProductName(transactionItem.getProductName());
+			inventory.setQuantityStr(String.valueOf(transactionItem.getQuantity()));
+			inventory.setQuantity(-transactionItem.getQuantity());
+			inventory.setProductCostPrice(transactionItem.getCostPrice());
+			inventory.setDeliveryDate(new Date());
+			inventory.setStatus(Constant.INVENTORY_STATUS_SALE);
+			inventory.setUploadStatus(Constant.STATUS_YES);
+			inventory.setCreateBy(UserUtil.getUser().getUserId());
+			inventory.setCreateDate(new Date());
+			inventory.setUpdateBy(UserUtil.getUser().getUserId());
+			inventory.setUpdateDate(new Date());
+			
+			if (transactionItem.getQuantity() != 0) {
+				mInventoryDaoService.addInventory(inventory);
+			}
 		}
 		
 		// clear orders

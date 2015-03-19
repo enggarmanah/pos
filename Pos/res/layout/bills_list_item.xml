@@ -9,13 +9,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 	    <TextView
-	        android:id="@+id/nameTxt"
+	        android:id="@+id/nameText"
 	        style="@style/ListViewRowInventoryNameTextStyle"/>
 	   	<TextView
-	        android:id="@+id/remarksTxt"
+	        android:id="@+id/remarksText"
 	        style="@style/ListViewRowInventoryRemarksTextStyle"/>
 	   	<TextView
-	        android:id="@+id/supplierTxt"
+	        android:id="@+id/supplierText"
 	        style="@style/ListViewRowBillsSupplierTextStyle"/>
     </LinearLayout>
     <LinearLayout
@@ -27,7 +27,7 @@
 	        android:id="@+id/billDate"
 	        style="@style/ListViewRowInventoryDeliveryDateTextStyle"/>
 	    <TextView
-	        android:id="@+id/billAmountTxt"
+	        android:id="@+id/billAmountText"
 	        style="@style/ListViewRowBillsAmountTextStyle"/>
     </LinearLayout>
 

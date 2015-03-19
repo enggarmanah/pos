@@ -66,7 +66,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.app_list_item, parent, false);
-			itemName = (TextView) rowView.findViewById(R.id.nameTxt);
+			itemName = (TextView) rowView.findViewById(R.id.nameText);
 
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.itemText = itemName;
@@ -110,7 +110,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 
 				if (selectedView != null) {
 
-					TextView selectedText = (TextView) selectedView.findViewById(R.id.nameTxt);
+					TextView selectedText = (TextView) selectedView.findViewById(R.id.nameText);
 
 					selectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
 					selectedText.setTextColor(context.getResources().getColor(R.color.list_row_normal_text));
@@ -132,7 +132,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 		
 		if (selectedView != null) {
 
-			TextView selectedText = (TextView) selectedView.findViewById(R.id.nameTxt);
+			TextView selectedText = (TextView) selectedView.findViewById(R.id.nameText);
 
 			selectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
 			selectedText.setTextColor(context.getResources().getColor(R.color.list_row_normal_text));

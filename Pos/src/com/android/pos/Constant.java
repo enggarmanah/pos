@@ -115,4 +115,14 @@ public class Constant {
 	public static final String INVENTORY_STATUS_LOST = "LOST";
 	public static final String INVENTORY_STATUS_DAMAGE = "DAMG";
 	public static final String INVENTORY_STATUS_INITIAL_STOCK = "INIT";
+	
+	public static final String ACCESS_CASHIER = "CASH";
+	public static final String ACCESS_DATA_MANAGEMENT = "MGMT";
+	public static final String ACCESS_INVENTORY = "INVT";
+	public static final String ACCESS_USER_ACCESS = "UACC";
+	public static final String ACCESS_BILLS = "BILL";
+	public static final String ACCESS_REPORT_TRANSACTION = "RTRA";
+	public static final String ACCESS_REPORT_PRODUCT_STATISTIC = "RPST";
+	public static final String ACCESS_REPORT_INVENTORY = "RIVT";
+	public static final String ACCESS_REPORT_CASHFLOW = "RCFL";
 }

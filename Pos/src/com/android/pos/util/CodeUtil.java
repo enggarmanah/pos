@@ -17,6 +17,7 @@ public class CodeUtil {
 	public static CodeBean[] billTypes;
 	public static CodeBean[] billStatus;
 	public static CodeBean[] inventoryStatus;
+	public static CodeBean[] moduleAccess;
 	
 	static {
 		
@@ -223,6 +224,64 @@ public class CodeUtil {
 		code.setCode(Constant.INVENTORY_STATUS_INITIAL_STOCK);
 		code.setLabel("Stok Awal");
 		inventoryStatus[9] = code;
+		
+		/*public static final String ACCESS_CASHIER = "CASH";
+		public static final String ACCESS_DATA_MANAGEMENT = "MGMT";
+		public static final String ACCESS_INVENTORY = "INVT";
+		public static final String ACCESS_USER_ACCESS = "UACC";
+		public static final String ACCESS_BILLS = "BILL";
+		public static final String ACCESS_REPORT_TRANSACTION = "RTRA";
+		public static final String ACCESS_REPORT_PRODUCT_STATISTIC = "RPST";
+		public static final String ACCESS_REPORT_INVENTORY = "RIVT";
+		public static final String ACCESS_REPORT_CASHFLOW = "RCFL";*/
+		
+		moduleAccess = new CodeBean[9];
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_CASHIER);
+		code.setLabel("Kasir");
+		moduleAccess[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_DATA_MANAGEMENT);
+		code.setLabel("Data Referensi");
+		moduleAccess[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_INVENTORY);
+		code.setLabel("Data Inventori");
+		moduleAccess[2] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_BILLS);
+		code.setLabel("Data Keuangan");
+		moduleAccess[3] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_USER_ACCESS);
+		code.setLabel("Data Pengguna");
+		moduleAccess[4] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_TRANSACTION);
+		code.setLabel("Laporan Transaksi");
+		moduleAccess[5] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_PRODUCT_STATISTIC);
+		code.setLabel("Laporan Penjualan");
+		moduleAccess[6] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_INVENTORY);
+		code.setLabel("Laporan Inventori");
+		moduleAccess[7] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_CASHFLOW);
+		code.setLabel("Laporan Keuangan");
+		moduleAccess[8] = code;
+		
 	}
 	
 	public static CodeBean[] getMerchantTypes() {
@@ -271,6 +330,10 @@ public class CodeUtil {
 	
 	public static CodeBean[] getInventoryStatus() {
 		return inventoryStatus;
+	}
+	
+	public static CodeBean[] getModuleAccesses() {
+		return moduleAccess;
 	}
 	
 	public static String getPaymentTypeLabel(String code) {

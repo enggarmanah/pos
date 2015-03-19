@@ -47,7 +47,7 @@
 
             <EditText
                 android:id="@+id/addressText"
-                style="@style/FormInputStyle" />
+                style="@style/FormInputTextAreaStyle" />
         </LinearLayout>
 		
         <LinearLayout style="@style/FormRowStyle" >
@@ -202,6 +202,29 @@
             <Spinner
                 android:id="@+id/statusSp"
                 style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:layout_gravity="top"
+                android:text="@string/letter_H" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:layout_gravity="top"
+                android:text="@string/field_access_right" />
+            
+            <LinearLayout
+                android:id="@+id/accessRightPanel"
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

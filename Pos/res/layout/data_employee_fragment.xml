@@ -15,7 +15,7 @@
                 android:text="@string/field_name" />
 
             <EditText
-                android:id="@+id/nameTxt"
+                android:id="@+id/nameText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
@@ -30,7 +30,7 @@
                 android:text="@string/field_telephone" />
 
             <EditText
-                android:id="@+id/telephoneTxt"
+                android:id="@+id/telephoneText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
@@ -45,7 +45,7 @@
                 android:text="@string/field_address" />
 
             <EditText
-                android:id="@+id/addressTxt"
+                android:id="@+id/addressText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
 

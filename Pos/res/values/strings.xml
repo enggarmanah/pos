@@ -18,22 +18,30 @@
     <string name="app_name">TokoKu</string>
     
     <string-array name="app_menus_cashier">
+        <item>User</item>
         <item>Kasir</item>
         <item>Pemesanan</item>
+        <item>Laporan</item>
         <item>Laporan Transaksi</item>
         <item>Keluar</item>
     </string-array>
     
     <string-array name="app_menus_cashier_shop">
+        <item>User</item>
         <item>Kasir</item>
+        <item>Laporan</item>
         <item>Laporan Transaksi</item>
         <item>Keluar</item>
     </string-array>
     
     <string-array name="app_menus_admin">
+        <item>User</item>
+        <item>Laporan</item>
         <item>Laporan Transaksi</item>
         <item>Laporan Penjualan</item>
+        <item>Laporan Keuangan</item>
         <item>Laporan Inventori</item>
+        <item>Data</item>
         <item>Data Pengeluaran</item>
         <item>Data Inventori</item>
         <item>Data Pengguna</item>
@@ -42,8 +50,12 @@
     </string-array>
     
     <string-array name="app_menus_admin_resto">
+        <item>User</item>
+        <item>Laporan</item>
         <item>Laporan Transaksi</item>
-        <item>Laporan Penjualan</item>       
+        <item>Laporan Penjualan</item>  
+        <item>Laporan Keuangan</item>     
+        <item>Data</item>
         <item>Data Pengeluaran</item>
         <item>Data Pengguna</item>
         <item>Data Referensi</item>
@@ -51,6 +63,7 @@
     </string-array>
     
     <string-array name="app_menus_merchant">
+        <item>User</item>
         <item>Keluar</item>
     </string-array>
     
@@ -71,6 +84,7 @@
     <string name="menu_order">Pemesanan</string>
     <string name="menu_transaction">Laporan Transaksi</string>
     <string name="menu_statistic_product">Laporan Penjualan</string>
+    <string name="menu_report_cashflow">Laporan Keuangan</string>
     <string name="menu_report_inventory">Laporan Inventori</string>
     <string name="menu_inventory">Data Inventori</string>
     <string name="menu_bills">Data Pengeluaran</string>
@@ -142,6 +156,7 @@
     <string name="field_service_charge_percentage">Bea Servis</string>
     <string name="field_capacity">Kapasitas</string>
     <string name="field_role">Hak Akses</string>
+    <string name="field_access_right">Hak Akses</string>
     <string name="field_telephone">Telepon</string>
     <string name="field_email">Email</string>
     <string name="field_emailStatus">Status Email</string>
@@ -165,6 +180,13 @@
     
     <string name="report_inventory_product">Produk</string>
     <string name="report_inventory_product_stock">Jumlah</string>
+   
+    <string name="report_cashflow_month">Bulan</string>
+    <string name="report_cashflow_total_bills">Total Pengeluaran</string>
+    <string name="report_cashflow_total_amount">Pendapatan</string>
+    <string name="report_cashflow_tax_amount">Pajak</string>
+    <string name="report_cashflow_service_charge_amount">Bea Servis</string>
+    <string name="report_cashflow_expense">Pengeluaran</string>
     
     <string name="hint_percentage">Persentase %</string>
     <string name="hint_cost_price">Harga Beli Satuan</string>  

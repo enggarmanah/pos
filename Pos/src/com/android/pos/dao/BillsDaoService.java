@@ -1,6 +1,7 @@
 package com.android.pos.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.database.Cursor;
@@ -11,6 +12,8 @@ import com.android.pos.dao.Bills;
 import com.android.pos.dao.BillsDao;
 import com.android.pos.model.BillsBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.model.CashFlowMonthBean;
+import com.android.pos.model.CashFlowYearBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
@@ -57,8 +60,37 @@ public class BillsDaoService {
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM bills "
 				+ " WHERE (bill_reference_no like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? "
-				+ " ORDER BY delivery_date DESC LIMIT ? OFFSET ? ",
+				+ " ORDER BY bill_date DESC LIMIT ? OFFSET ? ",
 				new String[] { queryStr, queryStr, queryStr, status, limit, lastIdx});
+		
+		List<Bills> list = new ArrayList<Bills>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Bills item = getBills(id);
+			list.add(item);
+		}
+
+		return list;
+	}
+	
+	public List<Bills> getBills(Date month, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(month).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(month).getTime());
+		
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM bills "
+				+ " WHERE payment_date BETWEEN ? AND ? AND status <> ? "
+				+ " ORDER BY bill_date LIMIT ? OFFSET ? ",
+				new String[] { startDate, endDate, status, limit, lastIdx});
 		
 		List<Bills> list = new ArrayList<Bills>();
 		
@@ -151,5 +183,57 @@ public class BillsDaoService {
 				billsDao.update(bills);
 			}
 		} 
+	}
+	
+	public List<CashFlowYearBean> getBillYears() {
+		
+		ArrayList<CashFlowYearBean> cashFlowYears = new ArrayList<CashFlowYearBean>();
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%Y', payment_date/1000, 'unixepoch', 'localtime'), SUM(payment) payment "
+				+ " FROM bills "
+				+ " WHERE payment_date IS NOT NULL AND payment IS NOT NULL "
+				+ " GROUP BY strftime('%Y', payment_date/1000, 'unixepoch', 'localtime')", null);
+			
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
+			Long value = cursor.getLong(1);
+			CashFlowYearBean cashFlowYear = new CashFlowYearBean();
+			cashFlowYear.setYear(date);
+			cashFlowYear.setAmount(value);
+			cashFlowYears.add(cashFlowYear);
+		}
+		
+		return cashFlowYears;
+	}
+	
+	public List<CashFlowMonthBean> getBillMonths(CashFlowYearBean cashFlowYear) {
+		
+		ArrayList<CashFlowMonthBean> cashFlowMonths = new ArrayList<CashFlowMonthBean>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(cashFlowYear.getYear()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(cashFlowYear.getYear()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', payment_date/1000, 'unixepoch', 'localtime'), SUM(payment) payment "
+				+ " FROM bills "
+				+ " WHERE payment_date BETWEEN ? AND ? AND payment IS NOT NULL "
+				+ " GROUP BY strftime('%m-%Y', payment_date/1000, 'unixepoch', 'localtime') ", 
+				new String[] { startDate, endDate });
+		
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
+			Long value = cursor.getLong(1);
+			CashFlowMonthBean cashFlowMonth = new CashFlowMonthBean();
+			cashFlowMonth.setMonth(date);
+			cashFlowMonth.setAmount(value);
+			cashFlowMonths.add(cashFlowMonth);
+		}
+		
+		return cashFlowMonths;
 	}
 }

@@ -8,8 +8,10 @@ import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.common.ConfirmDeleteDlgFragment;
+import com.android.pos.dao.Inventory;
 import com.android.pos.dao.Merchant;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
 import android.app.ActionBar;
@@ -282,6 +284,17 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			return true;
 			
 		case R.id.menu_item_edit:
+			
+			if (mSelectedItem instanceof Inventory) {
+				
+				Inventory inventory = (Inventory) mSelectedItem;
+				
+				if (Constant.INVENTORY_STATUS_SALE.equals(inventory.getStatus())) {
+					
+					NotificationUtil.setAlertMessage(getFragmentManager(), "Data penjualan tidak dapat dirubah dari modul ini!");
+					return true;
+				}
+			}
 
 			showEditMenu();
 

@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.android.pos.Constant;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDao;
+import com.android.pos.model.CashFlowMonthBean;
+import com.android.pos.model.CashFlowYearBean;
 import com.android.pos.model.TransactionDayBean;
 import com.android.pos.model.TransactionMonthBean;
 import com.android.pos.model.TransactionYearBean;
@@ -125,6 +127,29 @@ public class TransactionsDaoService {
 		return transactionYears;
 	}
 	
+	public List<CashFlowYearBean> getCashFlowYears() {
+		
+		ArrayList<CashFlowYearBean> cashFlowYears = new ArrayList<CashFlowYearBean>();
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount - tax_amount - service_charge_amount) income "
+				+ " FROM transactions "
+				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
+			
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
+			Long amount = cursor.getLong(1);
+			CashFlowYearBean transactionYear = new CashFlowYearBean();
+			transactionYear.setYear(date);
+			transactionYear.setAmount(amount);
+			cashFlowYears.add(transactionYear);
+		}
+		
+		return cashFlowYears;
+	}
+	
 	public List<TransactionMonthBean> getTransactionMonths(TransactionYearBean transactionYear) {
 		
 		ArrayList<TransactionMonthBean> transactionMonths = new ArrayList<TransactionMonthBean>();
@@ -150,6 +175,65 @@ public class TransactionsDaoService {
 		}
 		
 		return transactionMonths;
+	}
+	
+	public List<CashFlowMonthBean> getCashFlowMonths(CashFlowYearBean cashFlowYear) {
+		
+		ArrayList<CashFlowMonthBean> cashFlowMonths = new ArrayList<CashFlowMonthBean>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(cashFlowYear.getYear()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(cashFlowYear.getYear()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount - tax_amount - service_charge_amount) income "
+				+ " FROM transactions "
+				+ " WHERE transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { startDate, endDate });
+			
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
+			Long amount = cursor.getLong(1);
+			CashFlowMonthBean cashFlowMonth = new CashFlowMonthBean();
+			cashFlowMonth.setMonth(date);
+			cashFlowMonth.setAmount(amount);
+			cashFlowMonths.add(cashFlowMonth);
+		}
+		
+		return cashFlowMonths;
+	}
+	
+	public List<Long> getMonthIncome(Date month) {
+		
+		List<Long> income = new ArrayList<Long>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(month).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(month).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT SUM(total_amount), SUM(tax_amount), SUM(service_charge_amount) "
+				+ " FROM transactions "
+				+ " WHERE transaction_date BETWEEN ? AND ? "
+				, new String[] { startDate, endDate });
+		
+		if (cursor.moveToFirst()) {
+			
+			income.add(cursor.getLong(0));
+			income.add(cursor.getLong(1));
+			income.add(cursor.getLong(2));
+			
+		} else {
+			
+			long zero = 0;
+			
+			income.add(zero);
+			income.add(zero);
+			income.add(zero);
+		}
+		
+		return income;
 	}
 	
 	public List<TransactionDayBean> getTransactionDays(TransactionMonthBean transactionMonth) {

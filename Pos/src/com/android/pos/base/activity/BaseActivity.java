@@ -1,14 +1,20 @@
 package com.android.pos.base.activity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.auth.MerchantLoginActivity;
 import com.android.pos.auth.UserLoginActivity;
+import com.android.pos.base.adapter.AppMenuArrayAdapter;
 import com.android.pos.bills.BillsMgtActivity;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.data.DataMgtActivity;
 import com.android.pos.inventory.InventoryMgtActivity;
 import com.android.pos.order.OrderActivity;
+import com.android.pos.report.cashflow.CashFlowActivity;
 import com.android.pos.report.inventory.InventoryReportActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
@@ -29,12 +35,14 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public abstract class BaseActivity extends Activity {
-
+public abstract class BaseActivity extends Activity
+	implements AppMenuArrayAdapter.ItemActionListener {
+	
+	protected int mSelectedIndex = -1;
+	
 	protected boolean isInFront = false;
 
 	protected DrawerLayout mDrawerLayout;
@@ -73,6 +81,8 @@ public abstract class BaseActivity extends Activity {
 			mAppMenus = getResources().getStringArray(R.array.app_menus_root);
 		}
 		
+		
+		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -80,7 +90,16 @@ public abstract class BaseActivity extends Activity {
 		// opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		// set up the drawer's list view with items and click listener
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.app_menu_item, mAppMenus));
+		
+		List<String> menus = new ArrayList<String>();
+		menus.addAll(Arrays.asList(mAppMenus));
+		
+		//mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.app_menu_item, mAppMenus));
+		
+		AppMenuArrayAdapter adapter = new AppMenuArrayAdapter(getApplicationContext(), menus, this);
+		
+		mDrawerList.setAdapter(adapter);
+		
 		mDrawerList.setOnItemClickListener(getMenuListOnItemClickListener());
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
@@ -161,6 +180,16 @@ public abstract class BaseActivity extends Activity {
 		isInFront = false;
 	}
 
+	@Override
+	public String getSelectedMenu() {
+		
+		if (mSelectedIndex != -1) {
+			return mAppMenus[mSelectedIndex];
+		} else {
+			return null;
+		}
+	}
+	
 	protected AdapterView.OnItemClickListener getMenuListOnItemClickListener() {
 
 		return new AdapterView.OnItemClickListener() {
@@ -179,9 +208,15 @@ public abstract class BaseActivity extends Activity {
 	}
 
 	private void selectItem(int position) {
-
+		
+		String title = mAppMenus[position]; 
+		
+		if (position == 0 || "Laporan".equals(title) || "Data".equals(title)) {
+			return;
+		}
+		
+		setTitle(title);
 		mDrawerList.setItemChecked(position, true);
-		setTitle(mAppMenus[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 		
 		String menu = mAppMenus[position];
@@ -204,6 +239,11 @@ public abstract class BaseActivity extends Activity {
 		} else if (getString(R.string.menu_statistic_product).equals(menu)) {
 
 			Intent intent = new Intent(this, ProductStatisticActivity.class);
+			startActivity(intent);
+
+		} else if (getString(R.string.menu_report_cashflow).equals(menu)) {
+
+			Intent intent = new Intent(this, CashFlowActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_report_inventory).equals(menu)) {
@@ -265,9 +305,9 @@ public abstract class BaseActivity extends Activity {
 	
 	protected void setSelectedMenu(String menu) {
 		
-		int index = getMenuIndex(menu);
+		mSelectedIndex = getMenuIndex(menu);
 		
-		mDrawerList.setItemChecked(index, true);
+		mDrawerList.setItemChecked(mSelectedIndex, true);
 	}
 
 	public void showMessage(int resourceId) {

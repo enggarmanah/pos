@@ -23,7 +23,6 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 	
 	class ViewHolder {
 		ImageView flowImage;
-		TextView itemText;
 		TextView remarksText;
 		TextView deliveryDateText;
 		TextView quantityText;
@@ -32,7 +31,7 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 
 	public InventoryReportDetailArrayAdapter(Context context, List<Inventory> productStatistics) {
 
-		super(context, R.layout.inventory_list_item, productStatistics);
+		super(context, R.layout.report_inventory_detail_list_item, productStatistics);
 		
 		this.context = context;
 		this.mInventories = productStatistics;
@@ -48,7 +47,6 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 		View rowView = convertView;
 		
 		ImageView flowImage = null;
-		TextView nameText = null;
 		TextView remarksText = null;
 		TextView quantityText = null;
 		TextView deliveryDateText = null;
@@ -56,19 +54,17 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.inventory_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.report_inventory_detail_list_item, parent, false);
 			
 			flowImage = (ImageView) rowView.findViewById(R.id.flowImage);
-			nameText = (TextView) rowView.findViewById(R.id.nameTxt);
-			remarksText = (TextView) rowView.findViewById(R.id.remarksTxt);
-			quantityText = (TextView) rowView.findViewById(R.id.quantityTxt);
+			remarksText = (TextView) rowView.findViewById(R.id.remarksText);
+			quantityText = (TextView) rowView.findViewById(R.id.quantityText);
 			deliveryDateText = (TextView) rowView.findViewById(R.id.deliveryDate);
-			supplierText = (TextView) rowView.findViewById(R.id.supplierTxt);
+			supplierText = (TextView) rowView.findViewById(R.id.supplierText);
 			
 			ViewHolder viewHolder = new ViewHolder();
 			
 			viewHolder.flowImage = flowImage;
-			viewHolder.itemText = nameText;
 			viewHolder.remarksText = remarksText;
 			viewHolder.quantityText = quantityText;
 			viewHolder.deliveryDateText = deliveryDateText;
@@ -81,7 +77,6 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
 			
 			flowImage = viewHolder.flowImage;
-			nameText = viewHolder.itemText;
 			remarksText = viewHolder.remarksText;
 			quantityText = viewHolder.quantityText;
 			deliveryDateText = viewHolder.deliveryDateText;
@@ -104,13 +99,12 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 		
 	    String remarks = CommonUtil.isEmpty(inventory.getRemarks()) ? CodeUtil.getInvetoriStatusLabel(inventory.getStatus()) : CodeUtil.getInvetoriStatusLabel(inventory.getStatus()) + ". " + inventory.getRemarks(); 
 	    
-	    nameText.setText(inventory.getProductName());
-	    quantityText.setText(inventory.getQuantityStr());
+	    quantityText.setText(CommonUtil.formatNumber(inventory.getQuantity()));
 		deliveryDateText.setText(CommonUtil.formatDate(inventory.getDeliveryDate()));
 		remarksText.setText(remarks);
 		
 		if (!CommonUtil.isEmpty(inventory.getSupplierName())) {
-			supplierText.setText(CommonUtil.formatNumber(inventory.getSupplierName()));
+			supplierText.setText(inventory.getSupplierName());
 			supplierText.setVisibility(View.VISIBLE);
 		} else {
 			supplierText.setVisibility(View.GONE);

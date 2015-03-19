@@ -7,6 +7,7 @@ import com.android.pos.dao.Discount;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.Inventory;
 import com.android.pos.dao.Merchant;
+import com.android.pos.dao.MerchantAccess;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.Supplier;
@@ -18,6 +19,7 @@ import com.android.pos.model.CustomerBean;
 import com.android.pos.model.DiscountBean;
 import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.InventoryBean;
+import com.android.pos.model.MerchantAccessBean;
 import com.android.pos.model.MerchantBean;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.ProductGroupBean;
@@ -486,6 +488,7 @@ public class BeanUtil {
 		
 		bean.setSupplier_id(bills.getSupplierId());
 		bean.setSupplier_name(bills.getSupplierName());
+		bean.setBill_type(bills.getBillType());
 		bean.setBill_reference_no(bills.getBillReferenceNo());
 		bean.setBill_date(bills.getBillDate());
 		bean.setBill_due_date(bills.getBillDueDate());
@@ -513,6 +516,7 @@ public class BeanUtil {
 		
 		bills.setSupplierId(bean.getSupplier_id());
 		bills.setSupplierName(bean.getSupplier_name());
+		bills.setBillType(bean.getBill_type());
 		bills.setBillReferenceNo(bean.getBill_reference_no());
 		bills.setBillDate(bean.getBill_date());
 		bills.setBillDueDate(bean.getBill_due_date());
@@ -530,5 +534,36 @@ public class BeanUtil {
 		bills.setCreateDate(bean.getCreate_date());
 		bills.setUpdateBy(bean.getUpdate_by());
 		bills.setUpdateDate(bean.getUpdate_date());
+	}
+	
+	public static MerchantAccessBean getBean(MerchantAccess merchantAccess) {
+		
+		MerchantAccessBean bean = new MerchantAccessBean();
+		
+		bean.setMerchant_id(merchantAccess.getMerchantId());
+		bean.setRemote_id(merchantAccess.getId());
+		bean.setName(merchantAccess.getName());
+		bean.setCode(merchantAccess.getCode());
+		bean.setStatus(merchantAccess.getStatus());
+		bean.setCreate_by(merchantAccess.getCreateBy());
+		bean.setCreate_date(merchantAccess.getCreateDate());
+		bean.setUpdate_by(merchantAccess.getUpdateBy());
+		bean.setUpdate_date(merchantAccess.getUpdateDate());
+		
+		return bean;
+	}
+	
+	public static void updateBean(MerchantAccess merchantAccess, MerchantAccessBean bean) {
+		
+		merchantAccess.setMerchantId(bean.getMerchant_id());
+		merchantAccess.setId(bean.getRemote_id());
+		merchantAccess.setName(bean.getName());
+		merchantAccess.setCode(bean.getCode());
+		merchantAccess.setStatus(bean.getStatus());
+		merchantAccess.setUploadStatus(Constant.STATUS_NO);
+		merchantAccess.setCreateBy(bean.getCreate_by());
+		merchantAccess.setCreateDate(bean.getCreate_date());
+		merchantAccess.setUpdateBy(bean.getUpdate_by());
+		merchantAccess.setUpdateDate(bean.getUpdate_date());
 	}
 }

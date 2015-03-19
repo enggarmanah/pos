@@ -101,7 +101,7 @@ public abstract class BaseSpinnerArrayAdapter<T> extends ArrayAdapter<T> {
 			rowView = inflater.inflate(mItemSelected, parent, false);
 		}
 		
-		itemName = (TextView) rowView.findViewById(R.id.nameTxt);
+		itemName = (TextView) rowView.findViewById(R.id.nameText);
 		itemName.setText(getLabel(option));
 		
 		return rowView;

@@ -73,8 +73,8 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			mProgressDialog = new ProgressDlgFragment();
 		}
 		
-		mLoginIdTxt = (EditText) findViewById(R.id.loginIdTxt);
-		mPasswordTxt = (EditText) findViewById(R.id.passwordTxt);
+		mLoginIdTxt = (EditText) findViewById(R.id.loginIdText);
+		mPasswordTxt = (EditText) findViewById(R.id.passwordText);
 		
 		mLoginBtn = (Button) findViewById(R.id.loginBtn);
 		mLoginBtn.setOnClickListener(getLoginBtnOnClickListener());

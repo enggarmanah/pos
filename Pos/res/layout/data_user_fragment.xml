@@ -15,7 +15,7 @@
                 android:text="@string/field_name" />
 
             <EditText
-                android:id="@+id/nameTxt"
+                android:id="@+id/nameText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
@@ -30,7 +30,7 @@
                 android:text="@string/field_login_id" />
 
             <EditText
-                android:id="@+id/userIdTxt"
+                android:id="@+id/userIdText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
@@ -45,7 +45,7 @@
                 android:text="@string/field_password" />
 
             <EditText
-                android:id="@+id/passwordTxt"
+                android:id="@+id/passwordText"
                 style="@style/FormInputPasswordStyle" />
         </LinearLayout>
 

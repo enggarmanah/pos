@@ -4,7 +4,7 @@ public class TransactionsBean {
 
 	private Long id;
 	private Long remote_id;
-	private long merchant_id;
+	private Long merchant_id;
 	private String transaction_no;
 	private String order_type;
 	private String order_reference;
@@ -21,9 +21,9 @@ public class TransactionsBean {
 	private Integer payment_amount;
 	private Integer return_amount;
 	private String payment_type;
-	private long cashier_id;
+	private Long cashier_id;
 	private String cashier_name;
-	private long customer_id;
+	private Long customer_id;
 	private String customer_name;	
 	private String status;
 
@@ -43,11 +43,11 @@ public class TransactionsBean {
 		this.remote_id = remote_id;
 	}
 
-	public long getMerchant_id() {
+	public Long getMerchant_id() {
 		return merchant_id;
 	}
 
-	public void setMerchant_id(long merchant_id) {
+	public void setMerchant_id(Long merchant_id) {
 		this.merchant_id = merchant_id;
 	}
 
@@ -179,11 +179,11 @@ public class TransactionsBean {
 		this.payment_type = payment_type;
 	}
 
-	public long getCashier_id() {
+	public Long getCashier_id() {
 		return cashier_id;
 	}
 
-	public void setCashier_id(long cashier_id) {
+	public void setCashier_id(Long cashier_id) {
 		this.cashier_id = cashier_id;
 	}
 
@@ -195,11 +195,11 @@ public class TransactionsBean {
 		this.cashier_name = cashier_name;
 	}
 
-	public long getCustomer_id() {
+	public Long getCustomer_id() {
 		return customer_id;
 	}
 
-	public void setCustomer_id(long customer_id) {
+	public void setCustomer_id(Long customer_id) {
 		this.customer_id = customer_id;
 	}
 

@@ -47,12 +47,12 @@ public class SupplierEditFragment extends BaseEditFragment<Supplier> {
     @Override
     protected void initViewReference() {
         
-    	mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
-    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneTxt);
-    	mAddressText = (EditText) getActivity().findViewById(R.id.addressTxt);
-    	mPicNameText = (EditText) getActivity().findViewById(R.id.picNameTxt);
-    	mPicTelephoneText = (EditText) getActivity().findViewById(R.id.picTelephoneTxt);
-    	mRemarksText = (EditText) getActivity().findViewById(R.id.remarksTxt);
+    	mNameText = (EditText) getActivity().findViewById(R.id.nameText);
+    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneText);
+    	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
+    	mPicNameText = (EditText) getActivity().findViewById(R.id.picNameText);
+    	mPicTelephoneText = (EditText) getActivity().findViewById(R.id.picTelephoneText);
+    	mRemarksText = (EditText) getActivity().findViewById(R.id.remarksText);
     	
     	registerField(mNameText);
     	registerField(mTelephoneText);

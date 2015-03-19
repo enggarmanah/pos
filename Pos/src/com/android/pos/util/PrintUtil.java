@@ -391,38 +391,40 @@ public class PrintUtil {
 		
 		for (TransactionItem item : transactionItems) {
 			
-			String productName = item.getProductName();
+			if (item.getQuantity() != 0) {
 			
-			if (productName.length() > mPrinterLineSize) {
-				productName = productName.substring(0, mPrinterLineSize);
+				String productName = item.getProductName();
+				
+				if (productName.length() > mPrinterLineSize) {
+					productName = productName.substring(0, mPrinterLineSize);
+				}
+				
+				int quantity = item.getQuantity();
+				int price = item.getPrice();
+				int total = quantity * price;
+				
+				line.setLength(0);
+				
+				line.append(productName);
+				line.append(spaces.substring(0, mPrinterLineSize - productName.length()));
+				
+				BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+				
+				String quantityStr = String.valueOf(quantity);
+				String priceStr = CommonUtil.formatCurrency(price);
+				String totalStr = CommonUtil.formatCurrency(total);
+				
+				line.setLength(0);
+				
+				line.append(quantityStr);
+				line.append(spaces.substring(0, 3 - quantityStr.length()));
+				line.append("x  ");
+				line.append(priceStr);
+				line.append(spaces.substring(0, mPrinterLineSize - line.toString().length() - totalStr.length()));
+				line.append(totalStr);
+				
+				BluetoothPrintDriver.BT_Write(line.toString() + "\r");
 			}
-			
-			int quantity = item.getQuantity();
-			int price = item.getPrice();
-			int total = quantity * price;
-			
-			line.setLength(0);
-			
-			line.append(productName);
-			line.append(spaces.substring(0, mPrinterLineSize - productName.length()));
-			
-			BluetoothPrintDriver.BT_Write(line.toString() + "\r");
-			
-			String quantityStr = String.valueOf(quantity);
-			String priceStr = CommonUtil.formatCurrency(price);
-			String totalStr = CommonUtil.formatCurrency(total);
-			
-			line.setLength(0);
-			
-			line.append(quantityStr);
-			line.append(spaces.substring(0, 3 - quantityStr.length()));
-			line.append("x  ");
-			line.append(priceStr);
-			line.append(spaces.substring(0, mPrinterLineSize - line.toString().length() - totalStr.length()));
-			line.append(totalStr);
-			
-			BluetoothPrintDriver.BT_Write(line.toString() + "\r");
-			
 		}
 		
 		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + "\r");
@@ -630,35 +632,38 @@ public class PrintUtil {
 		
 		for (OrderItem item : orderItems) {
 			
-			String productName = item.getProductName();
+			if (item.getQuantity() != 0) {
 			
-			if (productName.length() > mPrinterLineSize) {
-				productName = productName.substring(0, mPrinterLineSize);
-			}
-			
-			int quantity = item.getQuantity();
-			
-			line.setLength(0);
-			
-			line.append(productName);
-			line.append(spaces.substring(0, mPrinterLineSize - productName.length()));
-			
-			String quantityStr = "  " + String.valueOf(quantity);
-			
-			line.setLength(mPrinterLineSize - quantityStr.length());
-			line.append(quantityStr);
-			
-			BluetoothPrintDriver.BT_Write(line.toString() + "\r");
-			
-			if (!CommonUtil.isEmpty(item.getRemarks())) {
+				String productName = item.getProductName();
 				
-				String remarks = "* " + item.getRemarks();
+				if (productName.length() > mPrinterLineSize) {
+					productName = productName.substring(0, mPrinterLineSize);
+				}
+				
+				int quantity = item.getQuantity();
 				
 				line.setLength(0);
-				line.append(remarks);
-				line.append(spaces.substring(0, mPrinterLineSize - remarks.length()));
+				
+				line.append(productName);
+				line.append(spaces.substring(0, mPrinterLineSize - productName.length()));
+				
+				String quantityStr = "  " + String.valueOf(quantity);
+				
+				line.setLength(mPrinterLineSize - quantityStr.length());
+				line.append(quantityStr);
 				
 				BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+				
+				if (!CommonUtil.isEmpty(item.getRemarks())) {
+					
+					String remarks = "* " + item.getRemarks();
+					
+					line.setLength(0);
+					line.append(remarks);
+					line.append(spaces.substring(0, mPrinterLineSize - remarks.length()));
+					
+					BluetoothPrintDriver.BT_Write(line.toString() + "\r");
+				}
 			}
 		}
 		

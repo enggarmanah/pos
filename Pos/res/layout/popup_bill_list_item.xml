@@ -8,20 +8,20 @@
         android:orientation="horizontal">
         
         <TextView
-        	android:id="@+id/billReferenceNoTxt"
+        	android:id="@+id/billReferenceNoText"
         	style="@style/ListViewRowBillReferenceNoTextStyle"/>
         
         <TextView
-        	android:id="@+id/billDateTxt"
+        	android:id="@+id/billDateText"
         	style="@style/ListViewRowBillDateTextStyle"/>
     </LinearLayout>
     
     <TextView
-       	android:id="@+id/remarksTxt"
+       	android:id="@+id/remarksText"
        	style="@style/ListViewRowBillRemarksTextStyle"/>
     
     <TextView
-        android:id="@+id/supplierTxt"
+        android:id="@+id/supplierText"
         style="@style/ListViewRowBillSupplierTextStyle"/>
     
 </LinearLayout>

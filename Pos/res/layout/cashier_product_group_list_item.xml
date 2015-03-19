@@ -3,7 +3,7 @@
     style="@style/ListViewRowStyle">
 
     <TextView
-        android:id="@+id/nameTxt"
+        android:id="@+id/nameText"
         style="@style/ListViewRowTextStyle"/>
 
 </LinearLayout>

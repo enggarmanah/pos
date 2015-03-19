@@ -68,18 +68,18 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void initViewReference() {
         
-        mNameText = (EditText) getView().findViewById(R.id.nameTxt);
+        mNameText = (EditText) getView().findViewById(R.id.nameText);
     	mTypeSp = (Spinner) getView().findViewById(R.id.typeSp);
     	mProductGrpSp = (Spinner) getView().findViewById(R.id.productGrpSp);
-    	mPriceText = (EditText) getView().findViewById(R.id.priceTxt);
-    	mCostPriceText = (EditText) getView().findViewById(R.id.costPriceTxt);
+    	mPriceText = (EditText) getView().findViewById(R.id.priceText);
+    	mCostPriceText = (EditText) getView().findViewById(R.id.costPriceText);
     	mPicRequiredSp = (Spinner) getView().findViewById(R.id.picRequiredSp);
-    	mCommisionText = (EditText) getView().findViewById(R.id.commisionTxt);
-    	mPromoPriceText = (EditText) getView().findViewById(R.id.promoPriceTxt);
+    	mCommisionText = (EditText) getView().findViewById(R.id.commisionText);
+    	mPromoPriceText = (EditText) getView().findViewById(R.id.promoPriceText);
     	mPromoStartDate = (EditText) getView().findViewById(R.id.promoStartDate);
     	mPromoEndDate = (EditText) getView().findViewById(R.id.promoEndDate);
-    	mStockText = (EditText) getView().findViewById(R.id.stockTxt);
-    	mMinStockText = (EditText) getView().findViewById(R.id.minStockTxt);
+    	mStockText = (EditText) getView().findViewById(R.id.stockText);
+    	mMinStockText = (EditText) getView().findViewById(R.id.minStockText);
     	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
     	
     	registerField(mNameText);

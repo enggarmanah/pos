@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(28, "com.android.pos.dao");
+        Schema schema = new Schema(29, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -388,5 +388,25 @@ public class PosDaoGenerator {
     	inventory.addDateProperty("createDate");
     	inventory.addStringProperty("updateBy");
     	inventory.addDateProperty("updateDate");
+    	
+    	Entity merchantAccess = schema.addEntity("MerchantAccess");
+    	
+    	Property merchantAccessId = merchantAccess.addIdProperty().getProperty();
+    	
+    	merchantId = merchantAccess.addLongProperty("merchantId").notNull().getProperty();
+    	merchantAccess.addToOne(merchant, merchantId);
+    	
+    	merchantAccess.addStringProperty("name");
+    	merchantAccess.addStringProperty("code");
+    	
+    	merchantAccess.addStringProperty("status");
+    	merchantAccess.addStringProperty("uploadStatus");
+    	merchantAccess.addStringProperty("createBy");
+    	merchantAccess.addDateProperty("createDate");
+    	merchantAccess.addStringProperty("updateBy");
+    	merchantAccess.addDateProperty("updateDate");
+    	
+    	ToMany merchantToMerchantAccess = merchant.addToMany(merchantAccess, merchantId);
+    	merchantToMerchantAccess.orderAsc(merchantAccessId);
     }
 }

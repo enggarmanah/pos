@@ -425,6 +425,17 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		};
 	}
 	
+	private Integer getTotalQuantity(List<TransactionItem> transactionItems) {
+		
+		Integer total = 0;
+		
+		for (TransactionItem transactionItem : transactionItems) {
+			total = total + transactionItem.getQuantity();
+		}
+		
+		return total;
+	}
+	
 	private View.OnClickListener getPaymentBtnOnClickListener() {
 		
 		return new View.OnClickListener() {
@@ -432,7 +443,7 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			@Override
 			public void onClick(View v) {
 				
-				if (mTransactionItems != null && mTransactionItems.size() == 0) {
+				if (mTransactionItems != null && getTotalQuantity(mTransactionItems) == 0) {
 					NotificationUtil.setAlertMessage(getFragmentManager(), "Daftar item penjualan masih kosong");
 				} else {
 					mActionListener.onPaymentRequested(CommonUtil.parseCurrency(mTotalBillText.getText().toString()));

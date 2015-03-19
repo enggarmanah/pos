@@ -51,9 +51,9 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     @Override
     protected void initViewReference() {
         
-        mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
-    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneTxt);
-    	mAddressText = (EditText) getActivity().findViewById(R.id.addressTxt);
+        mNameText = (EditText) getActivity().findViewById(R.id.nameText);
+    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneText);
+    	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
     	
     	registerField(mNameText);

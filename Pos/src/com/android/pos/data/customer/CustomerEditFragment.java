@@ -54,10 +54,10 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     @Override
     protected void initViewReference() {
         
-        mNameText = (EditText) getActivity().findViewById(R.id.nameTxt);
-    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneTxt);
-    	mEmailText = (EditText) getActivity().findViewById(R.id.emailTxt);
-    	mAddressText = (EditText) getActivity().findViewById(R.id.addressTxt);
+        mNameText = (EditText) getActivity().findViewById(R.id.nameText);
+    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneText);
+    	mEmailText = (EditText) getActivity().findViewById(R.id.emailText);
+    	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
     	mEmailStatusSp = (Spinner) getActivity().findViewById(R.id.emailStatusSp);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
     	

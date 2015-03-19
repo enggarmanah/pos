@@ -17,7 +17,7 @@
         android:layout_marginBottom="10dp"/>
     
     <EditText
-        android:id="@+id/loginIdTxt"
+        android:id="@+id/loginIdText"
         android:hint="@string/merchant_id"
         android:layout_height="wrap_content"
         android:layout_width="300dp"
@@ -29,7 +29,7 @@
         android:padding="10dp"/>
     
     <EditText
-        android:id="@+id/passwordTxt"
+        android:id="@+id/passwordText"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:layout_height="wrap_content"

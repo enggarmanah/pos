@@ -201,6 +201,8 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     
     public void saveEditItem() {
     	
+    	saveItem();
+    	
     	if (!isValidated()) {
 			return;
 		}

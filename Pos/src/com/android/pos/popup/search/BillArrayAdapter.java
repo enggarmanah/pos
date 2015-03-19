@@ -58,10 +58,10 @@ public class BillArrayAdapter extends ArrayAdapter<Bills> {
 
 			rowView = inflater.inflate(R.layout.popup_bill_list_item, parent, false);
 			
-			billReferenceNoText = (TextView) rowView.findViewById(R.id.billReferenceNoTxt);
-			billDateText = (TextView) rowView.findViewById(R.id.billDateTxt);
-			billRemarksText = (TextView) rowView.findViewById(R.id.remarksTxt);
-			billSupplierText = (TextView) rowView.findViewById(R.id.supplierTxt);
+			billReferenceNoText = (TextView) rowView.findViewById(R.id.billReferenceNoText);
+			billDateText = (TextView) rowView.findViewById(R.id.billDateText);
+			billRemarksText = (TextView) rowView.findViewById(R.id.remarksText);
+			billSupplierText = (TextView) rowView.findViewById(R.id.supplierText);
 			
 			ViewHolder viewHolder = new ViewHolder();
 			

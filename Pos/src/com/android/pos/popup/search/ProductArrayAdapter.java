@@ -49,7 +49,7 @@ public class ProductArrayAdapter extends ArrayAdapter<Product> {
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.popup_product_list_item, parent, false);
-			productName = (TextView) rowView.findViewById(R.id.nameTxt);
+			productName = (TextView) rowView.findViewById(R.id.nameText);
 
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.itemText = productName;

@@ -49,7 +49,7 @@ public class CustomerArrayAdapter extends ArrayAdapter<Customer> {
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.popup_customer_list_item, parent, false);
-			customerName = (TextView) rowView.findViewById(R.id.nameTxt);
+			customerName = (TextView) rowView.findViewById(R.id.nameText);
 
 			ViewHolder viewHolder = new ViewHolder();
 			viewHolder.itemText = customerName;

@@ -5,8 +5,8 @@ public class TransactionItemBean {
 	private Long id;
 	private Long remote_id;
 	private Long merchant_id;
-	private long transaction_id;
-	private long product_id;
+	private Long transaction_id;
+	private Long product_id;
 	private String product_name;
 	private String product_type;
 	private Integer price;
@@ -14,7 +14,7 @@ public class TransactionItemBean {
 	private Integer discount;
 	private Integer quantity;
 	private Integer commision;
-	private long employee_id;
+	private Long employee_id;
 
 	public Long getId() {
 		return id;
@@ -40,19 +40,19 @@ public class TransactionItemBean {
 		this.merchant_id = merchant_id;
 	}
 
-	public long getTransaction_id() {
+	public Long getTransaction_id() {
 		return transaction_id;
 	}
 
-	public void setTransaction_id(long transaction_id) {
+	public void setTransaction_id(Long transaction_id) {
 		this.transaction_id = transaction_id;
 	}
 
-	public long getProduct_id() {
+	public Long getProduct_id() {
 		return product_id;
 	}
 
-	public void setProduct_id(long product_id) {
+	public void setProduct_id(Long product_id) {
 		this.product_id = product_id;
 	}
 
@@ -112,11 +112,11 @@ public class TransactionItemBean {
 		this.commision = commision;
 	}
 
-	public long getEmployee_id() {
+	public Long getEmployee_id() {
 		return employee_id;
 	}
 
-	public void setEmployee_id(long employee_id) {
+	public void setEmployee_id(Long employee_id) {
 		this.employee_id = employee_id;
 	}
 }

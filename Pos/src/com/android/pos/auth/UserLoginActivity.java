@@ -51,11 +51,11 @@ public class UserLoginActivity extends Activity {
 		
 		DbUtil.initDb(this);
 		
-		mMerchantNameTxt = (TextView) findViewById(R.id.merchantNameTxt);
-		mMerchantAddrTxt = (TextView) findViewById(R.id.merchantAddrTxt);
+		mMerchantNameTxt = (TextView) findViewById(R.id.merchantNameText);
+		mMerchantAddrTxt = (TextView) findViewById(R.id.merchantAddrText);
 		
-		mLoginIdTxt = (EditText) findViewById(R.id.loginIdTxt);
-		mPasswordTxt = (EditText) findViewById(R.id.passwordTxt);
+		mLoginIdTxt = (EditText) findViewById(R.id.loginIdText);
+		mPasswordTxt = (EditText) findViewById(R.id.passwordText);
 		
 		mLoginBtn = (Button) findViewById(R.id.loginBtn);
 		mLoginBtn.setOnClickListener(getLoginBtnOnClickListener());
