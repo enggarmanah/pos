@@ -100,7 +100,7 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<Bills> {
 			billAmountText.setTextColor(context.getResources().getColor(R.color.text_red));
 		} else {
 			billAmountText.setText(CommonUtil.formatCurrency(payment));
-			billAmountText.setTextColor(context.getResources().getColor(R.color.text_blue));
+			billAmountText.setTextColor(context.getResources().getColor(R.color.text_medium));
 		}
 		
 		if (!CommonUtil.isEmpty(bill.getSupplierName())) {

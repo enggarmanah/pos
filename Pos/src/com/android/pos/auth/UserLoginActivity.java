@@ -92,6 +92,12 @@ public class UserLoginActivity extends Activity {
 				
 				if (merchant != null) {
 					
+					User user = new User();
+					
+					user.setUserId(merchant.getLoginId());
+					user.setName(merchant.getName());
+					
+					UserUtil.setUser(user);
 					UserUtil.setMerchant(true);
 					
 					Intent intent = new Intent(context, UserMgtActivity.class);

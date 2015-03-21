@@ -14,6 +14,7 @@ import com.android.pos.dao.Supplier;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.User;
+import com.android.pos.dao.UserAccess;
 import com.android.pos.model.BillsBean;
 import com.android.pos.model.CustomerBean;
 import com.android.pos.model.DiscountBean;
@@ -26,6 +27,7 @@ import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SupplierBean;
 import com.android.pos.model.TransactionItemBean;
 import com.android.pos.model.TransactionsBean;
+import com.android.pos.model.UserAccessBean;
 import com.android.pos.model.UserBean;
 
 public class BeanUtil {
@@ -565,5 +567,38 @@ public class BeanUtil {
 		merchantAccess.setCreateDate(bean.getCreate_date());
 		merchantAccess.setUpdateBy(bean.getUpdate_by());
 		merchantAccess.setUpdateDate(bean.getUpdate_date());
+	}
+	
+	public static UserAccessBean getBean(UserAccess userAccess) {
+		
+		UserAccessBean bean = new UserAccessBean();
+		
+		bean.setMerchant_id(userAccess.getMerchantId());
+		bean.setRemote_id(userAccess.getId());
+		bean.setUser_id(userAccess.getUserId());
+		bean.setName(userAccess.getName());
+		bean.setCode(userAccess.getCode());
+		bean.setStatus(userAccess.getStatus());
+		bean.setCreate_by(userAccess.getCreateBy());
+		bean.setCreate_date(userAccess.getCreateDate());
+		bean.setUpdate_by(userAccess.getUpdateBy());
+		bean.setUpdate_date(userAccess.getUpdateDate());
+		
+		return bean;
+	}
+	
+	public static void updateBean(UserAccess userAccess, UserAccessBean bean) {
+		
+		userAccess.setMerchantId(bean.getMerchant_id());
+		userAccess.setId(bean.getRemote_id());
+		userAccess.setUserId(bean.getUser_id());
+		userAccess.setName(bean.getName());
+		userAccess.setCode(bean.getCode());
+		userAccess.setStatus(bean.getStatus());
+		userAccess.setUploadStatus(Constant.STATUS_NO);
+		userAccess.setCreateBy(bean.getCreate_by());
+		userAccess.setCreateDate(bean.getCreate_date());
+		userAccess.setUpdateBy(bean.getUpdate_by());
+		userAccess.setUpdateDate(bean.getUpdate_date());
 	}
 }

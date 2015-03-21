@@ -24,7 +24,9 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	
 	HttpAsyncManager mHttpAsyncManager;
 	
-	private ProgressDlgFragment mProgressDialog;
+	private static ProgressDlgFragment mProgressDialog;
+	private static Integer mProgress = 0;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,10 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 
 		setTitle(getString(R.string.module_merchant));
 		setSelectedMenu(getString(R.string.menu_data_management));
+		
+		if (mProgress == 100 && mProgressDialog.isVisible()) {
+			mProgressDialog.dismiss();
+		}
 	}
 	
 	@Override
@@ -208,6 +214,8 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	@Override
 	public void setSyncProgress(int progress) {
 		
+		mProgress = progress;
+		
 		if (mProgressDialog != null) {
 			
 			mProgressDialog.setProgress(progress);
@@ -218,7 +226,10 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 					
 					@Override
 					public void run() {
-						mProgressDialog.dismiss();
+						
+						if (isActivityVisible()) {
+							mProgressDialog.dismiss();
+						}
 					}
 				}, 500);
 			}
@@ -237,7 +248,11 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	@Override
 	public void onTimeOut() {
 		
-		mProgressDialog.dismiss();
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
@@ -245,7 +260,11 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	@Override
 	public void onSyncError() {
 		
-		mProgressDialog.dismiss();
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
 	}

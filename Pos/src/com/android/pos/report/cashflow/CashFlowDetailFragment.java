@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.Bills;
@@ -21,7 +20,6 @@ import com.android.pos.dao.BillsDaoService;
 import com.android.pos.dao.TransactionsDaoService;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.MerchantUtil;
 
 public class CashFlowDetailFragment extends BaseFragment {
 	

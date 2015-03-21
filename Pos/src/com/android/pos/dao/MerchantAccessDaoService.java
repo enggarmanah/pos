@@ -59,7 +59,7 @@ public class MerchantAccessDaoService {
 	public List<MerchantAccess> getMerchantAccessList(Long merchantId) {
 
 		QueryBuilder<MerchantAccess> qb = merchantAccessDao.queryBuilder();
-		qb.where(MerchantAccessDao.Properties.MerchantId.eq(merchantId)).orderAsc(MerchantAccessDao.Properties.Name);
+		qb.where(MerchantAccessDao.Properties.MerchantId.eq(merchantId)).orderAsc(MerchantAccessDao.Properties.Id);
 		
 		Query<MerchantAccess> q = qb.build();
 		
@@ -88,7 +88,7 @@ public class MerchantAccessDaoService {
 		return merchantAccessList;
 	}
 	
-	public List<MerchantAccessBean> getMerchantAccesssForUpload() {
+	public List<MerchantAccessBean> getMerchantAccessesForUpload() {
 
 		QueryBuilder<MerchantAccess> qb = merchantAccessDao.queryBuilder();
 		qb.where(MerchantAccessDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(MerchantAccessDao.Properties.Name);
@@ -105,7 +105,7 @@ public class MerchantAccessDaoService {
 		return merchantAccessBeans;
 	}
 	
-	public void updateMerchantAccesss(List<MerchantAccessBean> merchantAccesss) {
+	public void updateMerchantAccesses(List<MerchantAccessBean> merchantAccesss) {
 		
 		for (MerchantAccessBean bean : merchantAccesss) {
 			

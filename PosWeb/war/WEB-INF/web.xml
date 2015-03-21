@@ -117,6 +117,22 @@
 		<servlet-name>inventoryUpdateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.InventoryUpdateJsonServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>merchantAccessGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantAccessGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>merchantAccessUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantAccessUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>userAccessGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.UserAccessGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>userAccessUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.UserAccessUpdateJsonServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>merchantValidateJsonServlet</servlet-name>
@@ -229,6 +245,22 @@
 	<servlet-mapping>
 		<servlet-name>inventoryUpdateJsonServlet</servlet-name>
 		<url-pattern>/inventoryUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantAccessGetJsonServlet</servlet-name>
+		<url-pattern>/merchantAccessGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantAccessUpdateJsonServlet</servlet-name>
+		<url-pattern>/merchantAccessUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>userAccessGetJsonServlet</servlet-name>
+		<url-pattern>/userAccessGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>userAccessUpdateJsonServlet</servlet-name>
+		<url-pattern>/userAccessUpdateJsonServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>

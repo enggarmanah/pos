@@ -30,12 +30,14 @@ import com.android.pos.dao.DiscountDaoService;
 import com.android.pos.dao.EmployeeDaoService;
 import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Merchant;
+import com.android.pos.dao.MerchantAccessDaoService;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.ProductGroupDaoService;
 import com.android.pos.dao.SupplierDaoService;
 import com.android.pos.dao.TransactionItemDaoService;
 import com.android.pos.dao.TransactionsDaoService;
+import com.android.pos.dao.UserAccessDaoService;
 import com.android.pos.dao.UserDaoService;
 import com.android.pos.model.BillsBean;
 import com.android.pos.model.CustomerBean;
@@ -43,6 +45,7 @@ import com.android.pos.model.DeviceBean;
 import com.android.pos.model.DiscountBean;
 import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.InventoryBean;
+import com.android.pos.model.MerchantAccessBean;
 import com.android.pos.model.MerchantBean;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.ProductGroupBean;
@@ -51,6 +54,7 @@ import com.android.pos.model.SyncRequestBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.model.TransactionItemBean;
 import com.android.pos.model.TransactionsBean;
+import com.android.pos.model.UserAccessBean;
 import com.android.pos.model.UserBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.MerchantUtil;
@@ -72,15 +76,17 @@ public class HttpAsyncManager {
 	private CustomerDaoService mCustomerDaoService;
 	private ProductDaoService mProductDaoService;
 	private UserDaoService mUserDaoService;
+	private UserAccessDaoService mUserAccessDaoService;
 	private TransactionsDaoService mTransactionsDaoService;
 	private TransactionItemDaoService mTransactionItemDaoService;
 	private SupplierDaoService mSupplierDaoService;
 	private BillsDaoService mBillDaoService;
 	private InventoryDaoService mInventoryDaoService;
+	private MerchantAccessDaoService mMerchantAccessDaoService;
 
 	private HttpAsyncListener mAsyncListener;
 
-	private final int TOTAL_TASK = 26;
+	private final int TOTAL_TASK = 30;
 
 	public HttpAsyncManager(Context context) {
 
@@ -95,11 +101,13 @@ public class HttpAsyncManager {
 		mCustomerDaoService = new CustomerDaoService();
 		mProductDaoService = new ProductDaoService();
 		mUserDaoService = new UserDaoService();
+		mUserAccessDaoService = new UserAccessDaoService();
 		mTransactionsDaoService = new TransactionsDaoService();
 		mTransactionItemDaoService = new TransactionItemDaoService();
 		mSupplierDaoService = new SupplierDaoService();
 		mBillDaoService = new BillsDaoService();
 		mInventoryDaoService = new InventoryDaoService();
+		mMerchantAccessDaoService = new MerchantAccessDaoService();
 	}
 	
 	public void validateMerchant(String loginId, String password) {
@@ -131,7 +139,7 @@ public class HttpAsyncManager {
 		mAsyncListener.setSyncMessage("Melaksanakan koneksi ke server ...");
 
 		final HttpAsyncTask task = new HttpAsyncTask();
-		task.execute(Constant.TASK_GET_LAST_SYNC_ONLY);
+		task.execute(Constant.TASK_ROOT_GET_LAST_SYNC);
 			
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
@@ -150,7 +158,7 @@ public class HttpAsyncManager {
 		mAsyncListener.setSyncProgress(1 / 100 * 3);
 		mAsyncListener.setSyncMessage("Melaksanakan download data merchant.");
 
-		new HttpAsyncTask().execute(Constant.TASK_GET_MERCHANT_ONLY);
+		new HttpAsyncTask().execute(Constant.TASK_ROOT_GET_MERCHANT);
 	}
 	
 	private void updateMerchants() {
@@ -158,7 +166,7 @@ public class HttpAsyncManager {
 		mAsyncListener.setSyncProgress(2 / 100 * 3);
 		mAsyncListener.setSyncMessage("Melaksanakan upload data merchant.");
 
-		new HttpAsyncTask().execute(Constant.TASK_UPDATE_MERCHANT_ONLY);
+		new HttpAsyncTask().execute(Constant.TASK_ROOT_UPDATE_MERCHANT);
 	}
 	
 	public void sync() {
@@ -213,27 +221,11 @@ public class HttpAsyncManager {
 		mAsyncListener.setSyncMessage("Upload data diskon ke server.");
 	}
 
-	private void getMerchant() {
-
-		new HttpAsyncTask().execute(Constant.TASK_GET_MERCHANT);
-
-		mAsyncListener.setSyncProgress(5 * 100 / TOTAL_TASK);
-		mAsyncListener.setSyncMessage("Download data merchant dari server.");
-	}
-
-	private void updateMerchant() {
-
-		new HttpAsyncTask().execute(Constant.TASK_UPDATE_MERCHANT);
-
-		mAsyncListener.setSyncProgress(6 * 100 / TOTAL_TASK);
-		mAsyncListener.setSyncMessage("Upload data merchant ke server.");
-	}
-
 	private void getEmployee() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_EMPLOYEE);
 
-		mAsyncListener.setSyncProgress(7 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(5 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Download data pegawai dari server.");
 	}
 
@@ -241,7 +233,7 @@ public class HttpAsyncManager {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_EMPLOYEE);
 
-		mAsyncListener.setSyncProgress(8 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(6 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Upload data pegawai ke server.");
 	}
 
@@ -249,7 +241,7 @@ public class HttpAsyncManager {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_CUSTOMER);
 
-		mAsyncListener.setSyncProgress(9 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(7 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Download data pelanggan dari server.");
 	}
 
@@ -257,7 +249,7 @@ public class HttpAsyncManager {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_CUSTOMER);
 
-		mAsyncListener.setSyncProgress(10 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(8 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Upload data pelanggan ke server.");
 	}
 
@@ -265,7 +257,7 @@ public class HttpAsyncManager {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT);
 
-		mAsyncListener.setSyncProgress(11 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(9 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Download data produk dari server.");
 	}
 
@@ -273,7 +265,7 @@ public class HttpAsyncManager {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_PRODUCT);
 
-		mAsyncListener.setSyncProgress(12 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(10 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Upload data produk ke server.");
 	}
 
@@ -281,7 +273,7 @@ public class HttpAsyncManager {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_USER);
 
-		mAsyncListener.setSyncProgress(13 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(11 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Download data user dari server.");
 	}
 
@@ -289,8 +281,24 @@ public class HttpAsyncManager {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_USER);
 
-		mAsyncListener.setSyncProgress(14 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(12 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Upload data user ke server.");
+	}
+	
+	private void getUserAccess() {
+
+		new HttpAsyncTask().execute(Constant.TASK_GET_USER_ACCESS);
+
+		mAsyncListener.setSyncProgress(13 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Download data akses user dari server.");
+	}
+
+	private void updateUserAccess() {
+
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_USER_ACCESS);
+
+		mAsyncListener.setSyncProgress(14 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data akses user ke server.");
 	}
 
 	private void getTransactions() {
@@ -372,12 +380,44 @@ public class HttpAsyncManager {
 		mAsyncListener.setSyncProgress(24 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Upload data inventori ke server.");
 	}
+	
+	private void getMerchant() {
+
+		new HttpAsyncTask().execute(Constant.TASK_GET_MERCHANT);
+
+		mAsyncListener.setSyncProgress(25 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Download data merchant dari server.");
+	}
+
+	private void updateMerchant() {
+
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_MERCHANT);
+
+		mAsyncListener.setSyncProgress(26 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data merchant ke server.");
+	}
+	
+	private void getMerchantAccess() {
+
+		new HttpAsyncTask().execute(Constant.TASK_GET_MERCHANT_ACCESS);
+
+		mAsyncListener.setSyncProgress(27 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Download data akses merchant dari server.");
+	}
+
+	private void updateMerchantAccess() {
+
+		new HttpAsyncTask().execute(Constant.TASK_UPDATE_MERCHANT_ACCESS);
+
+		mAsyncListener.setSyncProgress(28 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncMessage("Upload data akses merchant ke server.");
+	}
 
 	private void updateLastSync() {
 
 		new HttpAsyncTask().execute(Constant.TASK_UPDATE_LAST_SYNC);
 
-		mAsyncListener.setSyncProgress(25 * 100 / TOTAL_TASK);
+		mAsyncListener.setSyncProgress(29 * 100 / TOTAL_TASK);
 		mAsyncListener.setSyncMessage("Update waktu terakhir sync up data ke server.");
 	}
 
@@ -425,7 +465,7 @@ public class HttpAsyncManager {
 				
 				obj = bean;
 
-			} else if (Constant.TASK_GET_MERCHANT_ONLY.equals(tasks[0])) {
+			} else if (Constant.TASK_ROOT_GET_MERCHANT.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/merchantGetAllJsonServlet";
 
@@ -444,7 +484,7 @@ public class HttpAsyncManager {
 				bean.setUuid(Installation.getInstallationId(mContext));
 				obj = bean;
 
-			} else if (Constant.TASK_GET_LAST_SYNC_ONLY.equals(tasks[0])) {
+			} else if (Constant.TASK_ROOT_GET_LAST_SYNC.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/getLastSyncJsonServlet";
 				
@@ -486,24 +526,6 @@ public class HttpAsyncManager {
 				url = Config.SERVER_URL + "/discountUpdateJsonServlet";
 
 				obj = mDiscountDaoService.getDiscountsForUpload();
-
-			} else if (Constant.TASK_GET_MERCHANT.equals(tasks[0])) {
-
-				url = Config.SERVER_URL + "/merchantGetJsonServlet";
-
-				SyncRequestBean request = new SyncRequestBean();
-				
-				request.setMerchant_id(merchantId);
-				request.setLast_sync_date(mDevice.getLast_sync_date());
-
-				obj = request;
-
-			} else if (Constant.TASK_UPDATE_MERCHANT.equals(tasks[0]) ||
-					Constant.TASK_UPDATE_MERCHANT_ONLY.equals(tasks[0])) {
-
-				url = Config.SERVER_URL + "/merchantUpdateJsonServlet";
-
-				obj = mMerchantDaoService.getMerchantsForUpload();
 
 			} else if (Constant.TASK_GET_EMPLOYEE.equals(tasks[0])) {
 
@@ -572,6 +594,23 @@ public class HttpAsyncManager {
 				url = Config.SERVER_URL + "/userUpdateJsonServlet";
 
 				obj = mUserDaoService.getUsersForUpload();
+
+			} else if (Constant.TASK_GET_USER_ACCESS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/userAccessGetJsonServlet";
+
+				SyncRequestBean request = new SyncRequestBean();
+
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+
+				obj = request;
+
+			} else if (Constant.TASK_UPDATE_USER_ACCESS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/userAccessUpdateJsonServlet";
+
+				obj = mUserAccessDaoService.getUserAccessesForUpload();
 
 			} else if (Constant.TASK_GET_TRANSACTIONS.equals(tasks[0])) {
 
@@ -658,14 +697,46 @@ public class HttpAsyncManager {
 
 				obj = mInventoryDaoService.getInventoriesForUpload();
 
+			} else if (Constant.TASK_GET_MERCHANT.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/merchantGetJsonServlet";
+
+				SyncRequestBean request = new SyncRequestBean();
+				
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+
+				obj = request;
+
+			} else if (Constant.TASK_UPDATE_MERCHANT.equals(tasks[0]) ||
+					Constant.TASK_ROOT_UPDATE_MERCHANT.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/merchantUpdateJsonServlet";
+
+				obj = mMerchantDaoService.getMerchantsForUpload();
+
+			} else if (Constant.TASK_GET_MERCHANT_ACCESS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/merchantAccessGetJsonServlet";
+
+				SyncRequestBean request = new SyncRequestBean();
+
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(mDevice.getLast_sync_date());
+
+				obj = request;
+
+			} else if (Constant.TASK_UPDATE_MERCHANT_ACCESS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/merchantAccessUpdateJsonServlet";
+
+				obj = mMerchantAccessDaoService.getMerchantAccessesForUpload();
+
 			} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
-
-				DeviceBean bean = new DeviceBean();
-				bean.setMerchant_id(merchantId);
-				bean.setUuid(Installation.getInstallationId(mContext));
-				obj = bean;
+				
+				obj = mDevice;
 			}
 
 			return POST(url, obj);
@@ -698,7 +769,7 @@ public class HttpAsyncManager {
 					mDevice = mapper.readValue(result, DeviceBean.class);
 					getProductGroup();
 
-				} else if (Constant.TASK_GET_LAST_SYNC_ONLY.equals(task)) {
+				} else if (Constant.TASK_ROOT_GET_LAST_SYNC.equals(task)) {
 
 					mDevice = mapper.readValue(result, DeviceBean.class);
 					getMerchantsBasedOnLastSync();
@@ -733,44 +804,6 @@ public class HttpAsyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
 
 					mDiscountDaoService.updateDiscountStatus(syncStatusBeans);
-					getMerchant();
-
-				} else if (Constant.TASK_GET_MERCHANT.equals(task)) {
-
-					List<MerchantBean> merchants = mapper.readValue(result,
-							TypeFactory.defaultInstance().constructCollectionType(List.class, MerchantBean.class));
-
-					mMerchantDaoService.updateMerchants(merchants);
-					updateMerchant();
-
-				} else if (Constant.TASK_GET_MERCHANT_ONLY.equals(task)) {
-
-					List<MerchantBean> merchants = mapper.readValue(result,
-							TypeFactory.defaultInstance().constructCollectionType(List.class, MerchantBean.class));
-
-					mMerchantDaoService.updateMerchants(merchants);
-					updateMerchants();
-
-				} else if (Constant.TASK_UPDATE_MERCHANT_ONLY.equals(task)) {
-
-					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
-							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
-
-					mMerchantDaoService.updateMerchantStatus(syncStatusBeans);
-					updateLastSync();
-					
-					if (mContext instanceof LoginListener) {
-						
-						LoginListener mLoginListener = (LoginListener) mContext;
-						mLoginListener.onMerchantsUpdated();
-					}
-
-				} else if (Constant.TASK_UPDATE_MERCHANT.equals(task)) {
-
-					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
-							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
-
-					mMerchantDaoService.updateMerchantStatus(syncStatusBeans);
 					getEmployee();
 
 				} else if (Constant.TASK_GET_EMPLOYEE.equals(task)) {
@@ -835,6 +868,22 @@ public class HttpAsyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
 
 					mUserDaoService.updateUserStatus(syncStatusBeans);
+					getUserAccess();
+
+				} else if (Constant.TASK_GET_USER_ACCESS.equals(task)) {
+
+					List<UserAccessBean> userAccesses = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, UserAccessBean.class));
+
+					mUserAccessDaoService.updateUserAccesses(userAccesses);
+					updateUserAccess();
+
+				} else if (Constant.TASK_UPDATE_USER_ACCESS.equals(task)) {
+
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
+
+					mUserAccessDaoService.updateUserAccessStatus(syncStatusBeans);
 					getTransactions();
 
 				} else if (Constant.TASK_GET_TRANSACTIONS.equals(task)) {
@@ -915,12 +964,72 @@ public class HttpAsyncManager {
 							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
 
 					mInventoryDaoService.updateInventoryStatus(syncStatusBeans);
+					getMerchant();
+
+				} else if (Constant.TASK_ROOT_GET_MERCHANT.equals(task)) {
+
+					List<MerchantBean> merchants = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, MerchantBean.class));
+
+					mMerchantDaoService.updateMerchants(merchants);
+					updateMerchants();
+
+				} else if (Constant.TASK_ROOT_UPDATE_MERCHANT.equals(task)) {
+
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
+
+					mMerchantDaoService.updateMerchantStatus(syncStatusBeans);
+					getMerchantAccess();
+					
+					/*if (mContext instanceof LoginListener) {
+						
+						LoginListener mLoginListener = (LoginListener) mContext;
+						mLoginListener.onMerchantsUpdated();
+					}*/
+
+				} else if (Constant.TASK_GET_MERCHANT.equals(task)) {
+
+					List<MerchantBean> merchants = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, MerchantBean.class));
+
+					mMerchantDaoService.updateMerchants(merchants);
+					updateMerchant();
+
+				} else if (Constant.TASK_UPDATE_MERCHANT.equals(task)) {
+
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
+
+					mMerchantDaoService.updateMerchantStatus(syncStatusBeans);
+					getMerchantAccess();
+
+				} else if (Constant.TASK_GET_MERCHANT_ACCESS.equals(task)) {
+
+					List<MerchantAccessBean> merchantAccesses = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, MerchantAccessBean.class));
+
+					mMerchantAccessDaoService.updateMerchantAccesses(merchantAccesses);
+					updateMerchantAccess();
+
+				} else if (Constant.TASK_UPDATE_MERCHANT_ACCESS.equals(task)) {
+
+					List<SyncStatusBean> syncStatusBeans = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, SyncStatusBean.class));
+
+					mMerchantAccessDaoService.updateMerchantAccessStatus(syncStatusBeans);
 					updateLastSync();
 
 				} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(task)) {
 
 					mDevice = mapper.readValue(result, DeviceBean.class);
 					syncCompleted();
+					
+					if (mContext instanceof LoginListener) {
+						
+						LoginListener mLoginListener = (LoginListener) mContext;
+						mLoginListener.onMerchantsUpdated();
+					}
 				}
 
 			} catch (Exception e) {

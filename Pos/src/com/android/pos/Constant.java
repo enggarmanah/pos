@@ -44,11 +44,11 @@ public class Constant {
 	
 	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	
-	public static final String TASK_GET_MERCHANT_ONLY = "TASK_GET_MERCHANT_ONLY";
-	public static final String TASK_UPDATE_MERCHANT_ONLY = "TASK_UPDATE_MERCHANT_ONLY";
+	public static final String TASK_ROOT_GET_LAST_SYNC = "TASK_ROOT_GET_LAST_SYNC";
+	public static final String TASK_ROOT_GET_MERCHANT = "TASK_ROOT_GET_MERCHANT";
+	public static final String TASK_ROOT_UPDATE_MERCHANT = "TASK_ROOT_UPDATE_MERCHANT";
 	
 	public static final String TASK_GET_LAST_SYNC = "TASK_GET_LAST_SYNC";
-	public static final String TASK_GET_LAST_SYNC_ONLY = "TASK_GET_LAST_SYNC_ONLY";
 	public static final String TASK_UPDATE_LAST_SYNC = "TASK_UPDATE_LAST_SYNC";
 	
 	public static final String TASK_GET_PRODUCT_GROUP = "TASK_GET_PRODUCT_GROUP";
@@ -86,6 +86,12 @@ public class Constant {
 	
 	public static final String TASK_GET_INVENTORY = "TASK_GET_INVENTORY";
 	public static final String TASK_UPDATE_INVENTORY = "TASK_UPDATE_INVENTORY";
+	
+	public static final String TASK_GET_MERCHANT_ACCESS = "TASK_GET_MERCHANT_ACCESS";
+	public static final String TASK_UPDATE_MERCHANT_ACCESS = "TASK_UPDATE_MERCHANT_ACCESS";
+	
+	public static final String TASK_GET_USER_ACCESS = "TASK_GET_USER_ACCESS";
+	public static final String TASK_UPDATE_USER_ACCESS = "TASK_UPDATE_USER_ACCESS";
 	
 	public static final String ORDER_TYPE_DINE_IN = "DINE_IN";
 	public static final String ORDER_TYPE_TAKEWAY = "TAKE_AWAY";
@@ -125,4 +131,19 @@ public class Constant {
 	public static final String ACCESS_REPORT_PRODUCT_STATISTIC = "RPST";
 	public static final String ACCESS_REPORT_INVENTORY = "RIVT";
 	public static final String ACCESS_REPORT_CASHFLOW = "RCFL";
+	
+	public static final String MENU_USER = "User";
+	public static final String MENU_CASHIER = "Kasir";
+	public static final String MENU_ORDER = "Pemesanan";
+	public static final String MENU_DATA = "Data";
+	public static final String MENU_DATA_MANAGEMENT = "Data Referensi";
+	public static final String MENU_INVENTORY = "Data Inventori";
+	public static final String MENU_USER_ACCESS = "Data Pengguna";
+	public static final String MENU_BILLS = "Data Pengeluaran";
+	public static final String MENU_REPORT = "Laporan";
+	public static final String MENU_REPORT_TRANSACTION = "Laporan Transaksi";
+	public static final String MENU_REPORT_PRODUCT_STATISTIC = "Laporan Penjualan";
+	public static final String MENU_REPORT_INVENTORY = "Laporan Inventori";
+	public static final String MENU_REPORT_CASHFLOW = "Laporan Keuangan";
+	public static final String MENU_EXIT = "Keluar";
 }

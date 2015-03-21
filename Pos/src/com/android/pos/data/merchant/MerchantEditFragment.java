@@ -15,7 +15,6 @@ import com.android.pos.dao.MerchantAccessDaoService;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
@@ -72,8 +71,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	View view = inflater.inflate(R.layout.data_merchant_fragment, container, false);
     	
-    	accessRightPanel = (LinearLayout) view.findViewById(R.id.accessRightPanel);
-    	
     	return view;
     }
     
@@ -100,6 +97,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
 
     	mStatusPanel = (LinearLayout) getView().findViewById(R.id.statusPanel);
+    	
+    	accessRightPanel = (LinearLayout) getView().findViewById(R.id.accessRightsPanel);
     	
     	registerField(mNameText);
     	registerField(mTypeSp);
@@ -180,7 +179,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		
     		accessRightPanel.removeAllViews();
     		
-    		mMerchantAccesses = mMerchantAccessDaoService.getMerchantAccessList(MerchantUtil.getMerchantId());
+    		mMerchantAccesses = mMerchantAccessDaoService.getMerchantAccessList(merchant.getId());
     		
     		mCheckedButtons = new ArrayList<ImageButton>();
     		
@@ -280,19 +279,19 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		
     		mItem.setUpdateBy(userId);
     		mItem.setUpdateDate(new Date());
-    	}
-    	
-    	for (MerchantAccess merchantAccess : mMerchantAccesses) {
     		
-    		String userId = UserUtil.getUser().getUserId();
-    		
-    		if (merchantAccess.getCreateBy() == null) {
-    			merchantAccess.setCreateBy(userId);
-    			merchantAccess.setCreateDate(new Date());
-    		}
-    		
-    		merchantAccess.setUpdateBy(userId);
-    		merchantAccess.setUpdateDate(new Date());
+    		for (MerchantAccess merchantAccess : mMerchantAccesses) {
+    			
+    			merchantAccess.setUploadStatus(Constant.STATUS_YES);
+    			
+        		if (merchantAccess.getCreateBy() == null) {
+        			merchantAccess.setCreateBy(userId);
+        			merchantAccess.setCreateDate(new Date());
+        		}
+        		
+        		merchantAccess.setUpdateBy(userId);
+        		merchantAccess.setUpdateDate(new Date());
+        	}
     	}
     }
     

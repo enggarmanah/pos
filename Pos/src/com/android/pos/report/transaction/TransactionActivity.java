@@ -55,6 +55,7 @@ public class TransactionActivity extends BaseActivity
 	private MenuItem mSyncItem;
 	
 	private static ProgressDlgFragment mProgressDialog;
+	private static Integer mProgress = 0;
 
 	private HttpAsyncManager mHttpAsyncManager;
 	
@@ -90,6 +91,10 @@ public class TransactionActivity extends BaseActivity
 
 		setTitle(getString(R.string.menu_transaction));
 		setSelectedMenu(getString(R.string.menu_transaction));
+		
+		if (mProgress == 100 && mProgressDialog.isVisible()) {
+			mProgressDialog.dismiss();
+		}
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {
@@ -442,6 +447,8 @@ public class TransactionActivity extends BaseActivity
 	@Override
 	public void setSyncProgress(int progress) {
 		
+		mProgress = progress;
+		
 		if (mProgressDialog != null) {
 			
 			mProgressDialog.setProgress(progress);
@@ -452,7 +459,10 @@ public class TransactionActivity extends BaseActivity
 					
 					@Override
 					public void run() {
-						mProgressDialog.dismiss();
+						
+						if (isActivityVisible()) {
+							mProgressDialog.dismiss();
+						}
 					}
 				}, 500);
 			}
@@ -471,7 +481,11 @@ public class TransactionActivity extends BaseActivity
 	@Override
 	public void onTimeOut() {
 		
-		mProgressDialog.dismiss();
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
@@ -479,7 +493,11 @@ public class TransactionActivity extends BaseActivity
 	@Override
 	public void onSyncError() {
 		
-		mProgressDialog.dismiss();
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
 	}

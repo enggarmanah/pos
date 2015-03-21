@@ -1,7 +1,6 @@
 package com.android.pos.base.activity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.android.pos.Constant;
@@ -19,7 +18,6 @@ import com.android.pos.report.inventory.InventoryReportActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
-import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
@@ -43,45 +41,18 @@ public abstract class BaseActivity extends Activity
 	
 	protected int mSelectedIndex = -1;
 	
-	protected boolean isInFront = false;
-
 	protected DrawerLayout mDrawerLayout;
 	protected ListView mDrawerList;
 	protected ActionBarDrawerToggle mDrawerToggle;
 
 	protected CharSequence mDrawerTitle;
 	protected CharSequence mTitle;
-	protected String[] mAppMenus;
-
+	
+	List<String> mMenus;
+	
 	protected void initDrawerMenu() {
 
 		mTitle = mDrawerTitle = getTitle();
-		
-		if (UserUtil.isMerchant()) {
-			mAppMenus = getResources().getStringArray(R.array.app_menus_merchant);
-			
-		} else if (UserUtil.isCashier()) {
-			
-			if (Constant.MERCHANT_TYPE_SHOP.equals(MerchantUtil.getMerchant().getType())) {
-				mAppMenus = getResources().getStringArray(R.array.app_menus_cashier_shop);
-			} else {
-				mAppMenus = getResources().getStringArray(R.array.app_menus_cashier);
-			}
-			
-		} else if (UserUtil.isAdmin()) {
-			
-			if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchant().getType())) {
-				mAppMenus = getResources().getStringArray(R.array.app_menus_admin_resto);
-			} else {
-				mAppMenus = getResources().getStringArray(R.array.app_menus_admin);
-				
-			}
-			
-		} else {
-			mAppMenus = getResources().getStringArray(R.array.app_menus_root);
-		}
-		
-		
 		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -91,12 +62,69 @@ public abstract class BaseActivity extends Activity
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		// set up the drawer's list view with items and click listener
 		
-		List<String> menus = new ArrayList<String>();
-		menus.addAll(Arrays.asList(mAppMenus));
+		mMenus = new ArrayList<String>();
 		
-		//mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.app_menu_item, mAppMenus));
+		//menus.addAll(Arrays.asList(mAppMenus));
 		
-		AppMenuArrayAdapter adapter = new AppMenuArrayAdapter(getApplicationContext(), menus, this);
+		mMenus.add(Constant.MENU_USER);
+		
+		UserUtil.getUser();
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
+			mMenus.add(Constant.MENU_CASHIER);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
+			
+			mMenus.add(Constant.MENU_REPORT);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION)) {
+			mMenus.add(Constant.MENU_REPORT_TRANSACTION);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC)) {
+			mMenus.add(Constant.MENU_REPORT_PRODUCT_STATISTIC);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
+			mMenus.add(Constant.MENU_REPORT_CASHFLOW);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
+			mMenus.add(Constant.MENU_REPORT_INVENTORY);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
+			
+			mMenus.add(Constant.MENU_DATA);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS)) {
+			mMenus.add(Constant.MENU_BILLS);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+			mMenus.add(Constant.MENU_INVENTORY);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
+			mMenus.add(Constant.MENU_USER_ACCESS);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
+			mMenus.add(Constant.MENU_DATA_MANAGEMENT);
+		}
+		
+		mMenus.add(Constant.MENU_EXIT);
+		
+		AppMenuArrayAdapter adapter = new AppMenuArrayAdapter(getApplicationContext(), mMenus, this);
 		
 		mDrawerList.setAdapter(adapter);
 		
@@ -165,26 +193,32 @@ public abstract class BaseActivity extends Activity
 	@Override
 	public void onStart() {
 		super.onStart();
-		isInFront = true;
+		activityVisible = true;
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		isInFront = true;
+		activityVisible = true;
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		isInFront = false;
+		activityVisible = false;
+	}
+	
+	private static boolean activityVisible = false;
+	
+	public static boolean isActivityVisible() {
+		return activityVisible;
 	}
 
 	@Override
 	public String getSelectedMenu() {
 		
 		if (mSelectedIndex != -1) {
-			return mAppMenus[mSelectedIndex];
+			return mMenus.get(mSelectedIndex);
 		} else {
 			return null;
 		}
@@ -209,69 +243,66 @@ public abstract class BaseActivity extends Activity
 
 	private void selectItem(int position) {
 		
-		String title = mAppMenus[position]; 
+		String menu = mMenus.get(position);
 		
-		if (position == 0 || "Laporan".equals(title) || "Data".equals(title)) {
+		if (position == 0 || Constant.MENU_REPORT.equals(menu) || Constant.MENU_DATA.equals(menu)) {
 			return;
 		}
 		
-		setTitle(title);
 		mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
 		
-		String menu = mAppMenus[position];
-		
-		if (getString(R.string.menu_cashier).equals(menu)) {
+		if (Constant.MENU_CASHIER.equals(menu)) {
 
 			Intent intent = new Intent(this, CashierActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_order).equals(menu)) {
+		} else if (Constant.MENU_ORDER.equals(menu)) {
 
 			Intent intent = new Intent(this, OrderActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_transaction).equals(menu)) {
+		} else if (Constant.MENU_REPORT_TRANSACTION.equals(menu)) {
 
 			Intent intent = new Intent(this, TransactionActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_statistic_product).equals(menu)) {
+		} else if (Constant.MENU_REPORT_PRODUCT_STATISTIC.equals(menu)) {
 
 			Intent intent = new Intent(this, ProductStatisticActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_report_cashflow).equals(menu)) {
+		} else if (Constant.MENU_REPORT_CASHFLOW.equals(menu)) {
 
 			Intent intent = new Intent(this, CashFlowActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_report_inventory).equals(menu)) {
+		} else if (Constant.MENU_REPORT_INVENTORY.equals(menu)) {
 
 			Intent intent = new Intent(this, InventoryReportActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_bills).equals(menu)) {
+		} else if (Constant.MENU_BILLS.equals(menu)) {
 
 			Intent intent = new Intent(this, BillsMgtActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_inventory).equals(menu)) {
+		} else if (Constant.MENU_INVENTORY.equals(menu)) {
 
 			Intent intent = new Intent(this, InventoryMgtActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_user_management).equals(menu)) {
+		} else if (Constant.MENU_USER_ACCESS.equals(menu)) {
 
 			Intent intent = new Intent(this, UserMgtActivity.class);
 			startActivity(intent);
 
-		} else if (getString(R.string.menu_data_management).equals(menu)) {
+		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
 
 			Intent intent = new Intent(this, DataMgtActivity.class);
 			startActivity(intent);
 			
-		} else if (getString(R.string.menu_logout).equals(menu)) {
+		} else if (Constant.MENU_EXIT.equals(menu)) {
 			
 			Intent intent = null;
 			
@@ -290,7 +321,7 @@ public abstract class BaseActivity extends Activity
 		
 		int index = -1;
 		
-		for (String menu : mAppMenus) {
+		for (String menu : mMenus) {
 			
 			index++;
 			

@@ -2,6 +2,7 @@ package com.android.pos.user;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.android.pos.CodeBean;
 import com.android.pos.Constant;
@@ -9,6 +10,8 @@ import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.User;
+import com.android.pos.dao.UserAccess;
+import com.android.pos.dao.UserAccessDaoService;
 import com.android.pos.dao.UserDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.MerchantUtil;
@@ -20,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,14 +36,28 @@ public class UserEditFragment extends BaseEditFragment<User> {
     Spinner mRoleSp;
     Spinner mStatusSp;
     
+    LinearLayout accessRightPanel;
+    
+    List<UserAccess> mUserAccesses;
+    List<ImageButton> mCheckedButtons;
+    
     CodeSpinnerArrayAdapter roleArrayAdapter;
     CodeSpinnerArrayAdapter statusArrayAdapter;
     
     private UserDaoService mUserDaoService = new UserDaoService();
+    private UserAccessDaoService mUserAccessDaoService = new UserAccessDaoService();
+    
+    LayoutInflater mInflater;
+    ViewGroup mContainer;
+    
+    View accessView;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
+    	
+    	mInflater = inflater;
+    	mContainer = container;
     	
     	View view = inflater.inflate(R.layout.data_user_fragment, container, false);
     	
@@ -58,6 +77,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	mPasswordText = (EditText) getActivity().findViewById(R.id.passwordText);
     	mRoleSp = (Spinner) getActivity().findViewById(R.id.roleSp);
     	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
+    	
+    	accessRightPanel = (LinearLayout) getView().findViewById(R.id.accessRightsPanel);
     	
     	registerField(mNameText);
     	registerField(mUserIdText);
@@ -93,6 +114,56 @@ public class UserEditFragment extends BaseEditFragment<User> {
     		
     		mRoleSp.setSelection(roleIndex);
     		mStatusSp.setSelection(statusIndex);
+    		
+    		accessRightPanel.removeAllViews();
+    		
+    		mUserAccesses = mUserAccessDaoService.getUserAccessList(user.getId());
+    		
+    		mCheckedButtons = new ArrayList<ImageButton>();
+    		
+    		for (final UserAccess userAccess : mUserAccesses) {
+        		
+        		accessView = mInflater.inflate(R.layout.data_user_access_list_item, mContainer, false);
+        		
+        		TextView nameText = (TextView) accessView.findViewById(R.id.nameText);
+    			final ImageButton checkedButton = (ImageButton) accessView.findViewById(R.id.checkedButton);
+    			
+    			checkedButton.setEnabled(false);
+    			mCheckedButtons.add(checkedButton);
+    			
+    			nameText.setText(userAccess.getName());
+    			
+    			boolean isChecked = Constant.STATUS_YES.equals(userAccess.getStatus());
+    			
+    			if (isChecked) {
+					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_checked_black));
+				} else {
+					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_cancel_black));
+				}
+    			
+    			checkedButton.setOnClickListener(new View.OnClickListener() {
+    				
+    				@Override
+    				public void onClick(View v) {
+    					
+    					if (!isEnableInputFields) {
+    						return;
+    					}
+    					
+    					boolean isSelected = Constant.STATUS_YES.equals(userAccess.getStatus());
+    					
+    					if (!isSelected) {
+    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_checked_black));
+    						userAccess.setStatus(Constant.STATUS_YES);
+    					} else {
+    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_cancel_black));
+    						userAccess.setStatus(Constant.STATUS_NO);
+    					}
+    				}
+    			});
+    			
+    			accessRightPanel.addView(accessView);
+        	}
     		
     		showView();
     		
@@ -138,6 +209,19 @@ public class UserEditFragment extends BaseEditFragment<User> {
     		
     		mItem.setUpdateBy(loginId);
     		mItem.setUpdateDate(new Date());
+    		
+    		for (UserAccess userAccess : mUserAccesses) {
+    			
+    			userAccess.setUploadStatus(Constant.STATUS_YES);
+        		
+        		if (userAccess.getCreateBy() == null) {
+        			userAccess.setCreateBy(userId);
+        			userAccess.setCreateDate(new Date());
+        		}
+        		
+        		userAccess.setUpdateBy(userId);
+        		userAccess.setUpdateDate(new Date());
+        	}
     	}
     }
     
@@ -164,6 +248,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
     protected boolean updateItem() {
     	
     	mUserDaoService.updateUser(mItem);
+		mUserAccessDaoService.updateUserAccess(mUserAccesses);
     	
     	return true;
     }
@@ -182,5 +267,19 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	this.mItem = user;
     	
     	return user;
+    }
+    
+    @Override
+    public void enableInputFields(boolean isEnabled) {
+    	
+    	super.enableInputFields(isEnabled);
+    	
+    	if (mCheckedButtons == null) {
+    		return;
+    	}
+    	
+    	for (ImageButton button : mCheckedButtons) {
+    		button.setEnabled(isEnabled);
+    	}
     }
 }

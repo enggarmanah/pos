@@ -32,6 +32,8 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	private static ProgressDlgFragment mProgressDialog;
 	private MerchantDaoService mMerchantDaoService;
 	
+	private static Integer mProgress = 0;
+	
 	Button mLoginBtn;
 	EditText mLoginIdTxt;
 	EditText mPasswordTxt;
@@ -80,6 +82,34 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		mLoginBtn.setOnClickListener(getLoginBtnOnClickListener());
     }
 	
+	@Override
+	public void onStart() {
+		super.onStart();
+		activityVisible = true;
+		
+		if (mProgress == 100 && mProgressDialog.isVisible()) {
+			mProgressDialog.dismiss();
+		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		activityVisible = true;
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		activityVisible = false;
+	}
+	
+	private static boolean activityVisible = false;
+	
+	public static boolean isActivityVisible() {
+		return activityVisible;
+	}
+	
 	private boolean isMerchantAuthenticated() {
 		
 		mMerchant = mMerchantDaoService.getActiveMerchant();
@@ -118,7 +148,9 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 					if (CommonUtil.getOtpKey().equals(password)) {
 						
 						User user = new User();
+						
 						user.setUserId(Constant.ROOT);
+						user.setName(Constant.ROOT);
 						
 						UserUtil.setUser(user);
 						
@@ -212,6 +244,8 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	@Override
 	public void setSyncProgress(int progress) {
 		
+		mProgress = progress;
+		
 		if (mProgressDialog != null) {
 			
 			mProgressDialog.setProgress(progress);
@@ -223,10 +257,8 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 					@Override
 					public void run() {
 						
-						try {
+						if (isActivityVisible()) {
 							mProgressDialog.dismiss();
-						} catch (Exception e) {
-							e.printStackTrace();
 						}
 						
 						// case when the login is root
@@ -262,7 +294,11 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	@Override
 	public void onTimeOut() {
 		
-		mProgressDialog.dismiss();
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
@@ -270,7 +306,11 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	@Override
 	public void onSyncError() {
 		
-		mProgressDialog.dismiss();
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
 	}

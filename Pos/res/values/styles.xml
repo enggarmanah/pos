@@ -156,6 +156,18 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
     
+    <style name="ListViewRowAccessRightTextStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/list_row_normal_text</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
     <style name="ListViewRowInventoryNameTextStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
@@ -199,7 +211,7 @@
         <item name="android:gravity">center|end</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_medium</item>
+        <item name="android:textColor">@color/text_blue</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
     
@@ -219,7 +231,7 @@
         <item name="android:layout_gravity">center|end</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_default</item>
+        <item name="android:textColor">@color/text_medium</item>
     </style>
     
     <style name="ListViewRowBillsSupplierTextStyle">
@@ -486,7 +498,7 @@
         <item name="android:minWidth">28dp</item>
         <item name="android:minHeight">28dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">top</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_default</item>
@@ -500,11 +512,11 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center|left</item>
+        <item name="android:layout_gravity">top|left</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_default</item>
-        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginTop">1dp</item>
         <item name="android:layout_marginBottom">3dp</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>

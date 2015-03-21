@@ -92,7 +92,7 @@ public class BillsSearchArrayAdapter extends BaseSearchArrayAdapter<Bills> {
 			billAmountText.setTextColor(context.getResources().getColor(R.color.text_red));
 		} else {
 			billAmountText.setText(CommonUtil.formatCurrency(payment));
-			billAmountText.setTextColor(context.getResources().getColor(R.color.text_blue));
+			billAmountText.setTextColor(context.getResources().getColor(R.color.text_medium));
 		}
 		
 		supplierText.setText(item.getSupplierName());

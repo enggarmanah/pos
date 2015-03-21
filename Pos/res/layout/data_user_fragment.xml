@@ -53,11 +53,11 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_H" />
+                android:text="@string/letter_T" />
             
             <TextView
                 style="@style/FormTextStyle"
-                android:text="@string/field_role" />
+                android:text="@string/field_type" />
 
             <Spinner
                 android:id="@+id/roleSp"
@@ -78,7 +78,32 @@
                 android:id="@+id/statusSp"
                 style="@style/FormInputListStyle" />
         </LinearLayout>
+		
+        <LinearLayout 
+            style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:layout_gravity="top"
+                android:text="@string/letter_H"
+                android:layout_marginTop="2dp"/>
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:layout_gravity="top"
+                android:layout_marginTop="2dp"
+                android:text="@string/field_access_right" />
+            
+            <LinearLayout
+                android:id="@+id/accessRightsPanel"
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+
+        </LinearLayout>
+        
     </LinearLayout>
 
 </ScrollView>

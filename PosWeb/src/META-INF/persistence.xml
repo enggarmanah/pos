@@ -19,6 +19,8 @@
 		<class>com.app.posweb.server.model.Supplier</class>
 		<class>com.app.posweb.server.model.Bills</class>
 		<class>com.app.posweb.server.model.Inventory</class>
+		<class>com.app.posweb.server.model.MerchantAccess</class>
+		<class>com.app.posweb.server.model.UserAccess</class>
 		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		

@@ -18,6 +18,7 @@ import com.android.pos.dao.TransactionsDao;
 import com.android.pos.dao.DaoMaster.DevOpenHelper;
 import com.android.pos.dao.ProductGroupDao;
 import com.android.pos.dao.TransactionItemDao;
+import com.android.pos.dao.UserAccessDao;
 
 public class DbUtil {
 	
@@ -237,6 +238,13 @@ public class DbUtil {
             	
             	MerchantAccessDao.dropTable(db, true);
             	MerchantAccessDao.createTable(db, true);
+            }
+            
+            // handle version 30 changes
+            if (oldVersion < 30) {
+            	
+            	UserAccessDao.dropTable(db, true);
+            	UserAccessDao.createTable(db, true);
             }
             
             //DaoMaster.dropAllTables(db, true);

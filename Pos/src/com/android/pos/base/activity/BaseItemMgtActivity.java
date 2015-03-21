@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
+import com.android.pos.async.HttpAsyncListener;
+import com.android.pos.async.HttpAsyncManager;
+import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.common.ConfirmDeleteDlgFragment;
@@ -18,6 +21,7 @@ import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +30,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
-public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implements BaseItemListener<T>, SearchView.OnQueryTextListener {
+public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity 
+	implements BaseItemListener<T>, SearchView.OnQueryTextListener, HttpAsyncListener {
 	
 	protected S mSearchFragment;
 	protected E mEditFragment;
@@ -58,6 +63,14 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	private String prevQuery = Constant.EMPTY_STRING;
 	
 	private boolean mIsOnEdit = false;
+	
+	final Context context = this;
+	private HttpAsyncManager mHttpAsyncManager;
+	
+	private static ProgressDlgFragment mProgressDialog;
+	private static Integer mProgress = 0;
+	
+	private static final String progressDialogTag = "progressDialogTag";
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -78,6 +91,28 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		if (mConfirmDeleteFragment == null) {
 			mConfirmDeleteFragment = new ConfirmDeleteDlgFragment<T>();
+		}
+		
+		mHttpAsyncManager = new HttpAsyncManager(this);
+		
+		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
+		
+		if (mProgressDialog == null) {
+			mProgressDialog = new ProgressDlgFragment();
+		}
+	}
+	
+	@Override
+	public void onStart() {
+		
+		super.onStart();
+
+		if (getFragmentManager().findFragmentByTag(progressDialogTag) != null) {
+			mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
+		}
+		
+		if (mProgress == 100 && mProgressDialog.isVisible()) {
+			mProgressDialog.dismiss();
 		}
 	}
 
@@ -216,7 +251,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
-		if (mSelectedItem == null && UserUtil.isRoot()) {
+		if (UserUtil.isRoot() || UserUtil.isMerchant()) {
 			mSyncMenu.setVisible(!isDrawerOpen);
 		} else {
 			mSyncMenu.setVisible(false);
@@ -324,6 +359,14 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			}
 			
 			return true;
+			
+		case R.id.menu_item_sync:
+			
+			mProgressDialog.show(getFragmentManager(), progressDialogTag);
+			
+			mHttpAsyncManager.sync(); 
+			
+			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);
@@ -415,7 +458,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 			return;
 		}
 		
-		if (UserUtil.isRoot()) {
+		if (UserUtil.isRoot() || UserUtil.isMerchant()) {
 			mSyncMenu.setVisible(true);
 		} else {
 			mSyncMenu.setVisible(false);
@@ -437,7 +480,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 		
 		enableEditFragmentInputFields(false);
 		
-		if (UserUtil.isRoot()) {
+		if (UserUtil.isRoot() || UserUtil.isMerchant()) {
 			mSyncMenu.setVisible(true);
 		} else {
 			mSyncMenu.setVisible(false);
@@ -633,4 +676,62 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity implemen
 	public void onSelectSupplier(boolean isMandatory) {}
 	
 	public void onSelectBill(boolean isMandatory) {}
+	
+	@Override
+	public void setSyncProgress(int progress) {
+		
+		mProgress = progress;
+		
+		if (mProgressDialog != null) {
+			
+			mProgressDialog.setProgress(progress);
+			
+			if (progress == 100) {
+				
+				new Handler().postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						
+						if (isActivityVisible()) {
+							mProgressDialog.dismiss();
+						}
+					}
+				}, 500);
+			}
+		}
+	}
+	
+	@Override
+	public void setSyncMessage(String message) {
+		
+		if (mProgressDialog != null) {
+			
+			mProgressDialog.setMessage(message);
+		}
+	}
+	
+	@Override
+	public void onTimeOut() {
+		
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
+	}
+	
+	@Override
+	public void onSyncError() {
+		
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
+	}
 }

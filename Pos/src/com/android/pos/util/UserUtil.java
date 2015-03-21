@@ -1,14 +1,20 @@
 package com.android.pos.util;
 
+import java.util.HashMap;
+
 import com.android.pos.Constant;
 import com.android.pos.dao.User;
+import com.android.pos.dao.UserAccess;
+import com.android.pos.dao.UserAccessDaoService;
 import com.android.pos.dao.UserDaoService;
 
 public class UserUtil {
 	
 	private static UserDaoService mUserDaoService = new UserDaoService();
+	private static UserAccessDaoService mUserAccessDaoService = new UserAccessDaoService();
 	
 	private static User mUser;
+	private static HashMap<String, UserAccess> mUserAccesses;
 	private static boolean mIsMerchant = false;
 	
 	public static User getUser() {
@@ -16,8 +22,11 @@ public class UserUtil {
 		if (mUser == null) {
 			
 			DbUtil.switchDb(MerchantUtil.getMerchantId());
+			
 			mUserDaoService = new UserDaoService();
-			mUser = mUserDaoService.getUser(Long.valueOf(1));
+			mUserAccessDaoService = new UserAccessDaoService();
+			
+			setUser(mUserDaoService.getUser(Long.valueOf(1)));
 		}
 		
 		return mUser;
@@ -26,6 +35,21 @@ public class UserUtil {
 	public static void setUser(User user) {
 		
 		mUser = user;
+		
+		mUserAccesses = new HashMap<String, UserAccess>();
+		
+		// if root, no need to get access list
+		if (user.getId() == null) {
+			return;
+		}
+		
+		mUserDaoService = new UserDaoService();
+		mUserAccessDaoService = new UserAccessDaoService();
+		
+		for (UserAccess userAccess : mUserAccessDaoService.getUserAccessList(user.getId())) {
+			
+			mUserAccesses.put(userAccess.getCode(), userAccess);
+		}
 	}
 	
 	public static boolean isMerchant() {
@@ -55,5 +79,18 @@ public class UserUtil {
 		} else {
 			return false;
 		}
+	}
+	
+	public static boolean isUserHasAccess(String accessCode) {
+		
+		boolean isHasAccess = false;
+		
+		UserAccess userAccess = mUserAccesses.get(accessCode);
+		
+		if (userAccess != null && Constant.STATUS_YES.equals(userAccess.getStatus())) {
+			isHasAccess = true;
+		}
+		
+		return isHasAccess;
 	}
 }

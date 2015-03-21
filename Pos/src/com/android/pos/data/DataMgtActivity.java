@@ -30,6 +30,7 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 	private HttpAsyncManager mHttpAsyncManager;
 	
 	private static ProgressDlgFragment mProgressDialog;
+	private static Integer mProgress = 0;
 	
 	private static final String progressDialogTag = "progressDialogTag";
 	
@@ -41,9 +42,9 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		
 		DbUtil.initDb(this);
 		
-		mHttpAsyncManager = new HttpAsyncManager(this);
-		
 		initDrawerMenu();
+		
+		mHttpAsyncManager = new HttpAsyncManager(this);
 		
 		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
 		
@@ -62,6 +63,10 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 		
 		if (getFragmentManager().findFragmentByTag(progressDialogTag) != null) {
 			mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
+		}
+		
+		if (mProgress == 100 && mProgressDialog.isVisible()) {
+			mProgressDialog.dismiss();
 		}
 	}
 	
@@ -138,6 +143,8 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 	@Override
 	public void setSyncProgress(int progress) {
 		
+		mProgress = progress;
+		
 		if (mProgressDialog != null) {
 			
 			mProgressDialog.setProgress(progress);
@@ -148,7 +155,10 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 					
 					@Override
 					public void run() {
-						mProgressDialog.dismiss();
+						
+						if (isActivityVisible()) {
+							mProgressDialog.dismiss();
+						}
 					}
 				}, 500);
 			}
@@ -167,7 +177,11 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 	@Override
 	public void onTimeOut() {
 		
-		mProgressDialog.dismiss();
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
 	}
@@ -175,7 +189,11 @@ public class DataMgtActivity extends BaseActivity implements HttpAsyncListener {
 	@Override
 	public void onSyncError() {
 		
-		mProgressDialog.dismiss();
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
 	}
