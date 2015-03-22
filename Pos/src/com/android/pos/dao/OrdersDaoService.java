@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.android.pos.Constant;
 import com.android.pos.dao.Orders;
 import com.android.pos.dao.OrdersDao;
+import com.android.pos.model.OrdersBean;
+import com.android.pos.util.BeanUtil;
 import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
@@ -37,6 +39,17 @@ public class OrdersDaoService {
 	public Orders getOrders(Long id) {
 		
 		return mOrdersDao.load(id);
+	}
+	
+	public Orders getOrders(String orderNo) {
+
+		QueryBuilder<Orders> qb = mOrdersDao.queryBuilder();
+		
+		qb.where(OrdersDao.Properties.OrderNo.eq(orderNo)).orderAsc(OrdersDao.Properties.Id);
+		
+		Orders orders = qb.unique();
+		
+		return orders;
 	}
 	
 	public List<Orders> getOrders() {
@@ -79,5 +92,33 @@ public class OrdersDaoService {
 		}
 		
 		return orderReferences;
+	}
+	
+	public void addOrders(List<OrdersBean> orders) {
+		
+		for (OrdersBean bean : orders) {
+			
+			Orders order = getOrders(bean.getOrder_no());
+			
+			boolean isNew = false;
+			Long orderId = null;
+			
+			if (order != null) {
+				orderId = order.getId();
+			} else {
+				isNew = true;
+				order = new Orders();
+			}
+			
+			BeanUtil.updateBean(order, bean);
+			
+			order.setId(orderId);
+			
+			if (isNew) {
+				mOrdersDao.insert(order);
+			} else {
+				mOrdersDao.update(order);
+			}
+		} 
 	}
 }

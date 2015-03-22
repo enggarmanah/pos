@@ -25,6 +25,7 @@ import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
+import com.android.pos.waitress.WaitressActivity;
 
 public class UserLoginActivity extends Activity {
 
@@ -118,7 +119,12 @@ public class UserLoginActivity extends Activity {
 							Intent intent = new Intent(context, CashierActivity.class);
 							startActivity(intent);
 							
-						}else {
+						} else if (Constant.USER_ROLE_WAITRESS.equals(user.getRole())) {
+							
+							Intent intent = new Intent(context, WaitressActivity.class);
+							startActivity(intent);
+								
+						} else {
 							
 							Intent intent = new Intent(context, TransactionActivity.class);
 							startActivity(intent);

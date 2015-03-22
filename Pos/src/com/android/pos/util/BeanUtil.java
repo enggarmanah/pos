@@ -8,6 +8,8 @@ import com.android.pos.dao.Employee;
 import com.android.pos.dao.Inventory;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantAccess;
+import com.android.pos.dao.OrderItem;
+import com.android.pos.dao.Orders;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.Supplier;
@@ -22,6 +24,8 @@ import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.InventoryBean;
 import com.android.pos.model.MerchantAccessBean;
 import com.android.pos.model.MerchantBean;
+import com.android.pos.model.OrderItemBean;
+import com.android.pos.model.OrdersBean;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SupplierBean;
@@ -600,5 +604,59 @@ public class BeanUtil {
 		userAccess.setCreateDate(bean.getCreate_date());
 		userAccess.setUpdateBy(bean.getUpdate_by());
 		userAccess.setUpdateDate(bean.getUpdate_date());
+	}
+	
+	public static OrdersBean getBean(Orders orders) {
+		
+		OrdersBean bean = new OrdersBean();
+		
+		bean.setMerchant_id(orders.getMerchantId());
+		bean.setRemote_id(orders.getId());
+		bean.setOrder_no(orders.getOrderNo());
+		bean.setOrder_date(orders.getOrderDate());
+		bean.setOrder_type(orders.getOrderType());
+		bean.setOrder_reference(orders.getOrderReference());
+		bean.setCustomer_name(orders.getCustomerName());
+		bean.setStatus(orders.getStatus());
+		
+		return bean;
+	}
+	
+    public static void updateBean(Orders orders, OrdersBean bean) {
+		
+		orders.setMerchantId(bean.getMerchant_id());
+		orders.setId(bean.getRemote_id());
+		orders.setOrderNo(bean.getOrder_no());
+		orders.setOrderDate(bean.getOrder_date());
+		orders.setOrderType(bean.getOrder_type());
+		orders.setOrderReference(bean.getOrder_reference());
+		orders.setCustomerName(bean.getCustomer_name());
+		orders.setStatus(bean.getStatus());
+	}
+    
+    public static OrderItemBean getBean(OrderItem orderItem) {
+		
+    	OrderItemBean bean = new OrderItemBean();
+		
+		bean.setMerchant_id(orderItem.getMerchantId());
+		bean.setRemote_id(orderItem.getId());
+		bean.setOrder_no(orderItem.getOrderNo());
+		bean.setProduct_id(orderItem.getProductId());
+		bean.setProduct_name(orderItem.getProductName());
+		bean.setQuantity(orderItem.getQuantity());
+		bean.setRemarks(orderItem.getRemarks());
+		
+		return bean;
+	}
+	
+    public static void updateBean(OrderItem orderItem, OrderItemBean bean) {
+		
+		orderItem.setMerchantId(bean.getMerchant_id());
+		orderItem.setId(bean.getRemote_id());
+		orderItem.setOrderNo(bean.getOrder_no());
+		orderItem.setProductId(bean.getProduct_id());
+		orderItem.setProductName(bean.getProduct_name());
+		orderItem.setQuantity(bean.getQuantity());
+		orderItem.setRemarks(bean.getRemarks());
 	}
 }

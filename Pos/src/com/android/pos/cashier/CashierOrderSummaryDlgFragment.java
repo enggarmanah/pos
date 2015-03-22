@@ -8,7 +8,9 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseDialogFragment;
 import com.android.pos.dao.Orders;
 import com.android.pos.util.CodeUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
+import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -130,8 +132,12 @@ public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 				Orders order = getOrder();
 				
 				mActionListener.onOrderConfirmed(order);
-				mActionListener.onPrintOrder(order);
-				mActionListener.onClearTransaction();
+				
+				if (!UserUtil.isWaitress()) {
+					
+					mActionListener.onPrintOrder(order);
+					mActionListener.onClearTransaction();
+				}
 					
 				dismiss();
 			}
@@ -164,6 +170,7 @@ public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 		
 		order.setMerchantId(MerchantUtil.getMerchantId());
 		
+		order.setOrderNo(CommonUtil.getTransactionNo());
 		order.setOrderDate(new Date());
 		order.setOrderType(mOrderType);
 		

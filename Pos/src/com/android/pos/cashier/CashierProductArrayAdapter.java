@@ -5,6 +5,7 @@ import java.util.List;
 import com.android.pos.R;
 import com.android.pos.dao.Product;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.UserUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -74,7 +75,13 @@ public class CashierProductArrayAdapter extends ArrayAdapter<Product> {
 		
 		prdName.setText(product.getName());
 		prdPrice.setText(CommonUtil.formatCurrency(product.getPrice()));
-
+		
+		if (UserUtil.isWaitress()) {
+			prdPrice.setVisibility(View.GONE);
+		} else {
+			prdPrice.setVisibility(View.VISIBLE);
+		}
+		
 		rowView.setOnClickListener(getItemOnClickListener(product, prdName));
 
 		return rowView;

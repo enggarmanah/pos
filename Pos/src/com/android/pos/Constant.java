@@ -23,6 +23,7 @@ public class Constant {
 	
 	public static final String USER_ROLE_CASHIER = "C";
 	public static final String USER_ROLE_ADMIN = "A";
+	public static final String USER_ROLE_WAITRESS = "W";
 	
 	public static final String PRODUCT_QUANTITY = "PRODUCT_QUANTITY";
 	public static final String PRODUCT_REVENUE = "PRODUCT_REVENUE";
@@ -41,12 +42,30 @@ public class Constant {
 	public static final String MESSAGE_PRINTER_PLEASE_CHECK_PRINTER = "Tidak dapat terhubung ke Printer. Pastikan Printer anda aktif.";
 	public static final String MESSAGE_PRINTER_CONNECT_PRINTER_FROM_CASHIER = "Tidak dapat terhubung ke Printer.\nKoneksikan printer anda dari modul kasir.";
 	public static final String MESSAGE_PRINTER_CANT_PRINT = "Tidak dapat terhubung ke printer.\nStruk tidak dapat dicetak";
+	public static final String MESSAGE_PRINTER_BLUETOOTH_INACTIVE = "Bluetooth tidak aktif, aktifkan bluetooth terlebih dahulu.";
+	
+	public static final String MESSAGE_SERVER_CANT_CONNECT = "Tidak dapat terhubung ke Server!";
+	public static final String MESSAGE_SERVER_SYNC_ERROR = "Error dalam sync data ke Server!";
+	
+	public static final String MESSAGE_ORDER_SUBMIT_OK = "Pesanan telah berhasil disubmit ke Server!";
+	public static final String MESSAGE_ORDER_DOWNLOAD_OK = "Pesanan telah berhasil didownload dari Server!";
 	
 	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	
 	public static final String TASK_ROOT_GET_LAST_SYNC = "TASK_ROOT_GET_LAST_SYNC";
 	public static final String TASK_ROOT_GET_MERCHANT = "TASK_ROOT_GET_MERCHANT";
 	public static final String TASK_ROOT_UPDATE_MERCHANT = "TASK_ROOT_UPDATE_MERCHANT";
+	
+	public static final String TASK_SUBMIT_ORDERS = "TASK_SUBMIT_ORDERS";
+	public static final String TASK_SUBMIT_ORDER_ITEMS = "TASK_SUBMIT_ORDER_ITEMS";
+	
+	public static final String TASK_GET_ORDERS = "TASK_GET_ORDERS";
+	public static final String TASK_GET_ORDER_ITEMS = "TASK_GET_ORDER_ITEMS";
+	
+	public static final String TASK_DELETE_ORDERS = "TASK_DELETE_ORDERS";
+	
+	public static final String TASK_GET_PRODUCT_GROUP_ALL = "TASK_GET_PRODUCT_GROUP_ALL";
+	public static final String TASK_GET_PRODUCT_ALL = "TASK_GET_PRODUCT_ALL";
 	
 	public static final String TASK_GET_LAST_SYNC = "TASK_GET_LAST_SYNC";
 	public static final String TASK_UPDATE_LAST_SYNC = "TASK_UPDATE_LAST_SYNC";
@@ -123,7 +142,10 @@ public class Constant {
 	public static final String INVENTORY_STATUS_INITIAL_STOCK = "INIT";
 	
 	public static final String ACCESS_CASHIER = "CASH";
+	public static final String ACCESS_WAITRESS = "WTRS";
+	public static final String ACCESS_ORDER = "ORDR";
 	public static final String ACCESS_DATA_MANAGEMENT = "MGMT";
+	public static final String ACCESS_CUSTOMER = "CUST";
 	public static final String ACCESS_INVENTORY = "INVT";
 	public static final String ACCESS_USER_ACCESS = "UACC";
 	public static final String ACCESS_BILLS = "BILL";
@@ -134,8 +156,11 @@ public class Constant {
 	
 	public static final String MENU_USER = "User";
 	public static final String MENU_CASHIER = "Kasir";
+	public static final String MENU_WAITRESS = "Pramuniaga";
 	public static final String MENU_ORDER = "Pemesanan";
 	public static final String MENU_DATA = "Data";
+	public static final String MENU_CUSTOMER = "Data Pelanggan";
+	public static final String MENU_MERCHANT = "Data Merchant";
 	public static final String MENU_DATA_MANAGEMENT = "Data Referensi";
 	public static final String MENU_INVENTORY = "Data Inventori";
 	public static final String MENU_USER_ACCESS = "Data Pengguna";
@@ -146,4 +171,5 @@ public class Constant {
 	public static final String MENU_REPORT_INVENTORY = "Laporan Inventori";
 	public static final String MENU_REPORT_CASHFLOW = "Laporan Keuangan";
 	public static final String MENU_EXIT = "Keluar";
+	public static final String MENU_SYNC = "Sync";
 }

@@ -28,11 +28,12 @@ public class OrdersDao extends AbstractDao<Orders, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property OrderDate = new Property(2, java.util.Date.class, "orderDate", false, "ORDER_DATE");
-        public final static Property OrderType = new Property(3, String.class, "orderType", false, "ORDER_TYPE");
-        public final static Property OrderReference = new Property(4, String.class, "orderReference", false, "ORDER_REFERENCE");
-        public final static Property CustomerName = new Property(5, String.class, "customerName", false, "CUSTOMER_NAME");
-        public final static Property Status = new Property(6, String.class, "status", false, "STATUS");
+        public final static Property OrderNo = new Property(2, String.class, "orderNo", false, "ORDER_NO");
+        public final static Property OrderDate = new Property(3, java.util.Date.class, "orderDate", false, "ORDER_DATE");
+        public final static Property OrderType = new Property(4, String.class, "orderType", false, "ORDER_TYPE");
+        public final static Property OrderReference = new Property(5, String.class, "orderReference", false, "ORDER_REFERENCE");
+        public final static Property CustomerName = new Property(6, String.class, "customerName", false, "CUSTOMER_NAME");
+        public final static Property Status = new Property(7, String.class, "status", false, "STATUS");
     };
 
     private DaoSession daoSession;
@@ -53,11 +54,12 @@ public class OrdersDao extends AbstractDao<Orders, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'ORDERS' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'ORDER_DATE' INTEGER NOT NULL ," + // 2: orderDate
-                "'ORDER_TYPE' TEXT," + // 3: orderType
-                "'ORDER_REFERENCE' TEXT," + // 4: orderReference
-                "'CUSTOMER_NAME' TEXT," + // 5: customerName
-                "'STATUS' TEXT);"); // 6: status
+                "'ORDER_NO' TEXT," + // 2: orderNo
+                "'ORDER_DATE' INTEGER NOT NULL ," + // 3: orderDate
+                "'ORDER_TYPE' TEXT," + // 4: orderType
+                "'ORDER_REFERENCE' TEXT," + // 5: orderReference
+                "'CUSTOMER_NAME' TEXT," + // 6: customerName
+                "'STATUS' TEXT);"); // 7: status
     }
 
     /** Drops the underlying database table. */
@@ -76,26 +78,31 @@ public class OrdersDao extends AbstractDao<Orders, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getMerchantId());
-        stmt.bindLong(3, entity.getOrderDate().getTime());
+ 
+        String orderNo = entity.getOrderNo();
+        if (orderNo != null) {
+            stmt.bindString(3, orderNo);
+        }
+        stmt.bindLong(4, entity.getOrderDate().getTime());
  
         String orderType = entity.getOrderType();
         if (orderType != null) {
-            stmt.bindString(4, orderType);
+            stmt.bindString(5, orderType);
         }
  
         String orderReference = entity.getOrderReference();
         if (orderReference != null) {
-            stmt.bindString(5, orderReference);
+            stmt.bindString(6, orderReference);
         }
  
         String customerName = entity.getCustomerName();
         if (customerName != null) {
-            stmt.bindString(6, customerName);
+            stmt.bindString(7, customerName);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(7, status);
+            stmt.bindString(8, status);
         }
     }
 
@@ -117,11 +124,12 @@ public class OrdersDao extends AbstractDao<Orders, Long> {
         Orders entity = new Orders( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getLong(offset + 1), // merchantId
-            new java.util.Date(cursor.getLong(offset + 2)), // orderDate
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // orderType
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // orderReference
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // customerName
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // status
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // orderNo
+            new java.util.Date(cursor.getLong(offset + 3)), // orderDate
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // orderType
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // orderReference
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // customerName
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // status
         );
         return entity;
     }
@@ -131,11 +139,12 @@ public class OrdersDao extends AbstractDao<Orders, Long> {
     public void readEntity(Cursor cursor, Orders entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setOrderDate(new java.util.Date(cursor.getLong(offset + 2)));
-        entity.setOrderType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setOrderReference(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setCustomerName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setStatus(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setOrderNo(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setOrderDate(new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setOrderType(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setOrderReference(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setCustomerName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */

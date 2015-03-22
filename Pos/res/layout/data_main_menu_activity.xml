@@ -31,11 +31,6 @@
             style="@style/DataManagementMenuStyle"/>
         
         <Button
-            android:text="@string/module_customer"
-            android:onClick="goToModuleCustomer"
-            style="@style/DataManagementMenuStyle"/>
-        
-        <Button
             android:text="@string/module_supplier"
             android:onClick="goToModuleSupplier"
             style="@style/DataManagementMenuStyle"/>

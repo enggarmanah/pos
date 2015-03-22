@@ -152,6 +152,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 						user.setUserId(Constant.ROOT);
 						user.setName(Constant.ROOT);
 						
+						MerchantUtil.setMerchant(null);
 						UserUtil.setUser(user);
 						
 						mProgressDialog.show(getFragmentManager(), "progressDialogTag");
@@ -232,13 +233,11 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	@Override
 	public void onMerchantsUpdated() {
 		
-		// case when the login is root after update on merchants info
-		
-		User user = new User();
-		user.setUserId(Constant.ROOT);
-		
-		Intent intent = new Intent(context, MerchantMgtActivity.class);
-		startActivity(intent);
+		if (UserUtil.isRoot()) {
+			
+			Intent intent = new Intent(context, MerchantMgtActivity.class);
+			startActivity(intent);
+		}
 	}
 	
 	@Override

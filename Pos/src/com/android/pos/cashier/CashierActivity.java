@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
+import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.common.ConfirmListener;
 import com.android.pos.dao.Customer;
@@ -94,20 +95,18 @@ public class CashierActivity extends BaseActivity
 	private static final String DISCOUNT = "DISCOUNT";
 	private static final String STATE = "STATE";
 	private static final String SELECTED_ORDER = "SELECTED_ORDER";
-	
-	//private static String ORDER = "ORDER";
-	//private static String ORDER_ITEM = "ORDER_ITEMS";
 
-	private String mProductSearchFragmentTag = "productSearchFragmentTag";
-	private String mProductCountDlgFragmentTag = "productCountDlgFragmentTag";
-	private String mOrderFragmentTag = "orderFragment";
-	private String mPaymentDlgFragmentTag = "paymentDlgFragmentTag";
-	private String mOrderDlgFragmentTag = "orderDlgFragmentTag";
-	private String mPaymentSummaryDlgFragmentTag = "paymentSummaryDlgFragmentTag";
-	private String mOrderSummaryDlgFragmentTag = "orderSummaryDlgFragmentTag";
-	private String mDiscountDlgFragmentTag = "discountDlgFragmentTag";
-	private String mDiscountAmountDlgFragmentTag = "discountAmountDlgFragmentTag";
-	private String mCustomerDlgFragmentTag = "customerDlgFragmentTag";
+	private static final String mProductSearchFragmentTag = "productSearchFragmentTag";
+	private static final String mProductCountDlgFragmentTag = "productCountDlgFragmentTag";
+	private static final String mOrderFragmentTag = "orderFragment";
+	private static final String mPaymentDlgFragmentTag = "paymentDlgFragmentTag";
+	private static final String mOrderDlgFragmentTag = "orderDlgFragmentTag";
+	private static final String mPaymentSummaryDlgFragmentTag = "paymentSummaryDlgFragmentTag";
+	private static final String mOrderSummaryDlgFragmentTag = "orderSummaryDlgFragmentTag";
+	private static final String mDiscountDlgFragmentTag = "discountDlgFragmentTag";
+	private static final  String mDiscountAmountDlgFragmentTag = "discountAmountDlgFragmentTag";
+	private static final  String mCustomerDlgFragmentTag = "customerDlgFragmentTag";
+	//private static final String progressDialogTag = "progressDialogTag";
 
 	private String prevQuery = Constant.EMPTY_STRING;
 	
@@ -120,6 +119,7 @@ public class CashierActivity extends BaseActivity
 	private OrderItemDaoService mOrderItemDaoService;
 	
 	private static boolean isTryToConnect = false;
+	private boolean mIsSubmitOrder = false;
 	
 	private Orders mOrder;
 	private List<OrderItem> mOrderItems;
@@ -160,7 +160,8 @@ public class CashierActivity extends BaseActivity
 		
 		messageText.setOnClickListener(getMessageTextOnClickListener());
 		
-		if (!isTryToConnect) {
+		if (!UserUtil.isWaitress() && !isTryToConnect) {
+			
 			isTryToConnect = true;
 			connectToMerchantPrinter();
 		}
@@ -173,10 +174,9 @@ public class CashierActivity extends BaseActivity
 		
 		super.onStart();
 
-		setTitle(getString(R.string.menu_cashier));
-		setSelectedMenu(getString(R.string.menu_cashier));
+		setSelectedMenu(Constant.MENU_CASHIER);
 		
-		if (!PrintUtil.isPrinterConnected()) {
+		if (!UserUtil.isWaitress() && !PrintUtil.isPrinterConnected()) {
 			setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
 		}
 		
@@ -359,8 +359,8 @@ public class CashierActivity extends BaseActivity
 		
 		mSelectPrinterItem.setVisible(false);
 		
-		if (!isDrawerOpen && !PrintUtil.isPrinterConnected()) {
-			mSelectPrinterItem.setVisible(true);
+		if (!UserUtil.isWaitress() && !PrintUtil.isPrinterConnected()) {
+			mSelectPrinterItem.setVisible(!isDrawerOpen);
 		}
 
 		return super.onPrepareOptionsMenu(menu);
@@ -504,7 +504,7 @@ public class CashierActivity extends BaseActivity
 				
 				if (!PrintUtil.isBluetoothEnabled()) {
 					
-					NotificationUtil.setAlertMessage(getFragmentManager(), "Bluetooth tidak aktif, aktifkan bluetooth terlebih dahulu.");
+					NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_PRINTER_BLUETOOTH_INACTIVE);
 	    			
 	    			return;
 				}
@@ -736,6 +736,8 @@ public class CashierActivity extends BaseActivity
 			
 			OrderItem orderItem = new OrderItem();
 			
+			orderItem.setOrderNo(order.getOrderNo());
+			
 			orderItem.setMerchantId(MerchantUtil.getMerchantId());
 			orderItem.setProductId(transactionItem.getProductId());
 			orderItem.setProductName(transactionItem.getProductName());
@@ -748,12 +750,27 @@ public class CashierActivity extends BaseActivity
 		mOrder = order;
 		mOrderItems = orderItems;
 		
-		mOrderDaoService.addOrders(order);
+		if (!UserUtil.isWaitress()) {
 		
-		for (OrderItem orderItem : mOrderItems) {
+			mOrderDaoService.addOrders(order);
 			
-			orderItem.setOrderId(order.getId());
-			mOrderItemDaoService.addOrderItem(orderItem);
+			for (OrderItem orderItem : mOrderItems) {
+				
+				orderItem.setOrderId(order.getId());
+				mOrderItemDaoService.addOrderItem(orderItem);
+			}
+			
+		} else {
+			
+			mIsSubmitOrder = true;
+			
+			mProgressDialog.show(getFragmentManager(), progressDialogTag);
+			
+			if (mHttpAsyncManager == null) {
+				mHttpAsyncManager = new HttpAsyncManager(this);
+			}
+			
+			mHttpAsyncManager.submitOrders(mOrder, mOrderItems);
 		}
 	}
 
@@ -906,6 +923,19 @@ public class CashierActivity extends BaseActivity
 		}
 	}
 	
+	@Override
+	protected void onAsyncTaskCompleted() {
+		
+		if (mIsSubmitOrder) {
+			
+			mIsSubmitOrder = false;
+			
+			NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_ORDER_SUBMIT_OK);
+		}
+		
+		onClearTransaction();
+	}
+	
 	// Printer - Begin
 	
 	private void connectToPrinter(String printerType, String address) {
@@ -957,7 +987,7 @@ public class CashierActivity extends BaseActivity
 			// When the request to enable Bluetooth returns
 			if (resultCode == Activity.RESULT_OK) {
 				
-				setMessage("Printer tidak terhubung, aktifkan Bluetooth Printer anda dan hubungkan ke sistem");
+				setMessage(Constant.MESSAGE_PRINTER_CONNECTING);
 				
 				// Bluetooth is now enabled, so set up a chat session
 				PrintUtil.selectBluetoothPrinter();
@@ -967,7 +997,7 @@ public class CashierActivity extends BaseActivity
 			} else {
 
 				// User did not enable Bluetooth or an error occured
-				showMessage("Bluetooth tidak aktif, silahkan aktivasikan bluetooth terlebih dahulu!");
+				showMessage(Constant.MESSAGE_PRINTER_BLUETOOTH_INACTIVE);
 			}
 			
 			break;

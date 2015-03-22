@@ -4,9 +4,7 @@ import java.io.Serializable;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
-import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
-import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Transactions;
 import com.android.pos.model.TransactionDayBean;
@@ -18,13 +16,12 @@ import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.PrintUtil;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class TransactionActivity extends BaseActivity 
-	implements TransactionActionListener, HttpAsyncListener {
+	implements TransactionActionListener {
 	
 	protected TransactionListFragment mTransactionListFragment;
 	protected TransactionDetailFragment mTransactionDetailFragment;
@@ -54,11 +51,6 @@ public class TransactionActivity extends BaseActivity
 	private MenuItem mUpItem;
 	private MenuItem mSyncItem;
 	
-	private static ProgressDlgFragment mProgressDialog;
-	private static Integer mProgress = 0;
-
-	private HttpAsyncManager mHttpAsyncManager;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,15 +65,7 @@ public class TransactionActivity extends BaseActivity
 		
 		initFragments();
 		
-		mHttpAsyncManager = new HttpAsyncManager(this);
-		
 		initWaitAfterFragmentRemovedTask(mTransactionListFragmentTag, mTransactionDetailFragmentTag);
-		
-		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag("progressDialogTag");
-		
-		if (mProgressDialog == null) {
-			mProgressDialog = new ProgressDlgFragment();
-		}
 	}
 	
 	@Override
@@ -91,10 +75,6 @@ public class TransactionActivity extends BaseActivity
 
 		setTitle(getString(R.string.menu_transaction));
 		setSelectedMenu(getString(R.string.menu_transaction));
-		
-		if (mProgress == 100 && mProgressDialog.isVisible()) {
-			mProgressDialog.dismiss();
-		}
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {
@@ -247,6 +227,10 @@ public class TransactionActivity extends BaseActivity
 			case R.id.menu_item_sync:
 				
 				mProgressDialog.show(getFragmentManager(), "progressDialogTag");
+				
+				if (mHttpAsyncManager == null) {
+					mHttpAsyncManager = new HttpAsyncManager(this); 
+				}
 				
 				mHttpAsyncManager.sync(); 
 				
@@ -442,63 +426,5 @@ public class TransactionActivity extends BaseActivity
 				mIsDisplayTransactionDay = true;
 			}
 		}
-	}
-	
-	@Override
-	public void setSyncProgress(int progress) {
-		
-		mProgress = progress;
-		
-		if (mProgressDialog != null) {
-			
-			mProgressDialog.setProgress(progress);
-			
-			if (progress == 100) {
-				
-				new Handler().postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						if (isActivityVisible()) {
-							mProgressDialog.dismiss();
-						}
-					}
-				}, 500);
-			}
-		}
-	}
-	
-	@Override
-	public void setSyncMessage(String message) {
-		
-		if (mProgressDialog != null) {
-			
-			mProgressDialog.setMessage(message);
-		}
-	}
-	
-	@Override
-	public void onTimeOut() {
-		
-		mProgress = 100;
-		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
-		}
-		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
-	}
-	
-	@Override
-	public void onSyncError() {
-		
-		mProgress = 100;
-		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
-		}
-		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
 	}
 }

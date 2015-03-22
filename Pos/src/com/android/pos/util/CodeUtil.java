@@ -11,6 +11,7 @@ public class CodeUtil {
 	public static CodeBean[] productTypes;
 	public static CodeBean[] booleans;
 	public static CodeBean[] roles;
+	public static CodeBean[] restoRoles;
 	public static CodeBean[] emailStatus;
 	public static CodeBean[] paymentTypes;
 	public static CodeBean[] orderTypes;
@@ -97,6 +98,23 @@ public class CodeUtil {
 		code.setCode(Constant.USER_ROLE_ADMIN);
 		code.setLabel("Admin");
 		roles[1] = code;
+		
+		restoRoles = new CodeBean[3];
+		
+		code = new CodeBean();
+		code.setCode(Constant.USER_ROLE_CASHIER);
+		code.setLabel("Kasir");
+		restoRoles[0] = code;
+
+		code = new CodeBean();
+		code.setCode(Constant.USER_ROLE_WAITRESS);
+		code.setLabel("Pelayan");
+		restoRoles[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.USER_ROLE_ADMIN);
+		code.setLabel("Admin");
+		restoRoles[2] = code;
 		
 		emailStatus = new CodeBean[2];
 		
@@ -225,62 +243,67 @@ public class CodeUtil {
 		code.setLabel("Stok Awal");
 		inventoryStatus[9] = code;
 		
-		/*public static final String ACCESS_CASHIER = "CASH";
-		public static final String ACCESS_DATA_MANAGEMENT = "MGMT";
-		public static final String ACCESS_INVENTORY = "INVT";
-		public static final String ACCESS_USER_ACCESS = "UACC";
-		public static final String ACCESS_BILLS = "BILL";
-		public static final String ACCESS_REPORT_TRANSACTION = "RTRA";
-		public static final String ACCESS_REPORT_PRODUCT_STATISTIC = "RPST";
-		public static final String ACCESS_REPORT_INVENTORY = "RIVT";
-		public static final String ACCESS_REPORT_CASHFLOW = "RCFL";*/
-		
-		moduleAccess = new CodeBean[9];
+		moduleAccess = new CodeBean[12];
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_CASHIER);
-		code.setLabel("Kasir");
+		code.setLabel(Constant.MENU_CASHIER);
 		moduleAccess[0] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ACCESS_DATA_MANAGEMENT);
-		code.setLabel("Data Referensi");
+		code.setCode(Constant.ACCESS_WAITRESS);
+		code.setLabel(Constant.MENU_WAITRESS);
 		moduleAccess[1] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ACCESS_INVENTORY);
-		code.setLabel("Data Inventori");
+		code.setCode(Constant.ACCESS_ORDER);
+		code.setLabel(Constant.MENU_ORDER);
 		moduleAccess[2] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ACCESS_BILLS);
-		code.setLabel("Data Keuangan");
+		code.setCode(Constant.ACCESS_DATA_MANAGEMENT);
+		code.setLabel(Constant.MENU_DATA_MANAGEMENT);
 		moduleAccess[3] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ACCESS_USER_ACCESS);
-		code.setLabel("Data Pengguna");
+		code.setCode(Constant.ACCESS_CUSTOMER);
+		code.setLabel(Constant.MENU_CUSTOMER);
 		moduleAccess[4] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_TRANSACTION);
-		code.setLabel("Laporan Transaksi");
+		code.setCode(Constant.ACCESS_INVENTORY);
+		code.setLabel(Constant.MENU_INVENTORY);
 		moduleAccess[5] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_PRODUCT_STATISTIC);
-		code.setLabel("Laporan Penjualan");
+		code.setCode(Constant.ACCESS_BILLS);
+		code.setLabel(Constant.MENU_BILLS);
 		moduleAccess[6] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_INVENTORY);
-		code.setLabel("Laporan Inventori");
+		code.setCode(Constant.ACCESS_USER_ACCESS);
+		code.setLabel(Constant.MENU_USER_ACCESS);
 		moduleAccess[7] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_CASHFLOW);
-		code.setLabel("Laporan Keuangan");
+		code.setCode(Constant.ACCESS_REPORT_TRANSACTION);
+		code.setLabel(Constant.MENU_REPORT_TRANSACTION);
 		moduleAccess[8] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_PRODUCT_STATISTIC);
+		code.setLabel(Constant.MENU_REPORT_PRODUCT_STATISTIC);
+		moduleAccess[9] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_INVENTORY);
+		code.setLabel(Constant.MENU_REPORT_INVENTORY);
+		moduleAccess[10] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_CASHFLOW);
+		code.setLabel(Constant.MENU_REPORT_CASHFLOW);
+		moduleAccess[11] = code;
 		
 	}
 	
@@ -306,6 +329,10 @@ public class CodeUtil {
 	
 	public static CodeBean[] getRoles() {
 		return roles;
+	}
+	
+	public static CodeBean[] getRestoRoles() {
+		return restoRoles;
 	}
 	
 	public static CodeBean[] getEmailStatus() {

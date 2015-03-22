@@ -81,6 +81,7 @@ public class UserAccessDaoService {
 				userAccess.setUserId(userId);
 				userAccess.setCode(merchantAccess.getCode());
 				userAccess.setName(merchantAccess.getName());
+				userAccess.setStatus(Constant.STATUS_NO);
 			}
 			
 			userAccessList.add(userAccess);
@@ -147,7 +148,7 @@ public class UserAccessDaoService {
 		QueryBuilder<MerchantAccess> qb = merchantAccessDao.queryBuilder();
 		qb.where(MerchantAccessDao.Properties.MerchantId.eq(merchantId),
 				MerchantAccessDao.Properties.Status.eq(Constant.STATUS_YES))
-				.orderAsc(MerchantAccessDao.Properties.Id);
+				.orderAsc(MerchantAccessDao.Properties.Name);
 		
 		Query<MerchantAccess> q = qb.build();
 		

@@ -35,22 +35,31 @@
         <activity
             android:name="com.android.pos.auth.MerchantLoginActivity"
             android:label="@string/app_name"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.auth.UserLoginActivity"
             android:label="@string/app_name"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.cashier.CashierActivity"
             android:label="@string/menu_cashier"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.waitress.WaitressActivity"
+            android:label="@string/menu_waitress"
+            android:launchMode="singleTask" >
+            <intent-filter android:label="@string/app_name">
+            	<action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.order.OrderActivity"
             android:label="@string/menu_order"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.cashier.CashierPaymentDeviceListActivity"
@@ -61,81 +70,77 @@
         <activity
             android:name="com.android.pos.user.UserMgtActivity"
             android:label="@string/menu_user_management"
-            android:launchMode="standard">
-            <intent-filter android:label="@string/app_name">
-            	<action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:launchMode="singleTask">
         </activity>
         <activity
             android:name="com.android.pos.data.DataMgtActivity"
             android:label="@string/menu_data_management"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.data.merchant.MerchantMgtActivity"
             android:label="@string/module_merchant" 
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.data.productGrp.ProductGrpMgtActivity"
             android:label="@string/module_product_group"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.data.product.ProductMgtActivity"
             android:label="@string/module_product"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.data.employee.EmployeeMgtActivity"
             android:label="@string/module_employee" 
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.data.customer.CustomerMgtActivity"
             android:label="@string/module_customer" 
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.data.supplier.SupplierMgtActivity"
             android:label="@string/module_supplier" 
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.inventory.InventoryMgtActivity"
             android:label="@string/module_inventory" 
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.bills.BillsMgtActivity"
             android:label="@string/module_bills" 
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.data.discount.DiscountMgtActivity"
             android:label="@string/module_discount" 
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.report.transaction.TransactionActivity"
             android:label="@string/menu_transaction"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.report.product.ProductStatisticActivity"
             android:label="@string/menu_statistic_product"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.report.inventory.InventoryReportActivity"
             android:label="@string/app_name"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name="com.android.pos.report.cashflow.CashFlowActivity"
             android:label="@string/menu_transaction"
-            android:launchMode="standard" >
+            android:launchMode="singleTask" >
         </activity>
     </application>
 

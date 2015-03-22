@@ -31,10 +31,11 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
         public final static Property OrderId = new Property(2, long.class, "orderId", false, "ORDER_ID");
-        public final static Property ProductId = new Property(3, long.class, "productId", false, "PRODUCT_ID");
-        public final static Property ProductName = new Property(4, String.class, "productName", false, "PRODUCT_NAME");
-        public final static Property Quantity = new Property(5, Integer.class, "quantity", false, "QUANTITY");
-        public final static Property Remarks = new Property(6, String.class, "remarks", false, "REMARKS");
+        public final static Property OrderNo = new Property(3, String.class, "orderNo", false, "ORDER_NO");
+        public final static Property ProductId = new Property(4, long.class, "productId", false, "PRODUCT_ID");
+        public final static Property ProductName = new Property(5, String.class, "productName", false, "PRODUCT_NAME");
+        public final static Property Quantity = new Property(6, Integer.class, "quantity", false, "QUANTITY");
+        public final static Property Remarks = new Property(7, String.class, "remarks", false, "REMARKS");
     };
 
     private DaoSession daoSession;
@@ -57,10 +58,11 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
                 "'ORDER_ID' INTEGER NOT NULL ," + // 2: orderId
-                "'PRODUCT_ID' INTEGER NOT NULL ," + // 3: productId
-                "'PRODUCT_NAME' TEXT," + // 4: productName
-                "'QUANTITY' INTEGER," + // 5: quantity
-                "'REMARKS' TEXT);"); // 6: remarks
+                "'ORDER_NO' TEXT," + // 3: orderNo
+                "'PRODUCT_ID' INTEGER NOT NULL ," + // 4: productId
+                "'PRODUCT_NAME' TEXT," + // 5: productName
+                "'QUANTITY' INTEGER," + // 6: quantity
+                "'REMARKS' TEXT);"); // 7: remarks
     }
 
     /** Drops the underlying database table. */
@@ -80,21 +82,26 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
         }
         stmt.bindLong(2, entity.getMerchantId());
         stmt.bindLong(3, entity.getOrderId());
-        stmt.bindLong(4, entity.getProductId());
+ 
+        String orderNo = entity.getOrderNo();
+        if (orderNo != null) {
+            stmt.bindString(4, orderNo);
+        }
+        stmt.bindLong(5, entity.getProductId());
  
         String productName = entity.getProductName();
         if (productName != null) {
-            stmt.bindString(5, productName);
+            stmt.bindString(6, productName);
         }
  
         Integer quantity = entity.getQuantity();
         if (quantity != null) {
-            stmt.bindLong(6, quantity);
+            stmt.bindLong(7, quantity);
         }
  
         String remarks = entity.getRemarks();
         if (remarks != null) {
-            stmt.bindString(7, remarks);
+            stmt.bindString(8, remarks);
         }
     }
 
@@ -117,10 +124,11 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getLong(offset + 1), // merchantId
             cursor.getLong(offset + 2), // orderId
-            cursor.getLong(offset + 3), // productId
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // productName
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // quantity
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // remarks
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // orderNo
+            cursor.getLong(offset + 4), // productId
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // productName
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // quantity
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // remarks
         );
         return entity;
     }
@@ -131,10 +139,11 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMerchantId(cursor.getLong(offset + 1));
         entity.setOrderId(cursor.getLong(offset + 2));
-        entity.setProductId(cursor.getLong(offset + 3));
-        entity.setProductName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setQuantity(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setRemarks(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setOrderNo(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setProductId(cursor.getLong(offset + 4));
+        entity.setProductName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setQuantity(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setRemarks(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */

@@ -93,7 +93,9 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	mandatoryFields.add(new FormField(mUserIdText, R.string.field_price));
     	mandatoryFields.add(new FormField(mPasswordText, R.string.field_password));
     	
-    	roleArrayAdapter = new CodeSpinnerArrayAdapter(mRoleSp, getActivity(), CodeUtil.getRoles());
+    	CodeBean[] roles = Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchant().getType()) ? CodeUtil.getRestoRoles() : CodeUtil.getRoles();
+    	
+    	roleArrayAdapter = new CodeSpinnerArrayAdapter(mRoleSp, getActivity(), roles);
     	mRoleSp.setAdapter(roleArrayAdapter);
     	
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getStatus());

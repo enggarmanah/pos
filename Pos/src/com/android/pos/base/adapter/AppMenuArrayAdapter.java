@@ -2,6 +2,7 @@ package com.android.pos.base.adapter;
 
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.util.UserUtil;
 
@@ -73,19 +74,25 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuText = viewHolder.menuText;
 		}
 		
-		if ("User".equals(menu)) {
+		if (Constant.MENU_USER.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_user));
-		} else if ("Kasir".equals(menu)) {
+		} else if (Constant.MENU_CASHIER.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_home_black));
-		} else if ("Laporan".equals(menu)) {
+		} else if (Constant.MENU_WAITRESS.equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_home_black));
+		} else if (Constant.MENU_ORDER.equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_clipboard));
+		} else if (Constant.MENU_REPORT.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_folder));
-		} else if ("Data".equals(menu)) {
+		} else if (Constant.MENU_DATA.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_folder));
-		} else if ("Keluar".equals(menu)) {
+		} else if (Constant.MENU_SYNC.equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_sync_black));
+		} else if (Constant.MENU_EXIT.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_exit_black));
 		}
 		
-		if ("User".equals(menu)) {
+		if (Constant.MENU_USER.equals(menu)) {
 			menuText.setText(UserUtil.getUser().getName());
 		} else {
 			menuText.setText(menu);

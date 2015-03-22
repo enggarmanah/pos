@@ -21,4 +21,10 @@
         android:title="@string/payment"
         android:showAsAction="ifRoom|collapseActionView|withText">
     </item>
+    <item
+        android:id="@+id/menu_item_sync"
+        android:icon="@drawable/action_sync"
+        android:title="@string/sync"
+        android:showAsAction="ifRoom|collapseActionView|withText">
+    </item>
 </menu>

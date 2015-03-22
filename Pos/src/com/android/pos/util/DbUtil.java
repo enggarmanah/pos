@@ -247,6 +247,13 @@ public class DbUtil {
             	UserAccessDao.createTable(db, true);
             }
             
+            // handle version 31 changes
+            if (oldVersion < 31) {
+            	
+            	db.execSQL("ALTER TABLE 'ORDERS' ADD 'ORDER_NO' TEXT");
+            	db.execSQL("ALTER TABLE 'ORDER_ITEM' ADD 'ORDER_NO' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -277,6 +284,9 @@ public class DbUtil {
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
+        
+        //db.execSQL("delete from orders");
+        //db.execSQL("delete from order_item");
         
         System.out.println("db : " + db);
     }

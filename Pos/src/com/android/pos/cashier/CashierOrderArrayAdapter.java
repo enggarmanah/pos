@@ -5,6 +5,7 @@ import java.util.List;
 import com.android.pos.R;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.UserUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -112,6 +113,14 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 		
 		productPrice.setText(CommonUtil.formatCurrency(transactionItem.getPrice()));
 		totalProductPrice.setText(CommonUtil.formatCurrency(transactionItem.getQuantity() * transactionItem.getPrice()));
+		
+		if (UserUtil.isWaitress()) {
+			productPrice.setVisibility(View.GONE);
+			totalProductPrice.setVisibility(View.GONE);
+		} else {
+			productPrice.setVisibility(View.VISIBLE);
+			totalProductPrice.setVisibility(View.VISIBLE);
+		}
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionItem));
 

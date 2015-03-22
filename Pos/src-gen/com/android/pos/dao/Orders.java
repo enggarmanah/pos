@@ -16,6 +16,7 @@ public class Orders implements Serializable {
 
     private Long id;
     private long merchantId;
+    private String orderNo;
     /** Not-null value. */
     private java.util.Date orderDate;
     private String orderType;
@@ -41,9 +42,10 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
-    public Orders(Long id, long merchantId, java.util.Date orderDate, String orderType, String orderReference, String customerName, String status) {
+    public Orders(Long id, long merchantId, String orderNo, java.util.Date orderDate, String orderType, String orderReference, String customerName, String status) {
         this.id = id;
         this.merchantId = merchantId;
+        this.orderNo = orderNo;
         this.orderDate = orderDate;
         this.orderType = orderType;
         this.orderReference = orderReference;
@@ -71,6 +73,14 @@ public class Orders implements Serializable {
 
     public void setMerchantId(long merchantId) {
         this.merchantId = merchantId;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
     /** Not-null value. */

@@ -80,6 +80,7 @@ public class MerchantAccessDaoService {
 				merchantAccess.setMerchantId(merchantId);
 				merchantAccess.setCode(codeBean.getCode());
 				merchantAccess.setName(codeBean.getLabel());
+				merchantAccess.setStatus(Constant.STATUS_NO);
 			}
 			
 			merchantAccessList.add(merchantAccess);

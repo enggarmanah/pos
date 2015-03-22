@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
+import com.android.pos.async.HttpAsyncListener;
+import com.android.pos.async.HttpAsyncManager;
+import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.auth.MerchantLoginActivity;
 import com.android.pos.auth.UserLoginActivity;
 import com.android.pos.base.adapter.AppMenuArrayAdapter;
@@ -18,7 +21,9 @@ import com.android.pos.report.inventory.InventoryReportActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
+import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
+import com.android.pos.waitress.WaitressActivity;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -26,6 +31,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -37,7 +43,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public abstract class BaseActivity extends Activity
-	implements AppMenuArrayAdapter.ItemActionListener {
+	implements AppMenuArrayAdapter.ItemActionListener, HttpAsyncListener {
+	
+	protected static ProgressDlgFragment mProgressDialog;
+	
+	protected static final String progressDialogTag = "progressDialogTag";
+	
+	protected static Integer mProgress = 0;
+	
+	protected HttpAsyncManager mHttpAsyncManager;
 	
 	protected int mSelectedIndex = -1;
 	
@@ -49,6 +63,59 @@ public abstract class BaseActivity extends Activity
 	protected CharSequence mTitle;
 	
 	List<String> mMenus;
+	
+	private static boolean activityVisible = false;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
+		
+		if (mProgressDialog == null) {
+			mProgressDialog = new ProgressDlgFragment();
+		}
+	}
+	
+	@Override
+	public void onStart() {
+		
+		super.onStart();
+		
+		activityVisible = true;
+		
+		if (getFragmentManager().findFragmentByTag(progressDialogTag) != null) {
+			mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
+		}
+		
+		if (mProgress == 100 && mProgressDialog.isVisible()) {
+			
+			mProgressDialog.dismiss();
+			
+			onAsyncTaskCompleted();
+		}
+	}
+	
+	@Override
+	public void onResume() {
+		
+		super.onResume();
+		
+		activityVisible = true;
+	}
+
+	@Override
+	public void onPause() {
+		
+		super.onPause();
+		
+		activityVisible = false;
+	}
+	
+	public static boolean isActivityVisible() {
+		
+		return activityVisible;
+	}
 	
 	protected void initDrawerMenu() {
 
@@ -70,8 +137,28 @@ public abstract class BaseActivity extends Activity
 		
 		UserUtil.getUser();
 		
+		if (UserUtil.isRoot()) {
+			
+			mMenus.add(Constant.MENU_DATA);
+			mMenus.add(Constant.MENU_MERCHANT);
+		}
+		
+		if (UserUtil.isMerchant()) {
+			
+			mMenus.add(Constant.MENU_DATA);
+			mMenus.add(Constant.MENU_USER_ACCESS);
+		}
+		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
 			mMenus.add(Constant.MENU_CASHIER);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_WAITRESS)) {
+			mMenus.add(Constant.MENU_WAITRESS);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
+			mMenus.add(Constant.MENU_ORDER);
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION) ||
@@ -122,6 +209,10 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(Constant.MENU_DATA_MANAGEMENT);
 		}
 		
+		if (UserUtil.isWaitress()) {
+			mMenus.add(Constant.MENU_SYNC);
+		}
+		
 		mMenus.add(Constant.MENU_EXIT);
 		
 		AppMenuArrayAdapter adapter = new AppMenuArrayAdapter(getApplicationContext(), mMenus, this);
@@ -133,7 +224,6 @@ public abstract class BaseActivity extends Activity
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setTitle(getResources().getString(R.string.module_product));
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
@@ -191,30 +281,6 @@ public abstract class BaseActivity extends Activity
 	}
 	
 	@Override
-	public void onStart() {
-		super.onStart();
-		activityVisible = true;
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		activityVisible = true;
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		activityVisible = false;
-	}
-	
-	private static boolean activityVisible = false;
-	
-	public static boolean isActivityVisible() {
-		return activityVisible;
-	}
-
-	@Override
 	public String getSelectedMenu() {
 		
 		if (mSelectedIndex != -1) {
@@ -249,12 +315,17 @@ public abstract class BaseActivity extends Activity
 			return;
 		}
 		
-		mDrawerList.setItemChecked(position, true);
+		//mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
 		
 		if (Constant.MENU_CASHIER.equals(menu)) {
 
 			Intent intent = new Intent(this, CashierActivity.class);
+			startActivity(intent);
+
+		} else if (Constant.MENU_WAITRESS.equals(menu)) {
+
+			Intent intent = new Intent(this, WaitressActivity.class);
 			startActivity(intent);
 
 		} else if (Constant.MENU_ORDER.equals(menu)) {
@@ -301,6 +372,16 @@ public abstract class BaseActivity extends Activity
 
 			Intent intent = new Intent(this, DataMgtActivity.class);
 			startActivity(intent);
+			
+		} else if (Constant.MENU_SYNC.equals(menu) && UserUtil.isWaitress()) {
+			
+			mProgressDialog.show(getFragmentManager(), progressDialogTag);
+			
+			if (mHttpAsyncManager == null) {
+				mHttpAsyncManager = new HttpAsyncManager(this);
+			}
+			
+			mHttpAsyncManager.syncProducts();
 			
 		} else if (Constant.MENU_EXIT.equals(menu)) {
 			
@@ -434,5 +515,68 @@ public abstract class BaseActivity extends Activity
 		@Override
 		protected void onPostExecute(Boolean result) {
 		}
+	}
+	
+	protected void onAsyncTaskCompleted() {}
+	
+	@Override
+	public void setSyncProgress(int progress) {
+		
+		mProgress = progress;
+		
+		if (mProgressDialog != null) {
+			
+			mProgressDialog.setProgress(progress);
+			
+			if (progress == 100) {
+				
+				new Handler().postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						
+						if (isActivityVisible()) {
+							
+							mProgressDialog.dismiss();
+							
+							onAsyncTaskCompleted();
+						}
+					}
+				}, 500);
+			}
+		}
+	}
+	
+	@Override
+	public void setSyncMessage(String message) {
+		
+		if (mProgressDialog != null) {
+			
+			mProgressDialog.setMessage(message);
+		}
+	}
+	
+	@Override
+	public void onTimeOut() {
+		
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_SERVER_CANT_CONNECT);
+	}
+	
+	@Override
+	public void onSyncError() {
+		
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_SERVER_SYNC_ERROR);
 	}
 }

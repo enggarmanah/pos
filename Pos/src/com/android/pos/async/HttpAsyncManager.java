@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -32,6 +33,10 @@ import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantAccessDaoService;
 import com.android.pos.dao.MerchantDaoService;
+import com.android.pos.dao.OrderItem;
+import com.android.pos.dao.OrderItemDaoService;
+import com.android.pos.dao.Orders;
+import com.android.pos.dao.OrdersDaoService;
 import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.ProductGroupDaoService;
 import com.android.pos.dao.SupplierDaoService;
@@ -47,6 +52,8 @@ import com.android.pos.model.EmployeeBean;
 import com.android.pos.model.InventoryBean;
 import com.android.pos.model.MerchantAccessBean;
 import com.android.pos.model.MerchantBean;
+import com.android.pos.model.OrderItemBean;
+import com.android.pos.model.OrdersBean;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.SupplierBean;
@@ -58,6 +65,7 @@ import com.android.pos.model.UserAccessBean;
 import com.android.pos.model.UserBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.MerchantUtil;
+import com.android.pos.util.UserUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -83,10 +91,15 @@ public class HttpAsyncManager {
 	private BillsDaoService mBillDaoService;
 	private InventoryDaoService mInventoryDaoService;
 	private MerchantAccessDaoService mMerchantAccessDaoService;
+	private OrdersDaoService mOrdersDaoService;
+	private OrderItemDaoService mOrderItemDaoService;
 
 	private HttpAsyncListener mAsyncListener;
 
 	private final int TOTAL_TASK = 30;
+	
+	private List<OrdersBean> mOrders;
+	private List<OrderItemBean> mOrderItems;
 
 	public HttpAsyncManager(Context context) {
 
@@ -108,6 +121,8 @@ public class HttpAsyncManager {
 		mBillDaoService = new BillsDaoService();
 		mInventoryDaoService = new InventoryDaoService();
 		mMerchantAccessDaoService = new MerchantAccessDaoService();
+		mOrdersDaoService = new OrdersDaoService();
+		mOrderItemDaoService = new OrderItemDaoService();
 	}
 	
 	public void validateMerchant(String loginId, String password) {
@@ -188,7 +203,110 @@ public class HttpAsyncManager {
 			}
 		}, Constant.TIMEOUT);
 	}
+	
+	public void submitOrders(Orders orders, List<OrderItem> orderItems) {
+		
+		mOrders = new ArrayList<OrdersBean>();
+		
+		mOrders.add(BeanUtil.getBean(orders));
+		
+		mOrderItems = new ArrayList<OrderItemBean>();
+		
+		for (OrderItem orderItem : orderItems) {
+			
+			mOrderItems.add(BeanUtil.getBean(orderItem));
+		}
+		
+		mAsyncListener.setSyncProgress(0 * 100 / 2);
+		mAsyncListener.setSyncMessage("Submit order ke Server ...");
 
+		final HttpAsyncTask task = new HttpAsyncTask();
+		task.execute(Constant.TASK_SUBMIT_ORDERS);
+			
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (task.getStatus() == AsyncTask.Status.RUNNING) {
+					task.cancel(true);
+					mAsyncListener.onTimeOut();
+				}
+			}
+		}, Constant.TIMEOUT);
+	}
+	
+	private void submitOrderItems() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_SUBMIT_ORDER_ITEMS);
+
+		mAsyncListener.setSyncProgress(1 * 100 / 2);
+		mAsyncListener.setSyncMessage("Submit detil order ke Server.");
+	}
+	
+	public void getOrders() {
+		
+		mAsyncListener.setSyncProgress(0 * 100 / 3);
+		mAsyncListener.setSyncMessage("Download pesanan dari Server ...");
+
+		final HttpAsyncTask task = new HttpAsyncTask();
+		task.execute(Constant.TASK_GET_ORDERS);
+			
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (task.getStatus() == AsyncTask.Status.RUNNING) {
+					task.cancel(true);
+					mAsyncListener.onTimeOut();
+				}
+			}
+		}, Constant.TIMEOUT);
+	}
+	
+	private void getOrderItems() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_ORDER_ITEMS);
+
+		mAsyncListener.setSyncProgress(1 * 100 / 3);
+		mAsyncListener.setSyncMessage("Download detil pesanan dari Server.");
+	}
+	
+	private void deleteOrders() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_DELETE_ORDERS);
+
+		mAsyncListener.setSyncProgress(2 * 100 / 3);
+		mAsyncListener.setSyncMessage("Download detil pesanan dari Server.");
+	}
+	
+	public void syncProducts() {
+		
+		mAsyncListener.setSyncProgress(0);
+		mAsyncListener.setSyncMessage("Melaksanakan koneksi ke server ...");
+
+		final HttpAsyncTask task = new HttpAsyncTask();
+		task.execute(Constant.TASK_GET_PRODUCT_GROUP_ALL);
+			
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (task.getStatus() == AsyncTask.Status.RUNNING) {
+					task.cancel(true);
+					mAsyncListener.onTimeOut();
+				}
+			}
+		}, Constant.TIMEOUT);
+	}
+	
+	private void getAllProducts() {
+		
+		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT_ALL);
+
+		mAsyncListener.setSyncProgress(1 * 100 / 2);
+		mAsyncListener.setSyncMessage("Download produk dari Server.");
+	}
+	
 	private void getProductGroup() {
 
 		new HttpAsyncTask().execute(Constant.TASK_GET_PRODUCT_GROUP);
@@ -435,17 +553,12 @@ public class HttpAsyncManager {
 
 			task = tasks[0];
 			
-			Merchant merchant = MerchantUtil.getMerchant();
 			Long merchantId = null;
 			
-			if (merchant != null) {
-			
-				merchantId = merchant.getId();
-			
-			} else {
-				
-				// when the login id is root
+			if (UserUtil.isRoot()) {
 				merchantId = Long.valueOf(-1);
+			} else {
+				merchantId = MerchantUtil.getMerchantId();
 			}
 			
 			String url = Constant.EMPTY_STRING;
@@ -493,6 +606,44 @@ public class HttpAsyncManager {
 				bean.setUuid(Installation.getInstallationId(mContext));
 				obj = bean;
 
+			} else if (Constant.TASK_SUBMIT_ORDERS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/ordersUpdateJsonServlet";
+				
+				obj = mOrders;
+
+			} else if (Constant.TASK_SUBMIT_ORDER_ITEMS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/orderItemUpdateJsonServlet";
+				
+				obj = mOrderItems;
+
+			} else if (Constant.TASK_GET_ORDERS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/ordersGetJsonServlet";
+
+				SyncRequestBean request = new SyncRequestBean();
+
+				request.setMerchant_id(merchantId);
+
+				obj = request;
+
+			} else if (Constant.TASK_GET_ORDER_ITEMS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/orderItemGetJsonServlet";
+
+				SyncRequestBean request = new SyncRequestBean();
+
+				request.setMerchant_id(merchantId);
+
+				obj = request;
+
+			} else if (Constant.TASK_DELETE_ORDERS.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/ordersDeleteJsonServlet";
+				
+				obj = mOrders;
+
 			} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/productGroupGetJsonServlet";
@@ -501,6 +652,17 @@ public class HttpAsyncManager {
 
 				request.setMerchant_id(merchantId);
 				request.setLast_sync_date(mDevice.getLast_sync_date());
+
+				obj = request;
+
+			} else if (Constant.TASK_GET_PRODUCT_GROUP_ALL.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/productGroupGetJsonServlet";
+
+				SyncRequestBean request = new SyncRequestBean();
+
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(MerchantUtil.getMerchant().getPeriodStart());
 
 				obj = request;
 
@@ -569,6 +731,17 @@ public class HttpAsyncManager {
 
 				request.setMerchant_id(merchantId);
 				request.setLast_sync_date(mDevice.getLast_sync_date());
+
+				obj = request;
+
+			} else if (Constant.TASK_GET_PRODUCT_ALL.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/productGetJsonServlet";
+
+				SyncRequestBean request = new SyncRequestBean();
+
+				request.setMerchant_id(merchantId);
+				request.setLast_sync_date(MerchantUtil.getMerchant().getPeriodStart());
 
 				obj = request;
 
@@ -774,6 +947,36 @@ public class HttpAsyncManager {
 					mDevice = mapper.readValue(result, DeviceBean.class);
 					getMerchantsBasedOnLastSync();
 
+				} else if (Constant.TASK_SUBMIT_ORDERS.equals(task)) {
+
+					submitOrderItems();
+
+				} else if (Constant.TASK_SUBMIT_ORDER_ITEMS.equals(task)) {
+
+					syncCompleted();
+
+				} else if (Constant.TASK_GET_ORDERS.equals(task)) {
+
+					List<OrdersBean> orders = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, OrdersBean.class));
+					
+					mOrders = orders;
+					
+					mOrdersDaoService.addOrders(orders);
+					getOrderItems();
+
+				} else if (Constant.TASK_GET_ORDER_ITEMS.equals(task)) {
+
+					List<OrderItemBean> orderItems = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, OrderItemBean.class));
+
+					mOrderItemDaoService.addOrderItems(orderItems);
+					deleteOrders();
+
+				} else if (Constant.TASK_DELETE_ORDERS.equals(task)) {
+
+					syncCompleted();
+
 				} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(task)) {
 
 					List<ProductGroupBean> productGroups = mapper.readValue(result,
@@ -781,6 +984,14 @@ public class HttpAsyncManager {
 
 					mProductGroupDaoService.updateProductGroups(productGroups);
 					updateProductGroup();
+
+				} else if (Constant.TASK_GET_PRODUCT_GROUP_ALL.equals(task)) {
+
+					List<ProductGroupBean> productGroups = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, ProductGroupBean.class));
+
+					mProductGroupDaoService.updateProductGroups(productGroups);
+					getAllProducts();
 
 				} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(task)) {
 
@@ -845,6 +1056,14 @@ public class HttpAsyncManager {
 
 					mProductDaoService.updateProducts(products);
 					updateProduct();
+
+				} else if (Constant.TASK_GET_PRODUCT_ALL.equals(task)) {
+
+					List<ProductBean> products = mapper.readValue(result,
+							TypeFactory.defaultInstance().constructCollectionType(List.class, ProductBean.class));
+
+					mProductDaoService.updateProducts(products);
+					syncCompleted();
 
 				} else if (Constant.TASK_UPDATE_PRODUCT.equals(task)) {
 
@@ -981,12 +1200,6 @@ public class HttpAsyncManager {
 
 					mMerchantDaoService.updateMerchantStatus(syncStatusBeans);
 					getMerchantAccess();
-					
-					/*if (mContext instanceof LoginListener) {
-						
-						LoginListener mLoginListener = (LoginListener) mContext;
-						mLoginListener.onMerchantsUpdated();
-					}*/
 
 				} else if (Constant.TASK_GET_MERCHANT.equals(task)) {
 

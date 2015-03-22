@@ -104,7 +104,8 @@ public class OrderListFragment extends BaseFragment
 		
 		if (isViewInitialized()) {
 			
-			mOrderListAdapter.notifyDataSetChanged();
+			//mOrderListAdapter.notifyDataSetChanged();
+			updateOrders();
 		}
 	}
 }

@@ -25,6 +25,7 @@ import com.android.pos.util.CommonUtil;
 import com.android.pos.util.ConfirmationUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
+import com.android.pos.util.UserUtil;
 
 public class CashierOrderFragment extends BaseFragment implements CashierOrderArrayAdapter.ItemActionListener {
 	
@@ -85,7 +86,6 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 	private void initViewVariables(View view) {
 		
 		mHeaderText = (TextView) view.findViewById(R.id.headerText);
-		mHeaderText.setText("Daftar Penjualan");
 		
 		mTransactionItemList = (ListView) view.findViewById(R.id.transactionItemList);
 
@@ -133,6 +133,12 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		mOrderNewItemPanel = (FrameLayout) view.findViewById(R.id.orderNewItemPanel);
 		mOrderPanel = (FrameLayout) view.findViewById(R.id.orderPanel);
 		mOrderDivider = (TextView) view.findViewById(R.id.orderDivider);
+		
+		if (UserUtil.isWaitress()) {
+			mDiscountPanel.setVisibility(View.GONE);
+		} else {
+			mDiscountPanel.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	public void onStart() {
@@ -306,7 +312,11 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		
 		int totalPayable = totalBill + tax + serviceCharge;
 		
-		mTotalBillText.setText(CommonUtil.formatCurrency(totalPayable));
+		if (UserUtil.isWaitress()) {
+			mTotalBillText.setText(CommonUtil.formatNumber(mTotalItem));
+		} else {
+			mTotalBillText.setText(CommonUtil.formatCurrency(totalPayable));
+		}
 		
 		mAdapter.notifyDataSetChanged();
 	}
@@ -329,6 +339,11 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		} else {
 			
 			header = "Daftar Penjualan";
+		}
+		
+		if (UserUtil.isWaitress()) {
+			
+			header = "Daftar Pesanan";
 		}
 		
 		mHeaderText.setText(header);
@@ -355,6 +370,15 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			} else if (Constant.CASHIER_STATE_ORDER_NEW_ITEM.equals(mCashierState)) {
 				
 				showOrderNewItemButton();
+			}
+			
+			if (UserUtil.isWaitress()) {
+				
+				hidePaymentButton();
+				hideOrderNewItemButton();
+				
+				showOrderButton();
+				mOrderDivider.setVisibility(View.GONE);
 			}
 			
 		} else {

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
+import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.cashier.CashierProductCountDlgFragment;
@@ -14,6 +15,7 @@ import com.android.pos.dao.OrderItemDaoService;
 import com.android.pos.dao.Orders;
 import com.android.pos.dao.Product;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.NotificationUtil;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -42,6 +44,7 @@ public class OrderActivity extends BaseActivity
 	private OrderItem mSelectedOrderItem;
 	
 	private MenuItem mMenuPayment;
+	private MenuItem mMenuSync;
 	
 	@SuppressLint("UseSparseArrays")
 	public HashMap<Long, Boolean> mSelectedOrders = new HashMap<Long, Boolean>();
@@ -163,6 +166,7 @@ public class OrderActivity extends BaseActivity
 		inflater.inflate(R.menu.order_menu, menu);
 		
 		mMenuPayment = menu.findItem(R.id.menu_payment);
+		mMenuSync = menu.findItem(R.id.menu_item_sync);
 		
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -187,6 +191,8 @@ public class OrderActivity extends BaseActivity
 				mMenuPayment.setVisible(true);
 			}	
 		}
+		
+		mMenuSync.setVisible(!isDrawerOpen);
 	}
 
 	@Override
@@ -205,6 +211,18 @@ public class OrderActivity extends BaseActivity
 				Intent intent = new Intent(getApplicationContext(), CashierActivity.class);
 				intent.putExtra(Constant.SELECTED_ORDERS_FOR_PAYMENT, mSelectedOrders);
 				startActivity(intent);
+				
+				return true;
+				
+			case R.id.menu_item_sync:
+				
+				mProgressDialog.show(getFragmentManager(), progressDialogTag);
+				
+				if (mHttpAsyncManager == null) {
+					mHttpAsyncManager = new HttpAsyncManager(this);
+				}
+				
+				mHttpAsyncManager.getOrders();
 				
 				return true;
 					
@@ -232,8 +250,7 @@ public class OrderActivity extends BaseActivity
 		}
 	}
 	
-	@Override
-	public void onBackButtonClicked() {
+	private void refreshOrders() {
 		
 		mSelectedOrderReference = null;
 		
@@ -243,7 +260,18 @@ public class OrderActivity extends BaseActivity
 			
 			mOrderListFragment.setSelectedOrderReference(mSelectedOrderReference);
 			replaceFragment(mOrderListFragment, mOrderListFragmentTag);
+		
+		} else {
+			
+			mOrderListFragment.setSelectedOrderReference(mSelectedOrderReference);
+			mOrderDetailFragment.displayOrders(mSelectedOrderReference);
 		}
+	}
+	
+	@Override
+	public void onBackButtonClicked() {
+		
+		refreshOrders();
 	}
 	
 	@Override
@@ -270,5 +298,13 @@ public class OrderActivity extends BaseActivity
 		Intent intent = new Intent(getApplicationContext(), CashierActivity.class);
 		intent.putExtra(Constant.SELECTED_ORDERS_FOR_NEW_ITEM, order);
 		startActivity(intent);
+	}
+	
+	@Override
+	protected void onAsyncTaskCompleted() {
+		
+		refreshOrders();
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_ORDER_DOWNLOAD_OK);
 	}
 }

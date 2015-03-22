@@ -2,6 +2,7 @@ package com.android.pos.util;
 
 import java.util.HashMap;
 
+import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserAccess;
@@ -19,7 +20,7 @@ public class UserUtil {
 	
 	public static User getUser() {
 		
-		if (mUser == null) {
+		if (mUser == null && Config.isDevelopment()) {
 			
 			DbUtil.switchDb(MerchantUtil.getMerchantId());
 			
@@ -70,6 +71,11 @@ public class UserUtil {
 	public static boolean isAdmin() {
 		
 		return Constant.USER_ROLE_ADMIN.equals(getUser().getRole());
+	}
+	
+	public static boolean isWaitress() {
+		
+		return Constant.USER_ROLE_WAITRESS.equals(getUser().getRole());
 	}
 	
 	public static boolean isRoot() {

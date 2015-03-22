@@ -133,6 +133,26 @@
 		<servlet-name>userAccessUpdateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.UserAccessUpdateJsonServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ordersGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.OrdersGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ordersUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.OrdersUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ordersDeleteJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.OrdersDeleteJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>orderItemGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.OrderItemGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>orderItemUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.OrderItemUpdateJsonServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>merchantValidateJsonServlet</servlet-name>
@@ -261,6 +281,26 @@
 	<servlet-mapping>
 		<servlet-name>userAccessUpdateJsonServlet</servlet-name>
 		<url-pattern>/userAccessUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ordersGetJsonServlet</servlet-name>
+		<url-pattern>/ordersGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ordersUpdateJsonServlet</servlet-name>
+		<url-pattern>/ordersUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ordersDeleteJsonServlet</servlet-name>
+		<url-pattern>/ordersDeleteJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>orderItemGetJsonServlet</servlet-name>
+		<url-pattern>/orderItemGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>orderItemUpdateJsonServlet</servlet-name>
+		<url-pattern>/orderItemUpdateJsonServlet</url-pattern>
 	</servlet-mapping>
 
 </web-app>
