@@ -23,8 +23,8 @@ public class BillsSearchArrayAdapter extends BaseSearchArrayAdapter<Bills> {
 		TextView supplierText;
 	}
 	
-	public BillsSearchArrayAdapter(Context context, List<Bills> inventories, Bills selectedBills, ItemActionListener<Bills> listener) {
-		super(context, R.layout.bills_list_item, inventories, selectedBills, listener);
+	public BillsSearchArrayAdapter(Context context, List<Bills> bills, Bills selectedBills, ItemActionListener<Bills> listener) {
+		super(context, R.layout.bills_list_item, bills, selectedBills, listener);
 	}
 	
 	@Override

@@ -1,16 +1,14 @@
 package com.android.pos.report.inventory;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
-import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Product;
-import com.android.pos.dao.ProductDaoService;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
@@ -20,14 +18,23 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 public class InventoryReportActivity extends BaseActivity 
 	implements InventoryReportActionListener, SearchView.OnQueryTextListener {
 	
 	private SearchView searchView;
+	
 	private MenuItem mSearchMenu;
+	private MenuItem mListMenu;
+	private MenuItem mAlertMenu;
+	
+	private TextView mAlertMenuText;
+	private ImageButton mAlertMenuBtn;
 	
 	private String prevQuery = Constant.EMPTY_STRING;
 	
@@ -43,6 +50,11 @@ public class InventoryReportActivity extends BaseActivity
 	private final String mInventoryReportListFragmentTag = "inventoryReportListFragmentTag";
 	private final String mInventoryReportDetailFragmentTag = "inventoryReportDetailFragmentTag";
 	
+	private Integer mBelowStockLimitProductCount = 0;
+	
+	private boolean mIsShowAllProducts = false;
+	private boolean mIsShowBelowStockLimitProducts = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,7 +64,7 @@ public class InventoryReportActivity extends BaseActivity
 		setContentView(R.layout.report_inventory_activity);
 
 		DbUtil.initDb(this);
-
+		
 		initDrawerMenu();
 		
 		initFragments();
@@ -69,6 +81,7 @@ public class InventoryReportActivity extends BaseActivity
 		setSelectedMenu(getString(R.string.menu_report_inventory));
 		
 		updateProductStock();
+		updateBelowStockLimitProduct();
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {
@@ -146,6 +159,30 @@ public class InventoryReportActivity extends BaseActivity
 		inflater.inflate(R.menu.report_inventory_menu, menu);
 		
 		mSearchMenu = menu.findItem(R.id.menu_item_search);
+		mListMenu = menu.findItem(R.id.menu_item_list);
+		mAlertMenu = menu.findItem(R.id.menu_item_alert);
+		
+		mAlertMenuText = (TextView) menu.findItem(R.id.menu_item_alert).getActionView().findViewById(R.id.menu_item_alert_text);
+		mAlertMenuBtn = (ImageButton) menu.findItem(R.id.menu_item_alert).getActionView().findViewById(R.id.menu_item_alert_icon);
+		
+		String alertText = "0";
+		
+		if (mBelowStockLimitProductCount > 99) {
+			alertText = "++";
+		} else if (mBelowStockLimitProductCount > 0) {
+			alertText = CommonUtil.formatNumber(mBelowStockLimitProductCount);
+		}
+		
+		mAlertMenuText.setText(alertText);
+		mAlertMenuBtn.setOnClickListener(getMenuAlertOnClickListener());
+		
+		hideListAndAlertMenu();
+		
+		if (mBelowStockLimitProductCount != 0 &&
+			mIsShowAllProducts) {
+			
+			mAlertMenu.setVisible(true);
+		}
 		
 		searchView = (SearchView) mSearchMenu.getActionView();
 		searchView.setLayoutParams(new ActionBar.LayoutParams(Gravity.START));
@@ -169,17 +206,78 @@ public class InventoryReportActivity extends BaseActivity
 		return super.onPrepareOptionsMenu(menu);
 	}
 	
+	private View.OnClickListener getMenuAlertOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mIsShowAllProducts = false;
+				mIsShowBelowStockLimitProducts = true;
+				
+				mListMenu.setVisible(true);
+				mAlertMenu.setVisible(false);
+				
+				mInventoryReportListFragment.showBelowStockLimitProducts();
+				mSearchMenu.collapseActionView();
+				
+				showInventoryList();
+			}
+		};
+	}
+	
+	private void hideListAndAlertMenu() {
+		
+		if (mListMenu != null) {
+			mListMenu.setVisible(false);
+		}
+		
+		if (mAlertMenu != null) {
+			mAlertMenu.setVisible(false);
+		}
+	}
+	
 	private void hideSelectedMenu() {
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
 		mSearchMenu.setVisible(!isDrawerOpen);
+		
+		if (mIsShowAllProducts) {
+			mAlertMenu.setVisible(!isDrawerOpen);
+		}
+		
+		if (mIsShowBelowStockLimitProducts) {
+			mListMenu.setVisible(!isDrawerOpen);
+		}
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		return super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+			
+			case R.id.menu_item_list:
+				
+				if (mBelowStockLimitProductCount != 0) {
+				
+					mIsShowAllProducts = true;
+					mIsShowBelowStockLimitProducts = false;
+					
+					mListMenu.setVisible(false);
+					mAlertMenu.setVisible(true);
+					
+					mInventoryReportListFragment.showAllProducts();
+				}
+				
+				showInventoryList();
+				
+				return true;
+		
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	@Override
@@ -197,7 +295,7 @@ public class InventoryReportActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onBackButtonClicked() {
+	public void onBackPressed() {
 		
 		synchronized (CommonUtil.LOCK) {
 			
@@ -266,19 +364,40 @@ public class InventoryReportActivity extends BaseActivity
 		mInventoryReportDetailFragment.setProduct(mSelectedProduct);
 	}
 	
-	private void updateProductStock() {
+	private void updateBelowStockLimitProduct() {
 		
-		ProductDaoService productDaoService = new ProductDaoService();
-		InventoryDaoService inventoryDaoServie = new InventoryDaoService();
+		MerchantUtil.refreshBelowStockLimitProductCount();
 		
-		List<Product> products = productDaoService.getProducts();
+		mBelowStockLimitProductCount = MerchantUtil.getBelowStockLimitProductCount();
 		
-		for (Product product : products) {
-			
-			Integer quantity = inventoryDaoServie.getProductQuantity(product);
-			product.setStock(quantity);
-			
-			productDaoService.updateProduct(product);
+		if (mAlertMenuText != null) {
+			mAlertMenuText.setText(CommonUtil.formatNumber(mBelowStockLimitProductCount));
 		}
+		
+		mIsShowAllProducts = false;
+		mIsShowBelowStockLimitProducts = false;
+		
+		if (mBelowStockLimitProductCount == 0) {
+			hideListAndAlertMenu();
+			
+		} else {
+			
+			mIsShowAllProducts = true;
+			
+			hideListAndAlertMenu();
+			
+			if (mAlertMenu != null) {
+				mAlertMenu.setVisible(true);
+			}
+		}
+	}
+	
+	@Override
+	protected void onAsyncTaskCompleted() {
+		
+		super.onAsyncTaskCompleted();
+		
+		mInventoryReportListFragment.updateContent();
+		mInventoryReportDetailFragment.updateContent();
 	}
 }

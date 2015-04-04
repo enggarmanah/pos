@@ -74,6 +74,38 @@ public class ProductDaoService {
 			list.add(item);
 		}
 
+		cursor.close();
+		
+		return list;
+	}
+	
+	public List<Product> getBelowStockLimitProducts(String query, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String status = Constant.STATUS_ACTIVE;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM product "
+				+ " WHERE name like ? AND status = ? "
+				+ " AND stock < min_stock "
+				+ " ORDER BY name LIMIT ? OFFSET ? ",
+				new String[] { queryStr, status, limit, lastIdx});
+		
+		List<Product> list = new ArrayList<Product>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Product item = getProduct(id);
+			list.add(item);
+		}
+
+		cursor.close();
+		
 		return list;
 	}
 	
@@ -187,6 +219,8 @@ public class ProductDaoService {
 			productStatistics.add(productStatistic);
 		}
 		
+		cursor.close();
+		
 		return productStatistics;
 	}
 	
@@ -217,6 +251,8 @@ public class ProductDaoService {
 			
 			productStatistics.add(productStatistic);
 		}
+		
+		cursor.close();
 		
 		return productStatistics;
 	}
@@ -249,6 +285,8 @@ public class ProductDaoService {
 			productStatistics.add(productStatistic);
 		}
 		
+		cursor.close();
+		
 		return productStatistics;
 	}
 	
@@ -272,6 +310,8 @@ public class ProductDaoService {
 			transactionYear.setAmount(value);
 			transactionYears.add(transactionYear);
 		}
+		
+		cursor.close();
 		
 		return transactionYears;
 	}
@@ -297,6 +337,8 @@ public class ProductDaoService {
 			transactionYears.add(transactionYear);
 		}
 		
+		cursor.close();
+		
 		return transactionYears;
 	}
 	
@@ -320,6 +362,8 @@ public class ProductDaoService {
 			transactionYear.setAmount(value);
 			transactionYears.add(transactionYear);
 		}
+		
+		cursor.close();
 		
 		return transactionYears;
 	}
@@ -349,6 +393,8 @@ public class ProductDaoService {
 			transactionMonths.add(transactionMonth);
 		}
 		
+		cursor.close();
+		
 		return transactionMonths;
 	}
 	
@@ -376,6 +422,8 @@ public class ProductDaoService {
 			transactionMonth.setAmount(value);
 			transactionMonths.add(transactionMonth);
 		}
+		
+		cursor.close();
 		
 		return transactionMonths;
 	}
@@ -405,6 +453,38 @@ public class ProductDaoService {
 			transactionMonths.add(transactionMonth);
 		}
 		
+		cursor.close();
+		
 		return transactionMonths;
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM product WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
+	}
+	
+	public Integer getBelowStockLimitProductCount() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM product WHERE stock < min_stock  AND status = 'A'", null);
+			
+		cursor.moveToFirst();
+			
+		Integer count = cursor.getInt(0);
+		
+		cursor.close();
+		
+		return count;
 	}
 }

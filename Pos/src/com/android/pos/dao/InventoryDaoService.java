@@ -68,7 +68,36 @@ public class InventoryDaoService {
 			Inventory item = getInventory(id);
 			list.add(item);
 		}
+		
+		cursor.close();
+		
+		return list;
+	}
+	
+	public List<Inventory> getInventories(Bills bill) {
 
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String billReferenceNo = bill.getBillReferenceNo();
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM inventory "
+				+ " WHERE bill_reference_no like ? AND status <> ? "
+				+ " ORDER BY delivery_date DESC ",
+				new String[] { billReferenceNo, status});
+		
+		List<Inventory> list = new ArrayList<Inventory>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Inventory item = getInventory(id);
+			list.add(item);
+		}
+		
+		cursor.close();
+		
 		return list;
 	}
 	
@@ -95,7 +124,9 @@ public class InventoryDaoService {
 			Inventory item = getInventory(id);
 			list.add(item);
 		}
-
+		
+		cursor.close();
+		
 		return list;
 	}
 	
@@ -117,6 +148,8 @@ public class InventoryDaoService {
 			
 			quantity = cursor.getInt(0);
 		}
+		
+		cursor.close();
 
 		return quantity;
 	}
@@ -172,5 +205,20 @@ public class InventoryDaoService {
 				inventoryDao.update(inventory);
 			}
 		} 
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM inventory WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

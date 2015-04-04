@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
+import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
 import android.content.Context;
@@ -29,6 +31,7 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		
 		ImageView menuImage;
 		TextView menuText;
+		TextView countText;
 	}
 
 	public AppMenuArrayAdapter(Context context, List<String> menus, ItemActionListener listener) {
@@ -51,6 +54,7 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		
 		ImageView menuImage = null;
 		TextView menuText = null;
+		TextView countText = null;
 		
 		if (rowView == null) {
 
@@ -58,11 +62,13 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			
 			menuImage = (ImageView) rowView.findViewById(R.id.menuImage);
 			menuText = (TextView) rowView.findViewById(R.id.menuText);
-
+			countText = (TextView) rowView.findViewById(R.id.countText);
+			
 			ViewHolder viewHolder = new ViewHolder();
 			
 			viewHolder.menuImage = menuImage;
 			viewHolder.menuText = menuText;
+			viewHolder.countText = countText;
 
 			rowView.setTag(viewHolder);
 
@@ -72,6 +78,7 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			
 			menuImage = viewHolder.menuImage;
 			menuText = viewHolder.menuText;
+			countText = viewHolder.countText;
 		}
 		
 		if (Constant.MENU_USER.equals(menu)) {
@@ -96,6 +103,31 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuText.setText(UserUtil.getUser().getName());
 		} else {
 			menuText.setText(menu);
+		}
+		
+		if (Constant.MENU_REPORT_INVENTORY.equals(menu) ||
+			Constant.MENU_REPORT_CASHFLOW.equals(menu)) {
+			
+			countText.setVisibility(View.VISIBLE);
+			
+			Integer count = 0;
+			
+			if (Constant.MENU_REPORT_INVENTORY.equals(menu)) {
+				count = MerchantUtil.getBelowStockLimitProductCount();
+			} else if (Constant.MENU_REPORT_CASHFLOW.equals(menu)) {
+				count = MerchantUtil.getPastDueBillsCount();
+			}
+			
+			if (count > 99) {
+				countText.setText("++");
+			} else if (count > 0) {
+				countText.setText(CommonUtil.formatNumber(count));
+			} else {
+				countText.setVisibility(View.GONE);
+			}
+			
+		} else {
+			countText.setVisibility(View.GONE);
 		}
 		
 		String selectedMenu = mCallback.getSelectedMenu();

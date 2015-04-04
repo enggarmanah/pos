@@ -76,6 +76,9 @@
     <string name="product_add">Tambah Produk</string>
     <string name="product_group_list">Kategori Produk</string>
     
+    <string name="product_stock_alert">Stok Di Bawah Batas</string>
+    <string name="bill_pastdue_alert">Tagihan Jatuh Tempo</string>
+    
     <string name="msg_notification_search_action">Masukkan kata pencarian pada kolom di atas.</string>
     <string name="msg_data_save_success">Data telah berhasil disimpan.</string>
     
@@ -95,6 +98,7 @@
     <string name="field_address">Alamat</string>
     <string name="field_contact_name">Manajer</string>
     <string name="field_contact_telephone">Telepon</string>
+    <string name="field_contact_email">Email</string>
     <string name="field_login_id">Login Id</string>
     <string name="field_password">Password</string>
     <string name="field_period_start">Awal Akses</string>
@@ -124,6 +128,10 @@
     <string name="field_payment_date">Tgl. Bayar</string>
     <string name="field_payment">Bayar</string>
     <string name="field_date">Tanggal</string>
+   
+    <string name="field_printer_required">Printer</string>
+    <string name="field_printer_mini_font">Font Kecil</string>
+    <string name="field_printer_line_size">Teks / Baris</string>
     
     <string name="report_inventory_product">Produk</string>
     <string name="report_inventory_product_stock">Jumlah</string>
@@ -134,6 +142,18 @@
     <string name="report_cashflow_tax_amount">Pajak</string>
     <string name="report_cashflow_service_charge_amount">Bea Servis</string>
     <string name="report_cashflow_expense">Pengeluaran</string>
+    
+    <string name="report_bill_pastdue">Tagihan Jatuh Tempo</string>
+    <string name="report_bill_supplier">Supplier</string>
+    <string name="report_bill_duedate">Jatuh Tempo</string>
+    <string name="report_bill_paymentdate">Tgl. Bayar</string>
+    <string name="report_bill_total">Total</string>
+    <string name="report_bill_payment">Bayar</string>
+    <string name="report_bill_outstanding">Sisa</string>
+    <string name="report_bill_remarks">Keterangan</string>
+    <string name="report_bill_purchase">Daftar Pembelian</string>
+    
+    <string name="report_bill_outstanding_title">Tagihan Belum Lunas</string>
     
     <string name="hint_percentage">Persentase %</string>
     <string name="hint_cost_price">Harga Beli Satuan</string>  

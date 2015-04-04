@@ -16,23 +16,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class InventoryReportListFragment extends BaseFragment 
 	implements InventoryReportArrayAdapter.ItemActionListener {
 	
+	private TextView mTitleText;
+	
 	private ListView mProductList;
 	
 	private List<Product> mProducts;
+	private List<Product> mStockAlertProducts;
 	
 	private Product mSelectedProduct;
 	
 	private InventoryReportArrayAdapter mAdapter;
+	private InventoryReportArrayAdapter mStockAlertAdapter;
 	
 	private InventoryReportActionListener mActionListener;
 	
 	private boolean mIsLoadData = false;
 	private boolean mIsEndOfList = false;
+	
+	private boolean mIsShowAllProducts = false;
+	private boolean mIsShowBelowStockLimitProducts = false;
 	
 	private String mQuery = Constant.EMPTY_STRING;
 	
@@ -61,6 +69,14 @@ public class InventoryReportListFragment extends BaseFragment
 		
 		mAdapter = new InventoryReportArrayAdapter(getActivity(), mProducts, this);
 		
+		if (mStockAlertProducts == null) {
+			mStockAlertProducts = mProductDaoService.getBelowStockLimitProducts(Constant.EMPTY_STRING, 0);
+		}
+		
+		mStockAlertAdapter = new InventoryReportArrayAdapter(getActivity(), mStockAlertProducts, this);
+		
+		mIsShowAllProducts = true;
+		
 		return view;
 	}
 	
@@ -68,15 +84,27 @@ public class InventoryReportListFragment extends BaseFragment
 	public void onStart() {
 		super.onStart();
 		
-		mProductList = (ListView) getActivity().findViewById(R.id.transactionList);
+		mTitleText = (TextView) getView().findViewById(R.id.titleText);
+		
+		mProductList = (ListView) getView().findViewById(R.id.transactionList);
 		
 		mProductList.setItemsCanFocus(true);
 		mProductList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		mProductList.setAdapter(mAdapter);
 		mProductList.setOnScrollListener(getListOnScrollListener());
 		
+		if (mIsShowAllProducts) {
+			
+			mTitleText.setText("Produk");
+			mProductList.setAdapter(mAdapter);
+			
+		} else if (mIsShowBelowStockLimitProducts) {
+			
+			mTitleText.setText("Produk Dibawah Min. Stok");
+			mProductList.setAdapter(mStockAlertAdapter);
+		}
+		
 		if (mSelectedProduct != null) {
-			onProductSelected(mSelectedProduct);		
+			onProductSelected(mSelectedProduct);	
 		}
 	}
 	
@@ -92,12 +120,13 @@ public class InventoryReportListFragment extends BaseFragment
         }
     }
 	
-	private void updateContent() {
+	public void updateContent() {
 		
 		if (!isViewInitialized()) {
 			return;
 		}
 		
+		mStockAlertAdapter.notifyDataSetChanged();
 		mAdapter.notifyDataSetChanged();
 	}
 	
@@ -114,6 +143,24 @@ public class InventoryReportListFragment extends BaseFragment
 		}
 	}
 	
+	public void showAllProducts() {
+		
+		mIsShowAllProducts = true;
+		mIsShowBelowStockLimitProducts =  false;
+		
+		mTitleText.setText("Produk");
+		mProductList.setAdapter(mAdapter);
+	}
+	
+	public void showBelowStockLimitProducts() {
+		
+		mIsShowAllProducts = false;
+		mIsShowBelowStockLimitProducts =  true;
+		
+		mTitleText.setText("Produk Dibawah Min. Stok");
+		mProductList.setAdapter(mStockAlertAdapter);
+	}
+	
 	public void searchProduct(String query) {
 		
 		mQuery = query;
@@ -127,9 +174,17 @@ public class InventoryReportListFragment extends BaseFragment
 		
 		mActionListener.onProductUnselected();
 		
-		mProducts.clear();
-		mProducts.addAll(mProductDaoService.getProducts(mQuery, 0));
+		if (mIsShowAllProducts) { 
 		
+			mProducts.clear();
+			mProducts.addAll(mProductDaoService.getProducts(mQuery, 0));
+		
+		} else if (mIsShowBelowStockLimitProducts) {
+			
+			mStockAlertProducts.clear();
+			mStockAlertProducts.addAll(mProductDaoService.getBelowStockLimitProducts(mQuery, 0));
+		}
+			
 		updateContent();
 	}
 	
@@ -165,7 +220,14 @@ public class InventoryReportListFragment extends BaseFragment
 					
 					mIsLoadData = true;
 					
-					List<Product> list = mProductDaoService.getProducts(Constant.EMPTY_STRING, mProducts.size());
+					List<Product> list = null;
+					
+					if (mIsShowAllProducts) {
+						list = mProductDaoService.getProducts(Constant.EMPTY_STRING, mProducts.size());
+						
+					} else if (mIsShowBelowStockLimitProducts) {
+						list = mProductDaoService.getBelowStockLimitProducts(Constant.EMPTY_STRING, mStockAlertProducts.size());
+					}
 					
 					if (list.size() == 0) {
 						mIsEndOfList = true;
@@ -182,9 +244,17 @@ public class InventoryReportListFragment extends BaseFragment
 					Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
 					toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
 					toast.show();
+					
+					if (mIsShowAllProducts) {
 						
-					mProducts.addAll(list);
-					mAdapter.notifyDataSetChanged();
+						mProducts.addAll(list);
+						mAdapter.notifyDataSetChanged();
+						
+					} else if (mIsShowBelowStockLimitProducts) {
+						
+						mStockAlertProducts.addAll(list);
+						mStockAlertAdapter.notifyDataSetChanged();
+					}
 					
 					mIsLoadData = false;
 				}

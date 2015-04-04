@@ -1,9 +1,11 @@
 package com.app.posweb.server.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
@@ -104,11 +106,11 @@ public class MerchantDao {
 		return result;
 	}
 	
-	public List<Merchant> getMerchant(SyncRequest syncRequest) {
+	public List<Merchant> getMerchants(SyncRequest syncRequest) {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE update_date >= :lastSyncDate AND remote_id = :merchantId");
+		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE sync_date >= :lastSyncDate AND remote_id = :merchantId");
 		
 		sql.append(" ORDER BY m.name");
 		
@@ -128,7 +130,7 @@ public class MerchantDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE update_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE sync_date >= :lastSyncDate");
 		
 		sql.append(" ORDER BY m.name");
 		
@@ -141,5 +143,67 @@ public class MerchantDao {
 		em.close();
 
 		return result;
+	}
+	
+	public boolean isActiveMerchant(Long merchantId) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT m FROM Merchant m ");
+		sql.append(" WHERE remote_id = :remoteId AND :curDate BETWEEN period_start AND period_end");
+		
+		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
+		
+		query.setParameter("remoteId", merchantId);
+		query.setParameter("curDate", new Date());
+		
+		Merchant result = null;
+		
+		try {
+			result = query.getSingleResult();
+			
+		} catch (NoResultException e) {
+			// do nothing
+		}
+		
+		em.close();
+
+		return (result != null);
+	}
+	
+	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM Merchant m WHERE remote_id = :merchantId AND sync_date >= :lastSyncDate");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		
+		long count = (long) query.getSingleResult();
+		
+		em.close();
+
+		return (count > 0);
+	}
+	
+	public boolean hasRootUpdate(SyncRequest syncRequest) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM Merchant m WHERE sync_date >= :lastSyncDate");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		
+		long count = (long) query.getSingleResult();
+		
+		em.close();
+
+		return (count > 0);
 	}
 }

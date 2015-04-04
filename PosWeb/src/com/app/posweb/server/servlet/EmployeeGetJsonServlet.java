@@ -4,19 +4,20 @@ import java.io.IOException;
 
 import com.app.posweb.server.dao.EmployeeDao;
 import com.app.posweb.server.model.SyncRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.app.posweb.server.model.SyncResponse;
  
 @SuppressWarnings("serial")
 public class EmployeeGetJsonServlet extends BaseJsonServlet {
  
-    protected Object processJsonRequest(String jsonStr) throws IOException {
+    protected SyncResponse processRequest(SyncRequest request) throws IOException {
     	
-        ObjectMapper mapper = new ObjectMapper();
-        
-        SyncRequest request = mapper.readValue(jsonStr, SyncRequest.class);         
-        
         EmployeeDao employeeDao = new EmployeeDao();
         
-        return employeeDao.getEmployees(request);
+        SyncResponse response = new SyncResponse();         
+        
+        response.setRespCode(SyncResponse.SUCCESS);
+        response.setEmployees(employeeDao.getEmployees(request));
+        
+        return response;
     }
 }

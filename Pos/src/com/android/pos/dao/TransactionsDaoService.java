@@ -124,6 +124,8 @@ public class TransactionsDaoService {
 			transactionYears.add(transactionYear);
 		}
 		
+		cursor.close();
+		
 		return transactionYears;
 	}
 	
@@ -146,6 +148,8 @@ public class TransactionsDaoService {
 			transactionYear.setAmount(amount);
 			cashFlowYears.add(transactionYear);
 		}
+		
+		cursor.close();
 		
 		return cashFlowYears;
 	}
@@ -174,6 +178,8 @@ public class TransactionsDaoService {
 			transactionMonths.add(transactionMonth);
 		}
 		
+		cursor.close();
+		
 		return transactionMonths;
 	}
 	
@@ -200,6 +206,8 @@ public class TransactionsDaoService {
 			cashFlowMonth.setAmount(amount);
 			cashFlowMonths.add(cashFlowMonth);
 		}
+		
+		cursor.close();
 		
 		return cashFlowMonths;
 	}
@@ -233,6 +241,8 @@ public class TransactionsDaoService {
 			income.add(zero);
 		}
 		
+		cursor.close();
+		
 		return income;
 	}
 	
@@ -260,6 +270,8 @@ public class TransactionsDaoService {
 			transactionDays.add(summary);
 		}
 		
+		cursor.close();
+		
 		return transactionDays;
 	}
 	
@@ -276,5 +288,20 @@ public class TransactionsDaoService {
 		List<Transactions> list = q.list();
 		
 		return list;
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM transactions WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

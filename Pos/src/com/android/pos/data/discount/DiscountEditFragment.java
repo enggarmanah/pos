@@ -33,6 +33,8 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     	
     	View view = inflater.inflate(R.layout.data_discount_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -42,10 +44,10 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-        mNameText = (EditText) getView().findViewById(R.id.nameText);
-        mPercentageText = (EditText) getView().findViewById(R.id.percentageText);	
+        mNameText = (EditText) view.findViewById(R.id.nameText);
+        mPercentageText = (EditText) view.findViewById(R.id.percentageText);	
     	
         registerField(mNameText);
         registerField(mPercentageText);

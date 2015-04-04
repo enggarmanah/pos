@@ -8,5 +8,5 @@ public interface InventoryReportActionListener {
 	
 	public void onProductUnselected();
 	
-	public void onBackButtonClicked();
+	public void onBackPressed();
 }

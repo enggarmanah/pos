@@ -81,8 +81,6 @@ public class ProductStatisticDetailArrayAdapter extends ArrayAdapter<ProductStat
 			saleCount.setText(CommonUtil.formatCurrency(productStatistic.getValue()));
 		}
 
-		rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
-
 		return rowView;
 	}
 }

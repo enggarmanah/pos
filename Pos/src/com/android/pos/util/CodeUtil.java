@@ -9,9 +9,9 @@ public class CodeUtil {
 	public static CodeBean[] productStatus;
 	public static CodeBean[] status;
 	public static CodeBean[] productTypes;
+	public static CodeBean[] restoProductTypes;
 	public static CodeBean[] booleans;
 	public static CodeBean[] roles;
-	public static CodeBean[] restoRoles;
 	public static CodeBean[] emailStatus;
 	public static CodeBean[] paymentTypes;
 	public static CodeBean[] orderTypes;
@@ -58,6 +58,18 @@ public class CodeUtil {
 		code.setLabel("Layanan");
 		productTypes[1] = code;
 		
+		restoProductTypes = new CodeBean[2];
+		
+		code = new CodeBean();
+		code.setCode("P");
+		code.setLabel("Barang");
+		restoProductTypes[0] = code;
+		
+		code = new CodeBean();
+		code.setCode("M");
+		code.setLabel("Menu");
+		restoProductTypes[1] = code;
+		
 		booleans = new CodeBean[2];
 		
 		code = new CodeBean();
@@ -87,34 +99,22 @@ public class CodeUtil {
 		code.setLabel("Salon Kecantikan & Spa");
 		merchantTypes[2] = code;
 		
-		roles = new CodeBean[2];
+		roles = new CodeBean[3];
 		
 		code = new CodeBean();
 		code.setCode(Constant.USER_ROLE_CASHIER);
-		code.setLabel("Kasir");
+		code.setLabel(Constant.USER_ROLE_CASHIER_DESC);
 		roles[0] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.USER_ROLE_ADMIN);
-		code.setLabel("Admin");
+		code.setCode(Constant.USER_ROLE_WAITRESS);
+		code.setLabel(Constant.USER_ROLE_WAITRESS_DESC);
 		roles[1] = code;
 		
-		restoRoles = new CodeBean[3];
-		
-		code = new CodeBean();
-		code.setCode(Constant.USER_ROLE_CASHIER);
-		code.setLabel("Kasir");
-		restoRoles[0] = code;
-
-		code = new CodeBean();
-		code.setCode(Constant.USER_ROLE_WAITRESS);
-		code.setLabel("Pelayan");
-		restoRoles[1] = code;
-		
 		code = new CodeBean();
 		code.setCode(Constant.USER_ROLE_ADMIN);
-		code.setLabel("Admin");
-		restoRoles[2] = code;
+		code.setLabel(Constant.USER_ROLE_ADMIN_DESC);
+		roles[2] = code;
 		
 		emailStatus = new CodeBean[2];
 		
@@ -323,16 +323,16 @@ public class CodeUtil {
 		return productTypes;
 	}
 	
+	public static CodeBean[] getRestoProductTypes() {
+		return restoProductTypes;
+	}
+	
 	public static CodeBean[] getBooleans() {
 		return booleans;
 	}
 	
 	public static CodeBean[] getRoles() {
 		return roles;
-	}
-	
-	public static CodeBean[] getRestoRoles() {
-		return restoRoles;
 	}
 	
 	public static CodeBean[] getEmailStatus() {

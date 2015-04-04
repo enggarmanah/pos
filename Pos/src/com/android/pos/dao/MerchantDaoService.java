@@ -24,13 +24,11 @@ public class MerchantDaoService {
 	
 	public void addMerchant(Merchant merchant) {
 		
-		System.out.println("add merchant : " + DbUtil.getDb());
 		merchantDao.insert(merchant);
 	}
 	
 	public void updateMerchant(Merchant merchant) {
 		
-		System.out.println("update merchant : " + DbUtil.getDb());
 		merchantDao.update(merchant);
 	}
 	
@@ -81,7 +79,25 @@ public class MerchantDaoService {
 		qb.where(MerchantDao.Properties.IsLogin.eq(true));
 
 		Query<Merchant> q = qb.build();
-		Merchant merchant = q.unique();
+		
+		List<Merchant> merchants = q.list();
+		
+		// if somehow multiple merchants is active on the device, disable all
+		for (Merchant merchant : merchants) {
+			
+			merchant.setIsLogin(false);
+			merchantDao.update(merchant);
+		}
+		
+		Merchant merchant = null;
+		
+		// enable the first one on the list
+		if (merchants.size() > 0) {
+			
+			merchant = merchants.get(0);
+			merchant.setIsLogin(true);
+			merchantDao.update(merchant);
+		}
 
 		return merchant;
 	}
@@ -115,7 +131,9 @@ public class MerchantDaoService {
 			Merchant item = getMerchant(id);
 			list.add(item);
 		}
-
+		
+		cursor.close();
+		
 		return list;
 	}
 	
@@ -170,5 +188,20 @@ public class MerchantDaoService {
 				merchantDao.update(merchant);
 			}
 		} 
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM merchant WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

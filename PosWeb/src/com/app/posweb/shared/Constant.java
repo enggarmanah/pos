@@ -106,4 +106,32 @@ public class Constant {
 	public static final int POPUP_L2_LEFT = 14;
 	
 	public static final int FILE_UPLOAD_MAX_SIZE = 500000;
+	
+	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
+	public static final String TASK_VALIDATE_USER = "TASK_VALIDATE_USER";
+	
+	public static final String TASK_ROOT_GET_MERCHANT = "TASK_ROOT_GET_MERCHANT";
+	public static final String TASK_ROOT_GET_MERCHANT_ACCESS = "TASK_ROOT_GET_MERCHANT_ACCESS";
+	
+	public static final String TASK_GET_ORDERS = "TASK_GET_ORDERS";
+	public static final String TASK_GET_ORDER_ITEMS = "TASK_GET_ORDER_ITEMS";
+	
+	public static final String TASK_GET_LAST_SYNC = "TASK_GET_LAST_SYNC";
+	public static final String TASK_GET_PRODUCT_GROUP = "TASK_GET_PRODUCT_GROUP";
+	public static final String TASK_GET_DISCOUNT = "TASK_GET_DISCOUNT";
+	public static final String TASK_GET_MERCHANT = "TASK_GET_MERCHANT";
+	public static final String TASK_GET_EMPLOYEE = "TASK_GET_EMPLOYEE";
+	public static final String TASK_GET_CUSTOMER = "TASK_GET_CUSTOMER";
+	public static final String TASK_GET_PRODUCT = "TASK_GET_PRODUCT";
+	public static final String TASK_GET_USER = "TASK_GET_USER";
+	public static final String TASK_GET_TRANSACTIONS = "TASK_GET_TRANSACTIONS";
+	public static final String TASK_GET_TRANSACTION_ITEM = "TASK_GET_TRANSACTION_ITEM";
+	public static final String TASK_GET_SUPPLIER = "TASK_GET_SUPPLIER";
+	public static final String TASK_GET_BILL = "TASK_GET_BILLS";
+	public static final String TASK_GET_INVENTORY = "TASK_GET_INVENTORY";
+	public static final String TASK_GET_MERCHANT_ACCESS = "TASK_GET_MERCHANT_ACCESS";
+	public static final String TASK_GET_USER_ACCESS = "TASK_GET_USER_ACCESS";
+	public static final String TASK_UPDATE_USER_ACCESS = "TASK_UPDATE_USER_ACCESS";
+	
+	public static final String TASK_COMPLETED = "TASK_COMPLETED";
 }

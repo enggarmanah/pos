@@ -6,25 +6,20 @@ import java.util.List;
 
 import com.app.posweb.server.dao.TransactionItemDao;
 import com.app.posweb.server.model.TransactionItem;
+import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.server.model.SyncResponse;
 import com.app.posweb.server.model.SyncStatus;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
  
 @SuppressWarnings("serial")
 public class TransactionItemUpdateJsonServlet extends BaseJsonServlet {
  
-    protected Object processJsonRequest(String jsonStr) throws IOException {
+    protected SyncResponse processRequest(SyncRequest request) throws IOException {
     	
     	List<SyncStatus> syncStatusList = new ArrayList<SyncStatus>();
-        ObjectMapper mapper = new ObjectMapper();
         
-        List<TransactionItem> transactionItems = mapper.readValue(jsonStr.toString(),
-        							TypeFactory.defaultInstance().constructCollectionType(List.class,  
-        							TransactionItem.class));         
+    	TransactionItemDao transactionItemDao = new TransactionItemDao();
         
-        TransactionItemDao transactionItemDao = new TransactionItemDao();
-        
-        for (TransactionItem transactionItem : transactionItems) {
+        for (TransactionItem transactionItem : request.getTransactionItems()) {
         	
         	String status = SyncStatus.FAIL;
         	
@@ -43,6 +38,11 @@ public class TransactionItemUpdateJsonServlet extends BaseJsonServlet {
         	syncStatusList.add(syncStatus);
         }
         
-        return syncStatusList;
+        SyncResponse response = new SyncResponse();
+        
+        response.setRespCode(SyncResponse.SUCCESS);
+        response.setStatus(syncStatusList);
+        
+        return response;
     }
 }

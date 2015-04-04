@@ -47,10 +47,9 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     
     @Override
     public void onStart() {
-        super.onStart();
         
-        initViewReference();
-    	
+    	super.onStart();
+        
         updateView(mItem);
         
         // new item case
@@ -59,7 +58,7 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
         }
     }
     
-    protected abstract void initViewReference();
+    protected abstract void initViewReference(View view);
     
     @Override
 	public void onSaveInstanceState(Bundle outState) {

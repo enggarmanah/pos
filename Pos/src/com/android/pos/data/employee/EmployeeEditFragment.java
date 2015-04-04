@@ -40,6 +40,8 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     	
     	View view = inflater.inflate(R.layout.data_employee_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -49,12 +51,12 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-        mNameText = (EditText) getActivity().findViewById(R.id.nameText);
-    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneText);
-    	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
-    	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
+        mNameText = (EditText) view.findViewById(R.id.nameText);
+    	mTelephoneText = (EditText) view.findViewById(R.id.telephoneText);
+    	mAddressText = (EditText) view.findViewById(R.id.addressText);
+    	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
     	registerField(mNameText);
     	registerField(mTelephoneText);

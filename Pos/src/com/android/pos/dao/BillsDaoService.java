@@ -71,6 +71,8 @@ public class BillsDaoService {
 			Bills item = getBills(id);
 			list.add(item);
 		}
+		
+		cursor.close();
 
 		return list;
 	}
@@ -100,8 +102,112 @@ public class BillsDaoService {
 			Bills item = getBills(id);
 			list.add(item);
 		}
+		
+		cursor.close();
+		
+		return list;
+	}
+	
+	public List<Bills> getPastDueBills() {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String today = String.valueOf(new Date().getTime());
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM bills "
+				+ " WHERE payment < bill_amount AND bill_due_date <= ? AND status <> ? "
+				+ " ORDER BY bill_date ",
+				new String[] { today, status});
+		
+		List<Bills> list = new ArrayList<Bills>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Bills item = getBills(id);
+			list.add(item);
+		}
+		
+		cursor.close();
 
 		return list;
+	}
+	
+	public Integer getPastDueBillsCount() {
+		
+		Integer pastDueBillsCount = 0;
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String today = String.valueOf(new Date().getTime());
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT count(_id) "
+				+ " FROM bills "
+				+ " WHERE payment < bill_amount AND bill_due_date <= ? AND status <> ? "
+				+ " ORDER BY bill_date ",
+				new String[] { today, status});
+		
+		if (cursor.moveToNext()) {
+			
+			pastDueBillsCount = cursor.getInt(0);
+		}
+		
+		cursor.close();
+
+		return pastDueBillsCount;
+	}
+	
+	public List<Bills> getOutstandingBills() {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM bills "
+				+ " WHERE payment < bill_amount AND status <> ? "
+				+ " ORDER BY bill_date ",
+				new String[] { status });
+		
+		List<Bills> list = new ArrayList<Bills>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Bills item = getBills(id);
+			list.add(item);
+		}
+		
+		cursor.close();
+
+		return list;
+	}
+	
+	public Integer getOutstandingBillsCount() {
+		
+		Integer pastDueBillsCount = 0;
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT count(_id) "
+				+ " FROM bills "
+				+ " WHERE payment < bill_amount AND status <> ? "
+				+ " ORDER BY bill_due_date ",
+				new String[] { status });
+		
+		if (cursor.moveToNext()) {
+			
+			pastDueBillsCount = cursor.getInt(0);
+		}
+		
+		cursor.close();
+
+		return pastDueBillsCount;
 	}
 	
 	public List<Bills> getProductPurchaseBills(String query, int lastIndex) {
@@ -128,6 +234,8 @@ public class BillsDaoService {
 			Bills item = getBills(id);
 			list.add(item);
 		}
+		
+		cursor.close();
 
 		return list;
 	}
@@ -206,6 +314,8 @@ public class BillsDaoService {
 			cashFlowYears.add(cashFlowYear);
 		}
 		
+		cursor.close();
+		
 		return cashFlowYears;
 	}
 	
@@ -234,6 +344,23 @@ public class BillsDaoService {
 			cashFlowMonths.add(cashFlowMonth);
 		}
 		
+		cursor.close();
+		
 		return cashFlowMonths;
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM bills WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

@@ -12,12 +12,16 @@ public class MerchantBean {
 	private String telephone;
 	private String contact_name;
 	private String contact_telephone;
+	private String contact_email;
 	private String login_id;
 	private String password;
 	private java.util.Date period_start;
 	private java.util.Date period_end;
 	private Integer tax_percentage;
 	private Integer service_charge_percentage;
+	private String printer_mini_font;
+    private Integer printer_line_size;
+    private String printer_required;
 	private String status;
 
 	protected Long remote_id;
@@ -25,6 +29,7 @@ public class MerchantBean {
 	protected Date create_date;
 	protected String update_by;
 	protected Date update_date;
+	protected Date sync_date;
 
 	public Long getId() {
 		return id;
@@ -81,6 +86,14 @@ public class MerchantBean {
 	public void setContact_telephone(String contact_telephone) {
 		this.contact_telephone = contact_telephone;
 	}
+	
+	public String getContact_email() {
+		return contact_email;
+	}
+
+	public void setContact_email(String contact_email) {
+		this.contact_email = contact_email;
+	}
 
 	public String getLogin_id() {
 		return login_id;
@@ -129,6 +142,30 @@ public class MerchantBean {
 	public void setService_charge_percentage(Integer service_charge_percentage) {
 		this.service_charge_percentage = service_charge_percentage;
 	}
+	
+	public String getPrinter_mini_font() {
+		return printer_mini_font;
+	}
+
+	public void setPrinter_mini_font(String printer_mini_font) {
+		this.printer_mini_font = printer_mini_font;
+	}
+
+	public Integer getPrinter_line_size() {
+		return printer_line_size;
+	}
+
+	public void setPrinter_line_size(Integer printer_line_size) {
+		this.printer_line_size = printer_line_size;
+	}
+
+	public String getPrinter_required() {
+		return printer_required;
+	}
+
+	public void setPrinter_required(String printer_required) {
+		this.printer_required = printer_required;
+	}
 
 	public String getStatus() {
 		return status;
@@ -176,5 +213,13 @@ public class MerchantBean {
 
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
+	}
+
+	public Date getSync_date() {
+		return sync_date;
+	}
+
+	public void setSync_date(Date sync_date) {
+		this.sync_date = sync_date;
 	}
 }

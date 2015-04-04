@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
-import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Transactions;
 import com.android.pos.model.TransactionDayBean;
@@ -49,7 +48,6 @@ public class TransactionActivity extends BaseActivity
 	
 	private MenuItem mPrintItem;
 	private MenuItem mUpItem;
-	private MenuItem mSyncItem;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +184,6 @@ public class TransactionActivity extends BaseActivity
 		
 		mPrintItem = menu.findItem(R.id.menu_item_print);
 		mUpItem = menu.findItem(R.id.menu_item_up);
-		mSyncItem = menu.findItem(R.id.menu_item_sync);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -224,18 +221,6 @@ public class TransactionActivity extends BaseActivity
 				
 				return true;
 				
-			case R.id.menu_item_sync:
-				
-				mProgressDialog.show(getFragmentManager(), "progressDialogTag");
-				
-				if (mHttpAsyncManager == null) {
-					mHttpAsyncManager = new HttpAsyncManager(this); 
-				}
-				
-				mHttpAsyncManager.sync(); 
-				
-				return true;
-
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -245,7 +230,6 @@ public class TransactionActivity extends BaseActivity
 		
 		mPrintItem.setVisible(false);
 		mUpItem.setVisible(false);
-		mSyncItem.setVisible(false);
 	}
 	
 	@Override
@@ -279,6 +263,8 @@ public class TransactionActivity extends BaseActivity
 		mIsDisplayTransactionDay = true;
 		
 		initMenus();
+		
+		mTransactionListFragment.setSelectedTransactionDay(mSelectedTransactionDay);
 	}
 	
 	@Override
@@ -303,7 +289,7 @@ public class TransactionActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onBackButtonClicked() {
+	public void onBackPressed() {
 		
 		synchronized (CommonUtil.LOCK) {
 			onBackToParent();
@@ -365,8 +351,6 @@ public class TransactionActivity extends BaseActivity
 			
 			hideAllMenus();
 			
-			mSyncItem.setVisible(true);
-			
 			if (mIsDisplayTransactionYear || mIsDisplayTransactionMonth || mIsDisplayTransactionDay) {
 				mUpItem.setVisible(true);
 				
@@ -421,10 +405,18 @@ public class TransactionActivity extends BaseActivity
 				
 				mIsDisplayTransactionMonth = true;
 				
-				System.out.println("month : " + mSelectedTransactionMonth);
 			} else {
 				mIsDisplayTransactionDay = true;
 			}
 		}
+	}
+	
+	@Override
+	protected void onAsyncTaskCompleted() {
+		
+		super.onAsyncTaskCompleted();
+		
+		mTransactionListFragment.updateContent();
+		mTransactionDetailFragment.updateContent();
 	}
 }

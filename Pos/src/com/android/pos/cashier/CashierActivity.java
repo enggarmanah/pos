@@ -118,7 +118,7 @@ public class CashierActivity extends BaseActivity
 	private OrdersDaoService mOrderDaoService;
 	private OrderItemDaoService mOrderItemDaoService;
 	
-	private static boolean isTryToConnect = false;
+	private boolean isTryToConnect = false;
 	private boolean mIsSubmitOrder = false;
 	
 	private Orders mOrder;
@@ -160,13 +160,13 @@ public class CashierActivity extends BaseActivity
 		
 		messageText.setOnClickListener(getMessageTextOnClickListener());
 		
-		if (!UserUtil.isWaitress() && !isTryToConnect) {
+		if (PrintUtil.isPrinterActive() && !isTryToConnect && !UserUtil.isWaitress()) {
 			
 			isTryToConnect = true;
 			connectToMerchantPrinter();
 		}
 		
-		loadOrders();
+		//loadOrders();
 	}
 	
 	@Override
@@ -176,9 +176,9 @@ public class CashierActivity extends BaseActivity
 
 		setSelectedMenu(Constant.MENU_CASHIER);
 		
-		if (!UserUtil.isWaitress() && !PrintUtil.isPrinterConnected()) {
+		if (PrintUtil.isPrinterActive() && !PrintUtil.isPrinterConnected() && !UserUtil.isWaitress()) {
 			setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
-		}
+		}	
 		
 		mOrderFragment.setCashierState(mState);
 	}
@@ -359,7 +359,7 @@ public class CashierActivity extends BaseActivity
 		
 		mSelectPrinterItem.setVisible(false);
 		
-		if (!UserUtil.isWaitress() && !PrintUtil.isPrinterConnected()) {
+		if (PrintUtil.isPrinterActive() && !PrintUtil.isPrinterConnected() && !UserUtil.isWaitress()) {
 			mSelectPrinterItem.setVisible(!isDrawerOpen);
 		}
 
@@ -686,25 +686,32 @@ public class CashierActivity extends BaseActivity
 				mTransactionItemDaoService.addTransactionItem(transactionItem);
 			}
 			
-			// track the product movement in inventory
-			Inventory inventory = new Inventory();
-			inventory.setMerchant(MerchantUtil.getMerchant());
-			inventory.setBillReferenceNo(transaction.getTransactionNo());
-			inventory.setProduct(transactionItem.getProduct());
-			inventory.setProductName(transactionItem.getProductName());
-			inventory.setQuantityStr(String.valueOf(transactionItem.getQuantity()));
-			inventory.setQuantity(-transactionItem.getQuantity());
-			inventory.setProductCostPrice(transactionItem.getCostPrice());
-			inventory.setDeliveryDate(new Date());
-			inventory.setStatus(Constant.INVENTORY_STATUS_SALE);
-			inventory.setUploadStatus(Constant.STATUS_YES);
-			inventory.setCreateBy(UserUtil.getUser().getUserId());
-			inventory.setCreateDate(new Date());
-			inventory.setUpdateBy(UserUtil.getUser().getUserId());
-			inventory.setUpdateDate(new Date());
+			// track the product movement in inventory if it's not resto menu
 			
-			if (transactionItem.getQuantity() != 0) {
-				mInventoryDaoService.addInventory(inventory);
+			Product product = mProductDaoService.getProduct(transactionItem.getProductId());
+			boolean isMenu = Constant.PRODUCT_TYPE_MENU.equals(product.getType());
+			
+			if (!isMenu) {
+				
+				Inventory inventory = new Inventory();
+				inventory.setMerchant(MerchantUtil.getMerchant());
+				inventory.setBillReferenceNo(transaction.getTransactionNo());
+				inventory.setProduct(transactionItem.getProduct());
+				inventory.setProductName(transactionItem.getProductName());
+				inventory.setQuantityStr(String.valueOf(transactionItem.getQuantity()));
+				inventory.setQuantity(-transactionItem.getQuantity());
+				inventory.setProductCostPrice(transactionItem.getCostPrice());
+				inventory.setDeliveryDate(new Date());
+				inventory.setStatus(Constant.INVENTORY_STATUS_SALE);
+				inventory.setUploadStatus(Constant.STATUS_YES);
+				inventory.setCreateBy(UserUtil.getUser().getUserId());
+				inventory.setCreateDate(new Date());
+				inventory.setUpdateBy(UserUtil.getUser().getUserId());
+				inventory.setUpdateDate(new Date());
+				
+				if (transactionItem.getQuantity() != 0) {
+					mInventoryDaoService.addInventory(inventory);
+				}
 			}
 		}
 		
@@ -878,9 +885,12 @@ public class CashierActivity extends BaseActivity
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void loadOrders() {
+	@Override
+	protected void onNewIntent(Intent intent) {
 		
-		Bundle extras = getIntent().getExtras();
+		super.onNewIntent(intent);
+		
+		Bundle extras = intent.getExtras();
 		
 		if (extras != null) {
 			
@@ -926,6 +936,8 @@ public class CashierActivity extends BaseActivity
 	@Override
 	protected void onAsyncTaskCompleted() {
 		
+		super.onAsyncTaskCompleted();
+		
 		if (mIsSubmitOrder) {
 			
 			mIsSubmitOrder = false;
@@ -940,12 +952,7 @@ public class CashierActivity extends BaseActivity
 	
 	private void connectToPrinter(String printerType, String address) {
 		
-		if (printerType.indexOf("PTP-II") != -1) {
-			PrintUtil.setPrinterLineSize(40);
-			
-		} else if (printerType.indexOf("RPP-02N") != -1) {
-			PrintUtil.setPrinterLineSize(32);
-		}
+		PrintUtil.setPrinterLineSize(MerchantUtil.getMerchant().getPrinterLineSize());
 		
 		try {
 			PrintUtil.connectToBluetoothPrinter(address);

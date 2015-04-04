@@ -60,6 +60,8 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	
     	View view = inflater.inflate(R.layout.data_inventory_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -82,19 +84,19 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-    	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
-    	mProductNameText = (EditText) getView().findViewById(R.id.productNameText);
-    	mProductCostPriceText = (EditText) getView().findViewById(R.id.productCostPriceText);
-    	mQuantityText = (EditText) getView().findViewById(R.id.quantityText);
-    	mBillsReferenceNoText = (EditText) getView().findViewById(R.id.billsReferenceNoText);
-    	mSupplierNameText = (EditText) getView().findViewById(R.id.supplierNameText);
-    	mDeliveryDate = (EditText) getView().findViewById(R.id.deliveryDate);
-    	mRemarksText = (EditText) getView().findViewById(R.id.remarksText);
+    	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
+    	mProductNameText = (EditText) view.findViewById(R.id.productNameText);
+    	mProductCostPriceText = (EditText) view.findViewById(R.id.productCostPriceText);
+    	mQuantityText = (EditText) view.findViewById(R.id.quantityText);
+    	mBillsReferenceNoText = (EditText) view.findViewById(R.id.billsReferenceNoText);
+    	mSupplierNameText = (EditText) view.findViewById(R.id.supplierNameText);
+    	mDeliveryDate = (EditText) view.findViewById(R.id.deliveryDate);
+    	mRemarksText = (EditText) view.findViewById(R.id.remarksText);
     	
-    	mSupplierPanel = (LinearLayout) getView().findViewById(R.id.supplierPanel);
-        mRemarksPanel = (LinearLayout) getView().findViewById(R.id.remarksPanel);
+    	mSupplierPanel = (LinearLayout) view.findViewById(R.id.supplierPanel);
+        mRemarksPanel = (LinearLayout) view.findViewById(R.id.remarksPanel);
     	
     	registerField(mStatusSp);
     	registerField(mProductNameText);

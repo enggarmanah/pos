@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
@@ -83,7 +84,7 @@ public class DiscountDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT d FROM Discount d WHERE merchant_id = :merchantId AND update_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT d FROM Discount d WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
 		
 		sql.append(" ORDER BY d.name");
 		
@@ -97,5 +98,23 @@ public class DiscountDao {
 		em.close();
 
 		return result;
+	}
+	
+	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT COUNT(d.id) FROM Discount d WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		
+		long count = (long) query.getSingleResult();
+		
+		em.close();
+
+		return (count > 0);
 	}
 }

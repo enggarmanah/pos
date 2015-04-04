@@ -57,6 +57,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	
     	View view = inflater.inflate(R.layout.data_product_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -66,21 +68,21 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-        mNameText = (EditText) getView().findViewById(R.id.nameText);
-    	mTypeSp = (Spinner) getView().findViewById(R.id.typeSp);
-    	mProductGrpSp = (Spinner) getView().findViewById(R.id.productGrpSp);
-    	mPriceText = (EditText) getView().findViewById(R.id.priceText);
-    	mCostPriceText = (EditText) getView().findViewById(R.id.costPriceText);
-    	mPicRequiredSp = (Spinner) getView().findViewById(R.id.picRequiredSp);
-    	mCommisionText = (EditText) getView().findViewById(R.id.commisionText);
-    	mPromoPriceText = (EditText) getView().findViewById(R.id.promoPriceText);
-    	mPromoStartDate = (EditText) getView().findViewById(R.id.promoStartDate);
-    	mPromoEndDate = (EditText) getView().findViewById(R.id.promoEndDate);
-    	mStockText = (EditText) getView().findViewById(R.id.stockText);
-    	mMinStockText = (EditText) getView().findViewById(R.id.minStockText);
-    	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
+        mNameText = (EditText) view.findViewById(R.id.nameText);
+    	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
+    	mProductGrpSp = (Spinner) view.findViewById(R.id.productGrpSp);
+    	mPriceText = (EditText) view.findViewById(R.id.priceText);
+    	mCostPriceText = (EditText) view.findViewById(R.id.costPriceText);
+    	mPicRequiredSp = (Spinner) view.findViewById(R.id.picRequiredSp);
+    	mCommisionText = (EditText) view.findViewById(R.id.commisionText);
+    	mPromoPriceText = (EditText) view.findViewById(R.id.promoPriceText);
+    	mPromoStartDate = (EditText) view.findViewById(R.id.promoStartDate);
+    	mPromoEndDate = (EditText) view.findViewById(R.id.promoEndDate);
+    	mStockText = (EditText) view.findViewById(R.id.stockText);
+    	mMinStockText = (EditText) view.findViewById(R.id.minStockText);
+    	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
     	registerField(mNameText);
     	registerField(mTypeSp);
@@ -115,7 +117,9 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	linkDatePickerWithInputField("startDatePicker", mPromoStartDate);
     	linkDatePickerWithInputField("endDatePicker", mPromoEndDate);
     	
-    	typeArrayAdapter = new CodeSpinnerArrayAdapter(mTypeSp, getActivity(), CodeUtil.getProductTypes());
+    	boolean isResto = Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchant().getType());
+    	
+    	typeArrayAdapter = new CodeSpinnerArrayAdapter(mTypeSp, getActivity(), isResto ? CodeUtil.getRestoProductTypes() : CodeUtil.getProductTypes());
     	mTypeSp.setAdapter(typeArrayAdapter);
     	
     	productGrpArrayAdapter = new ProductGrpSpinnerArrayAdapter(mProductGrpSp, getActivity(), getProductGroups());

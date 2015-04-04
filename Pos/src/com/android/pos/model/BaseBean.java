@@ -11,6 +11,7 @@ public class BaseBean {
 	protected Date create_date;
 	protected String update_by;
 	protected Date update_date;
+	protected Date sync_date;
 
 	public Long getId() {
 		return id;
@@ -66,5 +67,13 @@ public class BaseBean {
 
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
+	}
+
+	public Date getSync_date() {
+		return sync_date;
+	}
+
+	public void setSync_date(Date sync_date) {
+		this.sync_date = sync_date;
 	}
 }

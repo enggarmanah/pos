@@ -154,7 +154,8 @@
                 style="@style/FormInputDateStyle" />
         </LinearLayout>
 		
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout style="@style/FormRowStyle"
+            android:visibility="gone">
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"

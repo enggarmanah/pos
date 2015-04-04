@@ -68,7 +68,9 @@ public class EmployeeDaoService {
 			Employee item = getEmployee(id);
 			list.add(item);
 		}
-
+		
+		cursor.close();
+		
 		return list;
 	}
 	
@@ -123,5 +125,20 @@ public class EmployeeDaoService {
 				employeeDao.update(employee);
 			}
 		} 
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM employee WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

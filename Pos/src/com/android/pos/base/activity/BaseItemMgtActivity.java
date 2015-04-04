@@ -21,7 +21,6 @@ import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,7 +47,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	MenuItem mDiscardMenu;
 	MenuItem mEditMenu;
 	MenuItem mDeleteMenu;
-	MenuItem mSyncMenu;
 
 	List<T> mItems;
 	T mSelectedItem;
@@ -65,13 +63,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	private boolean mIsOnEdit = false;
 	
 	final Context context = this;
-	private HttpAsyncManager mHttpAsyncManager;
 	
-	private static ProgressDlgFragment mProgressDialog;
-	private static Integer mProgress = 0;
-	
-	private static final String progressDialogTag = "progressDialogTag";
-
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -222,9 +214,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		mDiscardMenu = menu.findItem(R.id.menu_item_discard);
 		mEditMenu = menu.findItem(R.id.menu_item_edit);
 		mDeleteMenu = menu.findItem(R.id.menu_item_delete);
-		mSyncMenu = menu.findItem(R.id.menu_item_sync);
-		
-		showNavigationMenu();
 		
 		searchView = (SearchView) mSearchMenu.getActionView();
 		searchView.setLayoutParams(new ActionBar.LayoutParams(Gravity.START));
@@ -251,28 +240,25 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
-		if (UserUtil.isRoot() || UserUtil.isMerchant()) {
-			mSyncMenu.setVisible(!isDrawerOpen);
+		if (mSelectedItem instanceof Merchant) {
+			if (UserUtil.isRoot()) {
+				mDeleteMenu.setVisible(!isDrawerOpen);
+			}
 		} else {
-			mSyncMenu.setVisible(false);
+			if (mSelectedItem != null) {
+				mDeleteMenu.setVisible(false);
+			}
 		}
 		
-		if (mSelectedItem instanceof Merchant && UserUtil.isRoot()) {
-			mDeleteMenu.setVisible(!isDrawerOpen);
-		} else {
-			mDeleteMenu.setVisible(false);
-		}
-		
-		if (mSearchMenu.isVisible()) {
-			mSearchMenu.setVisible(!isDrawerOpen);
-		}
-		
-		if (mListMenu.isVisible()) {
-			mListMenu.setVisible(!isDrawerOpen);
-		}
+		mSearchMenu.setVisible(!isDrawerOpen);
 		
 		if (mSelectedItem != null) {
+			
 			mEditMenu.setVisible(!isDrawerOpen);
+			
+			if (mIsMultiplesPane) {
+				mListMenu.setVisible(!isDrawerOpen);
+			}
 		}
 		
 		if (mIsOnEdit) {
@@ -290,6 +276,13 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	protected abstract void doSearch(String query);
 
 	protected abstract T getItemInstance();
+	
+	@Override
+	public void onBackPressed() {
+		
+		showAllItems();
+		showNavigationMenu();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -357,14 +350,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 				showNavigationAndItemMenu();
 				refreshEditView();
 			}
-			
-			return true;
-			
-		case R.id.menu_item_sync:
-			
-			mProgressDialog.show(getFragmentManager(), progressDialogTag);
-			
-			mHttpAsyncManager.sync(); 
 			
 			return true;
 
@@ -454,14 +439,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	
 	private void showNavigationMenu() {
 		
-		if (mSyncMenu == null) {
+		if (mSearchMenu == null) {
 			return;
-		}
-		
-		if (UserUtil.isRoot() || UserUtil.isMerchant()) {
-			mSyncMenu.setVisible(true);
-		} else {
-			mSyncMenu.setVisible(false);
 		}
 		
 		mSearchMenu.setVisible(true);
@@ -480,12 +459,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		
 		enableEditFragmentInputFields(false);
 		
-		if (UserUtil.isRoot() || UserUtil.isMerchant()) {
-			mSyncMenu.setVisible(true);
-		} else {
-			mSyncMenu.setVisible(false);
-		}
-		
 		if (mIsMultiplesPane) {
 			mSearchMenu.setVisible(true);
 			mListMenu.setVisible(false);
@@ -496,10 +469,13 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		
 		mEditMenu.setVisible(true);
 		
-		if (mSelectedItem instanceof Merchant && UserUtil.isRoot()) {
-			mDeleteMenu.setVisible(true);
+		mDeleteMenu.setVisible(false);
+		if (mSelectedItem instanceof Merchant) {
+			if (UserUtil.isRoot()) {
+				mDeleteMenu.setVisible(true);
+			}
 		} else {
-			mDeleteMenu.setVisible(false);
+			mDeleteMenu.setVisible(true);
 		}
 		
 		mSaveMenu.setVisible(false);
@@ -511,8 +487,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	private void showEditMenu() {
 		
 		enableEditFragmentInputFields(true);
-		
-		mSyncMenu.setVisible(false);
 		
 		mSearchMenu.setVisible(false);
 		mListMenu.setVisible(false);
@@ -532,10 +506,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		mSelectedItem = item;
 		
 		showNavigationAndItemMenu();
-		
-		if (item instanceof Merchant && !UserUtil.isRoot()) {
-			mDeleteMenu.setVisible(false);
-		}
 		
 		if (mIsMultiplesPane) {
 			updateEditFragmentItem(item);
@@ -678,60 +648,9 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	public void onSelectBill(boolean isMandatory) {}
 	
 	@Override
-	public void setSyncProgress(int progress) {
+	protected void onAsyncTaskCompleted() {
 		
-		mProgress = progress;
-		
-		if (mProgressDialog != null) {
-			
-			mProgressDialog.setProgress(progress);
-			
-			if (progress == 100) {
-				
-				new Handler().postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						if (isActivityVisible()) {
-							mProgressDialog.dismiss();
-						}
-					}
-				}, 500);
-			}
-		}
-	}
-	
-	@Override
-	public void setSyncMessage(String message) {
-		
-		if (mProgressDialog != null) {
-			
-			mProgressDialog.setMessage(message);
-		}
-	}
-	
-	@Override
-	public void onTimeOut() {
-		
-		mProgress = 100;
-		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
-		}
-		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
-	}
-	
-	@Override
-	public void onSyncError() {
-		
-		mProgress = 100;
-		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
-		}
-		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
+		super.onAsyncTaskCompleted();
+		showAllItems();
 	}
 }

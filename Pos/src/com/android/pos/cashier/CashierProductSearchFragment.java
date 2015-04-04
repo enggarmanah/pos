@@ -173,6 +173,8 @@ public class CashierProductSearchFragment extends BaseFragment
 			mProducts.clear();
 		}
 		
+		mProductGroups.clear();
+		mProductGroups.addAll(mProductGroupDaoService.getProductGroups());
 		mProductGroupList.setAdapter(mProductGroupAdapter);
 		
 		refreshNavigationPanel();

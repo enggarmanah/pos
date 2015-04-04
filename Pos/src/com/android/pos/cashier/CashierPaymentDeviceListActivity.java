@@ -206,7 +206,9 @@ public class CashierPaymentDeviceListActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             
-            mProgressDialog.dismiss();
+            if (mProgressDialog.isVisible()) {
+            	mProgressDialog.dismiss();
+            }
             
             // When discovery finds a device
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {

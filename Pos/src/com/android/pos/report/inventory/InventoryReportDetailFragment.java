@@ -92,7 +92,7 @@ public class InventoryReportDetailFragment extends BaseFragment {
 	@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
+        
         try {
             mActionListener = (InventoryReportActionListener) activity;
         } catch (ClassCastException e) {
@@ -110,7 +110,11 @@ public class InventoryReportDetailFragment extends BaseFragment {
 		}
 	}
 	
-	private void updateContent() {
+	public void updateContent() {
+		
+		if (!isViewInitialized()) {
+			return;
+		}
 		
 		if (mProduct != null) {
 			
@@ -141,7 +145,7 @@ public class InventoryReportDetailFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mActionListener.onBackButtonClicked();
+				mActionListener.onBackPressed();
 			}
 		};
 	}

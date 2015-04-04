@@ -6,30 +6,27 @@ import java.util.List;
 
 import com.app.posweb.server.dao.TransactionsDao;
 import com.app.posweb.server.model.Transactions;
+import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.server.model.SyncResponse;
 import com.app.posweb.server.model.SyncStatus;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
  
 @SuppressWarnings("serial")
 public class TransactionsUpdateJsonServlet extends BaseJsonServlet {
  
-    protected Object processJsonRequest(String jsonStr) throws IOException {
+    protected SyncResponse processRequest(SyncRequest request) throws IOException {
     	
     	List<SyncStatus> syncStatusList = new ArrayList<SyncStatus>();
-        ObjectMapper mapper = new ObjectMapper();
         
-        List<Transactions> transactions = mapper.readValue(jsonStr.toString(),
-        							TypeFactory.defaultInstance().constructCollectionType(List.class,  
-        							Transactions.class));         
+    	TransactionsDao transactionDao = new TransactionsDao();
         
-        TransactionsDao transactionsDao = new TransactionsDao();
-        
-        for (Transactions transaction : transactions) {
+        for (Transactions transaction : request.getTransactions()) {
+        	
+        	transaction.setSync_date(request.getSync_date());
         	
         	String status = SyncStatus.FAIL;
         	
         	try {
-				transactionsDao.syncTransactions(transaction);
+				transactionDao.syncTransactions(transaction);
 				status = SyncStatus.SUCCESS;
 				
 			} catch (Exception e) {
@@ -43,6 +40,11 @@ public class TransactionsUpdateJsonServlet extends BaseJsonServlet {
         	syncStatusList.add(syncStatus);
         }
         
-        return syncStatusList;
+        SyncResponse response = new SyncResponse();
+        
+        response.setRespCode(SyncResponse.SUCCESS);
+        response.setStatus(syncStatusList);
+        
+        return response;
     }
 }

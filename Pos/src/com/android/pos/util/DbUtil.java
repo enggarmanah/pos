@@ -254,6 +254,20 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'ORDER_ITEM' ADD 'ORDER_NO' TEXT");
             }
             
+            // handle version 32 changes
+            if (oldVersion < 32) {
+            	
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRINTER_REQUIRED' TEXT");
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRINTER_LINE_SIZE' INTEGER");
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRINTER_MINI_FONT' TEXT");
+            }
+            
+            // handle version 33 changes
+            if (oldVersion < 33) {
+            	
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'CONTACT_EMAIL' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -276,6 +290,8 @@ public class DbUtil {
     
     public static void switchDb(Long merchantId) {
     	
+    	System.out.println("Close DB : " + db);
+    	
     	db.close();
     	
     	String dbFile = (merchantId == null ? "pos-db" : "pos-db-" + merchantId);
@@ -285,10 +301,7 @@ public class DbUtil {
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
         
-        //db.execSQL("delete from orders");
-        //db.execSQL("delete from order_item");
-        
-        System.out.println("db : " + db);
+        System.out.println("Open DB : " + db);
     }
     
     public static DaoSession getSession() {

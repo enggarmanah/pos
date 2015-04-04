@@ -20,10 +20,15 @@ public class Constant {
 	
 	public static final String PRODUCT_TYPE_GOODS = "P"; 
 	public static final String PRODUCT_TYPE_SERVICE = "S";
+	public static final String PRODUCT_TYPE_MENU = "M";
 	
 	public static final String USER_ROLE_CASHIER = "C";
 	public static final String USER_ROLE_ADMIN = "A";
 	public static final String USER_ROLE_WAITRESS = "W";
+	
+	public static final String USER_ROLE_CASHIER_DESC = "Kasir";
+	public static final String USER_ROLE_ADMIN_DESC = "Admin";
+	public static final String USER_ROLE_WAITRESS_DESC = "Pramuniaga";
 	
 	public static final String PRODUCT_QUANTITY = "PRODUCT_QUANTITY";
 	public static final String PRODUCT_REVENUE = "PRODUCT_REVENUE";
@@ -51,10 +56,10 @@ public class Constant {
 	public static final String MESSAGE_ORDER_DOWNLOAD_OK = "Pesanan telah berhasil didownload dari Server!";
 	
 	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
+	public static final String TASK_VALIDATE_USER = "TASK_VALIDATE_USER";
 	
-	public static final String TASK_ROOT_GET_LAST_SYNC = "TASK_ROOT_GET_LAST_SYNC";
 	public static final String TASK_ROOT_GET_MERCHANT = "TASK_ROOT_GET_MERCHANT";
-	public static final String TASK_ROOT_UPDATE_MERCHANT = "TASK_ROOT_UPDATE_MERCHANT";
+	public static final String TASK_ROOT_GET_MERCHANT_ACCESS = "TASK_ROOT_GET_MERCHANT_ACCESS";
 	
 	public static final String TASK_SUBMIT_ORDERS = "TASK_SUBMIT_ORDERS";
 	public static final String TASK_SUBMIT_ORDER_ITEMS = "TASK_SUBMIT_ORDER_ITEMS";
@@ -63,9 +68,6 @@ public class Constant {
 	public static final String TASK_GET_ORDER_ITEMS = "TASK_GET_ORDER_ITEMS";
 	
 	public static final String TASK_DELETE_ORDERS = "TASK_DELETE_ORDERS";
-	
-	public static final String TASK_GET_PRODUCT_GROUP_ALL = "TASK_GET_PRODUCT_GROUP_ALL";
-	public static final String TASK_GET_PRODUCT_ALL = "TASK_GET_PRODUCT_ALL";
 	
 	public static final String TASK_GET_LAST_SYNC = "TASK_GET_LAST_SYNC";
 	public static final String TASK_UPDATE_LAST_SYNC = "TASK_UPDATE_LAST_SYNC";
@@ -111,6 +113,8 @@ public class Constant {
 	
 	public static final String TASK_GET_USER_ACCESS = "TASK_GET_USER_ACCESS";
 	public static final String TASK_UPDATE_USER_ACCESS = "TASK_UPDATE_USER_ACCESS";
+	
+	public static final String TASK_COMPLETED = "TASK_COMPLETED";
 	
 	public static final String ORDER_TYPE_DINE_IN = "DINE_IN";
 	public static final String ORDER_TYPE_TAKEWAY = "TAKE_AWAY";

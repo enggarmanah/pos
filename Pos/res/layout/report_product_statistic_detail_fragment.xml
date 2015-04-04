@@ -13,14 +13,14 @@
 	    <TextView
 	        android:id="@+id/productInfoText"
 	        style="@style/SectionTopTextStyle"
-	        android:layout_weight="1"
+	        android:layout_weight="2"
 	        android:gravity="start|center_vertical"
 	        android:text="@string/transaction" />
 	
 	    <TextView
 	        android:id="@+id/dateText"
 	        style="@style/SectionTopTextStyle"
-	        android:layout_weight="2"
+	        android:layout_weight="1"
 	        android:gravity="end|center_vertical" />
 	    
     </LinearLayout>

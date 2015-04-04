@@ -9,16 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.ProgressDlgFragment;
+import com.android.pos.cashier.CashierActivity;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.data.merchant.MerchantMgtActivity;
-import com.android.pos.util.CommonUtil;
+import com.android.pos.report.transaction.TransactionActivity;
+import com.android.pos.user.UserMgtActivity;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
@@ -27,7 +30,7 @@ import com.android.pos.util.UserUtil;
 public class MerchantLoginActivity extends Activity implements HttpAsyncListener, LoginListener {
 
 	final Context context = this;
-	private HttpAsyncManager mHttpAsyncManager;
+	private static HttpAsyncManager mHttpAsyncManager;
 	
 	private static ProgressDlgFragment mProgressDialog;
 	private MerchantDaoService mMerchantDaoService;
@@ -46,26 +49,9 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
     	
 		setContentView(R.layout.auth_merchant_login_activity);
 		
-		Intent intent = getIntent();
-		boolean isLogout = intent.getBooleanExtra("logout", false);
+		DbUtil.initDb(this);
 		
-		if (isLogout) {
-			
-			DbUtil.switchDb(null);
-			
-			mMerchantDaoService = new MerchantDaoService();
-			mMerchantDaoService.logoutMerchant(MerchantUtil.getMerchant());
-		
-		} else {
-		
-			DbUtil.initDb(this);
-			
-			mMerchantDaoService = new MerchantDaoService();
-		}
-		
-		if (isMerchantAuthenticated()) {
-			return;
-		}
+		mMerchantDaoService = new MerchantDaoService();
 		
 		mHttpAsyncManager = new HttpAsyncManager(context);
 		
@@ -80,7 +66,64 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		
 		mLoginBtn = (Button) findViewById(R.id.loginBtn);
 		mLoginBtn.setOnClickListener(getLoginBtnOnClickListener());
+		
+		isMerchantAuthenticated();
     }
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		
+		super.onNewIntent(intent);
+		
+		boolean isLogout = intent.getBooleanExtra("logout", false);
+		
+		if (isLogout) {
+			
+			DbUtil.switchDb(null);
+			
+			MerchantUtil.recreateDao();
+			
+			mMerchantDaoService = new MerchantDaoService();
+			mMerchantDaoService.logoutMerchant(MerchantUtil.getMerchant());
+			
+			MerchantUtil.setMerchant(null);
+		
+		} else {
+		
+			DbUtil.initDb(this);
+			
+			if (!Config.isDevelopment() && UserUtil.getUser() != null) {
+				
+				if (UserUtil.isRoot()) {
+					Intent newIntent = new Intent(context, MerchantMgtActivity.class);
+					startActivity(newIntent);
+					
+				} else if (UserUtil.isMerchant()) {
+					Intent newIntent = new Intent(context, UserMgtActivity.class);
+					startActivity(newIntent);
+					
+				} else if (UserUtil.isAdmin()) {
+					Intent newIntent = new Intent(context, TransactionActivity.class);
+					startActivity(newIntent);
+					
+				} else if (UserUtil.isCashier()) {
+					Intent newIntent = new Intent(context, CashierActivity.class);
+					startActivity(newIntent);
+					
+				} else if (UserUtil.isWaitress()) {
+					Intent newIntent = new Intent(context, CashierActivity.class);
+					startActivity(newIntent);
+				}
+				
+			} else if (!Config.isDevelopment() && MerchantUtil.getMerchant() != null) {
+				
+				Intent newIntent = new Intent(context, UserLoginActivity.class);
+				startActivity(newIntent);
+			}
+			
+			mMerchantDaoService = new MerchantDaoService();
+		}
+	}
 	
 	@Override
 	public void onStart() {
@@ -102,6 +145,11 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	public void onPause() {
 		super.onPause();
 		activityVisible = false;
+	}
+	
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
 	}
 	
 	private static boolean activityVisible = false;
@@ -140,28 +188,15 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 				String loginId = mLoginIdTxt.getText().toString();
 				String password = mPasswordTxt.getText().toString();
 				
+				mLoginIdTxt.setText(Constant.EMPTY_STRING);
+				mPasswordTxt.setText(Constant.EMPTY_STRING);
+				
 				if (Constant.ROOT.equals(loginId)) {
 					
-					mLoginIdTxt.setText(Constant.EMPTY_STRING);
-					mPasswordTxt.setText(Constant.EMPTY_STRING);
-					
-					if (CommonUtil.getOtpKey().equals(password)) {
+					mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 						
-						User user = new User();
-						
-						user.setUserId(Constant.ROOT);
-						user.setName(Constant.ROOT);
-						
-						MerchantUtil.setMerchant(null);
-						UserUtil.setUser(user);
-						
-						mProgressDialog.show(getFragmentManager(), "progressDialogTag");
-						mHttpAsyncManager.syncMerchants();
-						
-					} else {
-						
-						showFailedAuthenticationMessage();
-					}
+					mHttpAsyncManager = new HttpAsyncManager(context);
+					mHttpAsyncManager.validateUser(loginId, password);
 					
 				} else {
 				
@@ -187,8 +222,6 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 							MerchantUtil.setMerchant(mMerchant);
 							Intent intent = new Intent(context, UserLoginActivity.class);
 							startActivity(intent);
-								
-							finish();
 							
 						} else {
 
@@ -199,6 +232,8 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 					} else {
 						
 						mProgressDialog.show(getFragmentManager(), "progressDialogTag");
+						
+						mHttpAsyncManager = new HttpAsyncManager(context);
 						mHttpAsyncManager.validateMerchant(loginId, password);
 					}
 				}
@@ -221,7 +256,31 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			DbUtil.switchDb(mMerchant.getId());
 		
 			mHttpAsyncManager = new HttpAsyncManager(context);
-			mHttpAsyncManager.sync();
+			mHttpAsyncManager.syncMerchant();
+			
+		} else {
+			
+			mProgressDialog.dismiss();
+			showFailedAuthenticationMessage();
+		}
+	}
+	
+	@Override
+	public void onUserValidated(User user) {
+		
+		if (user != null) {		
+			
+			user = new User();
+			
+			user.setUserId(Constant.ROOT);
+			user.setName(Constant.ROOT);
+			
+			MerchantUtil.setMerchant(null);
+			UserUtil.setMerchant(false);
+			UserUtil.setUser(user);
+			
+			mHttpAsyncManager = new HttpAsyncManager(context);
+			mHttpAsyncManager.syncMerchants();
 			
 		} else {
 			
@@ -261,7 +320,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 						}
 						
 						// case when the login is root
-						if (mMerchant == null) {
+						if (UserUtil.isRoot()) {
 							return;
 						}
 						
@@ -273,8 +332,6 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 						
 						Intent intent = new Intent(context, UserLoginActivity.class);
 						startActivity(intent);
-						
-						finish();
 					}
 				}, 500);
 			}
@@ -312,6 +369,18 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
+	}
+	
+	@Override
+	public void onSyncError(String message) {
+		
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), message);
 	}
 	
 	private void showFailedAuthenticationMessage() {

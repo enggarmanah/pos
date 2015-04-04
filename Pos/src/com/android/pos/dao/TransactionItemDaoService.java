@@ -3,6 +3,9 @@ package com.android.pos.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.android.pos.Constant;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.TransactionItemDao;
@@ -94,5 +97,20 @@ public class TransactionItemDaoService {
 				transactionItemDao.update(transactionItem);
 			}
 		} 
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM transaction_item WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

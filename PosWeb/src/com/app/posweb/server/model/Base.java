@@ -31,6 +31,9 @@ public class Base{
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date update_date;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	protected Date sync_date;
 
 	public Long getId() {
 		return id;
@@ -88,6 +91,14 @@ public class Base{
 		this.update_date = update_date;
 	}
 	
+	public Date getSync_date() {
+		return sync_date;
+	}
+
+	public void setSync_date(Date sync_date) {
+		this.sync_date = sync_date;
+	}
+
 	public void setBean(Base bean) {
 		
 		this.id = bean.getId();
@@ -97,5 +108,6 @@ public class Base{
 		this.create_date = bean.getCreate_date();
 		this.update_by = bean.getUpdate_by();
 		this.update_date = bean.getUpdate_date();
+		this.sync_date = new Date();
 	}
 }

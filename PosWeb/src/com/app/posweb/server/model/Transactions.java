@@ -1,5 +1,7 @@
 package com.app.posweb.server.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +39,7 @@ public class Transactions {
 	private long customer_id;
 	private String customer_name;
 	private String status;
+	private Date sync_date;
 
 	public void setBean(Transactions bean) {
 
@@ -64,6 +67,7 @@ public class Transactions {
 		this.customer_id = bean.getCustomer_id();
 		this.customer_name = bean.getCustomer_name();
 		this.status = bean.getStatus();
+		this.sync_date = bean.getSync_date();
 	}
 
 	public Long getId() {
@@ -256,5 +260,13 @@ public class Transactions {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Date getSync_date() {
+		return sync_date;
+	}
+
+	public void setSync_date(Date sync_date) {
+		this.sync_date = sync_date;
 	}
 }

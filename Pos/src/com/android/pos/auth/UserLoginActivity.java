@@ -23,6 +23,7 @@ import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 import com.android.pos.waitress.WaitressActivity;
@@ -65,6 +66,8 @@ public class UserLoginActivity extends Activity {
 		mUserDaoService = new UserDaoService();
 		
 		mMerchant = mMerchantDaoService.getActiveMerchant();
+		
+		MerchantUtil.setMerchant(mMerchant);
 		
 		String name = mMerchant.getName();
 		String contact = mMerchant.getAddress();
@@ -164,13 +167,15 @@ public class UserLoginActivity extends Activity {
 			intent.putExtra("logout", true);
 			startActivity(intent);
 			
-			finish();
-			
 			return true;
 
 		default:
 			
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
 	}
 }

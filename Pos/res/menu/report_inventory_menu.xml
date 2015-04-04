@@ -22,4 +22,17 @@
         android:title="@string/product_search"
         android:showAsAction="ifRoom|collapseActionView">
     </item>
+    <item
+        android:id="@+id/menu_item_list"
+        android:icon="@drawable/view_as_list"
+        android:title="@string/product_list"
+        android:showAsAction="ifRoom|collapseActionView">
+    </item>
+    <item
+        android:id="@+id/menu_item_alert"
+        android:actionLayout="@layout/cmn_menu_alert"
+        android:icon="@drawable/action_flag"
+        android:title="@string/product_stock_alert"
+        android:showAsAction="always">
+    </item>
 </menu>

@@ -9,5 +9,5 @@ public interface ProductStatisticActionListener {
 	
 	public void onTransactionMonthSelected(TransactionMonthBean transactionMonth);
 	
-	public void onBackButtonClicked();
+	public void onBackPressed();
 }

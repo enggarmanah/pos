@@ -56,7 +56,7 @@ public class ProductStatisticActivity extends BaseActivity
 		setContentView(R.layout.report_transaction_activity);
 
 		DbUtil.initDb(this);
-
+		
 		initDrawerMenu();
 		
 		initFragments();
@@ -87,6 +87,8 @@ public class ProductStatisticActivity extends BaseActivity
 			mIsDisplayTransactionMonth = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ON_MONTH);
 		
 		} else {
+			
+			mIsDisplayTransactionMonth = true;
 			
 			mSelectedTransactionMonth = new TransactionMonthBean();
 			mSelectedTransactionMonth.setMonth(CommonUtil.getCurrentMonth());
@@ -304,7 +306,7 @@ public class ProductStatisticActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onBackButtonClicked() {
+	public void onBackPressed() {
 		
 		synchronized (CommonUtil.LOCK) {
 			onBackToParent();
@@ -371,5 +373,14 @@ public class ProductStatisticActivity extends BaseActivity
 				mIsDisplayTransactionYear = true;
 			}
 		}
+	}
+	
+	@Override
+	protected void onAsyncTaskCompleted() {
+		
+		super.onAsyncTaskCompleted();
+		
+		mProductStatisticListFragment.updateContent();
+		mProductStatisticDetailFragment.updateContent();
 	}
 }

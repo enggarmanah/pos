@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
@@ -84,7 +85,7 @@ public class TransactionItemDao {
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT ti FROM Transactions AS t, TransactionItem AS ti WHERE  "
-				+ "	ti.merchant_id = :merchantId AND ti.transaction_id = t.remote_id AND ti.merchant_id = t.merchant_id AND t.transaction_date >= :lastSyncDate");
+				+ "	ti.merchant_id = :merchantId AND ti.transaction_id = t.remote_id AND ti.merchant_id = t.merchant_id AND t.sync_date >= :lastSyncDate");
 		
 		sql.append(" ORDER BY ti.id");
 		
@@ -98,5 +99,24 @@ public class TransactionItemDao {
 		em.close();
 
 		return result;
+	}
+	
+	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT COUNT(ti.id) FROM Transactions AS t, TransactionItem AS ti WHERE  "
+				+ "	ti.merchant_id = :merchantId AND ti.transaction_id = t.remote_id AND ti.merchant_id = t.merchant_id AND t.sync_date >= :lastSyncDate");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		
+		long count = (long) query.getSingleResult();
+		
+		em.close();
+
+		return (count > 0);
 	}
 }

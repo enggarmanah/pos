@@ -97,4 +97,32 @@ public class DeviceDao {
 
 		return result;
 	}
+	
+	public boolean isValidToken(Long merchantId, String uuid) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT d FROM Device d ");
+		sql.append(" WHERE merchant_id = :merchantId ");
+		sql.append(" AND uuid = :uuid ");
+		
+		TypedQuery<Device> query = em.createQuery(sql.toString(), Device.class);
+		
+		query.setParameter("merchantId", merchantId);
+		query.setParameter("uuid", uuid);
+		
+		Device result = null;
+		
+		try {
+			result = query.getSingleResult();
+			
+		} catch (NoResultException e) {
+			// do nothing
+		}
+		
+		em.close();
+
+		return (result != null);
+	}
 }

@@ -17,8 +17,15 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<Bills> {
 
 	private Context context;
 	private List<Bills> bills;
+	private ItemActionListener mCallback;
+	
+	public interface ItemActionListener {
+
+		public void onBillSelected(Bills bill);
+	}
 	
 	class ViewHolder {
+		
 		TextView itemText;
 		TextView remarksText;
 		TextView billDateText;
@@ -26,12 +33,13 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<Bills> {
 		TextView supplierText;
 	}
 
-	public CashFlowDetailArrayAdapter(Context context, List<Bills> productStatistics) {
+	public CashFlowDetailArrayAdapter(Context context, List<Bills> productStatistics, ItemActionListener listener) {
 
 		super(context, R.layout.bills_list_item, productStatistics);
 		
 		this.context = context;
 		this.bills = productStatistics;
+		this.mCallback = listener;
 	}
 	
 	@Override
@@ -109,6 +117,15 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<Bills> {
 		} else {
 			supplierText.setVisibility(View.GONE);
 		}
+		
+		rowView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mCallback.onBillSelected(bill);
+			}
+		});
 		
 		return rowView;
 	}

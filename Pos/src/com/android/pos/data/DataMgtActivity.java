@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
-import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.data.customer.CustomerMgtActivity;
 import com.android.pos.data.discount.DiscountMgtActivity;
@@ -53,24 +52,7 @@ public class DataMgtActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		switch (item.getItemId()) {
-
-		case R.id.menu_item_sync:
-			
-			mProgressDialog.show(getFragmentManager(), progressDialogTag);
-			
-			if (mHttpAsyncManager == null) {
-				mHttpAsyncManager = new HttpAsyncManager(this);
-			}
-			
-			mHttpAsyncManager.sync(); 
-			
-			return true;
-
-		default:
-			
-			return super.onOptionsItemSelected(item);
-		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	public void goToModuleMerchant(View view) {

@@ -43,6 +43,8 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     	
     	View view = inflater.inflate(R.layout.data_customer_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -52,14 +54,14 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-        mNameText = (EditText) getActivity().findViewById(R.id.nameText);
-    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneText);
-    	mEmailText = (EditText) getActivity().findViewById(R.id.emailText);
-    	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
-    	mEmailStatusSp = (Spinner) getActivity().findViewById(R.id.emailStatusSp);
-    	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
+        mNameText = (EditText) view.findViewById(R.id.nameText);
+    	mTelephoneText = (EditText) view.findViewById(R.id.telephoneText);
+    	mEmailText = (EditText) view.findViewById(R.id.emailText);
+    	mAddressText = (EditText) view.findViewById(R.id.addressText);
+    	mEmailStatusSp = (Spinner) view.findViewById(R.id.emailStatusSp);
+    	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
     	registerField(mNameText);
     	registerField(mTelephoneText);

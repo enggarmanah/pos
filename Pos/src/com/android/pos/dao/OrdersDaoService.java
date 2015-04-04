@@ -91,6 +91,8 @@ public class OrdersDaoService {
 			orderReferences.add(orderReference);
 		}
 		
+		cursor.close();
+		
 		return orderReferences;
 	}
 	
@@ -120,5 +122,20 @@ public class OrdersDaoService {
 				mOrdersDao.update(order);
 			}
 		} 
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM orders WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

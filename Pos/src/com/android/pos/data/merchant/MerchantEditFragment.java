@@ -37,22 +37,30 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     EditText mTelephoneText;
     EditText mContactNameText;
     EditText mContactTelephoneText;
+    EditText mContactEmailText;
     EditText mLoginIdText;
     EditText mPasswordText;
     EditText mPeriodStartDate;
     EditText mPeriodEndDate;
     EditText mTaxText;
     EditText mServiceChargeText;
+    EditText mPrinterLineSizeText;
+    
+    Spinner mPrinterRequiredSp;
+    Spinner mPrinterMiniFontSp;
     Spinner mStatusSp;
     
     LinearLayout mStatusPanel;
     LinearLayout accessRightPanel;
+    LinearLayout accessRightRowPanel;
     
     List<MerchantAccess> mMerchantAccesses;
     List<ImageButton> mCheckedButtons;
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
+    CodeSpinnerArrayAdapter printerRequiredArrayAdapter;
+    CodeSpinnerArrayAdapter printerMiniFontArrayAdapter;
     
     private MerchantDaoService mMerchantDaoService = new MerchantDaoService();
     private MerchantAccessDaoService mMerchantAccessDaoService = new MerchantAccessDaoService();
@@ -71,6 +79,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	View view = inflater.inflate(R.layout.data_merchant_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -80,25 +90,30 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-        mNameText = (EditText) getView().findViewById(R.id.nameText);
-    	mTypeSp = (Spinner) getView().findViewById(R.id.typeSp);
-    	mAddressText = (EditText) getView().findViewById(R.id.addressText);
-    	mTelephoneText = (EditText) getView().findViewById(R.id.telephoneText);
-    	mContactNameText = (EditText) getView().findViewById(R.id.contactNameText);
-    	mContactTelephoneText = (EditText) getView().findViewById(R.id.contactTelephoneText);
-    	mLoginIdText = (EditText) getView().findViewById(R.id.loginIdText);
-    	mPasswordText = (EditText) getView().findViewById(R.id.passwordText);
-    	mPeriodStartDate = (EditText) getView().findViewById(R.id.periodStartDate);
-    	mPeriodEndDate = (EditText) getView().findViewById(R.id.periodEndDate);
-    	mTaxText = (EditText) getView().findViewById(R.id.taxText);
-    	mServiceChargeText = (EditText) getView().findViewById(R.id.serviceChargeText);
-    	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
+        mNameText = (EditText) view.findViewById(R.id.nameText);
+    	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
+    	mAddressText = (EditText) view.findViewById(R.id.addressText);
+    	mTelephoneText = (EditText) view.findViewById(R.id.telephoneText);
+    	mContactNameText = (EditText) view.findViewById(R.id.contactNameText);
+    	mContactTelephoneText = (EditText) view.findViewById(R.id.contactTelephoneText);
+    	mContactEmailText = (EditText) view.findViewById(R.id.contactEmailText);
+    	mLoginIdText = (EditText) view.findViewById(R.id.loginIdText);
+    	mPasswordText = (EditText) view.findViewById(R.id.passwordText);
+    	mPeriodStartDate = (EditText) view.findViewById(R.id.periodStartDate);
+    	mPeriodEndDate = (EditText) view.findViewById(R.id.periodEndDate);
+    	mTaxText = (EditText) view.findViewById(R.id.taxText);
+    	mServiceChargeText = (EditText) view.findViewById(R.id.serviceChargeText);
+    	mPrinterRequiredSp = (Spinner) view.findViewById(R.id.printerRequiredSp);
+    	mPrinterMiniFontSp = (Spinner) view.findViewById(R.id.printerMiniFontSp);
+    	mPrinterLineSizeText = (EditText) view.findViewById(R.id.printerLineSizeText);
+    	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
 
-    	mStatusPanel = (LinearLayout) getView().findViewById(R.id.statusPanel);
+    	mStatusPanel = (LinearLayout) view.findViewById(R.id.statusPanel);
     	
-    	accessRightPanel = (LinearLayout) getView().findViewById(R.id.accessRightsPanel);
+    	accessRightRowPanel = (LinearLayout) view.findViewById(R.id.accessRightsRowPanel);
+    	accessRightPanel = (LinearLayout) view.findViewById(R.id.accessRightsPanel);
     	
     	registerField(mNameText);
     	registerField(mTypeSp);
@@ -106,6 +121,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mTelephoneText);
     	registerField(mContactNameText);
     	registerField(mContactTelephoneText);
+    	registerField(mContactEmailText);
     	registerField(mLoginIdText);
     	registerField(mPasswordText);
     	registerField(mPeriodStartDate);
@@ -128,6 +144,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mandatoryFields.add(new FormField(mPeriodEndDate, R.string.field_period_end));
     	mandatoryFields.add(new FormField(mTaxText, R.string.field_tax_percentage));
     	mandatoryFields.add(new FormField(mServiceChargeText, R.string.field_service_charge_percentage));
+    	mandatoryFields.add(new FormField(mPrinterLineSizeText, R.string.field_printer_line_size));
     	
     	// only root can access validity period
     	
@@ -142,6 +159,12 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	typeArrayAdapter = new CodeSpinnerArrayAdapter(mTypeSp, getActivity(), CodeUtil.getMerchantTypes());
     	mTypeSp.setAdapter(typeArrayAdapter);
+    	
+    	printerRequiredArrayAdapter = new CodeSpinnerArrayAdapter(mPrinterRequiredSp, getActivity(), CodeUtil.getStatus());
+    	mPrinterRequiredSp.setAdapter(printerRequiredArrayAdapter);
+    	
+    	printerMiniFontArrayAdapter = new CodeSpinnerArrayAdapter(mPrinterMiniFontSp, getActivity(), CodeUtil.getBooleans());
+    	mPrinterMiniFontSp.setAdapter(printerMiniFontArrayAdapter);
     	
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getStatus());
     	mStatusSp.setAdapter(statusArrayAdapter);
@@ -159,6 +182,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	if (merchant != null) {
     		
     		int typeIndex = typeArrayAdapter.getPosition(merchant.getType());
+    		int printerRequiredIndex = printerRequiredArrayAdapter.getPosition(merchant.getPrinterRequired());
+    		int printerMiniFontIndex = printerMiniFontArrayAdapter.getPosition(merchant.getPrinterMiniFont());
     		int statusIndex = statusArrayAdapter.getPosition(merchant.getStatus());
     		
     		mNameText.setText(merchant.getName());
@@ -166,6 +191,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mTelephoneText.setText(merchant.getTelephone());
     		mContactNameText.setText(merchant.getContactName());
     		mContactTelephoneText.setText(merchant.getContactTelephone());
+    		mContactEmailText.setText(merchant.getContactEmail());
     		mLoginIdText.setText(merchant.getLoginId());
     		mPasswordText.setText(merchant.getPassword());
     		mPeriodStartDate.setText(CommonUtil.formatDate(merchant.getPeriodStart()));
@@ -173,9 +199,18 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		
     		mTaxText.setText(CommonUtil.formatString(merchant.getTaxPercentage()));
     		mServiceChargeText.setText(CommonUtil.formatString(merchant.getServiceChargePercentage()));
+    		mPrinterLineSizeText.setText(CommonUtil.formatString(merchant.getPrinterLineSize()));
     		
     		mTypeSp.setSelection(typeIndex);
+    		mPrinterRequiredSp.setSelection(printerRequiredIndex);
+    		mPrinterMiniFontSp.setSelection(printerMiniFontIndex);
     		mStatusSp.setSelection(statusIndex);
+    		
+    		if (!UserUtil.isRoot()) {
+    			accessRightRowPanel.setVisibility(View.GONE);
+    		} else {
+    			accessRightRowPanel.setVisibility(View.VISIBLE);
+    		}
     		
     		accessRightPanel.removeAllViews();
     		
@@ -244,12 +279,16 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	String telephone = mTelephoneText.getText().toString();
     	String contactName = mContactNameText.getText().toString();
     	String contactTelephone = mContactTelephoneText.getText().toString();
+    	String contactEmail = mContactEmailText.getText().toString();
     	String loginId = mLoginIdText.getText().toString();
     	String password = mPasswordText.getText().toString();
     	Integer tax = CommonUtil.parseInteger(mTaxText.getText().toString());
     	Integer serviceCharge = CommonUtil.parseInteger(mServiceChargeText.getText().toString());
     	Date startDate = CommonUtil.parseDate(mPeriodStartDate.getText().toString());
     	Date endDate = CommonUtil.parseDate(mPeriodEndDate.getText().toString());
+    	String printerRequired = CodeBean.getNvlCode((CodeBean) mPrinterRequiredSp.getSelectedItem());
+    	String printerMiniFont = CodeBean.getNvlCode((CodeBean) mPrinterMiniFontSp.getSelectedItem());
+    	Integer printerLineSize = CommonUtil.parseInteger(mPrinterLineSizeText.getText().toString());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
     	if (mItem != null) {
@@ -260,12 +299,16 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setTelephone(telephone);
     		mItem.setContactName(contactName);
     		mItem.setContactTelephone(contactTelephone);
+    		mItem.setContactEmail(contactEmail);
     		mItem.setLoginId(loginId);
     		mItem.setPassword(password);
     		mItem.setPeriodStart(startDate);
     		mItem.setPeriodEnd(endDate);
     		mItem.setTaxPercentage(tax);
     		mItem.setServiceChargePercentage(serviceCharge);
+    		mItem.setPrinterRequired(printerRequired);
+    		mItem.setPrinterMiniFont(printerMiniFont);
+    		mItem.setPrinterLineSize(printerLineSize);
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
@@ -322,6 +365,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 	        mTelephoneText.getText().clear();
 	        mContactNameText.getText().clear();
 	        mContactTelephoneText.getText().clear();
+	        mContactEmailText.getText().clear();
 	        mLoginIdText.getText().clear();
 	        mPasswordText.getText().clear();
 	        mPeriodStartDate.getText().clear();

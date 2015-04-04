@@ -4,28 +4,50 @@ import java.io.Serializable;
 
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
+import com.android.pos.dao.Bills;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashFlowYearBean;
+import com.android.pos.report.outstanding.OutstandingBillActivity;
+import com.android.pos.report.pastdue.PastDueActivity;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class CashFlowActivity extends BaseActivity 
 	implements CashFlowActionListener {
 	
 	protected CashFlowListFragment mCashFlowListFragment;
 	protected CashFlowDetailFragment mCashFlowDetailFragment;
+	protected CashFlowBillDetailFragment mCashFlowBillDetailFragment;
 	
 	boolean mIsMultiplesPane = false;
+	
+	private MenuItem mAlertMenu;
+	private MenuItem mWarningMenu;
+	
+	private TextView mAlertMenuText;
+	private ImageButton mAlertMenuBtn;
+	
+	private TextView mWarningMenuText;
+	private ImageButton mWarningMenuBtn;
 	
 	private CashFlowYearBean mSelectedCashFlowYear;
 	private CashFlowMonthBean mSelectedCashFlowMonth;
 	
+	private Bills mSelectedBill;
+	
 	private static String SELECTED_TRANSACTION_YEAR = "SELECTED_TRANSACTION_YEAR";
 	private static String SELECTED_TRANSACTION_MONTH = "SELECTED_TRANSACTION_MONTH";
+	private static String SELECTED_BILL = "SELECTED_BILL";
 	
 	public static final String DISPLAY_TRANSACTION_ALL_YEARS = "DISPLAY_TRANSACTION_ALL_YEARS";
 	public static final String DISPLAY_TRANSACTION_ON_YEAR = "DISPLAY_TRANSACTION_ON_YEAR";
@@ -33,6 +55,10 @@ public class CashFlowActivity extends BaseActivity
 	
 	private String mCashFlowListFragmentTag = "cashFlowListFragmentTag";
 	private String mCashFlowDetailFragmentTag = "cashFlowDetailFragmentTag";
+	private String mCashFlowBillDetailFragmentTag = "cashFlowBillDetailFragmentTag";
+	
+	private Integer mPastDueBillsCount = 0;
+	private Integer mOutstandingBillsCount = 0;
 	
 	private boolean mIsDisplayCashFlowAllYears = false;
 	private boolean mIsDisplayCashFlowYear = false;
@@ -52,7 +78,7 @@ public class CashFlowActivity extends BaseActivity
 		
 		initFragments();
 		
-		initWaitAfterFragmentRemovedTask(mCashFlowListFragmentTag, mCashFlowDetailFragmentTag);
+		initWaitAfterFragmentRemovedTask(mCashFlowListFragmentTag, mCashFlowDetailFragmentTag, mCashFlowBillDetailFragmentTag);
 	}
 	
 	@Override
@@ -62,6 +88,9 @@ public class CashFlowActivity extends BaseActivity
 		
 		setTitle(getString(R.string.menu_report_cashflow));
 		setSelectedMenu(getString(R.string.menu_report_cashflow));
+		
+		updatePastDueBillsCount();
+		updateOutstandingBillsCount();
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {
@@ -71,11 +100,15 @@ public class CashFlowActivity extends BaseActivity
 			mSelectedCashFlowYear = (CashFlowYearBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
 			mSelectedCashFlowMonth = (CashFlowMonthBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
 			
+			mSelectedBill = (Bills) savedInstanceState.getSerializable(SELECTED_BILL);
+			
 			mIsDisplayCashFlowAllYears = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ALL_YEARS);
 			mIsDisplayCashFlowYear = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ON_YEAR);
 			mIsDisplayCashFlowMonth = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ON_MONTH);
 		
 		} else {
+			
+			mIsDisplayCashFlowMonth = true;
 			
 			mSelectedCashFlowMonth = new CashFlowMonthBean();
 			mSelectedCashFlowMonth.setMonth(CommonUtil.getCurrentMonth());
@@ -106,6 +139,15 @@ public class CashFlowActivity extends BaseActivity
 		} else {
 			removeFragment(mCashFlowDetailFragment);
 		}
+		
+		mCashFlowBillDetailFragment = (CashFlowBillDetailFragment) getFragmentManager().findFragmentByTag(mCashFlowBillDetailFragmentTag);
+		
+		if (mCashFlowBillDetailFragment == null) {
+			mCashFlowBillDetailFragment = new CashFlowBillDetailFragment();
+
+		} else {
+			removeFragment(mCashFlowBillDetailFragment);
+		}
 	}
 
 	@Override
@@ -115,6 +157,8 @@ public class CashFlowActivity extends BaseActivity
 		
 		outState.putSerializable(SELECTED_TRANSACTION_YEAR, (Serializable) mSelectedCashFlowYear);
 		outState.putSerializable(SELECTED_TRANSACTION_MONTH, (Serializable) mSelectedCashFlowMonth);
+		
+		outState.putSerializable(SELECTED_BILL, (Serializable) mSelectedBill);
 		
 		outState.putSerializable(DISPLAY_TRANSACTION_ALL_YEARS, (Serializable) mIsDisplayCashFlowAllYears);
 		outState.putSerializable(DISPLAY_TRANSACTION_ON_YEAR, (Serializable) mIsDisplayCashFlowYear);
@@ -134,14 +178,27 @@ public class CashFlowActivity extends BaseActivity
 		
 		mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
 		
+		mCashFlowBillDetailFragment.setBill(mSelectedBill);
+		
 		if (mIsMultiplesPane) {
 
 			addFragment(mCashFlowListFragment, mCashFlowListFragmentTag);
-			addFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
 			
+			if (mSelectedBill != null) {
+				
+				addFragment(mCashFlowBillDetailFragment, mCashFlowBillDetailFragmentTag);
+				
+			} else {
+				
+				addFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
+			}			
 		} else {
 
-			if (mSelectedCashFlowMonth != null) {
+			if (mSelectedBill != null) {
+				
+				addFragment(mCashFlowBillDetailFragment, mCashFlowBillDetailFragmentTag);
+				
+			} else if (mSelectedCashFlowMonth != null) {
 				
 				addFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
 				
@@ -154,7 +211,56 @@ public class CashFlowActivity extends BaseActivity
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
+		
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.report_cashflow_menu, menu);
+		
+		mAlertMenu = menu.findItem(R.id.menu_item_alert);
+		
+		mAlertMenuText = (TextView) mAlertMenu.getActionView().findViewById(R.id.menu_item_alert_text);
+		mAlertMenuBtn = (ImageButton) mAlertMenu.getActionView().findViewById(R.id.menu_item_alert_icon);
+		
+		String alertText = "0";
+		
+		if (mPastDueBillsCount > 99) {
+			alertText = "++";
+		} else if (mPastDueBillsCount > 0) {
+			alertText = CommonUtil.formatNumber(mPastDueBillsCount);
+		}
+		
+		mAlertMenuText.setText(alertText);
+		mAlertMenuBtn.setOnClickListener(getMenuAlertOnClickListener());
+		
+		mAlertMenu.setVisible(false);
+		
+		if (mPastDueBillsCount != 0) {
+			
+			mAlertMenu.setVisible(true);
+		}
+		
+		mWarningMenu = menu.findItem(R.id.menu_item_warning);
+		
+		mWarningMenuText = (TextView) mWarningMenu.getActionView().findViewById(R.id.menu_item_warning_text);
+		mWarningMenuBtn = (ImageButton) mWarningMenu.getActionView().findViewById(R.id.menu_item_warning_icon);
+		
+		String warningText = "0";
+		
+		if (mOutstandingBillsCount > 99) {
+			warningText = "++";
+		} else if (mOutstandingBillsCount > 0) {
+			warningText = CommonUtil.formatNumber(mOutstandingBillsCount);
+		}
+		
+		mWarningMenuText.setText(warningText);
+		mWarningMenuBtn.setOnClickListener(getMenuWarningOnClickListener());
+		
+		mWarningMenu.setVisible(false);
+		
+		if (mOutstandingBillsCount != 0) {
+			
+			mAlertMenu.setVisible(true);
+		}
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -166,11 +272,78 @@ public class CashFlowActivity extends BaseActivity
 		return super.onPrepareOptionsMenu(menu);
 	}
 	
+	private View.OnClickListener getMenuAlertOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(getApplicationContext(), PastDueActivity.class);
+				startActivity(intent);
+			}
+		};
+	}
+	
+	private View.OnClickListener getMenuWarningOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(getApplicationContext(), OutstandingBillActivity.class);
+				startActivity(intent);
+			}
+		};
+	}
+	
+	private void updatePastDueBillsCount() {
+		
+		MerchantUtil.refreshPastDueBillsCount();
+		
+		mPastDueBillsCount = MerchantUtil.getPastDueBillsCount();
+		
+		if (mAlertMenuText != null) {
+			mAlertMenuText.setText(CommonUtil.formatNumber(mPastDueBillsCount));
+		}
+		
+		if (mPastDueBillsCount != 0) {
+			
+			if (mAlertMenu != null) {
+				mAlertMenu.setVisible(true);
+			}
+		}
+	}
+	
+	private void updateOutstandingBillsCount() {
+		
+		MerchantUtil.refreshOutstandingBillsCount();
+		
+		mOutstandingBillsCount = MerchantUtil.getOutstandingBillsCount();
+		
+		if (mWarningMenuText != null) {
+			mWarningMenuText.setText(CommonUtil.formatNumber(mOutstandingBillsCount));
+		}
+		
+		if (mOutstandingBillsCount != 0) {
+			
+			if (mWarningMenu != null) {
+				mWarningMenu.setVisible(true);
+			}
+		}
+	}
+	
 	private void hideSelectedMenu() {
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
-		if (!isDrawerOpen) {
+		if (mPastDueBillsCount != 0) {
+			mAlertMenu.setVisible(!isDrawerOpen);
+		}
+		
+		if (mOutstandingBillsCount != 0) {
+			mWarningMenu.setVisible(!isDrawerOpen);
 		}
 	}
 
@@ -181,27 +354,6 @@ public class CashFlowActivity extends BaseActivity
 		
 			switch (item.getItemId()) {
 	
-				case R.id.menu_revenue:
-					
-					refreshParentView();
-					hideSelectedMenu();
-					
-					return true;
-				
-				case R.id.menu_profit:
-					
-					refreshParentView();
-					hideSelectedMenu();
-					
-					return true;
-				
-				case R.id.menu_quantity:
-					
-					refreshParentView();
-					hideSelectedMenu();
-					
-					return true;
-					
 				default:
 					return super.onOptionsItemSelected(item);
 			}
@@ -239,16 +391,32 @@ public class CashFlowActivity extends BaseActivity
 		}
 	}
 	
-	private void refreshParentView() {
+	@Override
+	public void onBillSelected(Bills bill) {
 		
-		if (mIsMultiplesPane && mIsDisplayCashFlowMonth) {
+		mSelectedBill = bill;
+		
+		resetDisplayStatus();
+		mIsDisplayCashFlowMonth = true;
+		
+		if (mIsMultiplesPane) {
 			
-			mCashFlowListFragment.setSelectedCashFlowYear(mSelectedCashFlowYear);
+			mCashFlowBillDetailFragment.setBill(mSelectedBill);
+			
+			removeFragment(mCashFlowListFragment);
+			removeFragment(mCashFlowDetailFragment);
+			
+			initWaitAfterFragmentRemovedTask(mCashFlowListFragmentTag, mCashFlowDetailFragmentTag);
+			
+		} else {
+			
+			replaceFragment(mCashFlowBillDetailFragment, mCashFlowBillDetailFragmentTag);
+			mCashFlowBillDetailFragment.setBill(mSelectedBill);
 		}
 	}
 	
 	@Override
-	public void onBackButtonClicked() {
+	public void onBackPressed() {
 		
 		synchronized (CommonUtil.LOCK) {
 			onBackToParent();
@@ -257,21 +425,51 @@ public class CashFlowActivity extends BaseActivity
 	
 	private void onBackToParent() {
 		
-		setDisplayStatusToParent();
-		
-		mCashFlowListFragment.setSelectedCashFlowYear(mSelectedCashFlowYear);
-		mCashFlowListFragment.setSelectedCashFlowMonth(mSelectedCashFlowMonth);
-		
-		mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
-		
 		if (mIsMultiplesPane) {
+			
+			if (mSelectedBill != null) {
+				
+				mSelectedBill = null;
+				
+				mCashFlowBillDetailFragment.setBill(mSelectedBill);
+				
+				removeFragment(mCashFlowListFragment);
+				removeFragment(mCashFlowBillDetailFragment);
+				
+				initWaitAfterFragmentRemovedTask(mCashFlowListFragmentTag, mCashFlowBillDetailFragmentTag);
+			
+			} else {
+				
+				setDisplayStatusToParent();
+				
+				mCashFlowListFragment.setSelectedCashFlowYear(mSelectedCashFlowYear);
+				mCashFlowListFragment.setSelectedCashFlowMonth(mSelectedCashFlowMonth);
+				
+				mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
+			}
 			
 			initFragment();
 			
 		} else {
 			
-			replaceFragment(mCashFlowListFragment, mCashFlowListFragmentTag);
-			initFragment();
+			if (mSelectedBill != null) {
+				
+				mSelectedBill = null;
+				replaceFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
+			
+			} else {
+				
+				setDisplayStatusToParent();
+				
+				mCashFlowListFragment.setSelectedCashFlowYear(mSelectedCashFlowYear);
+				mCashFlowListFragment.setSelectedCashFlowMonth(mSelectedCashFlowMonth);
+				
+				mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
+				
+				replaceFragment(mCashFlowListFragment, mCashFlowListFragmentTag);
+				
+				initFragment();
+			}
 		}
 	}
 	
@@ -314,5 +512,14 @@ public class CashFlowActivity extends BaseActivity
 				mIsDisplayCashFlowYear = true;
 			}
 		}
+	}
+	
+	@Override
+	protected void onAsyncTaskCompleted() {
+		
+		super.onAsyncTaskCompleted();
+		
+		mCashFlowListFragment.updateContent();
+		mCashFlowDetailFragment.updateContent();
 	}
 }

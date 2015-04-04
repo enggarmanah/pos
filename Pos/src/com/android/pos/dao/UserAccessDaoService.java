@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.android.pos.Constant;
 import com.android.pos.dao.UserAccess;
 import com.android.pos.dao.UserAccessDao;
@@ -57,7 +60,11 @@ public class UserAccessDaoService {
 	}
 	
 	public List<UserAccess> getUserAccessList(Long userId) {
-
+		
+		if (userId == null) {
+			userId = Long.valueOf(-1);
+		}
+		
 		QueryBuilder<UserAccess> qb = userAccessDao.queryBuilder();
 		qb.where(UserAccessDao.Properties.UserId.eq(userId)).orderAsc(UserAccessDao.Properties.Id);
 		
@@ -153,5 +160,20 @@ public class UserAccessDaoService {
 		Query<MerchantAccess> q = qb.build();
 		
 		return q.list();
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM user_access WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

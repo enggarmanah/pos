@@ -10,6 +10,10 @@
 		<servlet-class>com.app.posweb.server.servlet.MerchantValidateJsonServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>userValidateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.UserValidateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>getLastSyncJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.GetLastSyncJsonServlet</servlet-class>
 	</servlet>
@@ -118,6 +122,10 @@
 		<servlet-class>com.app.posweb.server.servlet.InventoryUpdateJsonServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>merchantAccessGetAllJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantAccessGetAllJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>merchantAccessGetJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.MerchantAccessGetJsonServlet</servlet-class>
 	</servlet>
@@ -157,6 +165,10 @@
 	<servlet-mapping>
 		<servlet-name>merchantValidateJsonServlet</servlet-name>
 		<url-pattern>/merchantValidateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>userValidateJsonServlet</servlet-name>
+		<url-pattern>/userValidateJsonServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>getLastSyncJsonServlet</servlet-name>
@@ -265,6 +277,10 @@
 	<servlet-mapping>
 		<servlet-name>inventoryUpdateJsonServlet</servlet-name>
 		<url-pattern>/inventoryUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantAccessGetAllJsonServlet</servlet-name>
+		<url-pattern>/merchantAccessGetAllJsonServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>merchantAccessGetJsonServlet</servlet-name>

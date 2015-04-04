@@ -20,6 +20,14 @@ public class ServerUtil {
 		return strTodateTime("01/01/2015 00:00");
 	}
 	
+	public static String getOtpKey() {
+		
+		//SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy");
+		//return sdf.format(new Date());
+		
+		return "";
+	}
+	
 	public static String getCallbackUrl() {
 		
 		if (ServerUtil.isProductionEnvironment()) {

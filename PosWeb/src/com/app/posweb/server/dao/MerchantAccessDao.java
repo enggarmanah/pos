@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
@@ -83,7 +84,7 @@ public class MerchantAccessDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE merchant_id = :merchantId AND update_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
 		
 		sql.append(" ORDER BY m.id");
 		
@@ -97,5 +98,59 @@ public class MerchantAccessDao {
 		em.close();
 
 		return result;
+	}
+	
+	public List<MerchantAccess> getAllMerchantAccesses(SyncRequest syncRequest) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE sync_date >= :lastSyncDate");
+		
+		sql.append(" ORDER BY m.id");
+		
+		TypedQuery<MerchantAccess> query = em.createQuery(sql.toString(), MerchantAccess.class);
+		
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		
+		List<MerchantAccess> result = query.getResultList();
+		
+		em.close();
+
+		return result;
+	}
+	
+	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		
+		long count = (long) query.getSingleResult();
+		
+		em.close();
+
+		return (count > 0);
+	}
+	
+	public boolean hasRootUpdate(SyncRequest syncRequest) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE sync_date >= :lastSyncDate");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		
+		long count = (long) query.getSingleResult();
+		
+		em.close();
+
+		return (count > 0);
 	}
 }

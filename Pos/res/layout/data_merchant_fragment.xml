@@ -94,6 +94,21 @@
                 android:id="@+id/contactTelephoneText"
                 style="@style/FormInputPhoneStyle" />
         </LinearLayout>
+        
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_E" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_contact_email" />
+
+            <EditText
+                android:id="@+id/contactEmailText"
+                style="@style/FormInputEmailStyle" />
+        </LinearLayout>
 
         <LinearLayout style="@style/FormRowStyle" >
 
@@ -186,6 +201,57 @@
                 style="@style/FormInputNumericStyle"
                 android:hint="@string/hint_percentage"/>
         </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/printerRequiredPanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_P" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_printer_required" />
+
+            <Spinner
+                android:id="@+id/printerRequiredSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/printerMiniSizePanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_F" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_printer_mini_font" />
+
+            <Spinner
+                android:id="@+id/printerMiniFontSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/printerLineSizePanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_T" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_printer_line_size" />
+
+            <EditText
+                android:id="@+id/printerLineSizeText"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
                 
         <LinearLayout 
             android:id="@+id/statusPanel"
@@ -204,7 +270,8 @@
                 style="@style/FormInputListStyle" />
         </LinearLayout>
         
-        <LinearLayout 
+        <LinearLayout
+            android:id="@+id/accessRightsRowPanel"
             style="@style/FormRowStyle" >
 
             <TextView

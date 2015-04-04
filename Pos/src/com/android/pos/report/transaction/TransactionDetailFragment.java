@@ -153,7 +153,11 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		}
 	}
 	
-	private void updateContent() {
+	public void updateContent() {
+		
+		if (!isViewInitialized()) {
+			return;
+		}
 		
 		if (mTransaction != null) {
 			
@@ -225,7 +229,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 			@Override
 			public void onClick(View v) {
 				
-				mActionListener.onBackButtonClicked();
+				mActionListener.onBackPressed();
 			}
 		};
 	}

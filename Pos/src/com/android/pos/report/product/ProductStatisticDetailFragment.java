@@ -119,7 +119,7 @@ public class ProductStatisticDetailFragment extends BaseFragment implements Prod
 		}
 	}
 	
-	private void updateContent() {
+	public void updateContent() {
 		
 		if (mTransactionMonth != null) {
 			
@@ -160,7 +160,7 @@ public class ProductStatisticDetailFragment extends BaseFragment implements Prod
 			@Override
 			public void onClick(View v) {
 				
-				mActionListener.onBackButtonClicked();
+				mActionListener.onBackPressed();
 			}
 		};
 	}

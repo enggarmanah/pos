@@ -303,6 +303,8 @@ public class OrderActivity extends BaseActivity
 	@Override
 	protected void onAsyncTaskCompleted() {
 		
+		super.onAsyncTaskCompleted();
+		
 		refreshOrders();
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_ORDER_DOWNLOAD_OK);

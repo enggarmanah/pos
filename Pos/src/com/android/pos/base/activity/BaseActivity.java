@@ -9,10 +9,12 @@ import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.auth.MerchantLoginActivity;
-import com.android.pos.auth.UserLoginActivity;
 import com.android.pos.base.adapter.AppMenuArrayAdapter;
 import com.android.pos.bills.BillsMgtActivity;
 import com.android.pos.cashier.CashierActivity;
+import com.android.pos.dao.InventoryDaoService;
+import com.android.pos.dao.Product;
+import com.android.pos.dao.ProductDaoService;
 import com.android.pos.data.DataMgtActivity;
 import com.android.pos.inventory.InventoryMgtActivity;
 import com.android.pos.order.OrderActivity;
@@ -22,6 +24,7 @@ import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
 import com.android.pos.util.NotificationUtil;
+import com.android.pos.util.PrintUtil;
 import com.android.pos.util.UserUtil;
 import com.android.pos.waitress.WaitressActivity;
 
@@ -59,9 +62,6 @@ public abstract class BaseActivity extends Activity
 	protected ListView mDrawerList;
 	protected ActionBarDrawerToggle mDrawerToggle;
 
-	protected CharSequence mDrawerTitle;
-	protected CharSequence mTitle;
-	
 	List<String> mMenus;
 	
 	private static boolean activityVisible = false;
@@ -112,14 +112,16 @@ public abstract class BaseActivity extends Activity
 		activityVisible = false;
 	}
 	
+	@Override
+	public void onBackPressed() {
+	}
+	
 	public static boolean isActivityVisible() {
 		
 		return activityVisible;
 	}
 	
 	protected void initDrawerMenu() {
-
-		mTitle = mDrawerTitle = getTitle();
 		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -131,9 +133,19 @@ public abstract class BaseActivity extends Activity
 		
 		mMenus = new ArrayList<String>();
 		
-		//menus.addAll(Arrays.asList(mAppMenus));
-		
 		mMenus.add(Constant.MENU_USER);
+		
+		UserUtil.getUser();
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
+			mMenus.add(Constant.MENU_CASHIER);
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_WAITRESS)) {
+			mMenus.add(Constant.MENU_WAITRESS);
+		}
+		
+		mMenus.add(Constant.MENU_SYNC);
 		
 		UserUtil.getUser();
 		
@@ -147,14 +159,6 @@ public abstract class BaseActivity extends Activity
 			
 			mMenus.add(Constant.MENU_DATA);
 			mMenus.add(Constant.MENU_USER_ACCESS);
-		}
-		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
-			mMenus.add(Constant.MENU_CASHIER);
-		}
-		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_WAITRESS)) {
-			mMenus.add(Constant.MENU_WAITRESS);
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
@@ -209,10 +213,6 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(Constant.MENU_DATA_MANAGEMENT);
 		}
 		
-		if (UserUtil.isWaitress()) {
-			mMenus.add(Constant.MENU_SYNC);
-		}
-		
 		mMenus.add(Constant.MENU_EXIT);
 		
 		AppMenuArrayAdapter adapter = new AppMenuArrayAdapter(getApplicationContext(), mMenus, this);
@@ -234,13 +234,11 @@ public abstract class BaseActivity extends Activity
 		R.string.drawer_close /* "close drawer" description for accessibility */
 		) {
 			public void onDrawerClosed(View view) {
-				getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				getActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
@@ -303,8 +301,8 @@ public abstract class BaseActivity extends Activity
 
 	@Override
 	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getActionBar().setTitle(mTitle);
+		
+		getActionBar().setTitle(title);
 	}
 
 	private void selectItem(int position) {
@@ -315,7 +313,6 @@ public abstract class BaseActivity extends Activity
 			return;
 		}
 		
-		//mDrawerList.setItemChecked(position, true);
 		mDrawerLayout.closeDrawer(mDrawerList);
 		
 		if (Constant.MENU_CASHIER.equals(menu)) {
@@ -373,7 +370,7 @@ public abstract class BaseActivity extends Activity
 			Intent intent = new Intent(this, DataMgtActivity.class);
 			startActivity(intent);
 			
-		} else if (Constant.MENU_SYNC.equals(menu) && UserUtil.isWaitress()) {
+		} else if (Constant.MENU_SYNC.equals(menu)) {
 			
 			mProgressDialog.show(getFragmentManager(), progressDialogTag);
 			
@@ -381,20 +378,28 @@ public abstract class BaseActivity extends Activity
 				mHttpAsyncManager = new HttpAsyncManager(this);
 			}
 			
-			mHttpAsyncManager.syncProducts();
+			if (UserUtil.isWaitress()) {
+				mHttpAsyncManager.syncProducts();
+				
+			} else if (UserUtil.isCashier() || UserUtil.isAdmin()) {
+				mHttpAsyncManager.sync();
+				
+			} else if (UserUtil.isMerchant()) {
+				mHttpAsyncManager.syncUsers();
+				
+			} else if (UserUtil.isRoot()) {
+				mHttpAsyncManager.syncMerchants();
+			}
 			
 		} else if (Constant.MENU_EXIT.equals(menu)) {
 			
-			Intent intent = null;
+			UserUtil.resetUser();
+			PrintUtil.reset();
 			
-			if (UserUtil.isRoot()) {
-				intent = new Intent(this, MerchantLoginActivity.class);
-			} else {
-				intent = new Intent(this, UserLoginActivity.class);
-			}
+			Intent intent = new Intent(this, MerchantLoginActivity.class);
 			
-			startActivity(intent);	
-			finish();
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 		}
 	}
 	
@@ -517,6 +522,22 @@ public abstract class BaseActivity extends Activity
 		}
 	}
 	
+	protected void updateProductStock() {
+		
+		ProductDaoService productDaoService = new ProductDaoService();
+		InventoryDaoService inventoryDaoServie = new InventoryDaoService();
+		
+		List<Product> products = productDaoService.getProducts();
+		
+		for (Product product : products) {
+			
+			Integer quantity = inventoryDaoServie.getProductQuantity(product);
+			product.setStock(quantity);
+			
+			productDaoService.updateProduct(product);
+		}
+	}
+	
 	protected void onAsyncTaskCompleted() {}
 	
 	@Override
@@ -529,6 +550,9 @@ public abstract class BaseActivity extends Activity
 			mProgressDialog.setProgress(progress);
 			
 			if (progress == 100) {
+				
+				// update product min stock count
+				updateProductStock();
 				
 				new Handler().postDelayed(new Runnable() {
 					
@@ -578,5 +602,17 @@ public abstract class BaseActivity extends Activity
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_SERVER_SYNC_ERROR);
+	}
+	
+	@Override
+	public void onSyncError(String message) {
+		
+		mProgress = 100;
+		
+		if (isActivityVisible()) {
+			mProgressDialog.dismiss();
+		}
+		
+		NotificationUtil.setAlertMessage(getFragmentManager(), message);
 	}
 }

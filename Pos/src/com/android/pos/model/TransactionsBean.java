@@ -1,5 +1,7 @@
 package com.android.pos.model;
 
+import java.util.Date;
+
 public class TransactionsBean {
 
 	private Long id;
@@ -26,6 +28,7 @@ public class TransactionsBean {
 	private Long customer_id;
 	private String customer_name;	
 	private String status;
+	private Date sync_date;
 
 	public Long getId() {
 		return id;
@@ -217,5 +220,13 @@ public class TransactionsBean {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Date getSync_date() {
+		return sync_date;
+	}
+
+	public void setSync_date(Date sync_date) {
+		this.sync_date = sync_date;
 	}
 }

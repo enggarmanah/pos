@@ -52,6 +52,11 @@ public class ProductStatisticListFragment extends BaseFragment
 	
 	private String mStatus;
 	
+	public ProductStatisticListFragment() {
+		
+		initList();
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -68,22 +73,6 @@ public class ProductStatisticListFragment extends BaseFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		View view = inflater.inflate(R.layout.report_transaction_list_fragment, container, false);
-		
-		if (mTransactionYears == null) {
-			mTransactionYears = new ArrayList<TransactionYearBean>();
-		}
-		
-		if (mTransactionMonths == null) {
-			mTransactionMonths = new ArrayList<TransactionMonthBean>();
-		}
-		
-		if (mTransactionDays == null) {
-			mTransactionDays = new ArrayList<TransactionDayBean>();
-		}
-		
-		if (mTransactions == null) {
-			mTransactions = new ArrayList<Transactions>();
-		}
 		
 		mTransactionYearAdapter = new ProductStatisticYearArrayAdapter(getActivity(), mTransactionYears, this);
 		mTransactionMonthAdapter = new ProductStatisticMonthArrayAdapter(getActivity(), mTransactionMonths, this);
@@ -125,13 +114,32 @@ public class ProductStatisticListFragment extends BaseFragment
         }
     }
 	
+	private void initList() {
+		
+		if (mTransactionYears == null) {
+			mTransactionYears = new ArrayList<TransactionYearBean>();
+		}
+		
+		if (mTransactionMonths == null) {
+			mTransactionMonths = new ArrayList<TransactionMonthBean>();
+		}
+		
+		if (mTransactionDays == null) {
+			mTransactionDays = new ArrayList<TransactionDayBean>();
+		}
+		
+		if (mTransactions == null) {
+			mTransactions = new ArrayList<Transactions>();
+		}
+	}
+	
 	public void setSelectedProductInfo(String productInfo) {
 		
 		mSelectedProductInfo = productInfo;
 		updateContent();
 	}
 	
-	private void updateContent() {
+	public void updateContent() {
 		
 		if (!isViewInitialized()) {
 			return;
@@ -275,6 +283,7 @@ public class ProductStatisticListFragment extends BaseFragment
 		
 		mStatus = ProductStatisticActivity.DISPLAY_TRANSACTION_ON_MONTH;
 		
+		mTransactionList.setAdapter(mTransactionMonthAdapter);
 		mTransactionMonthAdapter.notifyDataSetChanged();
 	}
 	
@@ -315,7 +324,7 @@ public class ProductStatisticListFragment extends BaseFragment
 			@Override
 			public void onClick(View v) {
 				
-				mActionListener.onBackButtonClicked();
+				mActionListener.onBackPressed();
 			}
 		};
 	}

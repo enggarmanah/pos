@@ -43,7 +43,7 @@
     </style>
 
     <style name="MenuDrawerStyle">
-        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_width">245dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">start</item>
         <item name="android:background">@color/menu_normal</item>
@@ -224,7 +224,27 @@
         <item name="android:textColor">@color/text_medium</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
-
+    
+    <style name="ListViewRowPastDueRemarksTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_medium</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+	
+    <style name="ListViewRowPastDueItemAmountTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/list_row_normal_text</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
     <style name="ListViewRowBillsAmountTextStyle">
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_width">wrap_content</item>
@@ -276,8 +296,9 @@
     </style>
 
     <style name="ListViewRowProductTextStyle">
-        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:width">0dp</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/list_row_normal_text</item>
@@ -302,7 +323,7 @@
 
     <style name="ListViewRowReportTotalTextStyle" parent="ListViewRowProductTextStyle">
         <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:gravity">right|center_vertical</item>
         <item name="android:textColor">@color/list_row_normal_light_text</item>
     </style>
     
@@ -315,7 +336,8 @@
 
     <style name="ListViewRowTransItemBaseTextStyle">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:width">0dp</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">15sp</item>

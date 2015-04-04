@@ -69,6 +69,8 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	
     	View view = inflater.inflate(R.layout.data_bills_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -91,20 +93,20 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-    	mTypeSp = (Spinner) getView().findViewById(R.id.typeSp);
-    	mStatusSp = (Spinner) getView().findViewById(R.id.statusSp);
+    	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
+    	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
-    	mSupplierNameText = (EditText) getView().findViewById(R.id.supplierNameText);
-    	mBillReferenceNoText = (EditText) getView().findViewById(R.id.billsReferenceNoText);
-    	mBillDate = (EditText) getView().findViewById(R.id.billsDate);
-    	mBillDueDate = (EditText) getView().findViewById(R.id.billsDueDate);
-    	mBillAmountText = (EditText) getView().findViewById(R.id.billsAmountText);
-    	mPaymentDate = (EditText) getView().findViewById(R.id.paymentDate);
-    	mPaymentText = (EditText) getView().findViewById(R.id.paymentText);
-    	mDeliveryDate = (EditText) getView().findViewById(R.id.deliveryDate);
-    	mRemarksText = (EditText) getView().findViewById(R.id.remarksText);
+    	mSupplierNameText = (EditText) view.findViewById(R.id.supplierNameText);
+    	mBillReferenceNoText = (EditText) view.findViewById(R.id.billsReferenceNoText);
+    	mBillDate = (EditText) view.findViewById(R.id.billsDate);
+    	mBillDueDate = (EditText) view.findViewById(R.id.billsDueDate);
+    	mBillAmountText = (EditText) view.findViewById(R.id.billsAmountText);
+    	mPaymentDate = (EditText) view.findViewById(R.id.paymentDate);
+    	mPaymentText = (EditText) view.findViewById(R.id.paymentText);
+    	mDeliveryDate = (EditText) view.findViewById(R.id.deliveryDate);
+    	mRemarksText = (EditText) view.findViewById(R.id.remarksText);
     	
     	registerField(mTypeSp);
     	registerField(mSupplierNameText);
@@ -147,15 +149,15 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	mSupplierNameText.setFocusable(false);
     	mSupplierNameText.setOnClickListener(getSupplierOnClickListener());
     	
-    	mSupplierPanel = (LinearLayout) getView().findViewById(R.id.supplierPanel);
-        mBillReferenceNoPanel = (LinearLayout) getView().findViewById(R.id.billReferenceNoPanel);
-        mBillDatePanel = (LinearLayout) getView().findViewById(R.id.billDatePanel);
-        mBillDueDatePanel = (LinearLayout) getView().findViewById(R.id.billDueDatePanel);
-        mBillAmountPanel = (LinearLayout) getView().findViewById(R.id.billAmountPanel);
-        mBillStatusPanel = (LinearLayout) getView().findViewById(R.id.billStatusPanel);
-        mPaymentDatePanel = (LinearLayout) getView().findViewById(R.id.paymentDatePanel);
-        mPaymentAmountPanel = (LinearLayout) getView().findViewById(R.id.paymentAmountPanel);
-        mDeliveryDatePanel = (LinearLayout) getView().findViewById(R.id.deliveryDatePanel);
+    	mSupplierPanel = (LinearLayout) view.findViewById(R.id.supplierPanel);
+        mBillReferenceNoPanel = (LinearLayout) view.findViewById(R.id.billReferenceNoPanel);
+        mBillDatePanel = (LinearLayout) view.findViewById(R.id.billDatePanel);
+        mBillDueDatePanel = (LinearLayout) view.findViewById(R.id.billDueDatePanel);
+        mBillAmountPanel = (LinearLayout) view.findViewById(R.id.billAmountPanel);
+        mBillStatusPanel = (LinearLayout) view.findViewById(R.id.billStatusPanel);
+        mPaymentDatePanel = (LinearLayout) view.findViewById(R.id.paymentDatePanel);
+        mPaymentAmountPanel = (LinearLayout) view.findViewById(R.id.paymentAmountPanel);
+        mDeliveryDatePanel = (LinearLayout) view.findViewById(R.id.deliveryDatePanel);
         
         mTypeSp.setOnItemSelectedListener(getTypeOnItemSelectedListener());
         mStatusSp.setOnItemSelectedListener(getStatusOnItemSelectedListener());

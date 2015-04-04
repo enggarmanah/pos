@@ -36,6 +36,8 @@ public class SupplierEditFragment extends BaseEditFragment<Supplier> {
     	
     	View view = inflater.inflate(R.layout.data_supplier_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -45,14 +47,14 @@ public class SupplierEditFragment extends BaseEditFragment<Supplier> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-    	mNameText = (EditText) getActivity().findViewById(R.id.nameText);
-    	mTelephoneText = (EditText) getActivity().findViewById(R.id.telephoneText);
-    	mAddressText = (EditText) getActivity().findViewById(R.id.addressText);
-    	mPicNameText = (EditText) getActivity().findViewById(R.id.picNameText);
-    	mPicTelephoneText = (EditText) getActivity().findViewById(R.id.picTelephoneText);
-    	mRemarksText = (EditText) getActivity().findViewById(R.id.remarksText);
+    	mNameText = (EditText) view.findViewById(R.id.nameText);
+    	mTelephoneText = (EditText) view.findViewById(R.id.telephoneText);
+    	mAddressText = (EditText) view.findViewById(R.id.addressText);
+    	mPicNameText = (EditText) view.findViewById(R.id.picNameText);
+    	mPicTelephoneText = (EditText) view.findViewById(R.id.picTelephoneText);
+    	mRemarksText = (EditText) view.findViewById(R.id.remarksText);
     	
     	registerField(mNameText);
     	registerField(mTelephoneText);

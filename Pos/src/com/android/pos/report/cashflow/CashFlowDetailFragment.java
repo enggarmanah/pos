@@ -21,7 +21,8 @@ import com.android.pos.dao.TransactionsDaoService;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.util.CommonUtil;
 
-public class CashFlowDetailFragment extends BaseFragment {
+public class CashFlowDetailFragment extends BaseFragment 
+	implements CashFlowDetailArrayAdapter.ItemActionListener {
 	
 	private ImageButton mBackButton;
 	
@@ -58,7 +59,7 @@ public class CashFlowDetailFragment extends BaseFragment {
 			mBills = new ArrayList<Bills>();
 		} 
 		
-		mAdapter = new CashFlowDetailArrayAdapter(getActivity(), mBills);
+		mAdapter = new CashFlowDetailArrayAdapter(getActivity(), mBills, this);
 		
 		return view;
 	}
@@ -134,7 +135,11 @@ public class CashFlowDetailFragment extends BaseFragment {
 		return totalAmount;
 	}
 	
-	private void updateContent() {
+	public void updateContent() {
+		
+		if (!isViewInitialized()) {
+			return;
+		}
 
 		if (mCashFlowMonth == null) {
 
@@ -200,8 +205,14 @@ public class CashFlowDetailFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mActionListener.onBackButtonClicked();
+				mActionListener.onBackPressed();
 			}
 		};
+	}
+	
+	@Override
+	public void onBillSelected(Bills bill) {
+		
+		mActionListener.onBillSelected(bill);
 	}
 }

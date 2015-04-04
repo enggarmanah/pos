@@ -9,4 +9,6 @@ public interface HttpAsyncListener {
 	public void onTimeOut();
 	
 	public void onSyncError();
+	
+	public void onSyncError(String message);
 }

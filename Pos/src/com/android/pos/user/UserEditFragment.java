@@ -61,6 +61,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	
     	View view = inflater.inflate(R.layout.data_user_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -70,15 +72,15 @@ public class UserEditFragment extends BaseEditFragment<User> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-    	mNameText = (EditText) getActivity().findViewById(R.id.nameText);
-    	mUserIdText = (EditText) getActivity().findViewById(R.id.userIdText);
-    	mPasswordText = (EditText) getActivity().findViewById(R.id.passwordText);
-    	mRoleSp = (Spinner) getActivity().findViewById(R.id.roleSp);
-    	mStatusSp = (Spinner) getActivity().findViewById(R.id.statusSp);
+    	mNameText = (EditText) view.findViewById(R.id.nameText);
+    	mUserIdText = (EditText) view.findViewById(R.id.userIdText);
+    	mPasswordText = (EditText) view.findViewById(R.id.passwordText);
+    	mRoleSp = (Spinner) view.findViewById(R.id.roleSp);
+    	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
-    	accessRightPanel = (LinearLayout) getView().findViewById(R.id.accessRightsPanel);
+    	accessRightPanel = (LinearLayout) view.findViewById(R.id.accessRightsPanel);
     	
     	registerField(mNameText);
     	registerField(mUserIdText);
@@ -93,9 +95,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	mandatoryFields.add(new FormField(mUserIdText, R.string.field_price));
     	mandatoryFields.add(new FormField(mPasswordText, R.string.field_password));
     	
-    	CodeBean[] roles = Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchant().getType()) ? CodeUtil.getRestoRoles() : CodeUtil.getRoles();
-    	
-    	roleArrayAdapter = new CodeSpinnerArrayAdapter(mRoleSp, getActivity(), roles);
+    	roleArrayAdapter = new CodeSpinnerArrayAdapter(mRoleSp, getActivity(), CodeUtil.getRoles());
     	mRoleSp.setAdapter(roleArrayAdapter);
     	
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getStatus());

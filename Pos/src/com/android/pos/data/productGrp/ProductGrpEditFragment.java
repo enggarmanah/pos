@@ -31,6 +31,8 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     	
     	View view = inflater.inflate(R.layout.data_product_grp_fragment, container, false);
     	
+    	initViewReference(view);
+    	
     	return view;
     }
     
@@ -40,9 +42,9 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     }
     
     @Override
-    protected void initViewReference() {
+    protected void initViewReference(View view) {
         
-    	mNameText = (EditText) getActivity().findViewById(R.id.nameText);
+    	mNameText = (EditText) view.findViewById(R.id.nameText);
     	
     	registerField(mNameText);
     	

@@ -68,6 +68,8 @@ public class SupplierDaoService {
 			Supplier item = getSupplier(id);
 			list.add(item);
 		}
+		
+		cursor.close();
 
 		return list;
 	}
@@ -123,5 +125,20 @@ public class SupplierDaoService {
 				supplierDao.update(supplier);
 			}
 		} 
+	}
+	
+	public boolean hasUpdate() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM supplier WHERE upload_status = 'Y'", null);
+			
+		cursor.moveToFirst();
+			
+		Long count = cursor.getLong(0);
+		
+		cursor.close();
+		
+		return (count > 0);
 	}
 }

@@ -111,6 +111,25 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionList.setItemsCanFocus(true);
 		mTransactionList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
+		if (mSelectedTransactionDay != null) {
+			
+			Transactions transaction = mSelectedTransaction; 
+			onTransactionDaySelected(mSelectedTransactionDay);
+			mSelectedTransaction = transaction;
+			
+		} else if (mSelectedTransactionMonth != null) {
+			onTransactionMonthSelected(mSelectedTransactionMonth);
+			
+		} else if (mSelectedTransactionYear != null) {
+			onTransactionYearSelected(mSelectedTransactionYear);
+			
+		} else {
+			displayTransactionAllYears();
+		}
+	}
+	
+	public void updateContent() {
+		
 		if (mSelectedTransaction != null) {
 			onTransactionSelected(mSelectedTransaction);
 			
@@ -374,7 +393,7 @@ public class TransactionListFragment extends BaseFragment
 			@Override
 			public void onClick(View v) {
 				
-				mActionListener.onBackButtonClicked();
+				mActionListener.onBackPressed();
 			}
 		};
 	}

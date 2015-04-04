@@ -26,12 +26,17 @@ public class Merchant {
 	private String telephone;
 	private String contact_name;
 	private String contact_telephone;
+	private String contact_email;
 	private String login_id;
 	private String password;
 	private java.util.Date period_start;
 	private java.util.Date period_end;
 	private Integer tax_percentage;
 	private Integer service_charge_percentage;
+	private String printer_mini_font;
+    private Integer printer_line_size;
+    private String printer_required;
+	
 	private String status;
 	
 	protected String create_by;
@@ -43,6 +48,9 @@ public class Merchant {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date update_date;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	protected Date sync_date;
 
 	public Long getId() {
 		return id;
@@ -107,6 +115,14 @@ public class Merchant {
 	public void setContact_telephone(String contact_telephone) {
 		this.contact_telephone = contact_telephone;
 	}
+	
+	public String getContact_email() {
+		return contact_email;
+	}
+
+	public void setContact_email(String contact_email) {
+		this.contact_email = contact_email;
+	}
 
 	public String getLogin_id() {
 		return login_id;
@@ -156,6 +172,30 @@ public class Merchant {
 		this.service_charge_percentage = service_charge_percentage;
 	}
 	
+	public String getPrinter_mini_font() {
+		return printer_mini_font;
+	}
+
+	public void setPrinter_mini_font(String printer_mini_font) {
+		this.printer_mini_font = printer_mini_font;
+	}
+
+	public Integer getPrinter_line_size() {
+		return printer_line_size;
+	}
+
+	public void setPrinter_line_size(Integer printer_line_size) {
+		this.printer_line_size = printer_line_size;
+	}
+
+	public String getPrinter_required() {
+		return printer_required;
+	}
+
+	public void setPrinter_required(String printer_required) {
+		this.printer_required = printer_required;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -196,6 +236,14 @@ public class Merchant {
 		this.update_date = update_date;
 	}
 	
+	public Date getSync_date() {
+		return sync_date;
+	}
+
+	public void setSync_date(Date sync_date) {
+		this.sync_date = sync_date;
+	}
+
 	public void setBean(Merchant bean) {
 
 		this.id = bean.getId();
@@ -206,12 +254,16 @@ public class Merchant {
 		this.telephone = bean.getTelephone();
 		this.contact_name = bean.getContact_name();
 		this.contact_telephone = bean.getContact_telephone();
+		this.contact_email = bean.getContact_email();
 		this.login_id = bean.getLogin_id();
 		this.password = bean.getPassword();
 		this.period_start = bean.getPeriod_start();
 		this.period_end = bean.getPeriod_end();
 		this.tax_percentage = bean.getTax_percentage();
 		this.service_charge_percentage = bean.getService_charge_percentage();
+		this.printer_required = bean.getPrinter_required();
+		this.printer_mini_font = bean.getPrinter_mini_font();
+		this.printer_line_size = bean.getPrinter_line_size();
 		this.status = bean.getStatus();
 
 		this.remote_id = bean.getRemote_id();
@@ -219,5 +271,6 @@ public class Merchant {
 		this.create_date = bean.getCreate_date();
 		this.update_by = bean.getUpdate_by();
 		this.update_date = bean.getUpdate_date();
+		this.sync_date = bean.getSync_date();
 	}
 }

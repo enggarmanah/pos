@@ -6,25 +6,20 @@ import java.util.List;
 
 import com.app.posweb.server.dao.OrderItemDao;
 import com.app.posweb.server.model.OrderItem;
+import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.server.model.SyncResponse;
 import com.app.posweb.server.model.SyncStatus;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
  
 @SuppressWarnings("serial")
 public class OrderItemUpdateJsonServlet extends BaseJsonServlet {
  
-    protected Object processJsonRequest(String jsonStr) throws IOException {
+    protected SyncResponse processRequest(SyncRequest request) throws IOException {
     	
     	List<SyncStatus> syncStatusList = new ArrayList<SyncStatus>();
-        ObjectMapper mapper = new ObjectMapper();
-        
-        List<OrderItem> orderItems = mapper.readValue(jsonStr.toString(),
-        							TypeFactory.defaultInstance().constructCollectionType(List.class,  
-        							OrderItem.class));         
         
         OrderItemDao orderItemDao = new OrderItemDao();
         
-        for (OrderItem orderItem : orderItems) {
+        for (OrderItem orderItem : request.getOrderItems()) {
         	
         	String status = SyncStatus.FAIL;
         	
@@ -43,6 +38,11 @@ public class OrderItemUpdateJsonServlet extends BaseJsonServlet {
         	syncStatusList.add(syncStatus);
         }
         
-        return syncStatusList;
+        SyncResponse response = new SyncResponse();
+        
+        response.setRespCode(SyncResponse.SUCCESS);
+        response.setStatus(syncStatusList);
+        
+        return response;
     }
 }

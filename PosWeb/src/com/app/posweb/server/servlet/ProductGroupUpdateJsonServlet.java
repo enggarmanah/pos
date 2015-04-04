@@ -6,25 +6,22 @@ import java.util.List;
 
 import com.app.posweb.server.dao.ProductGroupDao;
 import com.app.posweb.server.model.ProductGroup;
+import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.server.model.SyncResponse;
 import com.app.posweb.server.model.SyncStatus;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
  
 @SuppressWarnings("serial")
 public class ProductGroupUpdateJsonServlet extends BaseJsonServlet {
  
-    protected Object processJsonRequest(String jsonStr) throws IOException {
+    protected SyncResponse processRequest(SyncRequest request) throws IOException {
     	
     	List<SyncStatus> syncStatusList = new ArrayList<SyncStatus>();
-        ObjectMapper mapper = new ObjectMapper();
         
-        List<ProductGroup> productGroups = mapper.readValue(jsonStr.toString(),
-        							TypeFactory.defaultInstance().constructCollectionType(List.class,  
-        							ProductGroup.class));         
+    	ProductGroupDao productGroupDao = new ProductGroupDao();
         
-        ProductGroupDao productGroupDao = new ProductGroupDao();
-        
-        for (ProductGroup productGroup : productGroups) {
+        for (ProductGroup productGroup : request.getProductGroups()) {
+        	
+        	productGroup.setSync_date(request.getSync_date());
         	
         	String status = SyncStatus.FAIL;
         	
@@ -43,6 +40,11 @@ public class ProductGroupUpdateJsonServlet extends BaseJsonServlet {
         	syncStatusList.add(syncStatus);
         }
         
-        return syncStatusList;
+        SyncResponse response = new SyncResponse();
+        
+        response.setRespCode(SyncResponse.SUCCESS);
+        response.setStatus(syncStatusList);
+        
+        return response;
     }
 }

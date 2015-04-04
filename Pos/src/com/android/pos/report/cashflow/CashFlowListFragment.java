@@ -51,6 +51,11 @@ public class CashFlowListFragment extends BaseFragment
 	
 	private String mStatus;
 	
+	public CashFlowListFragment() {
+		
+		initList();
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
@@ -67,14 +72,6 @@ public class CashFlowListFragment extends BaseFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		View view = inflater.inflate(R.layout.report_transaction_list_fragment, container, false);
-		
-		if (mCashFlowYears == null) {
-			mCashFlowYears = new ArrayList<CashFlowYearBean>();
-		}
-		
-		if (mCashFlowMonths == null) {
-			mCashFlowMonths = new ArrayList<CashFlowMonthBean>();
-		}
 		
 		mCashFlowYearAdapter = new CashFlowYearArrayAdapter(getActivity(), mCashFlowYears, this);
 		mCashFlowMonthAdapter = new CashFlowMonthArrayAdapter(getActivity(), mCashFlowMonths, this);
@@ -116,7 +113,18 @@ public class CashFlowListFragment extends BaseFragment
         }
     }
 	
-	private void updateContent() {
+	private void initList() {
+		
+		if (mCashFlowYears == null) {
+			mCashFlowYears = new ArrayList<CashFlowYearBean>();
+		}
+		
+		if (mCashFlowMonths == null) {
+			mCashFlowMonths = new ArrayList<CashFlowMonthBean>();
+		}
+	}
+	
+	public void updateContent() {
 		
 		if (!isViewInitialized()) {
 			return;
@@ -360,7 +368,7 @@ public class CashFlowListFragment extends BaseFragment
 			@Override
 			public void onClick(View v) {
 				
-				mActionListener.onBackButtonClicked();
+				mActionListener.onBackPressed();
 			}
 		};
 	}

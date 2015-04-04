@@ -45,7 +45,7 @@ public class PrintUtil {
 	public static int revBytes = 0;
 	public static boolean isHex = false;
 	
-	public static int mPrinterLineSize = 32;
+	public static Integer mPrinterLineSize = 32;
 	
 	public static final int REFRESH = 8;
 
@@ -58,9 +58,22 @@ public class PrintUtil {
 	
 	private static CashierActivity mActivity;
 	
-	public static void setPrinterLineSize(int printerLineSize) {
+	public static void reset() {
 		
-		mPrinterLineSize = printerLineSize;
+		if (mChatService != null) {
+			mChatService.stop();
+		}
+		
+		mConnectedDeviceName = null;
+		mBluetoothAdapter = null;
+		mChatService = null;
+	}
+	
+	public static void setPrinterLineSize(Integer printerLineSize) {
+		
+		if (printerLineSize != null) {
+			mPrinterLineSize = printerLineSize;
+		}
 	}
 	
 	public static boolean initBluetooth(CashierActivity activity) {
@@ -267,13 +280,17 @@ public class PrintUtil {
 		return !BluetoothPrintDriver.IsNoConnection();
 	}
 	
+	public static boolean isPrinterActive() {
+		
+		return Constant.STATUS_ACTIVE.equals(MerchantUtil.getMerchant().getPrinterRequired());
+	}
+	
+	private static boolean isMiniFont() {
+		
+		return Constant.STATUS_YES.equals(MerchantUtil.getMerchant().getPrinterMiniFont());
+	}
+	
 	public static void print(Transactions transaction) throws Exception {
-
-		/*if (BluetoothPrintDriver.IsNoConnection()) {
-
-			Intent serverIntent = new Intent(this, CashierPaymentDeviceListActivity.class);
-			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
-		}*/
 
 		BluetoothPrintDriver.WakeUpPritner();
 		
@@ -292,7 +309,10 @@ public class PrintUtil {
 		// BluetoothPrintDriver.SetBold((byte)0x01);
 
 		// mini font
-		BluetoothPrintDriver.SetCharacterFont((byte) 0x01);
+		
+		if (isMiniFont()) {
+			BluetoothPrintDriver.SetCharacterFont((byte) 0x01);
+		}
 
 		// highlight
 		// BluetoothPrintDriver.SetBlackReversePrint((byte)0x01);
@@ -330,7 +350,7 @@ public class PrintUtil {
 			} else {
 				
 				line.setLength(0);
-				line.append(addrAndTlpLine);
+				line.append(addrAndTlpLine.toUpperCase(CommonUtil.getLocale()));
 				line.append(spaces.substring(0, mPrinterLineSize - addrAndTlpLine.length()));
 				
 				BluetoothPrintDriver.BT_Write(line.toString() + "\r");
@@ -539,7 +559,9 @@ public class PrintUtil {
 		
 		BluetoothPrintDriver.Begin();
 
-		BluetoothPrintDriver.SetCharacterFont((byte) 0x01);
+		if (isMiniFont()) {
+			BluetoothPrintDriver.SetCharacterFont((byte) 0x01);
+		}
 
 		String spaces = "                                        ";
 		String divider = "----------------------------------------";
@@ -574,7 +596,7 @@ public class PrintUtil {
 			} else {
 				
 				line.setLength(0);
-				line.append(addrAndTlpLine);
+				line.append(addrAndTlpLine.toUpperCase(CommonUtil.getLocale()));
 				line.append(spaces.substring(0, mPrinterLineSize - addrAndTlpLine.length()));
 				
 				BluetoothPrintDriver.BT_Write(line.toString() + "\r");

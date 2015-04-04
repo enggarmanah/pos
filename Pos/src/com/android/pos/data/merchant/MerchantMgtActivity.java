@@ -5,30 +5,20 @@ import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
-import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Merchant;
-import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragment, MerchantEditFragment, Merchant> 
-	implements HttpAsyncListener {
+public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragment, MerchantEditFragment, Merchant> {
 	
 	List<Merchant> mMerchants;
 	Merchant mSelectedMerchant;
-	
-	HttpAsyncManager mHttpAsyncManager;
-	
-	private static ProgressDlgFragment mProgressDialog;
-	private static Integer mProgress = 0;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -214,63 +204,5 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 	protected List<Merchant> getItemsInstance() {
 		
 		return new ArrayList<Merchant>();
-	}
-	
-	@Override
-	public void setSyncProgress(int progress) {
-		
-		mProgress = progress;
-		
-		if (mProgressDialog != null) {
-			
-			mProgressDialog.setProgress(progress);
-			
-			if (progress == 100) {
-				
-				new Handler().postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						if (isActivityVisible()) {
-							mProgressDialog.dismiss();
-						}
-					}
-				}, 500);
-			}
-		}
-	}
-	
-	@Override
-	public void setSyncMessage(String message) {
-		
-		if (mProgressDialog != null) {
-			
-			mProgressDialog.setMessage(message);
-		}
-	}
-	
-	@Override
-	public void onTimeOut() {
-		
-		mProgress = 100;
-		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
-		}
-		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
-	}
-	
-	@Override
-	public void onSyncError() {
-		
-		mProgress = 100;
-		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
-		}
-		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
 	}
 }

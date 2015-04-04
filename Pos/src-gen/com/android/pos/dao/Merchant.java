@@ -11,7 +11,6 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table MERCHANT.
  */
-
 @SuppressWarnings("serial")
 public class Merchant implements Serializable {
 
@@ -23,9 +22,13 @@ public class Merchant implements Serializable {
     private String telephone;
     private String contactName;
     private String contactTelephone;
+    private String contactEmail;
     private String loginId;
     private String printerType;
     private String printerAddress;
+    private String printerMiniFont;
+    private Integer printerLineSize;
+    private String printerRequired;
     private String password;
     private java.util.Date periodStart;
     private java.util.Date periodEnd;
@@ -49,6 +52,7 @@ public class Merchant implements Serializable {
     private List<Customer> customerList;
     private List<Employee> employeeList;
     private List<User> userList;
+    private List<MerchantAccess> merchantAccessList;
 
     public Merchant() {
     }
@@ -57,7 +61,7 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String loginId, String printerType, String printerAddress, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -65,9 +69,13 @@ public class Merchant implements Serializable {
         this.telephone = telephone;
         this.contactName = contactName;
         this.contactTelephone = contactTelephone;
+        this.contactEmail = contactEmail;
         this.loginId = loginId;
         this.printerType = printerType;
         this.printerAddress = printerAddress;
+        this.printerMiniFont = printerMiniFont;
+        this.printerLineSize = printerLineSize;
+        this.printerRequired = printerRequired;
         this.password = password;
         this.periodStart = periodStart;
         this.periodEnd = periodEnd;
@@ -146,6 +154,14 @@ public class Merchant implements Serializable {
         this.contactTelephone = contactTelephone;
     }
 
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+
     public String getLoginId() {
         return loginId;
     }
@@ -168,6 +184,30 @@ public class Merchant implements Serializable {
 
     public void setPrinterAddress(String printerAddress) {
         this.printerAddress = printerAddress;
+    }
+
+    public String getPrinterMiniFont() {
+        return printerMiniFont;
+    }
+
+    public void setPrinterMiniFont(String printerMiniFont) {
+        this.printerMiniFont = printerMiniFont;
+    }
+
+    public Integer getPrinterLineSize() {
+        return printerLineSize;
+    }
+
+    public void setPrinterLineSize(Integer printerLineSize) {
+        this.printerLineSize = printerLineSize;
+    }
+
+    public String getPrinterRequired() {
+        return printerRequired;
+    }
+
+    public void setPrinterRequired(String printerRequired) {
+        this.printerRequired = printerRequired;
     }
 
     public String getPassword() {
@@ -352,6 +392,28 @@ public class Merchant implements Serializable {
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     public synchronized void resetUserList() {
         userList = null;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<MerchantAccess> getMerchantAccessList() {
+        if (merchantAccessList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            MerchantAccessDao targetDao = daoSession.getMerchantAccessDao();
+            List<MerchantAccess> merchantAccessListNew = targetDao._queryMerchant_MerchantAccessList(id);
+            synchronized (this) {
+                if(merchantAccessList == null) {
+                    merchantAccessList = merchantAccessListNew;
+                }
+            }
+        }
+        return merchantAccessList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetMerchantAccessList() {
+        merchantAccessList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

@@ -53,6 +53,12 @@ public class UserUtil {
 		}
 	}
 	
+	public static void resetUser() {
+		
+		mUser = null;
+		mUserAccesses = new HashMap<String, UserAccess>();
+	}
+	
 	public static boolean isMerchant() {
 		
 		return mIsMerchant;
@@ -65,20 +71,36 @@ public class UserUtil {
 	
 	public static boolean isCashier() {
 		
+		if (getUser() == null) {
+			return false;
+		}
+		
 		return Constant.USER_ROLE_CASHIER.equals(getUser().getRole());
 	}
 	
 	public static boolean isAdmin() {
+		
+		if (getUser() == null) {
+			return false;
+		}
 		
 		return Constant.USER_ROLE_ADMIN.equals(getUser().getRole());
 	}
 	
 	public static boolean isWaitress() {
 		
+		if (getUser() == null) {
+			return false;
+		}
+		
 		return Constant.USER_ROLE_WAITRESS.equals(getUser().getRole());
 	}
 	
 	public static boolean isRoot() {
+		
+		if (mUser == null) {
+			return false;
+		}
 		
 		if (mUser != null && Constant.ROOT.equals(mUser.getUserId())) {
 			return true;
