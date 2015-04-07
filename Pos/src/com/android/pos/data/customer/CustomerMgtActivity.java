@@ -3,7 +3,7 @@ package com.android.pos.data.customer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.R;
+import com.android.pos.Constant;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Customer;
 
@@ -25,8 +25,8 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 		
 		super.onStart();
 
-		setTitle(getString(R.string.module_customer));
-		setSelectedMenu(getString(R.string.menu_data_management));
+		setTitle(Constant.MENU_CUSTOMER);
+		setSelectedMenu(Constant.MENU_CUSTOMER);
 	}
 	
 	@Override

@@ -3,7 +3,7 @@ package com.android.pos.data.employee;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.R;
+import com.android.pos.Constant;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Employee;
 
@@ -25,8 +25,8 @@ public class EmployeeMgtActivity extends BaseItemMgtActivity<EmployeeSearchFragm
 		
 		super.onStart();
 
-		setTitle(getString(R.string.module_employee));
-		setSelectedMenu(getString(R.string.menu_data_management));
+		setTitle(Constant.MENU_REFERENCE_EMPLOYEE);
+		setSelectedMenu(Constant.MENU_REFERENCE_EMPLOYEE);
 	}
 	
 	@Override

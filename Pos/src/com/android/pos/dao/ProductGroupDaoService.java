@@ -10,6 +10,7 @@ import com.android.pos.Constant;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDao;
 import com.android.pos.model.ProductGroupBean;
+import com.android.pos.model.ProductGroupStatisticBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
@@ -151,5 +152,80 @@ public class ProductGroupDaoService {
 		cursor.close();
 		
 		return (count > 0);
+	}
+	
+	public List<ProductGroupStatisticBean> getProductGroupStatistics(Customer customer) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String customerId = String.valueOf(customer.getId());
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT "
+				+ "   pg.name, sum(ti.quantity) quantity, sum(ti.quantity * ti.price) amount"
+				+ " FROM "
+				+ "   product_group pg, product p, transactions t, transaction_item ti "
+				+ " WHERE "
+				+ "   pg._id = p.product_group_id AND "
+				+ "   p._id = ti.product_id AND "
+				+ "   t._id = ti.transaction_id AND "
+				+ "   t.customer_id = ? AND t.status <> ? "
+				+ " GROUP BY pg.name "
+				+ " ORDER BY quantity DESC ",
+				new String[] { customerId, status });
+		
+		List<ProductGroupStatisticBean> list = new ArrayList<ProductGroupStatisticBean>();
+		
+		while(cursor.moveToNext()) {
+			
+			ProductGroupStatisticBean productGroupStatistic = new ProductGroupStatisticBean();
+			
+			productGroupStatistic.setName(cursor.getString(0));
+			productGroupStatistic.setQuantity(cursor.getLong(1));
+			productGroupStatistic.setAmount(cursor.getLong(2));
+			
+			list.add(productGroupStatistic);
+		}
+		
+		cursor.close();
+		
+		return list;
+	}
+	
+	public List<ProductGroupStatisticBean> getProductGroupStatistics(Supplier supplier) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String supplierId = String.valueOf(supplier.getId());
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT "
+				+ "   pg.name, sum(i.quantity) quantity, sum(i.quantity * i.product_cost_price) amount"
+				+ " FROM "
+				+ "   product_group pg, product p, inventory i "
+				+ " WHERE "
+				+ "   pg._id = p.product_group_id AND "
+				+ "   p._id = i.product_id AND "
+				+ "   i.supplier_id = ? AND i.status <> ? "
+				+ " GROUP BY pg.name "
+				+ " ORDER BY quantity DESC ",
+				new String[] { supplierId, status });
+		
+		List<ProductGroupStatisticBean> list = new ArrayList<ProductGroupStatisticBean>();
+		
+		while(cursor.moveToNext()) {
+			
+			ProductGroupStatisticBean productGroupStatistic = new ProductGroupStatisticBean();
+			
+			productGroupStatistic.setName(cursor.getString(0));
+			productGroupStatistic.setQuantity(cursor.getLong(1));
+			productGroupStatistic.setAmount(cursor.getLong(2));
+			
+			list.add(productGroupStatistic);
+		}
+		
+		cursor.close();
+		
+		return list;
 	}
 }

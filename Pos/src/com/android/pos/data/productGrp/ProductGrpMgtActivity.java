@@ -3,7 +3,7 @@ package com.android.pos.data.productGrp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.R;
+import com.android.pos.Constant;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.ProductGroup;
 
@@ -25,8 +25,8 @@ public class ProductGrpMgtActivity extends BaseItemMgtActivity<ProductGrpSearchF
 		
 		super.onStart();
 
-		setTitle(getString(R.string.module_product_group));
-		setSelectedMenu(getString(R.string.menu_data_management));
+		setTitle(Constant.MENU_REFERENCE_PRODUCT_GROUP);
+		setSelectedMenu(Constant.MENU_REFERENCE_PRODUCT_GROUP);
 	}
 	
 	@Override

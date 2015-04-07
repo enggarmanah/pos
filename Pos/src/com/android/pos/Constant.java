@@ -157,6 +157,8 @@ public class Constant {
 	public static final String ACCESS_REPORT_PRODUCT_STATISTIC = "RPST";
 	public static final String ACCESS_REPORT_INVENTORY = "RIVT";
 	public static final String ACCESS_REPORT_CASHFLOW = "RCFL";
+	public static final String ACCESS_FAVORITE_CUSTOMER = "FVCS";
+	public static final String ACCESS_FAVORITE_SUPPLIER = "FVSP";
 	
 	public static final String MENU_USER = "User";
 	public static final String MENU_CASHIER = "Kasir";
@@ -165,7 +167,7 @@ public class Constant {
 	public static final String MENU_DATA = "Data";
 	public static final String MENU_CUSTOMER = "Data Pelanggan";
 	public static final String MENU_MERCHANT = "Data Merchant";
-	public static final String MENU_DATA_MANAGEMENT = "Data Referensi";
+	public static final String MENU_DATA_MANAGEMENT = "Referensi";
 	public static final String MENU_INVENTORY = "Data Inventori";
 	public static final String MENU_USER_ACCESS = "Data Pengguna";
 	public static final String MENU_BILLS = "Data Pengeluaran";
@@ -174,6 +176,15 @@ public class Constant {
 	public static final String MENU_REPORT_PRODUCT_STATISTIC = "Laporan Penjualan";
 	public static final String MENU_REPORT_INVENTORY = "Laporan Inventori";
 	public static final String MENU_REPORT_CASHFLOW = "Laporan Keuangan";
+	public static final String MENU_FAVORITE = "Favorit";
+	public static final String MENU_FAVORITE_CUSTOMER = "Pelanggan Favorit";
+	public static final String MENU_FAVORITE_SUPPLIER = "Supplier Favorit";
+	public static final String MENU_REFERENCE_MERCHANT = "Merchant";
+	public static final String MENU_REFERENCE_PRODUCT_GROUP = "Group Produk";
+	public static final String MENU_REFERENCE_PRODUCT = "Produk";
+	public static final String MENU_REFERENCE_EMPLOYEE = "Pegawai";
+	public static final String MENU_REFERENCE_SUPPLIER = "Supplier";
+	public static final String MENU_REFERENCE_DISCOUNT = "Diskon";
 	public static final String MENU_EXIT = "Keluar";
 	public static final String MENU_SYNC = "Sync";
 }

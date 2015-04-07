@@ -3,7 +3,7 @@ package com.android.pos.data.supplier;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.R;
+import com.android.pos.Constant;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Supplier;
 
@@ -25,8 +25,8 @@ public class SupplierMgtActivity extends BaseItemMgtActivity<SupplierSearchFragm
 		
 		super.onStart();
 
-		setTitle(getString(R.string.module_supplier));
-		setSelectedMenu(getString(R.string.menu_data_management));
+		setTitle(Constant.MENU_REFERENCE_SUPPLIER);
+		setSelectedMenu(Constant.MENU_REFERENCE_SUPPLIER);
 	}
 	
 	@Override

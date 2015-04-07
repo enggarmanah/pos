@@ -3,6 +3,7 @@ package com.android.pos.base.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncListener;
@@ -15,7 +16,15 @@ import com.android.pos.cashier.CashierActivity;
 import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDaoService;
-import com.android.pos.data.DataMgtActivity;
+import com.android.pos.data.customer.CustomerMgtActivity;
+import com.android.pos.data.discount.DiscountMgtActivity;
+import com.android.pos.data.employee.EmployeeMgtActivity;
+import com.android.pos.data.merchant.MerchantMgtActivity;
+import com.android.pos.data.product.ProductMgtActivity;
+import com.android.pos.data.productGrp.ProductGrpMgtActivity;
+import com.android.pos.data.supplier.SupplierMgtActivity;
+import com.android.pos.favorite.customer.CustomerActivity;
+import com.android.pos.favorite.supplier.SupplierActivity;
 import com.android.pos.inventory.InventoryMgtActivity;
 import com.android.pos.order.OrderActivity;
 import com.android.pos.report.cashflow.CashFlowActivity;
@@ -57,11 +66,14 @@ public abstract class BaseActivity extends Activity
 	protected HttpAsyncManager mHttpAsyncManager;
 	
 	protected int mSelectedIndex = -1;
+	protected String mSelectedMenu = Constant.EMPTY_STRING;
 	
 	protected DrawerLayout mDrawerLayout;
 	protected ListView mDrawerList;
 	protected ActionBarDrawerToggle mDrawerToggle;
-
+	
+	protected AppMenuArrayAdapter mAppMenuArrayAdapter;
+	
 	List<String> mMenus;
 	
 	private static boolean activityVisible = false;
@@ -133,6 +145,44 @@ public abstract class BaseActivity extends Activity
 		
 		mMenus = new ArrayList<String>();
 		
+		mAppMenuArrayAdapter = new AppMenuArrayAdapter(getApplicationContext(), mMenus, this);
+		
+		refreshMenus();
+		
+		mDrawerList.setAdapter(mAppMenuArrayAdapter);
+		
+		mDrawerList.setOnItemClickListener(getMenuListOnItemClickListener());
+
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+
+		// ActionBarDrawerToggle ties together the the proper interactions
+		// between the sliding drawer and the action bar app icon
+		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+		mDrawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+		R.string.drawer_open, /* "open drawer" description for accessibility */
+		R.string.drawer_close /* "close drawer" description for accessibility */
+		) {
+			public void onDrawerClosed(View view) {
+				invalidateOptionsMenu(); // creates call to
+											// onPrepareOptionsMenu()
+			}
+
+			public void onDrawerOpened(View drawerView) {
+				invalidateOptionsMenu(); // creates call to
+											// onPrepareOptionsMenu()
+			}
+		};
+
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+	}
+	
+	protected void refreshMenus() {
+		
+		mMenus.clear();
+		
 		mMenus.add(Constant.MENU_USER);
 		
 		UserUtil.getUser();
@@ -173,78 +223,84 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(Constant.MENU_REPORT);
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION)) {
-			mMenus.add(Constant.MENU_REPORT_TRANSACTION);
+		if (Config.isMenuReportExpanded()) {
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION)) {
+				mMenus.add(Constant.MENU_REPORT_TRANSACTION);
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC)) {
+				mMenus.add(Constant.MENU_REPORT_PRODUCT_STATISTIC);
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
+				mMenus.add(Constant.MENU_REPORT_CASHFLOW);
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
+				mMenus.add(Constant.MENU_REPORT_INVENTORY);
+			}
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC)) {
-			mMenus.add(Constant.MENU_REPORT_PRODUCT_STATISTIC);
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_SUPPLIER)) {
+				
+			mMenus.add(Constant.MENU_FAVORITE);
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
-			mMenus.add(Constant.MENU_REPORT_CASHFLOW);
-		}
+		if (Config.isMenuFavoriteExpanded()) {
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
-			mMenus.add(Constant.MENU_REPORT_INVENTORY);
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER)) {
+				mMenus.add(Constant.MENU_FAVORITE_CUSTOMER);
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_SUPPLIER)) {
+				mMenus.add(Constant.MENU_FAVORITE_SUPPLIER);
+			}
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY) ||
-			UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS) ||
-			UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
+			UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
 			
 			mMenus.add(Constant.MENU_DATA);
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS)) {
-			mMenus.add(Constant.MENU_BILLS);
-		}
-		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
-			mMenus.add(Constant.MENU_INVENTORY);
-		}
-		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
-			mMenus.add(Constant.MENU_USER_ACCESS);
+		if (Config.isMenuDataExpanded()) {
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS)) {
+				mMenus.add(Constant.MENU_BILLS);
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+				mMenus.add(Constant.MENU_INVENTORY);
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
+				mMenus.add(Constant.MENU_CUSTOMER);
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
+				mMenus.add(Constant.MENU_USER_ACCESS);
+			}
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
 			mMenus.add(Constant.MENU_DATA_MANAGEMENT);
 		}
 		
+		if (Config.isMenuDataReferenceExpanded()) {
+			
+			mMenus.add(Constant.MENU_REFERENCE_MERCHANT);
+			mMenus.add(Constant.MENU_REFERENCE_PRODUCT_GROUP);
+			mMenus.add(Constant.MENU_REFERENCE_PRODUCT);
+			mMenus.add(Constant.MENU_REFERENCE_EMPLOYEE);
+			mMenus.add(Constant.MENU_REFERENCE_SUPPLIER);
+		}
+		
 		mMenus.add(Constant.MENU_EXIT);
 		
-		AppMenuArrayAdapter adapter = new AppMenuArrayAdapter(getApplicationContext(), mMenus, this);
-		
-		mDrawerList.setAdapter(adapter);
-		
-		mDrawerList.setOnItemClickListener(getMenuListOnItemClickListener());
-
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-
-		// ActionBarDrawerToggle ties together the the proper interactions
-		// between the sliding drawer and the action bar app icon
-		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.drawer_open, /* "open drawer" description for accessibility */
-		R.string.drawer_close /* "close drawer" description for accessibility */
-		) {
-			public void onDrawerClosed(View view) {
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
-			}
-		};
-
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		mAppMenuArrayAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -281,11 +337,7 @@ public abstract class BaseActivity extends Activity
 	@Override
 	public String getSelectedMenu() {
 		
-		if (mSelectedIndex != -1) {
-			return mMenus.get(mSelectedIndex);
-		} else {
-			return null;
-		}
+		return mSelectedMenu;
 	}
 	
 	protected AdapterView.OnItemClickListener getMenuListOnItemClickListener() {
@@ -309,9 +361,34 @@ public abstract class BaseActivity extends Activity
 		
 		String menu = mMenus.get(position);
 		
-		if (position == 0 || Constant.MENU_REPORT.equals(menu) || Constant.MENU_DATA.equals(menu)) {
+		if (position == 0) {
 			return;
 		}
+		
+		if (Constant.MENU_REPORT.equals(menu)) {
+			
+			Config.setMenuReportExpanded(!Config.isMenuReportExpanded());
+			refreshMenus();
+			return;
+			
+		} else if (Constant.MENU_FAVORITE.equals(menu)) {
+			
+			Config.setMenuFavoriteExpanded(!Config.isMenuFavoriteExpanded());
+			refreshMenus();
+			return;
+			
+		} else if (Constant.MENU_DATA.equals(menu)) {
+			
+			Config.setMenuDataExpanded(!Config.isMenuDataExpanded());
+			refreshMenus();
+			return;
+		
+		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
+			
+			Config.setMenuDataReferenceExpanded(!Config.isMenuDataReferenceExpanded());
+			refreshMenus();
+			return;
+		}  
 		
 		mDrawerLayout.closeDrawer(mDrawerList);
 		
@@ -350,6 +427,16 @@ public abstract class BaseActivity extends Activity
 			Intent intent = new Intent(this, InventoryReportActivity.class);
 			startActivity(intent);
 
+		} else if (Constant.MENU_FAVORITE_CUSTOMER.equals(menu)) {
+
+			Intent intent = new Intent(this, CustomerActivity.class);
+			startActivity(intent);
+
+		} else if (Constant.MENU_FAVORITE_SUPPLIER.equals(menu)) {
+
+			Intent intent = new Intent(this, SupplierActivity.class);
+			startActivity(intent);
+
 		} else if (Constant.MENU_BILLS.equals(menu)) {
 
 			Intent intent = new Intent(this, BillsMgtActivity.class);
@@ -360,14 +447,44 @@ public abstract class BaseActivity extends Activity
 			Intent intent = new Intent(this, InventoryMgtActivity.class);
 			startActivity(intent);
 
+		} else if (Constant.MENU_CUSTOMER.equals(menu)) {
+
+			Intent intent = new Intent(this, CustomerMgtActivity.class);
+			startActivity(intent);
+
 		} else if (Constant.MENU_USER_ACCESS.equals(menu)) {
 
 			Intent intent = new Intent(this, UserMgtActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
+		} else if (Constant.MENU_REFERENCE_MERCHANT.equals(menu)) {
 
-			Intent intent = new Intent(this, DataMgtActivity.class);
+			Intent intent = new Intent(this, MerchantMgtActivity.class);
+			startActivity(intent);
+			
+		} else if (Constant.MENU_REFERENCE_PRODUCT_GROUP.equals(menu)) {
+
+			Intent intent = new Intent(this, ProductGrpMgtActivity.class);
+			startActivity(intent);
+			
+		} else if (Constant.MENU_REFERENCE_PRODUCT.equals(menu)) {
+
+			Intent intent = new Intent(this, ProductMgtActivity.class);
+			startActivity(intent);
+			
+		} else if (Constant.MENU_REFERENCE_EMPLOYEE.equals(menu)) {
+
+			Intent intent = new Intent(this, EmployeeMgtActivity.class);
+			startActivity(intent);
+			
+		} else if (Constant.MENU_REFERENCE_SUPPLIER.equals(menu)) {
+
+			Intent intent = new Intent(this, SupplierMgtActivity.class);
+			startActivity(intent);
+			
+		} else if (Constant.MENU_REFERENCE_DISCOUNT.equals(menu)) {
+
+			Intent intent = new Intent(this, DiscountMgtActivity.class);
 			startActivity(intent);
 			
 		} else if (Constant.MENU_SYNC.equals(menu)) {
@@ -423,6 +540,7 @@ public abstract class BaseActivity extends Activity
 	protected void setSelectedMenu(String menu) {
 		
 		mSelectedIndex = getMenuIndex(menu);
+		mSelectedMenu = menu;
 		
 		mDrawerList.setItemChecked(mSelectedIndex, true);
 	}

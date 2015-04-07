@@ -264,6 +264,37 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
     
+    <style name="ListViewRowPopUpStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/list_row_background</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+    </style>
+    
+    <style name="ListViewRowPopUpTitleStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_default</item>
+        <item name="android:background">@color/list_row_normal_background</item>
+    </style>
+    
+    <style name="ListViewRowPopUpContentStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_medium</item>
+        <item name="android:background">@color/list_row_normal_background</item>
+    </style>
+    
     <style name="ListViewRowDiscountStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -954,6 +985,18 @@
     <style name="SectionSubCashFlowContentInfoTextStyle" parent="SectionSubCashFlowContentTextStyle">
         <item name="android:textColor">@color/text_default</item>
     </style>
+    
+    <style name="SectionSubFavoriteTitleTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/background</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_blue</item>
+    </style>
 
     <style name="SectionBackButtonStyle">
         <item name="android:layout_height">wrap_content</item>
@@ -996,6 +1039,17 @@
         <item name="android:layout_marginRight">0dp</item>
         <item name="android:background">@drawable/selector_back_btn</item>
         <item name="android:src">@drawable/action_print_black</item>
+    </style>
+    
+    <style name="DetailsButtonStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical|right</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:background">@drawable/selector_back_btn</item>
+        <item name="android:src">@drawable/ic_view_list_black</item>
     </style>
 
     <style name="ConfirmDeleteDialogHeaderStyle">

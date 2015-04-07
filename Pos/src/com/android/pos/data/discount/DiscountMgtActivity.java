@@ -3,7 +3,7 @@ package com.android.pos.data.discount;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.R;
+import com.android.pos.Constant;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.DiscountDao;
@@ -31,8 +31,8 @@ public class DiscountMgtActivity extends BaseItemMgtActivity<DiscountSearchFragm
 		
 		super.onStart();
 
-		setTitle(getString(R.string.module_discount));
-		setSelectedMenu(getString(R.string.menu_data_management));
+		setTitle(Constant.MENU_REFERENCE_DISCOUNT);
+		setSelectedMenu(Constant.MENU_REFERENCE_DISCOUNT);
 	}
 	
 	@Override

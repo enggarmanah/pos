@@ -2,6 +2,7 @@ package com.android.pos.base.adapter;
 
 import java.util.List;
 
+import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.util.CommonUtil;
@@ -90,13 +91,19 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		} else if (Constant.MENU_ORDER.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_clipboard));
 		} else if (Constant.MENU_REPORT.equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_folder));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_assessment_black));
+		} else if (Constant.MENU_FAVORITE.equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_outline_black));
 		} else if (Constant.MENU_DATA.equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_folder));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_view_list_black));
 		} else if (Constant.MENU_SYNC.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_sync_black));
+		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_turned_in_not_black));
 		} else if (Constant.MENU_EXIT.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_exit_black));
+		} else {
+			menuImage.setImageDrawable(null);
 		}
 		
 		if (Constant.MENU_USER.equals(menu)) {
@@ -105,7 +112,26 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuText.setText(menu);
 		}
 		
-		if (Constant.MENU_REPORT_INVENTORY.equals(menu) ||
+		if (Constant.MENU_REPORT.equals(menu)) {
+			
+			countText.setVisibility(View.VISIBLE);
+			
+			if (!Config.isMenuReportExpanded()) {
+				
+				Integer count = MerchantUtil.getBelowStockLimitProductCount() + MerchantUtil.getPastDueBillsCount();
+				
+				if (count > 99) {
+					countText.setText("++");
+				} else if (count > 0) {
+					countText.setText(CommonUtil.formatNumber(count));
+				} else {
+					countText.setVisibility(View.GONE);
+				}
+			} else {
+				countText.setVisibility(View.GONE);
+			}
+			
+		} else if (Constant.MENU_REPORT_INVENTORY.equals(menu) ||
 			Constant.MENU_REPORT_CASHFLOW.equals(menu)) {
 			
 			countText.setVisibility(View.VISIBLE);

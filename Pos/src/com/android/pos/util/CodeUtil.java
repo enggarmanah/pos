@@ -243,7 +243,7 @@ public class CodeUtil {
 		code.setLabel("Stok Awal");
 		inventoryStatus[9] = code;
 		
-		moduleAccess = new CodeBean[12];
+		moduleAccess = new CodeBean[14];
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_CASHIER);
@@ -305,6 +305,15 @@ public class CodeUtil {
 		code.setLabel(Constant.MENU_REPORT_CASHFLOW);
 		moduleAccess[11] = code;
 		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_FAVORITE_CUSTOMER);
+		code.setLabel(Constant.MENU_FAVORITE_CUSTOMER);
+		moduleAccess[12] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_FAVORITE_SUPPLIER);
+		code.setLabel(Constant.MENU_FAVORITE_SUPPLIER);
+		moduleAccess[13] = code;
 	}
 	
 	public static CodeBean[] getMerchantTypes() {

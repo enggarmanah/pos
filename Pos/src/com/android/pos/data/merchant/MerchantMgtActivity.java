@@ -38,10 +38,12 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		
 		super.onStart();
 		
+		setTitle(Constant.MENU_REFERENCE_MERCHANT);
+		
 		if (UserUtil.isRoot()) {
 			setSelectedMenu(Constant.MENU_MERCHANT);
 		} else {
-			setSelectedMenu(Constant.MENU_DATA_MANAGEMENT);
+			setSelectedMenu(Constant.MENU_REFERENCE_MERCHANT);
 		}
 		
 		if (mProgress == 100 && mProgressDialog.isVisible()) {

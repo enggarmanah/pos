@@ -221,4 +221,43 @@ public class InventoryDaoService {
 		
 		return (count > 0);
 	}
+	
+	public List<Inventory> getSupplierInventories(Supplier supplier, String query, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String supplierId = String.valueOf(supplier.getId());
+		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT "
+				+ "   i._id "
+				+ " FROM "
+				+ "   inventory i, product p, product_group pg "
+				+ " WHERE "
+				+ "   p._id = i.product_id AND "
+				+ "   pg._id = p.product_group_id AND "
+				+ "   i.supplier_id = ? AND "
+				+ "   (i.product_name like ? OR pg.name like ?) AND "
+				+ "   i.status <> ? "
+				+ " ORDER BY "
+				+ "   i.delivery_date DESC "
+				+ " LIMIT ? OFFSET ? ",
+				new String[] { supplierId, queryStr, queryStr, status, limit, lastIdx});
+		
+		List<Inventory> list = new ArrayList<Inventory>();
+		
+		while(cursor.moveToNext()) {
+			
+			Inventory inventory = inventoryDao.load(cursor.getLong(0));
+			
+			list.add(inventory);
+		}
+		
+		cursor.close();
+		
+		return list;
+	}
 }

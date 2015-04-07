@@ -49,6 +49,10 @@ public class InventoryReportListFragment extends BaseFragment
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
+		if (!mIsShowBelowStockLimitProducts) {
+			mIsShowAllProducts = true;
+		}
+		
 		super.onCreate(savedInstanceState);
 	}
 	
@@ -74,8 +78,6 @@ public class InventoryReportListFragment extends BaseFragment
 		}
 		
 		mStockAlertAdapter = new InventoryReportArrayAdapter(getActivity(), mStockAlertProducts, this);
-		
-		mIsShowAllProducts = true;
 		
 		return view;
 	}

@@ -258,7 +258,7 @@ public class CashFlowActivity extends BaseActivity
 		
 		if (mOutstandingBillsCount != 0) {
 			
-			mAlertMenu.setVisible(true);
+			mWarningMenu.setVisible(true);
 		}
 		
 		return super.onCreateOptionsMenu(menu);

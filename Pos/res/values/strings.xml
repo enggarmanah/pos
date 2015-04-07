@@ -33,6 +33,8 @@
     <string name="menu_statistic_product">Laporan Penjualan</string>
     <string name="menu_report_cashflow">Laporan Keuangan</string>
     <string name="menu_report_inventory">Laporan Inventori</string>
+    <string name="menu_favorite_customer">Pelanggan Favorit</string>
+    <string name="menu_favorite_supplier">Supplier Favorit</string>
     <string name="menu_inventory">Data Inventori</string>
     <string name="menu_bills">Data Pengeluaran</string>
     <string name="menu_user_management">Data Pengguna</string>
@@ -132,6 +134,20 @@
     <string name="field_printer_required">Printer</string>
     <string name="field_printer_mini_font">Font Kecil</string>
     <string name="field_printer_line_size">Teks / Baris</string>
+    
+    <string name="favorite_customer_title">Pelanggan</string>
+    <string name="favorite_customer_quantity">Jumlah</string>
+    <string name="favorite_customer_amount">Nilai</string>
+    <string name="favorite_customer_category">Kategori</string>
+    <string name="favorite_customer_transaction">Transaksi</string>
+    <string name="favorite_customer_transaction_search">Cari Transaksi</string>
+    <string name="favorite_customer_product">Produk</string>
+    <string name="favorite_customer_total">Total</string>
+    <string name="favorite_customer_first_trans">Transaksi Pertama</string>
+    <string name="favorite_customer_last_trans">Terakhir</string>
+    <string name="favorite_customer_average">Rata-rata</string>
+    <string name="favorite_customer_min_trans">Minimal</string>
+    <string name="favorite_customer_max_trans">Maksimal</string>
     
     <string name="report_inventory_product">Produk</string>
     <string name="report_inventory_product_stock">Jumlah</string>

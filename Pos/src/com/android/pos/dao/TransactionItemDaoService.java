@@ -12,6 +12,7 @@ import com.android.pos.dao.TransactionItemDao;
 import com.android.pos.model.TransactionItemBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
@@ -112,5 +113,45 @@ public class TransactionItemDaoService {
 		cursor.close();
 		
 		return (count > 0);
+	}
+	
+	public List<TransactionItem> getCustomerTransactionItems(Customer customer, String query, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String customerId = String.valueOf(customer.getId());
+		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT "
+				+ "   ti._id "
+				+ " FROM "
+				+ "   transactions t, transaction_item ti, product p, product_group pg "
+				+ " WHERE "
+				+ "   t._id = ti.transaction_id AND "
+				+ "   p._id = ti.product_id AND "
+				+ "   pg._id = p.product_group_id AND "
+				+ "   t.customer_id = ? AND "
+				+ "   (ti.product_name like ? OR pg.name like ?) AND "
+				+ "   t.status <> ? "
+				+ " ORDER BY "
+				+ "   t.transaction_date DESC "
+				+ " LIMIT ? OFFSET ? ",
+				new String[] { customerId, queryStr, queryStr, status, limit, lastIdx});
+		
+		List<TransactionItem> list = new ArrayList<TransactionItem>();
+		
+		while(cursor.moveToNext()) {
+			
+			TransactionItem transactionItem = transactionItemDao.load(cursor.getLong(0));
+			
+			list.add(transactionItem);
+		}
+		
+		cursor.close();
+		
+		return list;
 	}
 }

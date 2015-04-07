@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.android.pos.R;
 import com.android.pos.dao.Customer;
+import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -24,7 +25,9 @@ public class CustomerArrayAdapter extends ArrayAdapter<Customer> {
 	}
 
 	class ViewHolder {
-		TextView itemText;
+		TextView nameText;
+		TextView telephoneText;
+		TextView addressText;
 	}
 
 	public CustomerArrayAdapter(Context context, List<Customer> customers, ItemActionListener listener) {
@@ -44,27 +47,53 @@ public class CustomerArrayAdapter extends ArrayAdapter<Customer> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView = convertView;
-		TextView customerName = null;
+		
+		TextView nameText = null;
+		TextView telephoneText = null;
+		TextView addressText = null;
 		
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.popup_customer_list_item, parent, false);
-			customerName = (TextView) rowView.findViewById(R.id.nameText);
+			
+			nameText = (TextView) rowView.findViewById(R.id.nameText);
+			telephoneText = (TextView) rowView.findViewById(R.id.telephoneText);
+			addressText = (TextView) rowView.findViewById(R.id.addressText);
 
 			ViewHolder viewHolder = new ViewHolder();
-			viewHolder.itemText = customerName;
+			
+			viewHolder.nameText = nameText;
+			viewHolder.telephoneText = telephoneText;
+			viewHolder.addressText = addressText;
 
 			rowView.setTag(viewHolder);
 
 		} else {
 
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
-			customerName = viewHolder.itemText;
+			
+			nameText = viewHolder.nameText;
+			telephoneText = viewHolder.telephoneText;
+			addressText = viewHolder.addressText;
 		}
 		
-		customerName.setText(customer.getName());
+		nameText.setText(customer.getName());
+		telephoneText.setText(customer.getTelephone());
+		addressText.setText(customer.getAddress());
+		
+		if (CommonUtil.isEmpty(customer.getTelephone())) {
+			telephoneText.setVisibility(View.GONE);
+		} else {
+			telephoneText.setVisibility(View.VISIBLE);
+		}
+		
+		if (CommonUtil.isEmpty(customer.getAddress())) {
+			addressText.setVisibility(View.GONE);
+		} else {
+			addressText.setVisibility(View.VISIBLE);
+		}
 
-		rowView.setOnClickListener(getItemOnClickListener(customer, customerName));
+		rowView.setOnClickListener(getItemOnClickListener(customer, nameText));
 
 		return rowView;
 	}
