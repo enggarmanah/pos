@@ -82,22 +82,27 @@ public class CodeUtil {
 		code.setLabel("Tidak");
 		booleans[1] = code;
 		
-		merchantTypes = new CodeBean[3];
+		merchantTypes = new CodeBean[4];
 		
 		code = new CodeBean();
-		code.setCode("R");
+		code.setCode(Constant.MERCHANT_TYPE_RESTO);
 		code.setLabel("Resto");
 		merchantTypes[0] = code;
 		
 		code = new CodeBean();
-		code.setCode("S");
+		code.setCode(Constant.MERCHANT_TYPE_SHOP);
 		code.setLabel("Toko");
 		merchantTypes[1] = code;
 		
 		code = new CodeBean();
-		code.setCode("B");
+		code.setCode(Constant.MERCHANT_TYPE_BEAUTY_N_SPA);
 		code.setLabel("Salon Kecantikan & Spa");
 		merchantTypes[2] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.MERCHANT_TYPE_CLINIC);
+		code.setLabel("Klinik");
+		merchantTypes[3] = code;
 		
 		roles = new CodeBean[3];
 		
@@ -243,7 +248,7 @@ public class CodeUtil {
 		code.setLabel("Stok Awal");
 		inventoryStatus[9] = code;
 		
-		moduleAccess = new CodeBean[14];
+		moduleAccess = new CodeBean[15];
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_CASHIER);
@@ -296,24 +301,29 @@ public class CodeUtil {
 		moduleAccess[9] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_COMMISION);
+		code.setLabel(Constant.MENU_REPORT_COMMISION);
+		moduleAccess[10] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.ACCESS_REPORT_INVENTORY);
 		code.setLabel(Constant.MENU_REPORT_INVENTORY);
-		moduleAccess[10] = code;
+		moduleAccess[11] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_REPORT_CASHFLOW);
 		code.setLabel(Constant.MENU_REPORT_CASHFLOW);
-		moduleAccess[11] = code;
+		moduleAccess[12] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_FAVORITE_CUSTOMER);
 		code.setLabel(Constant.MENU_FAVORITE_CUSTOMER);
-		moduleAccess[12] = code;
+		moduleAccess[13] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_FAVORITE_SUPPLIER);
 		code.setLabel(Constant.MENU_FAVORITE_SUPPLIER);
-		moduleAccess[13] = code;
+		moduleAccess[14] = code;
 	}
 	
 	public static CodeBean[] getMerchantTypes() {

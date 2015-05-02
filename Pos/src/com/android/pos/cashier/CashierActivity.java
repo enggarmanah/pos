@@ -525,8 +525,10 @@ public class CashierActivity extends BaseActivity
 		transItem.setProductType(product.getType());
 		
 		if (personInCharge != null) {
+			
 			transItem.setEmployeeId(personInCharge.getId());
 			transItem.setEmployee(personInCharge);
+			transItem.setCommision(product.getCommision());
 		}
 		
 		int costPrice = product.getCostPrice() == null ? product.getPrice() : product.getCostPrice();
@@ -689,9 +691,9 @@ public class CashierActivity extends BaseActivity
 			// track the product movement in inventory if it's not resto menu
 			
 			Product product = mProductDaoService.getProduct(transactionItem.getProductId());
-			boolean isMenu = Constant.PRODUCT_TYPE_MENU.equals(product.getType());
+			boolean isGoods = Constant.PRODUCT_TYPE_GOODS.equals(product.getType());
 			
-			if (!isMenu) {
+			if (isGoods) {
 				
 				Inventory inventory = new Inventory();
 				inventory.setMerchant(MerchantUtil.getMerchant());

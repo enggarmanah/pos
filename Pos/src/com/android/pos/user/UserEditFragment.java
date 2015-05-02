@@ -52,6 +52,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     
     View accessView;
     
+    boolean mIsEnableInputFields;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
@@ -130,7 +132,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
         		TextView nameText = (TextView) accessView.findViewById(R.id.nameText);
     			final ImageButton checkedButton = (ImageButton) accessView.findViewById(R.id.checkedButton);
     			
-    			checkedButton.setEnabled(false);
+    			checkedButton.setEnabled(mIsEnableInputFields);
     			mCheckedButtons.add(checkedButton);
     			
     			nameText.setText(userAccess.getName());
@@ -238,6 +240,12 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	
         mUserDaoService.addUser(mItem);
         
+        for (UserAccess userAccess : mUserAccesses) {
+        	
+        	userAccess.setUser(mItem);
+        	mUserAccessDaoService.addUserAccess(userAccess);
+        }
+        
         mNameText.getText().clear();
         mUserIdText.getText().clear();
         
@@ -275,6 +283,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     public void enableInputFields(boolean isEnabled) {
     	
     	super.enableInputFields(isEnabled);
+    	
+    	mIsEnableInputFields = isEnabled;
     	
     	if (mCheckedButtons == null) {
     		return;

@@ -82,6 +82,8 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			countText = viewHolder.countText;
 		}
 		
+		boolean isSubMenu = false;
+		
 		if (Constant.MENU_USER.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_user));
 		} else if (Constant.MENU_CASHIER.equals(menu)) {
@@ -104,6 +106,13 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_exit_black));
 		} else {
 			menuImage.setImageDrawable(null);
+			isSubMenu = true;
+		}
+		
+		if (isSubMenu) {
+			menuText.setTextColor(context.getResources().getColor(R.color.text_medium));
+		} else {
+			menuText.setTextColor(context.getResources().getColor(R.color.text_dark));
 		}
 		
 		if (Constant.MENU_USER.equals(menu)) {

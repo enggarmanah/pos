@@ -16,7 +16,7 @@
 
             <EditText
                 android:id="@+id/nameText"
-                style="@style/FormInputStyle" />
+                style="@style/FormInputTextAreaStyle" />
         </LinearLayout>
         
     </LinearLayout>

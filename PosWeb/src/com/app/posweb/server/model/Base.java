@@ -108,6 +108,6 @@ public class Base{
 		this.create_date = bean.getCreate_date();
 		this.update_by = bean.getUpdate_by();
 		this.update_date = bean.getUpdate_date();
-		this.sync_date = new Date();
+		this.sync_date = bean.getSync_date();
 	}
 }

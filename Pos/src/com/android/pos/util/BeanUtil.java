@@ -230,6 +230,7 @@ public class BeanUtil {
 		bean.setMerchant_id(product.getMerchantId());
 		bean.setRemote_id(product.getId());
 		bean.setProduct_group_id(product.getProductGroupId());
+		bean.setCode(product.getCode());
 		bean.setName(product.getName());
 		bean.setType(product.getType());
 		bean.setPrice(product.getPrice());
@@ -255,6 +256,7 @@ public class BeanUtil {
 		product.setMerchantId(bean.getMerchant_id());
 		product.setId(bean.getRemote_id());
 		product.setProductGroupId(bean.getProduct_group_id());
+		product.setCode(bean.getCode());
 		product.setName(bean.getName());
 		product.setType(bean.getType());
 		product.setPrice(bean.getPrice());

@@ -11,6 +11,9 @@ import com.android.pos.Constant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
+import com.android.pos.model.CommisionMonthBean;
+import com.android.pos.model.CommisionYearBean;
+import com.android.pos.model.EmployeeCommisionBean;
 import com.android.pos.model.ProductBean;
 import com.android.pos.model.ProductStatisticBean;
 import com.android.pos.model.SyncStatusBean;
@@ -61,9 +64,39 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM product "
-				+ " WHERE name like ? AND status <> ? "
+				+ " WHERE (name LIKE ? OR code LIKE ?) AND status <> ? "
 				+ " ORDER BY name LIMIT ? OFFSET ? ",
-				new String[] { queryStr, status, limit, lastIdx});
+				new String[] { queryStr, queryStr, status, limit, lastIdx});
+		
+		List<Product> list = new ArrayList<Product>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Product item = getProduct(id);
+			list.add(item);
+		}
+
+		cursor.close();
+		
+		return list;
+	}
+	
+	public List<Product> getGoodsProducts(String query, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String productType = Constant.PRODUCT_TYPE_GOODS;
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM product "
+				+ " WHERE (name LIKE ? OR code LIKE ?) AND type = ? AND status <> ? "
+				+ " ORDER BY name LIMIT ? OFFSET ? ",
+				new String[] { queryStr, queryStr, productType, status, limit, lastIdx});
 		
 		List<Product> list = new ArrayList<Product>();
 		
@@ -84,16 +117,17 @@ public class ProductDaoService {
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		String queryStr = "%" + CommonUtil.getNvlString(query) + "%";
+		String productType = Constant.PRODUCT_TYPE_GOODS;
 		String status = Constant.STATUS_ACTIVE;
 		String limit = Constant.QUERY_LIMIT;
 		String lastIdx = String.valueOf(lastIndex);
 		
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM product "
-				+ " WHERE name like ? AND status = ? "
+				+ " WHERE name like ? AND type = ? AND status = ? "
 				+ " AND stock < min_stock "
 				+ " ORDER BY name LIMIT ? OFFSET ? ",
-				new String[] { queryStr, status, limit, lastIdx});
+				new String[] { queryStr, productType, status, limit, lastIdx});
 		
 		List<Product> list = new ArrayList<Product>();
 		
@@ -114,12 +148,14 @@ public class ProductDaoService {
 		QueryBuilder<Product> qb = productDao.queryBuilder();
 		
 		if (productGroup == null) {
-			qb.where(ProductDao.Properties.Name.like("%" + query + "%"),
-					ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
+			qb.where(qb.and(qb.or(ProductDao.Properties.Name.like("%" + query + "%"), 
+					              ProductDao.Properties.Code.like("%" + query + "%")),
+					ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED))).orderAsc(ProductDao.Properties.Name);
 		} else {
-			qb.where(ProductDao.Properties.Name.like("%" + query + "%"), 
-					ProductDao.Properties.ProductGroupId.eq(productGroup.getId()),
-					ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
+			qb.where(qb.and(qb.or(ProductDao.Properties.Name.like("%" + query + "%"), 
+		              			  ProductDao.Properties.Code.like("%" + query + "%")),
+		              ProductDao.Properties.ProductGroupId.eq(productGroup.getId()),
+		              ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED))).orderAsc(ProductDao.Properties.Name);
 		}
 
 		Query<Product> q = qb.build();
@@ -132,6 +168,16 @@ public class ProductDaoService {
 
 		QueryBuilder<Product> qb = productDao.queryBuilder();
 		qb.where(ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
+		
+		Query<Product> q = qb.build();
+		
+		return q.list();
+	}
+	
+	public List<Product> getProducts(String type) {
+
+		QueryBuilder<Product> qb = productDao.queryBuilder();
+		qb.where(ProductDao.Properties.Type.eq(type), ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(ProductDao.Properties.Name);
 		
 		Query<Product> q = qb.build();
 		
@@ -202,7 +248,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT product_name, SUM(quantity) quantity "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY product_name "
 				+ " ORDER BY quantity DESC, product_name ASC ", new String[] { startDate, endDate });
 			
@@ -235,7 +281,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT product_name, SUM(price - discount) revenue "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY product_name "
 				+ " ORDER BY revenue DESC, product_name ASC ", new String[] { startDate, endDate });
 			
@@ -268,7 +314,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT product_name, SUM(price - discount - cost_price) profit "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY product_name "
 				+ " ORDER BY profit DESC, product_name ASC ", new String[] { startDate, endDate });
 			
@@ -298,7 +344,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(quantity) quantity "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id "
 				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
 			
 		while(cursor.moveToNext()) {
@@ -324,7 +370,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price-discount) revenue "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id "
 				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
 			
 		while(cursor.moveToNext()) {
@@ -350,7 +396,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price - discount - cost_price) profit "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id "
 				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
 			
 		while(cursor.moveToNext()) {
@@ -379,7 +425,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(quantity) quantity "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
 				new String[] { startDate, endDate });
 		
@@ -409,7 +455,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price-discount) revenue "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
 				new String[] { startDate, endDate });
 		
@@ -439,7 +485,7 @@ public class ProductDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price - discount - cost_price) profit "
 				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
 				new String[] { startDate, endDate });
 		
@@ -486,5 +532,131 @@ public class ProductDaoService {
 		cursor.close();
 		
 		return count;
+	}
+	
+	public List<EmployeeCommisionBean> getEmployeeCommisions(CommisionMonthBean commisionMonth) {
+		
+		ArrayList<EmployeeCommisionBean> employeeCommisions = new ArrayList<EmployeeCommisionBean>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(commisionMonth.getMonth()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(commisionMonth.getMonth()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT ti.employee_id, e.name employee_name, SUM(commision) commision "
+				+ " FROM transactions t, transaction_item ti, employee e "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND ti.employee_id = e._id AND transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY employee_name "
+				+ " ORDER BY employee_name DESC, commision ASC ", new String[] { startDate, endDate });
+			
+		while(cursor.moveToNext()) {
+			
+			Long employeeId = cursor.getLong(0);
+			String employeeName = cursor.getString(1);
+			Long commision = cursor.getLong(2);
+			
+			EmployeeCommisionBean employeeCommision = new EmployeeCommisionBean();
+			
+			employeeCommision.setEmployee_id(employeeId);
+			employeeCommision.setEmployee_name(employeeName);
+			employeeCommision.setCommision(commision);
+			
+			employeeCommisions.add(employeeCommision);
+		}
+		
+		cursor.close();
+		
+		return employeeCommisions;
+	}
+	
+	public List<CommisionYearBean> getCommisionYears() {
+		
+		ArrayList<CommisionYearBean> commisionYears = new ArrayList<CommisionYearBean>();
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id "
+				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
+			
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
+			Long value = cursor.getLong(1);
+			CommisionYearBean commisionYear = new CommisionYearBean();
+			commisionYear.setYear(date);
+			commisionYear.setAmount(value);
+			commisionYears.add(commisionYear);
+		}
+		
+		cursor.close();
+		
+		return commisionYears;
+	}
+	
+	public List<CommisionMonthBean> getCommisionMonths(CommisionYearBean commisionYear) {
+		
+		ArrayList<CommisionMonthBean> commisionMonths = new ArrayList<CommisionMonthBean>();
+		
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(commisionYear.getYear()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(commisionYear.getYear()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
+				+ " FROM transactions t, transaction_item ti "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
+				new String[] { startDate, endDate });
+		
+		while(cursor.moveToNext()) {
+			
+			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
+			Long value = cursor.getLong(1);
+			CommisionMonthBean commisionMonth = new CommisionMonthBean();
+			commisionMonth.setMonth(date);
+			commisionMonth.setAmount(value);
+			commisionMonths.add(commisionMonth);
+		}
+		
+		cursor.close();
+		
+		return commisionMonths;
+	}
+	
+	public List<EmployeeCommisionBean> getEmployeeCommisions(CommisionMonthBean commisionMonth, Employee employee) {
+		
+		ArrayList<EmployeeCommisionBean> employeeCommisions = new ArrayList<EmployeeCommisionBean>();
+		
+		String employeeIdStr = String.valueOf(employee.getId());
+		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(commisionMonth.getMonth()).getTime());
+		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(commisionMonth.getMonth()).getTime());
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y %H:%M:%S', transaction_date/1000, 'unixepoch', 'localtime'), p.name product_name, ti.commision "
+				+ " FROM transactions t, transaction_item ti, product p "
+				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND ti.product_id = p._id AND employee_id = ? AND transaction_date BETWEEN ? AND ? "
+				+ " ORDER BY ti._id ASC ", new String[] { employeeIdStr, startDate, endDate });
+			
+		while(cursor.moveToNext()) {
+			
+			Date transactionDate = CommonUtil.parseDate(cursor.getString(0), "dd-MM-yyyy hh:mm:ss");
+			String productName = cursor.getString(1);
+			Long commision = cursor.getLong(2);
+			
+			EmployeeCommisionBean employeeCommision = new EmployeeCommisionBean();
+			
+			employeeCommision.setTransaction_date(transactionDate);
+			employeeCommision.setProduct_name(productName);
+			employeeCommision.setCommision(commision);
+			
+			employeeCommisions.add(employeeCommision);
+		}
+		
+		cursor.close();
+		
+		return employeeCommisions;
 	}
 }

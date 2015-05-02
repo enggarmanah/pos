@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(33, "com.android.pos.dao");
+        Schema schema = new Schema(34, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -94,6 +94,7 @@ public class PosDaoGenerator {
     	Property productGroupId = product.addLongProperty("productGroupId").getProperty();
     	product.addToOne(productGroup, productGroupId);
     	
+    	product.addStringProperty("code");
     	Property productName = product.addStringProperty("name").getProperty();
     	product.addStringProperty("type");
     	product.addIntProperty("price");

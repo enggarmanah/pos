@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 public class ProductEditFragment extends BaseEditFragment<Product> {
     
+	EditText mCodeText;
 	EditText mNameText;
 	Spinner mTypeSp;
 	Spinner mProductGrpSp;
@@ -70,7 +71,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void initViewReference(View view) {
         
-        mNameText = (EditText) view.findViewById(R.id.nameText);
+    	mCodeText = (EditText) view.findViewById(R.id.codeText);
+    	mNameText = (EditText) view.findViewById(R.id.nameText);
     	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
     	mProductGrpSp = (Spinner) view.findViewById(R.id.productGrpSp);
     	mPriceText = (EditText) view.findViewById(R.id.priceText);
@@ -84,6 +86,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	mMinStockText = (EditText) view.findViewById(R.id.minStockText);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
+    	registerField(mCodeText);
     	registerField(mNameText);
     	registerField(mTypeSp);
     	registerField(mProductGrpSp);
@@ -142,6 +145,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		int statusIndex = statusArrayAdapter.getPosition(product.getStatus());
     		int picRequiredIndex = picRequiredArrayAdapter.getPosition(product.getPicRequired());
     		
+    		mCodeText.setText(product.getCode());
     		mNameText.setText(product.getName());
     		mPriceText.setText(CommonUtil.formatCurrency(product.getPrice()));
     		mCostPriceText.setText(CommonUtil.formatCurrency(product.getCostPrice()));
@@ -168,6 +172,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void saveItem() {
     	
+    	String code = mCodeText.getText().toString();
     	String name = mNameText.getText().toString();
     	String type = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
     	Long prodGrpId = CommonUtil.getNvlId((ProductGroup) mProductGrpSp.getSelectedItem());
@@ -186,6 +191,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		
     		mItem.setMerchantId(MerchantUtil.getMerchantId());
     		
+    		mItem.setCode(code);
     		mItem.setName(name);
     		mItem.setType(type);
     		mItem.setProductGroupId(prodGrpId);

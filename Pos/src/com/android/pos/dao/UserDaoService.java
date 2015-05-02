@@ -24,7 +24,8 @@ public class UserDaoService {
 	
 	public void addUser(User user) {
 		
-		userDao.insert(user);
+		Long id = userDao.insert(user);
+		user.setId(id);
 	}
 	
 	public void updateUser(User user) {

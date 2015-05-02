@@ -7,6 +7,7 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.CustomerDaoService;
 import com.android.pos.model.CustomerStatisticBean;
+import com.android.pos.util.MerchantUtil;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -73,6 +74,14 @@ public class CustomerListFragment extends BaseFragment
 		
 		mTitleText = (TextView) getView().findViewById(R.id.titleText);
 		
+		if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+			
+			mTitleText.setText(getString(R.string.menu_favorite_patient));
+			
+		} else {
+			mTitleText.setText(getString(R.string.menu_favorite_customer));
+		}
+		
 		mCustomerStatisticBeanList = (ListView) getView().findViewById(R.id.transactionList);
 		
 		mCustomerStatisticBeanList.setItemsCanFocus(true);
@@ -118,12 +127,6 @@ public class CustomerListFragment extends BaseFragment
 		if (isViewInitialized()) {
 			updateContent();
 		}
-	}
-	
-	public void showAllCustomerStatisticBeans() {
-		
-		mTitleText.setText("Produk");
-		mCustomerStatisticBeanList.setAdapter(mAdapter);
 	}
 	
 	public void searchCustomerStatisticBean(String query) {

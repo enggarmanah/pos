@@ -268,6 +268,12 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'CONTACT_EMAIL' TEXT");
             }
             
+            // handle version 34 changes
+            if (oldVersion < 34) {
+            	
+            	db.execSQL("ALTER TABLE 'PRODUCT' ADD 'CODE' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

@@ -148,6 +148,11 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
+            android:name="com.android.pos.report.commision.CommisionActivity"
+            android:label="@string/menu_transaction"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
             android:name="com.android.pos.favorite.customer.CustomerActivity"
             android:label="@string/menu_favorite_customer"
             android:launchMode="singleTask" >

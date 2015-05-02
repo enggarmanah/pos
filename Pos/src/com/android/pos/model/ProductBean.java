@@ -3,6 +3,7 @@ package com.android.pos.model;
 public class ProductBean extends BaseBean {
 
 	private Long product_group_id;
+	private String code;
 	private String name;
 	private String type;
 	private Integer price;
@@ -22,6 +23,14 @@ public class ProductBean extends BaseBean {
 
 	public void setProduct_group_id(Long product_group_id) {
 		this.product_group_id = product_group_id;
+	}
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getName() {

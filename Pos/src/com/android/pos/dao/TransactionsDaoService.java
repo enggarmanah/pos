@@ -112,6 +112,7 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount) total_amount "
 				+ " FROM transactions "
+				+ " WHERE status = 'A' "
 				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
 			
 		while(cursor.moveToNext()) {
@@ -137,6 +138,7 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount - tax_amount - service_charge_amount) income "
 				+ " FROM transactions "
+				+ " WHERE status = 'A' "
 				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
 			
 		while(cursor.moveToNext()) {
@@ -165,7 +167,7 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount) total_amount "
 				+ " FROM transactions "
-				+ " WHERE transaction_date BETWEEN ? AND ? "
+				+ " WHERE status = 'A' AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { startDate, endDate });
 			
 		while(cursor.moveToNext()) {
@@ -194,7 +196,7 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount - tax_amount - service_charge_amount) income "
 				+ " FROM transactions "
-				+ " WHERE transaction_date BETWEEN ? AND ? "
+				+ " WHERE status = 'A' AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { startDate, endDate });
 			
 		while(cursor.moveToNext()) {
@@ -223,7 +225,7 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT SUM(total_amount), SUM(tax_amount), SUM(service_charge_amount) "
 				+ " FROM transactions "
-				+ " WHERE transaction_date BETWEEN ? AND ? "
+				+ " WHERE status = 'A' AND transaction_date BETWEEN ? AND ? "
 				, new String[] { startDate, endDate });
 		
 		if (cursor.moveToFirst()) {
@@ -257,7 +259,7 @@ public class TransactionsDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount) total_amount "
 				+ " FROM transactions " 
-				+ " WHERE transaction_date BETWEEN ? AND ? "
+				+ " WHERE status = 'A' AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { startDate, endDate });
 			
 		while(cursor.moveToNext()) {

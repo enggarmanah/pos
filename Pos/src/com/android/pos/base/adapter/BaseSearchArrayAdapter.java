@@ -3,6 +3,7 @@ package com.android.pos.base.adapter;
 import java.util.List;
 
 import com.android.pos.R;
+import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -28,7 +29,9 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 	}
 
 	class ViewHolder {
-		TextView itemText;
+		
+		TextView nameText;
+		TextView infoText;
 	}
 
 	public BaseSearchArrayAdapter(Context context, List<T> items, T selectedItem, ItemActionListener<T> listener) {
@@ -53,6 +56,11 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 	
 	public abstract String getItemName(T item);
 	
+	public String getItemInfo(T item) { 
+		
+		return null; 
+	}
+	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
@@ -61,39 +69,51 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView = convertView;
-		TextView itemName = null;
+		
+		TextView nameText = null;
+		TextView infoText = null;
 		
 		if (rowView == null) {
 
 			rowView = inflater.inflate(R.layout.app_list_item, parent, false);
-			itemName = (TextView) rowView.findViewById(R.id.nameText);
+			nameText = (TextView) rowView.findViewById(R.id.nameText);
+			infoText = (TextView) rowView.findViewById(R.id.infoText);
 
 			ViewHolder viewHolder = new ViewHolder();
-			viewHolder.itemText = itemName;
-
+			
+			viewHolder.nameText = nameText;
+			viewHolder.infoText = infoText;
+			
 			rowView.setTag(viewHolder);
 
 		} else {
 
 			@SuppressWarnings("unchecked")
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
-			itemName = viewHolder.itemText;
+			
+			nameText = viewHolder.nameText;
+			infoText = viewHolder.infoText;
 		}
 		
-		itemName.setText(getItemName(item));
+		nameText.setText(getItemName(item));
+		infoText.setText(getItemInfo(item));
+		
+		if (CommonUtil.isEmpty(getItemInfo(item))) {
+			infoText.setVisibility(View.GONE);
+		} else {
+			infoText.setVisibility(View.VISIBLE);
+		}
 
 		if (selectedItem != null && getItemId(selectedItem) == getItemId(item)) {
 			
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
-			itemName.setTextColor(context.getResources().getColor(R.color.list_row_selected_text));
 			selectedView = rowView;
 			
 		} else {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
-			itemName.setTextColor(context.getResources().getColor(R.color.list_row_normal_text));
 		}
 		
-		rowView.setOnClickListener(getItemOnClickListener(item, itemName));
+		rowView.setOnClickListener(getItemOnClickListener(item, nameText));
 
 		return rowView;
 	}
@@ -110,16 +130,12 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 
 				if (selectedView != null) {
 
-					TextView selectedText = (TextView) selectedView.findViewById(R.id.nameText);
-
 					selectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
-					selectedText.setTextColor(context.getResources().getColor(R.color.list_row_normal_text));
 				}
 
 				selectedView = v;
 
 				selectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
-				itemNameView.setTextColor(context.getResources().getColor(R.color.list_row_selected_text));
 
 				mCallback.onItemSelected(item);
 			}
@@ -132,10 +148,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 		
 		if (selectedView != null) {
 
-			TextView selectedText = (TextView) selectedView.findViewById(R.id.nameText);
-
 			selectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
-			selectedText.setTextColor(context.getResources().getColor(R.color.list_row_normal_text));
 		}
 	}
 }

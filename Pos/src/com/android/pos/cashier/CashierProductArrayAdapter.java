@@ -26,6 +26,8 @@ public class CashierProductArrayAdapter extends ArrayAdapter<Product> {
 	}
 
 	class ViewHolder {
+		
+		TextView codeText;
 		TextView nameText;
 		TextView priceText;
 	}
@@ -48,6 +50,7 @@ public class CashierProductArrayAdapter extends ArrayAdapter<Product> {
 
 		View rowView = convertView;
 		
+		TextView prdCode = null;
 		TextView prdName = null;
 		TextView prdPrice = null;
 		
@@ -55,11 +58,13 @@ public class CashierProductArrayAdapter extends ArrayAdapter<Product> {
 
 			rowView = inflater.inflate(R.layout.cashier_product_list_item, parent, false);
 			
+			prdCode = (TextView) rowView.findViewById(R.id.codeText);
 			prdName = (TextView) rowView.findViewById(R.id.nameText);
 			prdPrice = (TextView) rowView.findViewById(R.id.priceText);
 
 			ViewHolder viewHolder = new ViewHolder();
 			
+			viewHolder.codeText = prdCode;
 			viewHolder.nameText = prdName;
 			viewHolder.priceText = prdPrice;
 
@@ -69,12 +74,20 @@ public class CashierProductArrayAdapter extends ArrayAdapter<Product> {
 
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
 			
+			prdCode = viewHolder.codeText;
 			prdName = viewHolder.nameText;
 			prdPrice = viewHolder.priceText;
 		}
 		
+		prdCode.setText(product.getCode());
 		prdName.setText(product.getName());
 		prdPrice.setText(CommonUtil.formatCurrency(product.getPrice()));
+		
+		if (CommonUtil.isEmpty(product.getCode())) {
+			prdCode.setVisibility(View.GONE);
+		} else {
+			prdCode.setVisibility(View.VISIBLE);
+		}
 		
 		if (UserUtil.isWaitress()) {
 			prdPrice.setVisibility(View.GONE);

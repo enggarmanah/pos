@@ -3,7 +3,7 @@
     style="@style/RightFragmentStyle" >
 
     <LinearLayout style="@style/FormStyle" >
-
+		
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
@@ -18,7 +18,22 @@
                 android:id="@+id/nameText"
                 style="@style/FormInputStyle" />
         </LinearLayout>
+		
+        <LinearLayout style="@style/FormRowStyle" >
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_K" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_code" />
+
+            <EditText
+                android:id="@+id/codeText"
+                style="@style/FormInputStyle" />
+        </LinearLayout>
+        
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView

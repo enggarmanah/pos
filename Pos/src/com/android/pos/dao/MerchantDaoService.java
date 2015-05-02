@@ -24,7 +24,8 @@ public class MerchantDaoService {
 	
 	public void addMerchant(Merchant merchant) {
 		
-		merchantDao.insert(merchant);
+		Long id = merchantDao.insert(merchant);
+		merchant.setId(id);
 	}
 	
 	public void updateMerchant(Merchant merchant) {
@@ -60,6 +61,16 @@ public class MerchantDaoService {
 		}
 		
 		return merchant;
+	}
+	
+	public boolean isEmptyDb() {
+		
+		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();
+		
+		Query<Merchant> q = qb.build();
+		List<Merchant> merchants = q.list();
+		
+		return merchants.size() == 0;
 	}
 	
 	public Merchant getMerchantByLoginId(String loginId) {

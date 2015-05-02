@@ -1,5 +1,6 @@
 package com.app.posweb.server.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -116,5 +117,24 @@ public class CustomerDao {
 		em.close();
 
 		return (count > 0);
+	}
+	
+	public void updateSyncDate(SyncRequest syncRequest, Date syncDate) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("UPDATE Customer c SET sync_date = :syncDate WHERE merchant_id = :merchantId AND sync_date = :lastSyncDate ");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		query.setParameter("lastSyncDate", syncRequest.getSync_date());
+		query.setParameter("syncDate", syncDate);
+		
+		query.executeUpdate();
+		
+		em.close();
 	}
 }

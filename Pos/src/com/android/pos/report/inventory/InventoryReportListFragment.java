@@ -179,7 +179,7 @@ public class InventoryReportListFragment extends BaseFragment
 		if (mIsShowAllProducts) { 
 		
 			mProducts.clear();
-			mProducts.addAll(mProductDaoService.getProducts(mQuery, 0));
+			mProducts.addAll(mProductDaoService.getGoodsProducts(mQuery, 0));
 		
 		} else if (mIsShowBelowStockLimitProducts) {
 			

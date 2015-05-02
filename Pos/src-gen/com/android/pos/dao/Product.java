@@ -16,6 +16,7 @@ public class Product implements Serializable {
     private Long id;
     private long merchantId;
     private Long productGroupId;
+    private String code;
     private String name;
     private String type;
     private Integer price;
@@ -54,10 +55,11 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(Long id, long merchantId, Long productGroupId, String name, String type, Integer price, Integer costPrice, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, Integer stock, Integer minStock, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Product(Long id, long merchantId, Long productGroupId, String code, String name, String type, Integer price, Integer costPrice, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, Integer stock, Integer minStock, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.productGroupId = productGroupId;
+        this.code = code;
         this.name = name;
         this.type = type;
         this.price = price;
@@ -105,6 +107,14 @@ public class Product implements Serializable {
 
     public void setProductGroupId(Long productGroupId) {
         this.productGroupId = productGroupId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

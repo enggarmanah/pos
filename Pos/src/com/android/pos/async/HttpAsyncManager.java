@@ -326,6 +326,7 @@ public class HttpAsyncManager {
 		mGetTasks.clear();
 		mGetTasks.add(Constant.TASK_GET_USER);
 		mGetTasks.add(Constant.TASK_GET_USER_ACCESS);
+		mGetTasks.add(Constant.TASK_GET_MERCHANT_ACCESS);
 		
 		mUpdateTasks.clear();
 		mUpdateTasks.add(Constant.TASK_UPDATE_USER);
@@ -745,7 +746,7 @@ public class HttpAsyncManager {
 
 				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
 				
-				mDevice.setLast_sync_date(mSyncDate);
+				//mDevice.setLast_sync_date(mSyncDate);
 				request.setDevice(mDevice);
 			}
 

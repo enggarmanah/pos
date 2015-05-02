@@ -224,9 +224,23 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 							startActivity(intent);
 							
 						} else {
-
-							mPasswordTxt.setText(Constant.EMPTY_STRING);
-							showFailedAuthenticationMessage();
+							
+							if (mMerchantDaoService.isEmptyDb()) {
+								
+								DbUtil.switchDb(null);
+								mMerchantDaoService = new MerchantDaoService();
+								
+								MerchantUtil.recreateDao();
+								
+								mProgressDialog.show(getFragmentManager(), "progressDialogTag");
+								
+								mHttpAsyncManager = new HttpAsyncManager(context);
+								mHttpAsyncManager.validateMerchant(loginId, password);
+							
+							} else {
+								mPasswordTxt.setText(Constant.EMPTY_STRING);
+								showFailedAuthenticationMessage();
+							}
 						}
 						
 					} else {
@@ -251,7 +265,12 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			MerchantUtil.setMerchant(mMerchant);
 			
 			mMerchant.setIsLogin(true);
-			mMerchantDaoService.addMerchant(mMerchant);
+			
+			if (mMerchantDaoService.getMerchant(mMerchant.getId()) != null) {
+				mMerchantDaoService.updateMerchant(mMerchant);
+			} else {
+				mMerchantDaoService.addMerchant(mMerchant);
+			}
 			
 			DbUtil.switchDb(mMerchant.getId());
 		

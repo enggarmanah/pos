@@ -206,4 +206,35 @@ public class MerchantDao {
 
 		return (count > 0);
 	}
+	
+	public void updateSyncDate(SyncRequest syncRequest, Date syncDate) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer();
+		
+		if (syncRequest.getMerchant_id() != -1) {
+			sql.append("UPDATE MerchantAccess m SET sync_date = :syncDate WHERE remote_id = :merchantId AND sync_date = :lastSyncDate ");
+		} else {
+			sql.append("UPDATE MerchantAccess m SET sync_date = :syncDate WHERE sync_date = :lastSyncDate ");
+		}
+		
+		Query query = em.createQuery(sql.toString());
+		
+		if (syncRequest.getMerchant_id() != -1) {
+			
+			query.setParameter("merchantId", syncRequest.getMerchant_id());
+			query.setParameter("lastSyncDate", syncRequest.getSync_date());
+			query.setParameter("syncDate", syncDate);
+			
+		} else {
+			
+			query.setParameter("lastSyncDate", syncRequest.getSync_date());
+			query.setParameter("syncDate", syncDate);
+		}
+		
+		query.executeUpdate();
+		
+		em.close();
+	}
 }

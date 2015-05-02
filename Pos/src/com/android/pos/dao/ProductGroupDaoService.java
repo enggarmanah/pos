@@ -159,7 +159,6 @@ public class ProductGroupDaoService {
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		String customerId = String.valueOf(customer.getId());
-		String status = Constant.STATUS_DELETED;
 		
 		Cursor cursor = db.rawQuery("SELECT "
 				+ "   pg.name, sum(ti.quantity) quantity, sum(ti.quantity * ti.price) amount"
@@ -169,10 +168,10 @@ public class ProductGroupDaoService {
 				+ "   pg._id = p.product_group_id AND "
 				+ "   p._id = ti.product_id AND "
 				+ "   t._id = ti.transaction_id AND "
-				+ "   t.customer_id = ? AND t.status <> ? "
+				+ "   t.customer_id = ? AND t.status <> 'D' "
 				+ " GROUP BY pg.name "
 				+ " ORDER BY quantity DESC ",
-				new String[] { customerId, status });
+				new String[] { customerId });
 		
 		List<ProductGroupStatisticBean> list = new ArrayList<ProductGroupStatisticBean>();
 		
@@ -197,7 +196,6 @@ public class ProductGroupDaoService {
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		String supplierId = String.valueOf(supplier.getId());
-		String status = Constant.STATUS_DELETED;
 		
 		Cursor cursor = db.rawQuery("SELECT "
 				+ "   pg.name, sum(i.quantity) quantity, sum(i.quantity * i.product_cost_price) amount"
@@ -206,10 +204,10 @@ public class ProductGroupDaoService {
 				+ " WHERE "
 				+ "   pg._id = p.product_group_id AND "
 				+ "   p._id = i.product_id AND "
-				+ "   i.supplier_id = ? AND i.status <> ? "
+				+ "   i.supplier_id = ? AND i.status <> 'D' "
 				+ " GROUP BY pg.name "
 				+ " ORDER BY quantity DESC ",
-				new String[] { supplierId, status });
+				new String[] { supplierId });
 		
 		List<ProductGroupStatisticBean> list = new ArrayList<ProductGroupStatisticBean>();
 		

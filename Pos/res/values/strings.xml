@@ -33,7 +33,9 @@
     <string name="menu_statistic_product">Laporan Penjualan</string>
     <string name="menu_report_cashflow">Laporan Keuangan</string>
     <string name="menu_report_inventory">Laporan Inventori</string>
+    <string name="menu_report_commision">Laporan Komisi</string>
     <string name="menu_favorite_customer">Pelanggan Favorit</string>
+    <string name="menu_favorite_patient">Pasien Favorit</string>
     <string name="menu_favorite_supplier">Supplier Favorit</string>
     <string name="menu_inventory">Data Inventori</string>
     <string name="menu_bills">Data Pengeluaran</string>
@@ -84,6 +86,7 @@
     <string name="msg_notification_search_action">Masukkan kata pencarian pada kolom di atas.</string>
     <string name="msg_data_save_success">Data telah berhasil disimpan.</string>
     
+    <string name="field_code">Kode</string>
     <string name="field_name">Nama</string>
     <string name="field_type">Tipe</string>
     <string name="field_group">Kategori</string>
@@ -149,6 +152,10 @@
     <string name="favorite_customer_min_trans">Minimal</string>
     <string name="favorite_customer_max_trans">Maksimal</string>
     
+    <string name="favorite_supplier_title">Supplier</string>
+    <string name="favorite_supplier_quantity">Jumlah</string>
+    <string name="favorite_supplier_amount">Nilai</string>
+    
     <string name="report_inventory_product">Produk</string>
     <string name="report_inventory_product_stock">Jumlah</string>
    
@@ -170,6 +177,8 @@
     <string name="report_bill_purchase">Daftar Pembelian</string>
     
     <string name="report_bill_outstanding_title">Tagihan Belum Lunas</string>
+    
+    <string name="report_commision_amount">Jumlah Komisi</string>
     
     <string name="hint_percentage">Persentase %</string>
     <string name="hint_cost_price">Harga Beli Satuan</string>  

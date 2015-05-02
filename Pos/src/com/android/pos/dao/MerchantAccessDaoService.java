@@ -62,6 +62,11 @@ public class MerchantAccessDaoService {
 	public List<MerchantAccess> getMerchantAccessList(Long merchantId) {
 
 		QueryBuilder<MerchantAccess> qb = merchantAccessDao.queryBuilder();
+		
+		if (merchantId == null) {
+			merchantId = Long.valueOf(-1);
+		}
+		
 		qb.where(MerchantAccessDao.Properties.MerchantId.eq(merchantId)).orderAsc(MerchantAccessDao.Properties.Id);
 		
 		Query<MerchantAccess> q = qb.build();

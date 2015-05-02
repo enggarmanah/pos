@@ -96,12 +96,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 			productInfo.setText(transactionItem.getEmployee().getName());
 			productInfo.setVisibility(View.VISIBLE);
 			
-		} else {
-			
-			productInfo.setVisibility(View.GONE);
-		}
-		
-		if (!CommonUtil.isEmpty(transactionItem.getRemarks())) {
+		} else if (!CommonUtil.isEmpty(transactionItem.getRemarks())) {
 			
 			productInfo.setText(transactionItem.getRemarks());
 			productInfo.setVisibility(View.VISIBLE);

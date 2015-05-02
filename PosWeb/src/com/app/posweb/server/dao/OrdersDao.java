@@ -22,8 +22,11 @@ public class OrdersDao {
 	public Orders addOrders(Orders bean) {
 
 		EntityManager em = PersistenceManager.getEntityManager();
+		em.getTransaction().begin();
 		
 		em.persist(bean);
+		
+		em.getTransaction().commit();
 		em.close();
 
 		return bean;
@@ -32,10 +35,12 @@ public class OrdersDao {
 	public Orders updateOrders(Orders bean) {
 
 		EntityManager em = PersistenceManager.getEntityManager();
+		em.getTransaction().begin();
 		
 		Orders orders = em.find(Orders.class, bean.getId());
 		orders.setBean(bean);
 		
+		em.getTransaction().commit();
 		em.close();
 		
 		return orders;
@@ -44,12 +49,14 @@ public class OrdersDao {
 	public Orders deleteOrders(Orders bean) {
 
 		EntityManager em = PersistenceManager.getEntityManager();
+		em.getTransaction().begin();
 		
 		Orders orders = em.find(Orders.class, bean.getId());
 		bean.setBean(orders);
 		
 		em.remove(orders);
 		
+		em.getTransaction().commit();
 		em.close();
 		
 		return orders;

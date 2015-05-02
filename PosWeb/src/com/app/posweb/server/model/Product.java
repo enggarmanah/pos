@@ -8,6 +8,7 @@ import javax.persistence.Table;
 public class Product extends Base {
 
 	private Long product_group_id;
+	private String code;
 	private String name;
 	private String type;
 	private Integer price;
@@ -25,6 +26,7 @@ public class Product extends Base {
 
 		super.setBean(bean);
 		this.product_group_id = bean.getProduct_group_id();
+		this.code = bean.getCode();
 		this.name = bean.getName();
 		this.type = bean.getType();
 		this.price = bean.getPrice();
@@ -45,6 +47,14 @@ public class Product extends Base {
 
 	public void setProduct_group_id(Long product_group_id) {
 		this.product_group_id = product_group_id;
+	}
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getName() {

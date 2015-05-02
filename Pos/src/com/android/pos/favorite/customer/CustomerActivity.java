@@ -9,6 +9,7 @@ import com.android.pos.dao.Customer;
 import com.android.pos.model.CustomerStatisticBean;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
+import com.android.pos.util.MerchantUtil;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
@@ -66,8 +67,15 @@ public class CustomerActivity extends BaseActivity
 		
 		super.onStart();
 		
-		setTitle(getString(R.string.menu_favorite_customer));
-		setSelectedMenu(getString(R.string.menu_favorite_customer));
+		if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+			
+			setTitle(getString(R.string.menu_favorite_patient));
+			setSelectedMenu(getString(R.string.menu_favorite_patient));
+			
+		} else {
+			setTitle(getString(R.string.menu_favorite_customer));
+			setSelectedMenu(getString(R.string.menu_favorite_customer));
+		}
 		
 		updateProductStock();
 	}

@@ -7,8 +7,6 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.ProductDaoService;
-import com.android.pos.dao.Transactions;
-import com.android.pos.model.TransactionDayBean;
 import com.android.pos.model.TransactionMonthBean;
 import com.android.pos.model.TransactionYearBean;
 import com.android.pos.util.CommonUtil;
@@ -35,8 +33,6 @@ public class ProductStatisticListFragment extends BaseFragment
 	
 	private List<TransactionYearBean> mTransactionYears;
 	private List<TransactionMonthBean> mTransactionMonths;
-	private List<TransactionDayBean> mTransactionDays;
-	private List<Transactions> mTransactions;
 	
 	private TransactionYearBean mSelectedTransactionYear;
 	private TransactionMonthBean mSelectedTransactionMonth;
@@ -95,8 +91,15 @@ public class ProductStatisticListFragment extends BaseFragment
 		mTransactionList.setItemsCanFocus(true);
 		mTransactionList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
+		if (mSelectedTransactionMonth != null) {
+			
+			displayTransactionOnYear(mSelectedTransactionYear);
+			displayTransactionOnMonth(mSelectedTransactionMonth);
+		}
 		if (mSelectedTransactionYear != null) {
-			onTransactionYearSelected(mSelectedTransactionYear);		
+			
+			displayTransactionOnYear(mSelectedTransactionYear);
+			
 		} else {
 			displayTransactionAllYears();
 		}
@@ -122,14 +125,6 @@ public class ProductStatisticListFragment extends BaseFragment
 		
 		if (mTransactionMonths == null) {
 			mTransactionMonths = new ArrayList<TransactionMonthBean>();
-		}
-		
-		if (mTransactionDays == null) {
-			mTransactionDays = new ArrayList<TransactionDayBean>();
-		}
-		
-		if (mTransactions == null) {
-			mTransactions = new ArrayList<Transactions>();
 		}
 	}
 	

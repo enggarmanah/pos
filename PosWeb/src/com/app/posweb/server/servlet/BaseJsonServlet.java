@@ -80,8 +80,11 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		byte[] bytes = mapper.writeValueAsBytes(syncResponse);
 		
 		log.log(Level.INFO, "Processing Time : " + (new Date().getTime() - start.getTime()));
+		log.log(Level.INFO, "Response Size : " + bytes.length);
 		
 		bytes = compress(bytes);
+		
+		log.log(Level.INFO, "Compress Size : " + bytes.length);
 		
 		response.getOutputStream().write(bytes);
 	}

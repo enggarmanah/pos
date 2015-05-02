@@ -70,6 +70,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     
     View accessView;
     
+    boolean mIsEnableInputFields;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
@@ -225,7 +227,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
         		TextView nameText = (TextView) accessView.findViewById(R.id.nameText);
     			final ImageButton checkedButton = (ImageButton) accessView.findViewById(R.id.checkedButton);
     			
-    			checkedButton.setEnabled(false);
+    			checkedButton.setEnabled(mIsEnableInputFields);
     			mCheckedButtons.add(checkedButton);
     			
     			nameText.setText(merchantAccess.getName());
@@ -360,6 +362,12 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		
 	        mMerchantDaoService.addMerchant(mItem);
 	        
+	        for (MerchantAccess merchantAccess : mMerchantAccesses) {
+	        	
+	        	merchantAccess.setMerchant(mItem);
+	        	mMerchantAccessDaoService.addMerchantAccess(merchantAccess);
+	        }
+	        
 	        mNameText.getText().clear();
 	        mAddressText.getText().clear();
 	        mTelephoneText.getText().clear();
@@ -374,6 +382,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 	        mServiceChargeText.getText().clear();
 	        
 	        mItem = null;
+	        
+	        isUpdated = true;
     	}
     	
     	return isUpdated;
@@ -422,6 +432,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     public void enableInputFields(boolean isEnabled) {
     	
     	super.enableInputFields(isEnabled);
+    	
+    	mIsEnableInputFields = isEnabled;
     	
     	if (mCheckedButtons == null) {
     		return;

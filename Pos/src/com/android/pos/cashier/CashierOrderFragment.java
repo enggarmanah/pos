@@ -191,6 +191,9 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 				if (item.getQuantity() == 0) {
 					mTransactionItems.remove(transItem);
 				} else {
+					if (item.getEmployeeId() != 0) {
+						transItem.setEmployee(item.getEmployee());
+					}
 					transItem.setQuantity(item.getQuantity());
 					transItem.setRemarks(item.getRemarks());
 				}

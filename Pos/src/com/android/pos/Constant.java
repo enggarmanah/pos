@@ -37,6 +37,7 @@ public class Constant {
 	public static final String MERCHANT_TYPE_RESTO = "R";
 	public static final String MERCHANT_TYPE_BEAUTY_N_SPA = "B";
 	public static final String MERCHANT_TYPE_SHOP = "S";
+	public static final String MERCHANT_TYPE_CLINIC = "C";
 	
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 200;
 	
@@ -155,6 +156,7 @@ public class Constant {
 	public static final String ACCESS_BILLS = "BILL";
 	public static final String ACCESS_REPORT_TRANSACTION = "RTRA";
 	public static final String ACCESS_REPORT_PRODUCT_STATISTIC = "RPST";
+	public static final String ACCESS_REPORT_COMMISION = "RCMS";
 	public static final String ACCESS_REPORT_INVENTORY = "RIVT";
 	public static final String ACCESS_REPORT_CASHFLOW = "RCFL";
 	public static final String ACCESS_FAVORITE_CUSTOMER = "FVCS";
@@ -166,6 +168,7 @@ public class Constant {
 	public static final String MENU_ORDER = "Pemesanan";
 	public static final String MENU_DATA = "Data";
 	public static final String MENU_CUSTOMER = "Data Pelanggan";
+	public static final String MENU_PATIENT = "Data Pasien";
 	public static final String MENU_MERCHANT = "Data Merchant";
 	public static final String MENU_DATA_MANAGEMENT = "Referensi";
 	public static final String MENU_INVENTORY = "Data Inventori";
@@ -174,10 +177,12 @@ public class Constant {
 	public static final String MENU_REPORT = "Laporan";
 	public static final String MENU_REPORT_TRANSACTION = "Laporan Transaksi";
 	public static final String MENU_REPORT_PRODUCT_STATISTIC = "Laporan Penjualan";
+	public static final String MENU_REPORT_COMMISION = "Laporan Komisi";
 	public static final String MENU_REPORT_INVENTORY = "Laporan Inventori";
 	public static final String MENU_REPORT_CASHFLOW = "Laporan Keuangan";
 	public static final String MENU_FAVORITE = "Favorit";
 	public static final String MENU_FAVORITE_CUSTOMER = "Pelanggan Favorit";
+	public static final String MENU_FAVORITE_PATIENT = "Pasien Favorit";
 	public static final String MENU_FAVORITE_SUPPLIER = "Supplier Favorit";
 	public static final String MENU_REFERENCE_MERCHANT = "Merchant";
 	public static final String MENU_REFERENCE_PRODUCT_GROUP = "Group Produk";

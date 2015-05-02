@@ -49,7 +49,8 @@
                 style="@style/FormInputEmailStyle" />
         </LinearLayout>
         
-		<LinearLayout style="@style/FormRowStyle" >
+		<LinearLayout style="@style/FormRowStyle"
+		    android:visibility="gone">
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
@@ -76,10 +77,11 @@
 
             <EditText
                 android:id="@+id/addressText"
-                style="@style/FormInputStyle" />
+                style="@style/FormInputTextAreaStyle" />
         </LinearLayout>
 
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout style="@style/FormRowStyle"
+            android:visibility="gone">
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"

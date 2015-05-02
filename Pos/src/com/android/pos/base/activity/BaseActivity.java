@@ -28,10 +28,12 @@ import com.android.pos.favorite.supplier.SupplierActivity;
 import com.android.pos.inventory.InventoryMgtActivity;
 import com.android.pos.order.OrderActivity;
 import com.android.pos.report.cashflow.CashFlowActivity;
+import com.android.pos.report.commision.CommisionActivity;
 import com.android.pos.report.inventory.InventoryReportActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.PrintUtil;
 import com.android.pos.util.UserUtil;
@@ -233,6 +235,10 @@ public abstract class BaseActivity extends Activity
 				mMenus.add(Constant.MENU_REPORT_PRODUCT_STATISTIC);
 			}
 			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_COMMISION)) {
+				mMenus.add(Constant.MENU_REPORT_COMMISION);
+			}
+			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
 				mMenus.add(Constant.MENU_REPORT_CASHFLOW);
 			}
@@ -251,7 +257,12 @@ public abstract class BaseActivity extends Activity
 		if (Config.isMenuFavoriteExpanded()) {
 		
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER)) {
-				mMenus.add(Constant.MENU_FAVORITE_CUSTOMER);
+				
+				if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+					mMenus.add(Constant.MENU_FAVORITE_PATIENT);
+				} else {
+					mMenus.add(Constant.MENU_FAVORITE_CUSTOMER);
+				}
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_SUPPLIER)) {
@@ -277,7 +288,13 @@ public abstract class BaseActivity extends Activity
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
-				mMenus.add(Constant.MENU_CUSTOMER);
+				
+				if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+					mMenus.add(Constant.MENU_PATIENT);
+				} else {
+					mMenus.add(Constant.MENU_CUSTOMER);
+				}
+				
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
@@ -417,6 +434,11 @@ public abstract class BaseActivity extends Activity
 			Intent intent = new Intent(this, ProductStatisticActivity.class);
 			startActivity(intent);
 
+		} else if (Constant.MENU_REPORT_COMMISION.equals(menu)) {
+
+			Intent intent = new Intent(this, CommisionActivity.class);
+			startActivity(intent);
+
 		} else if (Constant.MENU_REPORT_CASHFLOW.equals(menu)) {
 
 			Intent intent = new Intent(this, CashFlowActivity.class);
@@ -427,7 +449,8 @@ public abstract class BaseActivity extends Activity
 			Intent intent = new Intent(this, InventoryReportActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_FAVORITE_CUSTOMER.equals(menu)) {
+		} else if (Constant.MENU_FAVORITE_CUSTOMER.equals(menu) ||
+				   Constant.MENU_FAVORITE_PATIENT.equals(menu)) {
 
 			Intent intent = new Intent(this, CustomerActivity.class);
 			startActivity(intent);
@@ -447,7 +470,8 @@ public abstract class BaseActivity extends Activity
 			Intent intent = new Intent(this, InventoryMgtActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_CUSTOMER.equals(menu)) {
+		} else if (Constant.MENU_CUSTOMER.equals(menu) ||
+				   Constant.MENU_PATIENT.equals(menu)) {
 
 			Intent intent = new Intent(this, CustomerMgtActivity.class);
 			startActivity(intent);
@@ -512,6 +536,7 @@ public abstract class BaseActivity extends Activity
 			
 			UserUtil.resetUser();
 			PrintUtil.reset();
+			Config.resetMenus();
 			
 			Intent intent = new Intent(this, MerchantLoginActivity.class);
 			
@@ -645,7 +670,7 @@ public abstract class BaseActivity extends Activity
 		ProductDaoService productDaoService = new ProductDaoService();
 		InventoryDaoService inventoryDaoServie = new InventoryDaoService();
 		
-		List<Product> products = productDaoService.getProducts();
+		List<Product> products = productDaoService.getProducts(Constant.PRODUCT_TYPE_GOODS);
 		
 		for (Product product : products) {
 			
