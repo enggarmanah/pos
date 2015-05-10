@@ -18,14 +18,14 @@
     <item
         android:id="@+id/menu_item_warning"
         android:actionLayout="@layout/cmn_menu_warning"
-        android:icon="@drawable/action_flag"
+        android:icon="@drawable/ic_flag_white"
         android:title="@string/bill_pastdue_alert"
         android:showAsAction="ifRoom">
     </item>
     <item
         android:id="@+id/menu_item_alert"
         android:actionLayout="@layout/cmn_menu_alert"
-        android:icon="@drawable/action_flag"
+        android:icon="@drawable/ic_flag_white"
         android:title="@string/bill_pastdue_alert"
         android:showAsAction="always">
     </item>

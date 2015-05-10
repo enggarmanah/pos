@@ -80,13 +80,13 @@ public class OutstandingBillDetailArrayAdapter extends ArrayAdapter<Inventory> {
 			
 		int padding = flowImage.getPaddingLeft();
 		
-		flowImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_back));
+		flowImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_arrow_back_black));
 		flowImage.setBackground(context.getResources().getDrawable(R.drawable.bg_flow_out));
 		
 		if (Constant.INVENTORY_STATUS_PURCHASE.equals(inventory.getStatus()) ||
 			Constant.INVENTORY_STATUS_REPLACEMENT.equals(inventory.getStatus())) {
 			
-			flowImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_forward));
+			flowImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_arrow_forward_black));
 			flowImage.setBackground(context.getResources().getDrawable(R.drawable.bg_flow_in));
 		}
 		

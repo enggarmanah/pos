@@ -17,13 +17,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_payment"
-        android:icon="@drawable/action_accept"
+        android:icon="@drawable/ic_check_white"
         android:title="@string/payment"
         android:showAsAction="ifRoom|collapseActionView|withText">
     </item>
     <item
         android:id="@+id/menu_item_sync"
-        android:icon="@drawable/action_sync"
+        android:icon="@drawable/ic_cached_white"
         android:title="@string/sync"
         android:showAsAction="ifRoom|collapseActionView|withText">
     </item>

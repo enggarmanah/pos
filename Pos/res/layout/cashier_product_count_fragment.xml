@@ -18,8 +18,8 @@
 	    <TextView
 	        android:id="@+id/remarksBtn"
 	        style="@style/PopUpDialogHeaderBtnStyle"
-	        android:drawableStart="@drawable/action_comment"
-	        android:drawableLeft="@drawable/action_comment"/>
+	        android:drawableStart="@drawable/ic_border_color_white"
+	        android:drawableLeft="@drawable/ic_border_color_white"/>
     </LinearLayout>
     <Spinner
         android:id="@+id/personInChargeSp"
@@ -143,7 +143,7 @@
                 android:id="@+id/actionXBtn"
                 style="@style/CashierNumberButtonStyle"
                 android:contentDescription="@string/none"
-                android:src="@drawable/backspace" />
+                android:src="@drawable/ic_backspace_grey" />
         </LinearLayout>
     </LinearLayout>
 

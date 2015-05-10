@@ -85,13 +85,13 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		boolean isSubMenu = false;
 		
 		if (Constant.MENU_USER.equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_user));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_account_circle_black));
 		} else if (Constant.MENU_CASHIER.equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_home_black));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_home_black));
 		} else if (Constant.MENU_WAITRESS.equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_home_black));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_home_black));
 		} else if (Constant.MENU_ORDER.equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_clipboard));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_content_paste_black));
 		} else if (Constant.MENU_REPORT.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_assessment_black));
 		} else if (Constant.MENU_FAVORITE.equals(menu)) {
@@ -99,11 +99,11 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		} else if (Constant.MENU_DATA.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_view_list_black));
 		} else if (Constant.MENU_SYNC.equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_sync_black));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_cached_black));
 		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_turned_in_not_black));
 		} else if (Constant.MENU_EXIT.equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.action_exit_black));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_exit_to_app_black));
 		} else {
 			menuImage.setImageDrawable(null);
 			isSubMenu = true;
@@ -168,8 +168,18 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		String selectedMenu = mCallback.getSelectedMenu();
 		
 		if (selectedMenu != null && selectedMenu.equals(menu)) {
+			
+			menuText.setTextColor(context.getResources().getColor(R.color.text_dark));
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_selected));
+			
 		} else {
+			
+			if (isSubMenu) {
+				menuText.setTextColor(context.getResources().getColor(R.color.text_medium));
+			} else {
+				menuText.setTextColor(context.getResources().getColor(R.color.text_dark));
+			}
+			
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_normal));
 		}
 

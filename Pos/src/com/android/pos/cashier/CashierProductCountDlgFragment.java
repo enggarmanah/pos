@@ -8,6 +8,7 @@ import com.android.pos.dao.Employee;
 import com.android.pos.dao.EmployeeDaoService;
 import com.android.pos.dao.Product;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -177,6 +178,12 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		
 		if (getView() == null) {
 			return;
+		}
+		
+		if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchantType())) {
+			mRemarksBtn.setVisibility(View.VISIBLE);
+		} else {
+			mRemarksBtn.setVisibility(View.GONE);
 		}
 		
 		if (Constant.PRODUCT_TYPE_SERVICE.equals(mProduct.getType())) {

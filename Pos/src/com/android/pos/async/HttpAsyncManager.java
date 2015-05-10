@@ -298,8 +298,8 @@ public class HttpAsyncManager {
 		mGetTasks.clear();
 		mGetTasks.add(Constant.TASK_GET_USER);
 		mGetTasks.add(Constant.TASK_GET_USER_ACCESS);
-		mGetTasks.add(Constant.TASK_GET_MERCHANT);
 		mGetTasks.add(Constant.TASK_GET_MERCHANT_ACCESS);
+		mGetTasks.add(Constant.TASK_GET_MERCHANT);
 		
 		mUpdateTasks.clear();
 		mUpdateTasks.add(Constant.TASK_UPDATE_USER);

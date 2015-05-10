@@ -110,7 +110,7 @@
                 android:id="@+id/actionXBtn"
                 style="@style/CashierNumberButtonStyle"
                 android:contentDescription="@string/none"
-                android:src="@drawable/backspace" />
+                android:src="@drawable/ic_backspace_grey" />
         </LinearLayout>
     </LinearLayout>
 

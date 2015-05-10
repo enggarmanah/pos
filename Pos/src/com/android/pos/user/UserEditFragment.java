@@ -140,9 +140,9 @@ public class UserEditFragment extends BaseEditFragment<User> {
     			boolean isChecked = Constant.STATUS_YES.equals(userAccess.getStatus());
     			
     			if (isChecked) {
-					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_checked_black));
+					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_black));
 				} else {
-					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_cancel_black));
+					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_clear_black));
 				}
     			
     			checkedButton.setOnClickListener(new View.OnClickListener() {
@@ -157,10 +157,10 @@ public class UserEditFragment extends BaseEditFragment<User> {
     					boolean isSelected = Constant.STATUS_YES.equals(userAccess.getStatus());
     					
     					if (!isSelected) {
-    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_checked_black));
+    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_black));
     						userAccess.setStatus(Constant.STATUS_YES);
     					} else {
-    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_cancel_black));
+    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_clear_black));
     						userAccess.setStatus(Constant.STATUS_NO);
     					}
     				}

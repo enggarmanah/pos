@@ -8,7 +8,7 @@
         android:id="@+id/menu_item_warning_icon"
         android:layout_width="24dp"
         android:layout_height="fill_parent"
-        android:src="@drawable/action_flag"
+        android:src="@drawable/ic_flag_white"
         android:contentDescription="@string/none"
         android:background="@android:color/transparent"
         android:layout_alignParentRight="true"

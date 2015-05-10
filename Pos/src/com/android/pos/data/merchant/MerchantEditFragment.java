@@ -235,9 +235,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     			boolean isChecked = Constant.STATUS_YES.equals(merchantAccess.getStatus());
     			
     			if (isChecked) {
-					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_checked_black));
+					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_black));
 				} else {
-					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_cancel_black));
+					checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_clear_black));
 				}
     			
     			checkedButton.setOnClickListener(new View.OnClickListener() {
@@ -252,10 +252,10 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     					boolean isSelected = Constant.STATUS_YES.equals(merchantAccess.getStatus());
     					
     					if (!isSelected) {
-    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_checked_black));
+    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_black));
     						merchantAccess.setStatus(Constant.STATUS_YES);
     					} else {
-    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.action_cancel_black));
+    						checkedButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_clear_black));
     						merchantAccess.setStatus(Constant.STATUS_NO);
     					}
     				}

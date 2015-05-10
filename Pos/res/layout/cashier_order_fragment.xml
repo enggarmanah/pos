@@ -101,8 +101,8 @@
                 <TextView
                     android:id="@+id/paymentText"
                     style="@style/CashierButtonStyle"
-                    android:drawableLeft="@drawable/action_accept"
-                    android:drawableStart="@drawable/action_accept"
+                    android:drawableLeft="@drawable/ic_check_white"
+                    android:drawableStart="@drawable/ic_check_white"
                     android:drawablePadding="10dp"
                     android:text="@string/payment" />
             </FrameLayout>
@@ -116,8 +116,8 @@
                 <TextView
                     android:id="@+id/orderNewItemText"
                     style="@style/CashierButtonStyle"
-                    android:drawableLeft="@drawable/action_accept"
-                    android:drawableStart="@drawable/action_accept"
+                    android:drawableLeft="@drawable/ic_check_white"
+                    android:drawableStart="@drawable/ic_check_white"
                     android:drawablePadding="10dp"
                     android:text="@string/ok" />
             </FrameLayout>
@@ -137,8 +137,8 @@
                 <TextView
                     android:id="@+id/orderText"
                     style="@style/CashierButtonStyle"
-                    android:drawableLeft="@drawable/action_write"
-                    android:drawableStart="@drawable/action_write"
+                    android:drawableLeft="@drawable/ic_border_color_white"
+                    android:drawableStart="@drawable/ic_border_color_white"
                     android:drawablePadding="10dp"
                     android:text="@string/order" />
             </FrameLayout>
@@ -157,8 +157,8 @@
                     android:id="@+id/cancelText"
                     style="@style/CashierButtonStyle"
                     android:text="@string/cancel"
-                    android:drawableLeft="@drawable/action_cancel"
-                    android:drawableStart="@drawable/action_cancel"
+                    android:drawableLeft="@drawable/ic_clear_white"
+                    android:drawableStart="@drawable/ic_clear_white"
                     android:drawablePadding="10dp" />
             </FrameLayout>
         </LinearLayout>

@@ -17,7 +17,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_item_exit"
-        android:icon="@drawable/action_exit"
+        android:icon="@drawable/ic_exit_to_app_white"
         android:title="@string/exit"
         android:showAsAction="always|withText">
     </item>

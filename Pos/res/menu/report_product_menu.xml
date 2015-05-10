@@ -17,19 +17,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_revenue"
-        android:icon="@drawable/action_shopping"
+        android:icon="@drawable/ic_shopping_basket_white"
         android:title="@string/info_revenue"
         android:showAsAction="ifRoom|collapseActionView">
     </item>
     <item
         android:id="@+id/menu_profit"
-        android:icon="@drawable/action_profit"
+        android:icon="@drawable/ic_attach_money_white"
         android:title="@string/info_profit"
         android:showAsAction="ifRoom|collapseActionView">
     </item>
     <item
         android:id="@+id/menu_quantity"
-        android:icon="@drawable/action_favorite"
+        android:icon="@drawable/ic_favorite_outline_white"
         android:title="@string/info_quantity"
         android:showAsAction="ifRoom|collapseActionView">
     </item>

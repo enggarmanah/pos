@@ -30,8 +30,8 @@
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginEnd="0dp"
 		        android:layout_marginRight="0dp"
-		        android:drawableStart="@drawable/action_cancel"
-		        android:drawableLeft="@drawable/action_cancel"/>
+		        android:drawableStart="@drawable/ic_clear_white"
+		        android:drawableLeft="@drawable/ic_clear_white"/>
 		</LinearLayout>
 		
         <EditText

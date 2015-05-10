@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/action_back"
+        android:src="@drawable/ic_arrow_back_black"
         android:contentDescription="@string/none"
         android:background="@drawable/bg_flow_out"
         android:padding="3dp"

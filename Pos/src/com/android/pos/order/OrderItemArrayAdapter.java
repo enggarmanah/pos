@@ -111,9 +111,9 @@ public class OrderItemArrayAdapter extends ArrayAdapter<OrderItem> {
 			boolean isSelected = mCallback.getOrderStatus(orderItem.getOrderId());
 			
 			if (isSelected) {
-				checkedButton.setImageDrawable(context.getResources().getDrawable(R.drawable.action_checked_black));
+				checkedButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_check_black));
 			} else {
-				checkedButton.setImageDrawable(context.getResources().getDrawable(R.drawable.action_cancel_black));
+				checkedButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_clear_black));
 			}
 			
 			printButton.setOnClickListener(new View.OnClickListener() {
@@ -147,9 +147,9 @@ public class OrderItemArrayAdapter extends ArrayAdapter<OrderItem> {
 					mCallback.setOrderStatus(orderItem.getOrderId(), isSelected);
 					
 					if (isSelected) {
-						button.setImageDrawable(context.getResources().getDrawable(R.drawable.action_checked_black));
+						button.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_check_black));
 					} else {
-						button.setImageDrawable(context.getResources().getDrawable(R.drawable.action_cancel_black));
+						button.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_clear_black));
 					}
 				}
 			});

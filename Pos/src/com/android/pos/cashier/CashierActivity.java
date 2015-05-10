@@ -473,8 +473,7 @@ public class CashierActivity extends BaseActivity
 		mIsEnableSearch = true;
 	}
 	
-	@Override
-	public void onClearTransaction() {
+	private void clearTransaction() {
 		
 		mSelectedProduct = null;
 		mSelectedOrder = null;
@@ -493,6 +492,12 @@ public class CashierActivity extends BaseActivity
 		mOrderFragment.setDiscount(mDiscount);
 		mOrderFragment.setCashierState(mState);
 		mOrderFragment.setSelectedOrders(mSelectedOrder);
+	}
+	
+	@Override
+	public void onClearTransaction() {
+		
+		clearTransaction();
 	}
 	
 	public View.OnClickListener getMessageTextOnClickListener() {
@@ -895,6 +900,8 @@ public class CashierActivity extends BaseActivity
 		Bundle extras = intent.getExtras();
 		
 		if (extras != null) {
+			
+			clearTransaction();
 			
 			mSelectedOrders = (HashMap<Long, Boolean>) extras.getSerializable(Constant.SELECTED_ORDERS_FOR_PAYMENT);
 			mSelectedOrder = (Orders) extras.getSerializable(Constant.SELECTED_ORDERS_FOR_NEW_ITEM);

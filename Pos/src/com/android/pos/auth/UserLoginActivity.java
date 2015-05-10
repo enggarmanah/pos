@@ -67,6 +67,17 @@ public class UserLoginActivity extends Activity {
 		
 		mMerchant = mMerchantDaoService.getActiveMerchant();
 		
+		// when the initial sync is failed, merchant data is not yet available
+		
+		if (mMerchant == null) {
+			
+			Intent intent = new Intent(context, MerchantLoginActivity.class);
+			intent.putExtra("logout", true);
+			startActivity(intent);
+			
+			return;
+		}
+		
 		MerchantUtil.setMerchant(mMerchant);
 		
 		String name = mMerchant.getName();

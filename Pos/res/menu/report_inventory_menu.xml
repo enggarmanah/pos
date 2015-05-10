@@ -18,20 +18,20 @@
     <item
         android:id="@+id/menu_item_search"
         android:actionViewClass="android.widget.SearchView"
-        android:icon="@drawable/action_search"
+        android:icon="@drawable/ic_search_white"
         android:title="@string/product_search"
         android:showAsAction="ifRoom|collapseActionView">
     </item>
     <item
         android:id="@+id/menu_item_list"
-        android:icon="@drawable/view_as_list"
+        android:icon="@drawable/ic_view_list_white"
         android:title="@string/product_list"
         android:showAsAction="ifRoom|collapseActionView">
     </item>
     <item
         android:id="@+id/menu_item_alert"
         android:actionLayout="@layout/cmn_menu_alert"
-        android:icon="@drawable/action_flag"
+        android:icon="@drawable/ic_flag_white"
         android:title="@string/product_stock_alert"
         android:showAsAction="always">
     </item>
