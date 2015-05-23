@@ -152,6 +152,10 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		
     		showView();
     		
+    		if (Constant.INVENTORY_STATUS_SALE.equals(inventory.getStatus())) {
+    			mInventoryItemListener.disableEditMenu();
+    		}
+    		
     	} else {
     		
     		hideView();

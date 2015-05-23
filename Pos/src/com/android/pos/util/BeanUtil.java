@@ -112,6 +112,11 @@ public class BeanUtil {
 		bean.setPassword(merchant.getPassword());
 		bean.setPeriod_start(merchant.getPeriodStart());
 		bean.setPeriod_end(merchant.getPeriodEnd());
+		bean.setPrice_type_count(merchant.getPriceTypeCount());
+		bean.setPrice_label_1(merchant.getPriceLabel1());
+		bean.setPrice_label_2(merchant.getPriceLabel2());
+		bean.setPrice_label_3(merchant.getPriceLabel3());
+		bean.setDiscount_type(merchant.getDiscountType());
 		bean.setTax_percentage(merchant.getTaxPercentage());
 		bean.setService_charge_percentage(merchant.getServiceChargePercentage());
 		bean.setPrinter_required(merchant.getPrinterRequired());
@@ -140,6 +145,11 @@ public class BeanUtil {
 		merchant.setPassword(bean.getPassword());
 		merchant.setPeriodStart(bean.getPeriod_start());
 		merchant.setPeriodEnd(bean.getPeriod_end());
+		merchant.setPriceTypeCount(bean.getPrice_type_count());
+		merchant.setPriceLabel1(bean.getPrice_label_1());
+		merchant.setPriceLabel2(bean.getPrice_label_2());
+		merchant.setPriceLabel3(bean.getPrice_label_3());
+		merchant.setDiscountType(bean.getDiscount_type());
 		merchant.setTaxPercentage(bean.getTax_percentage());
 		merchant.setServiceChargePercentage(bean.getService_charge_percentage());
 		merchant.setPrinterRequired(bean.getPrinter_required());
@@ -233,7 +243,9 @@ public class BeanUtil {
 		bean.setCode(product.getCode());
 		bean.setName(product.getName());
 		bean.setType(product.getType());
-		bean.setPrice(product.getPrice());
+		bean.setPrice_1(product.getPrice1());
+		bean.setPrice_2(product.getPrice2());
+		bean.setPrice_3(product.getPrice3());
 		bean.setCost_price(product.getCostPrice());
 		bean.setPic_required(product.getPicRequired());
 		bean.setCommision(product.getCommision());
@@ -259,7 +271,9 @@ public class BeanUtil {
 		product.setCode(bean.getCode());
 		product.setName(bean.getName());
 		product.setType(bean.getType());
-		product.setPrice(bean.getPrice());
+		product.setPrice1(bean.getPrice_1());
+		product.setPrice2(bean.getPrice_2());
+		product.setPrice3(bean.getPrice_3());
 		product.setCostPrice(bean.getCost_price());
 		product.setPicRequired(bean.getPic_required());
 		product.setCommision(bean.getCommision());

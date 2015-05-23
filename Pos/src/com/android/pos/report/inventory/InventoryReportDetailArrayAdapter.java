@@ -100,8 +100,14 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 	    String remarks = CommonUtil.isEmpty(inventory.getRemarks()) ? CodeUtil.getInvetoriStatusLabel(inventory.getStatus()) : CodeUtil.getInvetoriStatusLabel(inventory.getStatus()) + ". " + inventory.getRemarks(); 
 	    
 	    quantityText.setText(CommonUtil.formatNumber(inventory.getQuantity()));
-		deliveryDateText.setText(CommonUtil.formatDate(inventory.getDeliveryDate()));
-		remarksText.setText(remarks);
+		
+	    if (Constant.INVENTORY_STATUS_SALE.equals(inventory.getStatus())) {
+	    	deliveryDateText.setText(CommonUtil.formatDateTime(inventory.getDeliveryDate()));
+	    } else {
+	    	deliveryDateText.setText(CommonUtil.formatDate(inventory.getDeliveryDate()));
+	    }
+	    
+	    remarksText.setText(remarks);
 		
 		if (!CommonUtil.isEmpty(inventory.getSupplierName())) {
 			supplierText.setText(inventory.getSupplierName());

@@ -13,6 +13,7 @@ import com.android.pos.dao.InventoryDao;
 import com.android.pos.dao.MerchantAccessDao;
 import com.android.pos.dao.OrderItemDao;
 import com.android.pos.dao.OrdersDao;
+import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.SupplierDao;
 import com.android.pos.dao.TransactionsDao;
 import com.android.pos.dao.DaoMaster.DevOpenHelper;
@@ -274,6 +275,28 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'PRODUCT' ADD 'CODE' TEXT");
             }
             
+            // handle version 35 changes
+            if (oldVersion < 35) {
+            	
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'DISCOUNT_TYPE' TEXT");
+            }
+            
+            // handle version 36 changes
+            if (oldVersion < 36) {
+            	
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRICE_TYPE_COUNT' INTEGER");
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRICE_LABEL1' TEXT");
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRICE_LABEL2' TEXT");
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PRICE_LABEL3' TEXT");
+            }
+            
+            // handle version 37 changes
+            if (oldVersion < 37) {
+            	
+            	ProductDao.dropTable(db, true);
+            	ProductDao.createTable(db, true);
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -294,7 +317,30 @@ public class DbUtil {
     	}
     }
     
+    private static Long getDbId() {
+    	
+    	String dbFile = db.getPath();
+    	dbFile = dbFile.substring(dbFile.indexOf("pos-db"));
+    	
+    	String strId = dbFile.replace("pos-db-", "");
+    	strId = strId.replace("pos-db", "");
+    	
+    	Long dbId = null;
+    	
+    	if (strId.length() > 0) {
+    		dbId = Long.valueOf(strId);
+    	}
+    	
+    	return dbId;
+    }
+    
     public static void switchDb(Long merchantId) {
+    	
+    	if (merchantId == getDbId()) {
+    		
+    		System.out.println("Equal DB : No Switch");
+    		return;
+    	}
     	
     	System.out.println("Close DB : " + db);
     	

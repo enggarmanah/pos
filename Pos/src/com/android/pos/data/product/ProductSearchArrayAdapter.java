@@ -30,7 +30,7 @@ public class ProductSearchArrayAdapter extends BaseSearchArrayAdapter<Product> {
 		if (!CommonUtil.isEmpty(product.getCode())) {
 			return product.getCode();
 		} else {
-			return CommonUtil.formatCurrency(product.getPrice());
+			return CommonUtil.formatCurrency(product.getPrice1());
 		}
 	}
 }

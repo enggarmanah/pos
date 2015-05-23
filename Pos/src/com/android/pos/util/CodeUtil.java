@@ -13,6 +13,8 @@ public class CodeUtil {
 	public static CodeBean[] booleans;
 	public static CodeBean[] roles;
 	public static CodeBean[] emailStatus;
+	public static CodeBean[] priceTypeCount;
+	public static CodeBean[] discountTypes;
 	public static CodeBean[] paymentTypes;
 	public static CodeBean[] orderTypes;
 	public static CodeBean[] billTypes;
@@ -132,6 +134,35 @@ public class CodeUtil {
 		code.setCode(Constant.STATUS_NO);
 		code.setLabel("Tidak Kirim Email");
 		emailStatus[1] = code;
+		
+		discountTypes = new CodeBean[2];
+		
+		code = new CodeBean();
+		code.setCode(Constant.DISCOUNT_TYPE_PERCENTAGE);
+		code.setLabel("Persentase");
+		discountTypes[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.DISCOUNT_TYPE_NOMINAL);
+		code.setLabel("Nominal");
+		discountTypes[1] = code;
+		
+		priceTypeCount = new CodeBean[3];
+		
+		code = new CodeBean();
+		code.setCode(Constant.PRICE_TYPE_COUNT_1);
+		code.setLabel(Constant.PRICE_TYPE_COUNT_1_DESC);
+		priceTypeCount[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.PRICE_TYPE_COUNT_2);
+		code.setLabel(Constant.PRICE_TYPE_COUNT_2_DESC);
+		priceTypeCount[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.PRICE_TYPE_COUNT_3);
+		code.setLabel(Constant.PRICE_TYPE_COUNT_3_DESC);
+		priceTypeCount[2] = code;
 		
 		paymentTypes = new CodeBean[3];
 		
@@ -358,6 +389,10 @@ public class CodeUtil {
 		return emailStatus;
 	}
 	
+	public static CodeBean[] getDiscountTypes() {
+		return discountTypes;
+	}
+	
 	public static CodeBean[] getPaymentTypes() {
 		return paymentTypes;
 	}
@@ -376,6 +411,10 @@ public class CodeUtil {
 	
 	public static CodeBean[] getInventoryStatus() {
 		return inventoryStatus;
+	}
+	
+	public static CodeBean[] getPriceTypeCount() {
+		return priceTypeCount;
 	}
 	
 	public static CodeBean[] getModuleAccesses() {

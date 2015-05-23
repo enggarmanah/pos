@@ -2,18 +2,20 @@ package com.android.pos;
 
 public class Config {
 	
-	//public static String SERVER_URL = "http://192.168.1.161:8888";
+	public static boolean isEmptyData = true;
+	
+	public static String SERVER_URL = "http://192.168.1.161:8888";
 	//public static String SERVER_URL = "http://192.168.0.101:8888";
 	//public static String SERVER_URL = "http://20.194.21.242:8888";
 	//public static String SERVER_URL = "http://20.194.35.112:8888";
 	//public static String SERVER_URL = "http://192.168.1.192:8888";
 	//public static String SERVER_URL = "http://10.188.16.112:8888";
 	
-	public static String SERVER_URL = "http://pos-tokoku.appspot.com";
+	//public static String SERVER_URL = "http://pos-tokoku.appspot.com";
 	
 	public static boolean isDevelopment() {
 		
-		return !SERVER_URL.equals("http://pos-tokoku.appspot.com");
+		return !SERVER_URL.equals("http://pos-tokoku.appspot.com") && !isEmptyData;
 	}
 	
 	private static boolean isMenuReportExpanded = false;
@@ -27,6 +29,14 @@ public class Config {
 		isMenuFavoriteExpanded = false;
 		isMenuDataExpanded = false;
 		isMenuDataReferenceExpanded = false;
+	}
+	
+	public static void setMenusExpanded(boolean isExpanded) {
+		
+		setMenuDataExpanded(isExpanded);
+		setMenuDataReferenceExpanded(isExpanded);
+		setMenuFavoriteExpanded(isExpanded);
+		setMenuReportExpanded(isExpanded);
 	}
 	
 	public static boolean isMenuReportExpanded() {

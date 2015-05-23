@@ -26,7 +26,7 @@ public class ProductGrpSpinnerArrayAdapter extends BaseSpinnerArrayAdapter<Produ
 	}
 	
 	@Override
-	protected String getLabel(ProductGroup productGroup) {
+	protected String getLabel1(ProductGroup productGroup) {
 		
 		return productGroup.getName();
 	}

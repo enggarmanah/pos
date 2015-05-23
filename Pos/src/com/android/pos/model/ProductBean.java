@@ -6,7 +6,9 @@ public class ProductBean extends BaseBean {
 	private String code;
 	private String name;
 	private String type;
-	private Integer price;
+	private Integer price_1;
+	private Integer price_2;
+	private Integer price_3;
 	private Integer cost_price;
 	private String pic_required;
 	private Integer commision;
@@ -49,12 +51,28 @@ public class ProductBean extends BaseBean {
 		this.type = type;
 	}
 
-	public Integer getPrice() {
-		return price;
+	public Integer getPrice_1() {
+		return price_1;
 	}
 
-	public void setPrice(Integer price) {
-		this.price = price;
+	public void setPrice_1(Integer price_1) {
+		this.price_1 = price_1;
+	}
+
+	public Integer getPrice_2() {
+		return price_2;
+	}
+
+	public void setPrice_2(Integer price_2) {
+		this.price_2 = price_2;
+	}
+
+	public Integer getPrice_3() {
+		return price_3;
+	}
+
+	public void setPrice_3(Integer price_3) {
+		this.price_3 = price_3;
 	}
 
 	public Integer getCost_price() {

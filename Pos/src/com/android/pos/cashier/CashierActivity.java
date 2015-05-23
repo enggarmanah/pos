@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncManager;
@@ -69,8 +70,8 @@ public class CashierActivity extends BaseActivity
 	private CashierPaymentDlgFragment mPaymentDlgFragment;
 	private CashierOrderSummaryDlgFragment mOrderSummaryDlgFragment;
 	private CashierPaymentSummaryDlgFragment mPaymentSummaryDlgFragment;
-	private CashierDiscountDlgFragment mDiscountDlgFragment;
-	private CashierDiscountAmountDlgFragment mDiscountAmountDlgFragment;
+	private CashierDiscountPercentageDlgFragment mDiscountPercentageDlgFragment;
+	private CashierDiscountNominalDlgFragment mDiscountNominalDlgFragment;
 	private CustomerDlgFragment mCustomerDlgFragment;
 	
 	boolean mIsMultiplesPane = false;
@@ -103,11 +104,10 @@ public class CashierActivity extends BaseActivity
 	private static final String mOrderDlgFragmentTag = "orderDlgFragmentTag";
 	private static final String mPaymentSummaryDlgFragmentTag = "paymentSummaryDlgFragmentTag";
 	private static final String mOrderSummaryDlgFragmentTag = "orderSummaryDlgFragmentTag";
-	private static final String mDiscountDlgFragmentTag = "discountDlgFragmentTag";
-	private static final  String mDiscountAmountDlgFragmentTag = "discountAmountDlgFragmentTag";
+	private static final String mDiscountPercentageDlgFragmentTag = "discountPercentageDlgFragmentTag";
+	private static final String mDiscountNominalDlgFragmentTag = "discountNominalDlgFragmentTag";
 	private static final  String mCustomerDlgFragmentTag = "customerDlgFragmentTag";
-	//private static final String progressDialogTag = "progressDialogTag";
-
+	
 	private String prevQuery = Constant.EMPTY_STRING;
 	
 	private TransactionsDaoService mTransactionDaoService;
@@ -136,8 +136,12 @@ public class CashierActivity extends BaseActivity
 		setContentView(R.layout.cashier_activity);
 		
 		mState = Constant.CASHIER_STATE_CASHIER;
-
+		
 		DbUtil.initDb(this);
+		
+		if (Config.isDevelopment()) {
+			MerchantUtil.getMerchant();
+		}
 		
 		mTransactionDaoService = new TransactionsDaoService();
 		mTransactionItemDaoService = new TransactionItemDaoService();
@@ -165,8 +169,6 @@ public class CashierActivity extends BaseActivity
 			isTryToConnect = true;
 			connectToMerchantPrinter();
 		}
-		
-		//loadOrders();
 	}
 	
 	@Override
@@ -274,12 +276,12 @@ public class CashierActivity extends BaseActivity
 			mOrderSummaryDlgFragment = new CashierOrderSummaryDlgFragment();
 		}
 		
-		if (mDiscountDlgFragment == null) {
-			mDiscountDlgFragment = new CashierDiscountDlgFragment();
+		if (mDiscountPercentageDlgFragment == null) {
+			mDiscountPercentageDlgFragment = new CashierDiscountPercentageDlgFragment();
 		}
 		
-		if (mDiscountAmountDlgFragment == null) {
-			mDiscountAmountDlgFragment = new CashierDiscountAmountDlgFragment();
+		if (mDiscountNominalDlgFragment == null) {
+			mDiscountNominalDlgFragment = new CashierDiscountNominalDlgFragment();
 		}
 		
 		if (mCustomerDlgFragment == null) {
@@ -519,7 +521,7 @@ public class CashierActivity extends BaseActivity
 		};
 	}
 	
-	public TransactionItem getTransactionItem(Product product, Employee personInCharge, int quantity, String remarks) {
+	public TransactionItem getTransactionItem(Product product, Integer price, Employee personInCharge, int quantity, String remarks) {
 
 		TransactionItem transItem = new TransactionItem();
 
@@ -536,19 +538,7 @@ public class CashierActivity extends BaseActivity
 			transItem.setCommision(product.getCommision());
 		}
 		
-		int costPrice = product.getCostPrice() == null ? product.getPrice() : product.getCostPrice();
-		int price = product.getPrice();
-		
-		if (product.getPromoStart() != null && product.getPromoEnd() != null && product.getPromoPrice() != null) {
-			
-			Date curDate = new Date();
-			
-			if (product.getPromoStart().getTime() <= curDate.getTime() &&
-				curDate.getTime() <= product.getPromoEnd().getTime()) {
-				
-				price = product.getPromoPrice();
-			}
-		}
+		int costPrice = product.getCostPrice() != null ? product.getCostPrice() : CommonUtil.getCurrentPrice(product);
 		
 		transItem.setPrice(price);
 		transItem.setCostPrice(costPrice);
@@ -582,26 +572,26 @@ public class CashierActivity extends BaseActivity
 			setSelectPrinterVisible(true);
 		}
 		
-		onProductSelected(product, 0, Constant.EMPTY_STRING);
+		onProductSelected(product, CommonUtil.getCurrentPrice(product), null, 0, Constant.EMPTY_STRING);
 	}
 
 	@Override
-	public void onProductSelected(Product product, int quantity, String remarks) {
+	public void onProductSelected(Product product, int price, Employee personInCharge, int quantity, String remarks) {
 
 		mSelectedProduct = product;
 
 		mProductCountDlgFragment.show(getFragmentManager(), mProductCountDlgFragmentTag);
-		mProductCountDlgFragment.setProduct(product, quantity, remarks);
+		mProductCountDlgFragment.setProduct(product, price, personInCharge, quantity, remarks);
 		
 		hideSearchView();
 	}
 
 	@Override
-	public void onProductQuantitySelected(Product product, Employee personInCharge, int quantity, String remarks) {
+	public void onProductQuantitySelected(Product product, Integer price, Employee personInCharge, int quantity, String remarks) {
 
 		mSelectedProduct = null;
 
-		TransactionItem transItem = getTransactionItem(product, personInCharge, quantity, remarks);
+		TransactionItem transItem = getTransactionItem(product, price, personInCharge, quantity, remarks);
 		
 		if (mIsMultiplesPane) {
 			mOrderFragment.addTransactionItem(transItem);
@@ -657,7 +647,11 @@ public class CashierActivity extends BaseActivity
 		
 		if (mDiscount != null) {
 			
-			discountAmount = mDiscount.getPercentage() * totalBill / 100;
+			if (mDiscount.getPercentage() != 0) {
+				discountAmount = mDiscount.getPercentage() * totalBill / 100;
+			} else {
+				discountAmount = mDiscount.getAmount();
+			}
 			
 			transaction.setDiscountName(mDiscount.getName());
 			transaction.setDiscountPercentage(mDiscount.getPercentage());
@@ -819,14 +813,12 @@ public class CashierActivity extends BaseActivity
 	@Override
 	public void onSelectDiscount() {
 		
-		mDiscountDlgFragment.show(getFragmentManager(), mDiscountDlgFragmentTag);
-	}
-	
-	@Override
-	public void onSelectDiscountAmount() {
-		
-		mDiscountAmountDlgFragment.setDiscount(mDiscount);
-		mDiscountAmountDlgFragment.show(getFragmentManager(), mDiscountAmountDlgFragmentTag);
+		if (Constant.DISCOUNT_TYPE_NOMINAL.equals(MerchantUtil.getMerchant().getDiscountType())) {
+			mDiscountNominalDlgFragment.show(getFragmentManager(), mDiscountNominalDlgFragmentTag);
+			mDiscountNominalDlgFragment.setDiscount(mDiscount);
+		} else {
+			mDiscountPercentageDlgFragment.show(getFragmentManager(), mDiscountPercentageDlgFragmentTag);
+		}
 	}
 	
 	@Override
@@ -834,31 +826,41 @@ public class CashierActivity extends BaseActivity
 		
 		mDiscount = discount;
 		
-		if (mDiscount != null && 
-			mDiscount.getPercentage() == 0 &&
-			mDiscount.getAmount() == 0) {
-			
-			onSelectDiscountAmount();
+		mOrderFragment.setDiscount(discount);
+		updateTransactionItemsDiscount();
 		
+		if (Constant.DISCOUNT_TYPE_NOMINAL.equals(MerchantUtil.getMerchant().getDiscountType())) {
+			mDiscountNominalDlgFragment.dismiss();
 		} else {
-			
-			mOrderFragment.setDiscount(discount);
-			updateTransactionItemsDiscount();
-			mDiscountDlgFragment.dismiss();
+			mDiscountPercentageDlgFragment.dismiss();
 		}
 	}
 	
 	private void updateTransactionItemsDiscount() {
 		
+		int totalItem = 0;
+		
+		for (TransactionItem transactionItem : mTransactionItems) {
+			totalItem += transactionItem.getQuantity();
+		}
+		
 		for (TransactionItem transactionItem : mTransactionItems) {
 			
 			int discountPercentage = 0;
+			int discountNominal = 0;
+			int discountAmount = 0;
 			
 			if (mDiscount != null) {
-				mDiscount.getPercentage();
-			}
-			
-			int discountAmount = discountPercentage * transactionItem.getPrice() / 100;
+				
+				discountPercentage = mDiscount.getPercentage() != null ? mDiscount.getPercentage() : 0;
+				discountNominal = mDiscount.getAmount() != null ? mDiscount.getAmount() : 0;
+				
+				if (discountPercentage != 0) {
+					discountAmount = discountPercentage * transactionItem.getPrice() / 100;
+				} else if (discountNominal != 0) {
+					discountAmount = (discountNominal / totalItem);
+				}
+			} 
 			
 			transactionItem.setDiscount(discountAmount);
 		}
@@ -926,7 +928,7 @@ public class CashierActivity extends BaseActivity
 						for (OrderItem orderItem : orderItems) {
 							
 							Product product =  mProductDaoService.getProduct(orderItem.getProductId());
-							TransactionItem transItem = getTransactionItem(product, null, orderItem.getQuantity(), orderItem.getRemarks());
+							TransactionItem transItem = getTransactionItem(product, CommonUtil.getCurrentPrice(product), null, orderItem.getQuantity(), orderItem.getRemarks());
 							
 							mOrderFragment.addTransactionItem(transItem, true);
 						}

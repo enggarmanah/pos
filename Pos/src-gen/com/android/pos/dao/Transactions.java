@@ -11,6 +11,7 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table TRANSACTIONS.
  */
+
 @SuppressWarnings("serial")
 public class Transactions implements Serializable {
 
@@ -35,7 +36,7 @@ public class Transactions implements Serializable {
     private String paymentType;
     private long cashierId;
     private String cashierName;
-    private long customerId;
+    private Long customerId;
     private String customerName;
     private String uploadStatus;
     private String status;
@@ -64,7 +65,7 @@ public class Transactions implements Serializable {
         this.id = id;
     }
 
-    public Transactions(Long id, long merchantId, String transactionNo, String orderType, String orderReference, java.util.Date transactionDate, Integer billAmount, String discountName, Integer discountPercentage, Integer discountAmount, Integer taxPercentage, Integer taxAmount, Integer serviceChargePercentage, Integer serviceChargeAmount, Integer totalAmount, Integer paymentAmount, Integer returnAmount, String paymentType, long cashierId, String cashierName, long customerId, String customerName, String uploadStatus, String status) {
+    public Transactions(Long id, long merchantId, String transactionNo, String orderType, String orderReference, java.util.Date transactionDate, Integer billAmount, String discountName, Integer discountPercentage, Integer discountAmount, Integer taxPercentage, Integer taxAmount, Integer serviceChargePercentage, Integer serviceChargeAmount, Integer totalAmount, Integer paymentAmount, Integer returnAmount, String paymentType, long cashierId, String cashierName, Long customerId, String customerName, String uploadStatus, String status) {
         this.id = id;
         this.merchantId = merchantId;
         this.transactionNo = transactionNo;
@@ -259,11 +260,11 @@ public class Transactions implements Serializable {
         this.cashierName = cashierName;
     }
 
-    public long getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
@@ -349,7 +350,7 @@ public class Transactions implements Serializable {
 
     /** To-one relationship, resolved on first access. */
     public Customer getCustomer() {
-        long __key = this.customerId;
+        Long __key = this.customerId;
         if (customer__resolvedKey == null || !customer__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -365,12 +366,9 @@ public class Transactions implements Serializable {
     }
 
     public void setCustomer(Customer customer) {
-        if (customer == null) {
-            throw new DaoException("To-one property 'customerId' has not-null constraint; cannot set to-one to null");
-        }
         synchronized (this) {
             this.customer = customer;
-            customerId = customer.getId();
+            customerId = customer == null ? null : customer.getId();
             customer__resolvedKey = customerId;
         }
     }

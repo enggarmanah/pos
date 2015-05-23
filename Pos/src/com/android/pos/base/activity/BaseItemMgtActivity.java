@@ -11,10 +11,8 @@ import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.common.ConfirmDeleteDlgFragment;
-import com.android.pos.dao.Inventory;
 import com.android.pos.dao.Merchant;
 import com.android.pos.util.DbUtil;
-import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
 import android.app.ActionBar;
@@ -313,17 +311,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 			
 		case R.id.menu_item_edit:
 			
-			if (mSelectedItem instanceof Inventory) {
-				
-				Inventory inventory = (Inventory) mSelectedItem;
-				
-				if (Constant.INVENTORY_STATUS_SALE.equals(inventory.getStatus())) {
-					
-					NotificationUtil.setAlertMessage(getFragmentManager(), "Data penjualan tidak dapat dirubah dari modul ini!");
-					return true;
-				}
-			}
-
 			showEditMenu();
 
 			return true;
@@ -470,6 +457,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		mEditMenu.setVisible(true);
 		
 		mDeleteMenu.setVisible(false);
+		
 		if (mSelectedItem instanceof Merchant) {
 			if (UserUtil.isRoot()) {
 				mDeleteMenu.setVisible(true);
@@ -498,6 +486,12 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		mDiscardMenu.setVisible(true);
 		
 		mIsOnEdit = true;
+	}
+	
+	public void disableEditMenu() {
+		
+		mEditMenu.setVisible(false);
+		mDeleteMenu.setVisible(false);
 	}
 
 	@Override

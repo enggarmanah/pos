@@ -162,6 +162,12 @@
             android:label="@string/menu_favorite_customer"
             android:launchMode="singleTask" >
         </activity>
+        <activity
+            android:name="com.android.pos.printer.PrinterSelectActivity"
+            android:label="@string/menu_printer"
+			android:theme="@android:style/Theme.Dialog" 
+            android:launchMode="singleTask" >
+        </activity>
     </application>
 
 </manifest>

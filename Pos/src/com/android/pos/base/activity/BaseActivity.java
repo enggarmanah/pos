@@ -27,6 +27,7 @@ import com.android.pos.favorite.customer.CustomerActivity;
 import com.android.pos.favorite.supplier.SupplierActivity;
 import com.android.pos.inventory.InventoryMgtActivity;
 import com.android.pos.order.OrderActivity;
+import com.android.pos.printer.PrinterSelectActivity;
 import com.android.pos.report.cashflow.CashFlowActivity;
 import com.android.pos.report.commision.CommisionActivity;
 import com.android.pos.report.inventory.InventoryReportActivity;
@@ -50,6 +51,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -179,6 +181,50 @@ public abstract class BaseActivity extends Activity
 		};
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		Config.setMenusExpanded(false);
+		
+		showSelectedMenu();
+		refreshMenus();
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	protected void showSelectedMenu() {
+		
+		if (Constant.MENU_REPORT_CASHFLOW.equals(getSelectedMenu()) || 
+			Constant.MENU_REPORT_COMMISION.equals(getSelectedMenu()) ||
+			Constant.MENU_REPORT_INVENTORY.equals(getSelectedMenu()) ||
+			Constant.MENU_REPORT_PRODUCT_STATISTIC.equals(getSelectedMenu()) ||
+			Constant.MENU_REPORT_TRANSACTION.equals(getSelectedMenu())) {
+			
+			Config.setMenuReportExpanded(true);
+		
+		} else if (Constant.MENU_FAVORITE_CUSTOMER.equals(getSelectedMenu()) ||
+			Constant.MENU_FAVORITE_PATIENT.equals(getSelectedMenu()) ||
+			Constant.MENU_FAVORITE_SUPPLIER.equals(getSelectedMenu())) {
+			
+			Config.setMenuFavoriteExpanded(true);
+		
+		} else if (Constant.MENU_BILLS.equals(getSelectedMenu()) ||
+			Constant.MENU_INVENTORY.equals(getSelectedMenu()) ||
+			Constant.MENU_CUSTOMER.equals(getSelectedMenu()) ||
+			Constant.MENU_USER_ACCESS.equals(getSelectedMenu())) {
+			
+			Config.setMenuDataExpanded(true);
+		
+		} else if (Constant.MENU_REFERENCE_DISCOUNT.equals(getSelectedMenu()) ||
+				Constant.MENU_REFERENCE_EMPLOYEE.equals(getSelectedMenu()) ||
+				Constant.MENU_REFERENCE_MERCHANT.equals(getSelectedMenu()) ||
+				Constant.MENU_REFERENCE_PRODUCT.equals(getSelectedMenu()) ||
+				Constant.MENU_REFERENCE_PRODUCT_GROUP.equals(getSelectedMenu()) ||
+				Constant.MENU_REFERENCE_SUPPLIER.equals(getSelectedMenu())) {
+			
+			Config.setMenuDataReferenceExpanded(true);
+		} 
 	}
 	
 	protected void refreshMenus() {
@@ -315,6 +361,11 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(Constant.MENU_REFERENCE_SUPPLIER);
 		}
 		
+		if (UserUtil.isCashier()) {
+			
+			mMenus.add(Constant.MENU_PRINTER);
+		}
+		
 		mMenus.add(Constant.MENU_EXIT);
 		
 		mAppMenuArrayAdapter.notifyDataSetChanged();
@@ -384,25 +435,37 @@ public abstract class BaseActivity extends Activity
 		
 		if (Constant.MENU_REPORT.equals(menu)) {
 			
-			Config.setMenuReportExpanded(!Config.isMenuReportExpanded());
+			boolean isExpanded = Config.isMenuReportExpanded();
+			
+			Config.setMenusExpanded(false);
+			Config.setMenuReportExpanded(!isExpanded);
 			refreshMenus();
 			return;
 			
 		} else if (Constant.MENU_FAVORITE.equals(menu)) {
 			
-			Config.setMenuFavoriteExpanded(!Config.isMenuFavoriteExpanded());
+			boolean isExpanded = Config.isMenuFavoriteExpanded();
+			
+			Config.setMenusExpanded(false);
+			Config.setMenuFavoriteExpanded(!isExpanded);
 			refreshMenus();
 			return;
 			
 		} else if (Constant.MENU_DATA.equals(menu)) {
 			
-			Config.setMenuDataExpanded(!Config.isMenuDataExpanded());
+			boolean isExpanded = Config.isMenuDataExpanded();
+			
+			Config.setMenusExpanded(false);
+			Config.setMenuDataExpanded(!isExpanded);
 			refreshMenus();
 			return;
 		
 		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
 			
-			Config.setMenuDataReferenceExpanded(!Config.isMenuDataReferenceExpanded());
+			boolean isExpanded = Config.isMenuDataReferenceExpanded();
+			
+			Config.setMenusExpanded(false);
+			Config.setMenuDataReferenceExpanded(!isExpanded);
 			refreshMenus();
 			return;
 		}  
@@ -531,6 +594,11 @@ public abstract class BaseActivity extends Activity
 			} else if (UserUtil.isRoot()) {
 				mHttpAsyncManager.syncMerchants();
 			}
+			
+		} else if (Constant.MENU_PRINTER.equals(menu)) {
+
+			Intent intent = new Intent(this, PrinterSelectActivity.class);
+			startActivityForResult(intent, -1);
 			
 		} else if (Constant.MENU_EXIT.equals(menu)) {
 			
@@ -757,5 +825,9 @@ public abstract class BaseActivity extends Activity
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), message);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 	}
 }

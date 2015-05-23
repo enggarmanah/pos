@@ -36,7 +36,7 @@ public class Transactions {
 	private String payment_type;
 	private long cashier_id;
 	private String cashier_name;
-	private long customer_id;
+	private Long customer_id;
 	private String customer_name;
 	private String status;
 	private Date sync_date;
@@ -238,11 +238,11 @@ public class Transactions {
 		this.cashier_name = cashier_name;
 	}
 
-	public long getCustomer_id() {
+	public Long getCustomer_id() {
 		return customer_id;
 	}
 
-	public void setCustomer_id(long customer_id) {
+	public void setCustomer_id(Long customer_id) {
 		this.customer_id = customer_id;
 	}
 

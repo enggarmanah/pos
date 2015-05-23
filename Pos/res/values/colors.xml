@@ -13,7 +13,7 @@
     <color name="section_header_background">#aac8e1</color>
     <color name="section_header_text">#31343a</color>
     
-    <color name="border_dark">#555</color>
+    <color name="border_dark">#666</color>
     <color name="border_gray">#AAA</color>
     <color name="border_gray_dark">#777</color>
     <color name="border_gray_light">#E1E1E1</color>
@@ -22,14 +22,17 @@
     <color name="border_blue_dark">#356d9b</color>
     
     <color name="menu_normal">#cee1f0</color>
-    <color name="menu_selected">#f2fafe</color>
+    <color name="menu_sub">#dbe9f4</color>
+    <color name="menu_selected">#b4d0ec</color>
     <color name="menu_pressed">#aac8e1</color>
     <color name="menu_border">#a9c8e2</color>
     
+    <color name="text_number">#4d4d4d</color>
     <color name="text_white">#fff</color>
     <color name="text_light">#9397a4</color>
     <color name="text_default">#4f5460</color>
     <color name="text_medium">#6e7585</color>
+    <color name="text_darkmed">#575c68</color>
     <color name="text_dark">#484c56</color>
     <color name="text_blue">#5e98c7</color>
     <color name="text_blue_medium">#68a5ba</color>

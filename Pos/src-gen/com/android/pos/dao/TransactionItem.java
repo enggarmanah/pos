@@ -25,7 +25,7 @@ public class TransactionItem implements Serializable {
     private Integer quantity;
     private Integer commision;
     private String remarks;
-    private long employeeId;
+    private Long employeeId;
     private String uploadStatus;
 
     /** Used to resolve relations */
@@ -54,7 +54,7 @@ public class TransactionItem implements Serializable {
         this.id = id;
     }
 
-    public TransactionItem(Long id, long merchantId, long transactionId, long productId, String productName, String productType, Integer price, Integer costPrice, Integer discount, Integer quantity, Integer commision, String remarks, long employeeId, String uploadStatus) {
+    public TransactionItem(Long id, long merchantId, long transactionId, long productId, String productName, String productType, Integer price, Integer costPrice, Integer discount, Integer quantity, Integer commision, String remarks, Long employeeId, String uploadStatus) {
         this.id = id;
         this.merchantId = merchantId;
         this.transactionId = transactionId;
@@ -173,11 +173,11 @@ public class TransactionItem implements Serializable {
         this.remarks = remarks;
     }
 
-    public long getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(long employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -275,7 +275,7 @@ public class TransactionItem implements Serializable {
 
     /** To-one relationship, resolved on first access. */
     public Employee getEmployee() {
-        long __key = this.employeeId;
+        Long __key = this.employeeId;
         if (employee__resolvedKey == null || !employee__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -291,12 +291,9 @@ public class TransactionItem implements Serializable {
     }
 
     public void setEmployee(Employee employee) {
-        if (employee == null) {
-            throw new DaoException("To-one property 'employeeId' has not-null constraint; cannot set to-one to null");
-        }
         synchronized (this) {
             this.employee = employee;
-            employeeId = employee.getId();
+            employeeId = employee == null ? null : employee.getId();
             employee__resolvedKey = employeeId;
         }
     }

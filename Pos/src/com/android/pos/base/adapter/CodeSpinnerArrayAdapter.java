@@ -30,7 +30,7 @@ public class CodeSpinnerArrayAdapter extends BaseSpinnerArrayAdapter<CodeBean>{
 	}
 	
 	@Override
-	protected String getLabel(CodeBean codeBean) {
+	protected String getLabel1(CodeBean codeBean) {
 		
 		return codeBean.getLabel();
 	}

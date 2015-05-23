@@ -22,7 +22,13 @@ public class MerchantUtil {
 	public static Merchant getMerchant() {
 		
 		if (mMerchant == null && Config.isDevelopment() && !UserUtil.isRoot()) {
-			mMerchant = merchantDaoService.getMerchant(Long.valueOf(7));
+			
+			Long merchantId = Long.valueOf(2);
+			
+			DbUtil.switchDb(merchantId);
+			MerchantUtil.recreateDao();
+			
+			mMerchant = merchantDaoService.getMerchant(merchantId);
 		}
 		
 		return mMerchant;
@@ -31,6 +37,11 @@ public class MerchantUtil {
 	public static Long getMerchantId() {
 		
 		return getMerchant() != null ? getMerchant().getId() : null;
+	}
+	
+	public static String getCurrency() {
+		
+		return "Rp";
 	}
 	
 	public static String getMerchantType() {

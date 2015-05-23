@@ -9,6 +9,7 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
+import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.ProductGroup;
@@ -24,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -33,8 +35,20 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
 	EditText mNameText;
 	Spinner mTypeSp;
 	Spinner mProductGrpSp;
-    EditText mPriceText;
-    EditText mCostPriceText;
+    
+	LinearLayout mPrice1Panel;
+	LinearLayout mPrice2Panel;
+	LinearLayout mPrice3Panel;
+	
+	TextView mPrice1Label;
+	TextView mPrice2Label;
+	TextView mPrice3Label;
+	
+	EditText mPrice1Text;
+	EditText mPrice2Text;
+	EditText mPrice3Text;
+    
+	EditText mCostPriceText;
     Spinner mPicRequiredSp;
     EditText mCommisionText;
     EditText mPromoPriceText;
@@ -71,11 +85,20 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void initViewReference(View view) {
         
+    	mPrice1Panel = (LinearLayout) view.findViewById(R.id.price1Panel);
+    	mPrice2Panel = (LinearLayout) view.findViewById(R.id.price2Panel);
+    	mPrice3Panel = (LinearLayout) view.findViewById(R.id.price3Panel);
+    	
     	mCodeText = (EditText) view.findViewById(R.id.codeText);
     	mNameText = (EditText) view.findViewById(R.id.nameText);
     	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
     	mProductGrpSp = (Spinner) view.findViewById(R.id.productGrpSp);
-    	mPriceText = (EditText) view.findViewById(R.id.priceText);
+    	mPrice1Label = (TextView) view.findViewById(R.id.priceLabel1Text);
+    	mPrice1Text = (EditText) view.findViewById(R.id.price1Text);
+    	mPrice2Label = (TextView) view.findViewById(R.id.priceLabel2Text);
+    	mPrice2Text = (EditText) view.findViewById(R.id.price2Text);
+    	mPrice3Label = (TextView) view.findViewById(R.id.priceLabel3Text);
+    	mPrice3Text = (EditText) view.findViewById(R.id.price3Text);
     	mCostPriceText = (EditText) view.findViewById(R.id.costPriceText);
     	mPicRequiredSp = (Spinner) view.findViewById(R.id.picRequiredSp);
     	mCommisionText = (EditText) view.findViewById(R.id.commisionText);
@@ -90,7 +113,9 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	registerField(mNameText);
     	registerField(mTypeSp);
     	registerField(mProductGrpSp);
-    	registerField(mPriceText);
+    	registerField(mPrice1Text);
+    	registerField(mPrice2Text);
+    	registerField(mPrice3Text);
     	registerField(mCostPriceText);
     	registerField(mPicRequiredSp);
     	registerField(mCommisionText);
@@ -105,9 +130,12 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	
     	mandatoryFields = new ArrayList<ProductEditFragment.FormField>();
     	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
-    	mandatoryFields.add(new FormField(mPriceText, R.string.field_price));
+    	mandatoryFields.add(new FormField(mPrice1Text, R.string.field_price));
     	
-    	mPriceText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mPriceText));
+    	mPrice1Text.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mPrice1Text));
+    	mPrice2Text.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mPrice2Text));
+    	mPrice3Text.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mPrice3Text));
+    	
     	mCostPriceText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mCostPriceText));
     	mCommisionText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mCommisionText));
     	mPromoPriceText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mPromoPriceText));
@@ -133,6 +161,23 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getProductStatus());
     	mStatusSp.setAdapter(statusArrayAdapter);
+    	
+    	Merchant merchant = MerchantUtil.getMerchant();
+    	
+    	mPrice1Label.setText(getString(R.string.field_price) + " " + merchant.getPriceLabel1());
+    	mPrice2Label.setText(getString(R.string.field_price) + " " + merchant.getPriceLabel2());
+    	mPrice3Label.setText(getString(R.string.field_price) + " " + merchant.getPriceLabel3());
+    	
+    	mPrice2Panel.setVisibility(View.VISIBLE);
+    	mPrice3Panel.setVisibility(View.VISIBLE);
+    	
+    	if (merchant.getPriceTypeCount() < 2) {
+    		mPrice2Panel.setVisibility(View.GONE);
+    	}
+    	
+    	if (merchant.getPriceTypeCount() < 3) {
+    		mPrice3Panel.setVisibility(View.GONE);
+    	}
     }
     
     @Override
@@ -147,7 +192,9 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		
     		mCodeText.setText(product.getCode());
     		mNameText.setText(product.getName());
-    		mPriceText.setText(CommonUtil.formatCurrency(product.getPrice()));
+    		mPrice1Text.setText(CommonUtil.formatCurrency(product.getPrice1()));
+    		mPrice2Text.setText(CommonUtil.formatCurrency(product.getPrice2()));
+    		mPrice3Text.setText(CommonUtil.formatCurrency(product.getPrice3()));
     		mCostPriceText.setText(CommonUtil.formatCurrency(product.getCostPrice()));
     		mCommisionText.setText(CommonUtil.formatCurrency(product.getCommision()));
     		mPromoPriceText.setText(CommonUtil.formatCurrency(product.getPromoPrice()));
@@ -176,7 +223,9 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	String name = mNameText.getText().toString();
     	String type = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
     	Long prodGrpId = CommonUtil.getNvlId((ProductGroup) mProductGrpSp.getSelectedItem());
-    	Integer price = CommonUtil.parseCurrency(mPriceText.getText().toString());
+    	Integer price1 = CommonUtil.parseCurrency(mPrice1Text.getText().toString());
+    	Integer price2 = CommonUtil.parseCurrency(mPrice2Text.getText().toString());
+    	Integer price3 = CommonUtil.parseCurrency(mPrice3Text.getText().toString());
     	Integer costPrice = CommonUtil.parseCurrency(mCostPriceText.getText().toString());
     	String picRequired = CodeBean.getNvlCode((CodeBean) mPicRequiredSp.getSelectedItem());
     	Integer commision = CommonUtil.parseCurrency(mCommisionText.getText().toString());
@@ -195,7 +244,9 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		mItem.setName(name);
     		mItem.setType(type);
     		mItem.setProductGroupId(prodGrpId);
-    		mItem.setPrice(price);
+    		mItem.setPrice1(price1);
+    		mItem.setPrice2(price2);
+    		mItem.setPrice3(price3);
     		mItem.setCostPrice(costPrice);
     		mItem.setPicRequired(picRequired);
     		mItem.setCommision(commision);
@@ -232,7 +283,9 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
         mProductDaoService.addProduct(mItem);
         
         mNameText.getText().clear();
-        mPriceText.getText().clear();
+        mPrice1Text.getText().clear();
+        mPrice2Text.getText().clear();
+        mPrice3Text.getText().clear();
         mCostPriceText.getText().clear();
         mCommisionText.getText().clear();
         mPromoPriceText.getText().clear();

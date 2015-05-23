@@ -17,6 +17,11 @@ public class MerchantBean {
 	private String password;
 	private java.util.Date period_start;
 	private java.util.Date period_end;
+	private Integer price_type_count;
+	private String price_label_1;
+	private String price_label_2;
+	private String price_label_3;
+	private String discount_type;
 	private Integer tax_percentage;
 	private Integer service_charge_percentage;
 	private String printer_mini_font;
@@ -125,6 +130,46 @@ public class MerchantBean {
 
 	public void setPeriod_end(java.util.Date period_end) {
 		this.period_end = period_end;
+	}
+	
+	public Integer getPrice_type_count() {
+		return price_type_count;
+	}
+
+	public void setPrice_type_count(Integer price_type_count) {
+		this.price_type_count = price_type_count;
+	}
+
+	public String getPrice_label_1() {
+		return price_label_1;
+	}
+
+	public void setPrice_label_1(String price_label_1) {
+		this.price_label_1 = price_label_1;
+	}
+
+	public String getPrice_label_2() {
+		return price_label_2;
+	}
+
+	public void setPrice_label_2(String price_label_2) {
+		this.price_label_2 = price_label_2;
+	}
+
+	public String getPrice_label_3() {
+		return price_label_3;
+	}
+
+	public void setPrice_label_3(String price_label_3) {
+		this.price_label_3 = price_label_3;
+	}
+
+	public String getDiscount_type() {
+		return discount_type;
+	}
+
+	public void setDiscount_type(String discount_type) {
+		this.discount_type = discount_type;
 	}
 
 	public Integer getTax_percentage() {

@@ -44,10 +44,12 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     EditText mPeriodEndDate;
     EditText mTaxText;
     EditText mServiceChargeText;
-    EditText mPrinterLineSizeText;
+    EditText mPriceLabel1Text;
+    EditText mPriceLabel2Text;
+    EditText mPriceLabel3Text;
     
-    Spinner mPrinterRequiredSp;
-    Spinner mPrinterMiniFontSp;
+    Spinner mPriceTypeCountSp;
+    Spinner mDiscountTypeSp;
     Spinner mStatusSp;
     
     LinearLayout mStatusPanel;
@@ -59,8 +61,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
-    CodeSpinnerArrayAdapter printerRequiredArrayAdapter;
-    CodeSpinnerArrayAdapter printerMiniFontArrayAdapter;
+    CodeSpinnerArrayAdapter discountTypeArrayAdapter;
+    CodeSpinnerArrayAdapter priceTypeCountArrayAdapter;
     
     private MerchantDaoService mMerchantDaoService = new MerchantDaoService();
     private MerchantAccessDaoService mMerchantAccessDaoService = new MerchantAccessDaoService();
@@ -105,11 +107,13 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mPasswordText = (EditText) view.findViewById(R.id.passwordText);
     	mPeriodStartDate = (EditText) view.findViewById(R.id.periodStartDate);
     	mPeriodEndDate = (EditText) view.findViewById(R.id.periodEndDate);
+    	mPriceLabel1Text = (EditText) view.findViewById(R.id.priceLabel1Text);
+    	mPriceLabel2Text = (EditText) view.findViewById(R.id.priceLabel2Text);
+    	mPriceLabel3Text = (EditText) view.findViewById(R.id.priceLabel3Text);
     	mTaxText = (EditText) view.findViewById(R.id.taxText);
     	mServiceChargeText = (EditText) view.findViewById(R.id.serviceChargeText);
-    	mPrinterRequiredSp = (Spinner) view.findViewById(R.id.printerRequiredSp);
-    	mPrinterMiniFontSp = (Spinner) view.findViewById(R.id.printerMiniFontSp);
-    	mPrinterLineSizeText = (EditText) view.findViewById(R.id.printerLineSizeText);
+    	mPriceTypeCountSp = (Spinner) view.findViewById(R.id.priceTypeCountSp);
+    	mDiscountTypeSp = (Spinner) view.findViewById(R.id.discountTypeSp);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
 
     	mStatusPanel = (LinearLayout) view.findViewById(R.id.statusPanel);
@@ -128,7 +132,12 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mPasswordText);
     	registerField(mPeriodStartDate);
     	registerField(mPeriodEndDate);
+    	registerField(mPriceLabel1Text);
+    	registerField(mPriceLabel2Text);
+    	registerField(mPriceLabel3Text);
     	registerField(mTaxText);
+    	registerField(mPriceTypeCountSp);
+    	registerField(mDiscountTypeSp);
     	registerField(mServiceChargeText);
     	registerField(mStatusSp);
     	
@@ -146,7 +155,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mandatoryFields.add(new FormField(mPeriodEndDate, R.string.field_period_end));
     	mandatoryFields.add(new FormField(mTaxText, R.string.field_tax_percentage));
     	mandatoryFields.add(new FormField(mServiceChargeText, R.string.field_service_charge_percentage));
-    	mandatoryFields.add(new FormField(mPrinterLineSizeText, R.string.field_printer_line_size));
     	
     	// only root can access validity period
     	
@@ -162,11 +170,11 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	typeArrayAdapter = new CodeSpinnerArrayAdapter(mTypeSp, getActivity(), CodeUtil.getMerchantTypes());
     	mTypeSp.setAdapter(typeArrayAdapter);
     	
-    	printerRequiredArrayAdapter = new CodeSpinnerArrayAdapter(mPrinterRequiredSp, getActivity(), CodeUtil.getStatus());
-    	mPrinterRequiredSp.setAdapter(printerRequiredArrayAdapter);
+    	discountTypeArrayAdapter = new CodeSpinnerArrayAdapter(mDiscountTypeSp, getActivity(), CodeUtil.getDiscountTypes());
+    	mDiscountTypeSp.setAdapter(discountTypeArrayAdapter);
     	
-    	printerMiniFontArrayAdapter = new CodeSpinnerArrayAdapter(mPrinterMiniFontSp, getActivity(), CodeUtil.getBooleans());
-    	mPrinterMiniFontSp.setAdapter(printerMiniFontArrayAdapter);
+    	priceTypeCountArrayAdapter = new CodeSpinnerArrayAdapter(mPriceTypeCountSp, getActivity(), CodeUtil.getPriceTypeCount());
+    	mPriceTypeCountSp.setAdapter(priceTypeCountArrayAdapter);
     	
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getStatus());
     	mStatusSp.setAdapter(statusArrayAdapter);
@@ -184,8 +192,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	if (merchant != null) {
     		
     		int typeIndex = typeArrayAdapter.getPosition(merchant.getType());
-    		int printerRequiredIndex = printerRequiredArrayAdapter.getPosition(merchant.getPrinterRequired());
-    		int printerMiniFontIndex = printerMiniFontArrayAdapter.getPosition(merchant.getPrinterMiniFont());
+    		int priceTypeCountIndex = priceTypeCountArrayAdapter.getPosition(String.valueOf(merchant.getPriceTypeCount()));
+    		int discountTypeIndex = discountTypeArrayAdapter.getPosition(merchant.getDiscountType());
     		int statusIndex = statusArrayAdapter.getPosition(merchant.getStatus());
     		
     		mNameText.setText(merchant.getName());
@@ -198,14 +206,16 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mPasswordText.setText(merchant.getPassword());
     		mPeriodStartDate.setText(CommonUtil.formatDate(merchant.getPeriodStart()));
     		mPeriodEndDate.setText(CommonUtil.formatDate(merchant.getPeriodEnd()));
+    		mPriceLabel1Text.setText(merchant.getPriceLabel1());
+    		mPriceLabel2Text.setText(merchant.getPriceLabel2());
+    		mPriceLabel3Text.setText(merchant.getPriceLabel3());
     		
     		mTaxText.setText(CommonUtil.formatString(merchant.getTaxPercentage()));
     		mServiceChargeText.setText(CommonUtil.formatString(merchant.getServiceChargePercentage()));
-    		mPrinterLineSizeText.setText(CommonUtil.formatString(merchant.getPrinterLineSize()));
     		
     		mTypeSp.setSelection(typeIndex);
-    		mPrinterRequiredSp.setSelection(printerRequiredIndex);
-    		mPrinterMiniFontSp.setSelection(printerMiniFontIndex);
+    		mPriceTypeCountSp.setSelection(priceTypeCountIndex);
+    		mDiscountTypeSp.setSelection(discountTypeIndex);
     		mStatusSp.setSelection(statusIndex);
     		
     		if (!UserUtil.isRoot()) {
@@ -288,9 +298,11 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	Integer serviceCharge = CommonUtil.parseInteger(mServiceChargeText.getText().toString());
     	Date startDate = CommonUtil.parseDate(mPeriodStartDate.getText().toString());
     	Date endDate = CommonUtil.parseDate(mPeriodEndDate.getText().toString());
-    	String printerRequired = CodeBean.getNvlCode((CodeBean) mPrinterRequiredSp.getSelectedItem());
-    	String printerMiniFont = CodeBean.getNvlCode((CodeBean) mPrinterMiniFontSp.getSelectedItem());
-    	Integer printerLineSize = CommonUtil.parseInteger(mPrinterLineSizeText.getText().toString());
+    	Integer priceTypeCount = Integer.valueOf(CodeBean.getNvlCode((CodeBean) mPriceTypeCountSp.getSelectedItem()));
+    	String priceLabel1 = mPriceLabel1Text.getText().toString();
+    	String priceLabel2 = mPriceLabel2Text.getText().toString();
+    	String priceLabel3 = mPriceLabel3Text.getText().toString();
+    	String discountType = CodeBean.getNvlCode((CodeBean) mDiscountTypeSp.getSelectedItem());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
     	if (mItem != null) {
@@ -306,11 +318,13 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setPassword(password);
     		mItem.setPeriodStart(startDate);
     		mItem.setPeriodEnd(endDate);
+    		mItem.setPriceTypeCount(priceTypeCount);
+    		mItem.setPriceLabel1(priceLabel1);
+    		mItem.setPriceLabel2(priceLabel2);
+    		mItem.setPriceLabel3(priceLabel3);
     		mItem.setTaxPercentage(tax);
     		mItem.setServiceChargePercentage(serviceCharge);
-    		mItem.setPrinterRequired(printerRequired);
-    		mItem.setPrinterMiniFont(printerMiniFont);
-    		mItem.setPrinterLineSize(printerLineSize);
+    		mItem.setDiscountType(discountType);
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
@@ -378,6 +392,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 	        mPasswordText.getText().clear();
 	        mPeriodStartDate.getText().clear();
 	        mPeriodEndDate.getText().clear();
+	        mPriceLabel1Text.getText().clear();
+	        mPriceLabel2Text.getText().clear();
+	        mPriceLabel3Text.getText().clear();
 	        mTaxText.getText().clear();
 	        mServiceChargeText.getText().clear();
 	        

@@ -81,7 +81,8 @@ public class CashierProductArrayAdapter extends ArrayAdapter<Product> {
 		
 		prdCode.setText(product.getCode());
 		prdName.setText(product.getName());
-		prdPrice.setText(CommonUtil.formatCurrency(product.getPrice()));
+		
+		prdPrice.setText(CommonUtil.formatCurrency(CommonUtil.getCurrentPrice(product)));
 		
 		if (CommonUtil.isEmpty(product.getCode())) {
 			prdCode.setVisibility(View.GONE);

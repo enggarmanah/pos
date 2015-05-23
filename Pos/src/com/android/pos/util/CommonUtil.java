@@ -11,6 +11,7 @@ import java.util.Locale;
 import android.annotation.SuppressLint;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
 
 @SuppressLint("SimpleDateFormat")
@@ -479,5 +480,23 @@ public class CommonUtil {
 		}
 		
         return number; 
+	}
+	
+	public static Integer getCurrentPrice(Product product) {
+		
+		Integer price = product.getPrice1();
+		
+		if (product.getPromoStart() != null && product.getPromoEnd() != null && product.getPromoPrice() != null) {
+			
+			Date curDate = new Date();
+			
+			if (product.getPromoStart().getTime() <= curDate.getTime() &&
+				curDate.getTime() <= product.getPromoEnd().getTime()) {
+				
+				price = product.getPromoPrice();
+			}
+		}
+		
+		return price;
 	}
 }

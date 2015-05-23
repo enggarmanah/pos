@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CashierDiscountDlgFragment extends DialogFragment implements CashierDiscountArrayAdapter.ItemActionListener {
+public class CashierDiscountPercentageDlgFragment extends DialogFragment implements CashierDiscountArrayAdapter.ItemActionListener {
 	
 	ListView mDiscountListView;
 	
@@ -39,7 +39,7 @@ public class CashierDiscountDlgFragment extends DialogFragment implements Cashie
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.cashier_discount_fragment, container, false);
+		View view = inflater.inflate(R.layout.cashier_discount_percentage_fragment, container, false);
 
 		return view;
 	}

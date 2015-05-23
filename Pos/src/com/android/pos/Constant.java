@@ -39,6 +39,20 @@ public class Constant {
 	public static final String MERCHANT_TYPE_SHOP = "S";
 	public static final String MERCHANT_TYPE_CLINIC = "C";
 	
+	public static final String DISCOUNT_TYPE_NOMINAL = "N";
+	public static final String DISCOUNT_TYPE_PERCENTAGE = "P";
+	
+	public static final String DISCOUNT_TYPE_NOMINAL_DESC = "Diskon";
+	
+	public static final String PRICE_TYPE_COUNT_1 = "1";
+	public static final String PRICE_TYPE_COUNT_1_DESC = "1 Tipe Harga";
+	
+	public static final String PRICE_TYPE_COUNT_2 = "2";
+	public static final String PRICE_TYPE_COUNT_2_DESC = "2 Tipe Harga";
+	
+	public static final String PRICE_TYPE_COUNT_3 = "3";
+	public static final String PRICE_TYPE_COUNT_3_DESC = "3 Tipe Harga";
+	
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 200;
 	
 	public static final String MESSAGE_PRINTER_CANT_CONNECT = "Tidak dapat terhubung ke Printer";
@@ -190,6 +204,7 @@ public class Constant {
 	public static final String MENU_REFERENCE_EMPLOYEE = "Pegawai";
 	public static final String MENU_REFERENCE_SUPPLIER = "Supplier";
 	public static final String MENU_REFERENCE_DISCOUNT = "Diskon";
+	public static final String MENU_PRINTER = "Printer";
 	public static final String MENU_EXIT = "Keluar";
 	public static final String MENU_SYNC = "Sync";
 }

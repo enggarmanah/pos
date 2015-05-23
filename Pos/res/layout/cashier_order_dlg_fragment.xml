@@ -152,7 +152,7 @@
 	        <ImageButton
 	            android:id="@+id/actionXBtn"
 	            style="@style/CashierNumberButtonStyle"
-	            android:src="@drawable/ic_backspace_grey"
+	            android:src="@drawable/ic_backspace_black"
 	            android:contentDescription="@string/none"/>
 	    </LinearLayout>
     

@@ -21,7 +21,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/transactionList"
+        android:id="@+id/inventoryList"
         style="@style/ListViewStyle"
         android:layout_below="@id/topPanel" >
     </ListView>

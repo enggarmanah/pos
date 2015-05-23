@@ -26,7 +26,7 @@ public class SupplierDetailArrayAdapter extends ArrayAdapter<ProductGroupStatist
 
 	public SupplierDetailArrayAdapter(Context context, List<ProductGroupStatisticBean> productGroupStatistics) {
 
-		super(context, R.layout.favorite_supplier_list_item, productGroupStatistics);
+		super(context, R.layout.favorite_supplier_detail_list_item, productGroupStatistics);
 		
 		this.context = context;
 		this.mProductGroupStatistics = productGroupStatistics;
@@ -47,7 +47,7 @@ public class SupplierDetailArrayAdapter extends ArrayAdapter<ProductGroupStatist
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.favorite_supplier_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.favorite_supplier_detail_list_item, parent, false);
 			
 			nameText = (TextView) rowView.findViewById(R.id.nameText);
 			quantityText = (TextView) rowView.findViewById(R.id.quantityText);

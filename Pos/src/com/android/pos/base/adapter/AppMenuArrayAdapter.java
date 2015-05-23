@@ -102,6 +102,8 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_cached_black));
 		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_turned_in_not_black));
+		} else if (Constant.MENU_PRINTER.equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_print_black));
 		} else if (Constant.MENU_EXIT.equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_exit_to_app_black));
 		} else {
@@ -116,7 +118,10 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		}
 		
 		if (Constant.MENU_USER.equals(menu)) {
-			menuText.setText(UserUtil.getUser().getName());
+			
+			if (UserUtil.getUser() != null) {
+				menuText.setText(UserUtil.getUser().getName());
+			}
 		} else {
 			menuText.setText(menu);
 		}
@@ -175,12 +180,12 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		} else {
 			
 			if (isSubMenu) {
-				menuText.setTextColor(context.getResources().getColor(R.color.text_medium));
+				menuText.setTextColor(context.getResources().getColor(R.color.text_darkmed));
+				rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_sub));
 			} else {
 				menuText.setTextColor(context.getResources().getColor(R.color.text_dark));
+				rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_normal));
 			}
-			
-			rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_normal));
 		}
 
 		return rowView;

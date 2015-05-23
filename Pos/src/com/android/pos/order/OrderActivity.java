@@ -14,6 +14,7 @@ import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.OrderItemDaoService;
 import com.android.pos.dao.Orders;
 import com.android.pos.dao.Product;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
 
@@ -279,12 +280,14 @@ public class OrderActivity extends BaseActivity
 		
 		mSelectedOrderItem = orderItem;
 		
+		Employee personInCharge = null;
+		
 		mProductCountDlgFragment.show(getFragmentManager(), mProductCountDlgFragmentTag);
-		mProductCountDlgFragment.setProduct(orderItem.getProduct(), orderItem.getQuantity(), orderItem.getRemarks());
+		mProductCountDlgFragment.setProduct(orderItem.getProduct(), CommonUtil.getCurrentPrice(orderItem.getProduct()), personInCharge, orderItem.getQuantity(), orderItem.getRemarks());
 	}
 	
 	@Override
-	public void onProductQuantitySelected(Product product, Employee personInCharge, int quantity, String remarks) {
+	public void onProductQuantitySelected(Product product, Integer price, Employee personInCharge, int quantity, String remarks) {
 		
 		mSelectedOrderItem.setQuantity(quantity);
 		mSelectedOrderItem.setRemarks(remarks);

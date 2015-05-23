@@ -7,10 +7,12 @@ import java.util.List;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
+import com.android.pos.dao.Employee;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDaoService;
+import com.android.pos.util.CommonUtil;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -200,8 +202,10 @@ public class CashierProductSearchFragment extends BaseFragment
 	@Override
 	public void onProductSelected(Product product) {
 		
-		System.out.println("Product : " + product.getName());
-		mActionListener.onProductSelected(product, 0, Constant.EMPTY_STRING);
+		Employee personInCharge = null;
+		Integer quantity = 0;
+		
+		mActionListener.onProductSelected(product, CommonUtil.getCurrentPrice(product), personInCharge, quantity, Constant.EMPTY_STRING);
 	}
 	
 	private View.OnClickListener getUpButtonOnClickListener() {

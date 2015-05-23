@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(34, "com.android.pos.dao");
+        Schema schema = new Schema(37, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -59,6 +59,11 @@ public class PosDaoGenerator {
         merchant.addStringProperty("password");
         merchant.addDateProperty("periodStart");
         merchant.addDateProperty("periodEnd");
+        merchant.addIntProperty("priceTypeCount");
+        merchant.addStringProperty("priceLabel1");
+        merchant.addStringProperty("priceLabel2");
+        merchant.addStringProperty("priceLabel3");
+        merchant.addStringProperty("discountType");
         merchant.addIntProperty("taxPercentage");
         merchant.addIntProperty("serviceChargePercentage");
         merchant.addBooleanProperty("isLogin");
@@ -97,7 +102,9 @@ public class PosDaoGenerator {
     	product.addStringProperty("code");
     	Property productName = product.addStringProperty("name").getProperty();
     	product.addStringProperty("type");
-    	product.addIntProperty("price");
+    	product.addIntProperty("price1");
+    	product.addIntProperty("price2");
+    	product.addIntProperty("price3");
     	product.addIntProperty("costPrice");
     	product.addStringProperty("picRequired");
     	product.addIntProperty("commision");
@@ -211,7 +218,7 @@ public class PosDaoGenerator {
         
         transactions.addStringProperty("cashierName");
         
-        Property customerId = transactions.addLongProperty("customerId").notNull().getProperty();
+        Property customerId = transactions.addLongProperty("customerId").getProperty();
         transactions.addToOne(customer, customerId);
         
         transactions.addStringProperty("customerName");
@@ -246,7 +253,7 @@ public class PosDaoGenerator {
     	transactionItem.addIntProperty("commision");
         transactionItem.addStringProperty("remarks");
     	
-    	Property employeeId = transactionItem.addLongProperty("employeeId").notNull().getProperty();
+    	Property employeeId = transactionItem.addLongProperty("employeeId").getProperty();
     	transactionItem.addToOne(employee, employeeId);
         
         ToMany transactionToItem = transactions.addToMany(transactionItem, transactionId);

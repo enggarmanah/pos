@@ -88,7 +88,7 @@ public class InventoryReportListFragment extends BaseFragment
 		
 		mTitleText = (TextView) getView().findViewById(R.id.titleText);
 		
-		mProductList = (ListView) getView().findViewById(R.id.transactionList);
+		mProductList = (ListView) getView().findViewById(R.id.inventoryList);
 		
 		mProductList.setItemsCanFocus(true);
 		mProductList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

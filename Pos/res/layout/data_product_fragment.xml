@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/RightFragmentStyle" >
+    style="@style/PlainFragmentStyle" >
 
     <LinearLayout style="@style/FormStyle" >
 		
@@ -64,18 +64,57 @@
                 style="@style/FormInputListStyle" />
         </LinearLayout>
 
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout 
+            android:id="@+id/price1Panel"
+            style="@style/FormRowStyle" >
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
                 android:text="@string/letter_H" />
             
             <TextView
+                android:id="@+id/priceLabel1Text"
                 style="@style/FormTextStyle"
                 android:text="@string/field_price" />
 
             <EditText
-                android:id="@+id/priceText"
+                android:id="@+id/price1Text"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/price2Panel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_H" />
+            
+            <TextView
+                android:id="@+id/priceLabel2Text"
+                style="@style/FormTextStyle"
+                android:text="@string/field_price" />
+
+            <EditText
+                android:id="@+id/price2Text"
+                style="@style/FormInputNumericStyle" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:id="@+id/price3Panel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/letter_H" />
+            
+            <TextView
+                android:id="@+id/priceLabel3Text"
+                style="@style/FormTextStyle"
+                android:text="@string/field_price" />
+
+            <EditText
+                android:id="@+id/price3Text"
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
         

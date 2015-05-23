@@ -48,7 +48,7 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         public final static Property PaymentType = new Property(17, String.class, "paymentType", false, "PAYMENT_TYPE");
         public final static Property CashierId = new Property(18, long.class, "cashierId", false, "CASHIER_ID");
         public final static Property CashierName = new Property(19, String.class, "cashierName", false, "CASHIER_NAME");
-        public final static Property CustomerId = new Property(20, long.class, "customerId", false, "CUSTOMER_ID");
+        public final static Property CustomerId = new Property(20, Long.class, "customerId", false, "CUSTOMER_ID");
         public final static Property CustomerName = new Property(21, String.class, "customerName", false, "CUSTOMER_NAME");
         public final static Property UploadStatus = new Property(22, String.class, "uploadStatus", false, "UPLOAD_STATUS");
         public final static Property Status = new Property(23, String.class, "status", false, "STATUS");
@@ -92,7 +92,7 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
                 "'PAYMENT_TYPE' TEXT," + // 17: paymentType
                 "'CASHIER_ID' INTEGER NOT NULL ," + // 18: cashierId
                 "'CASHIER_NAME' TEXT," + // 19: cashierName
-                "'CUSTOMER_ID' INTEGER NOT NULL ," + // 20: customerId
+                "'CUSTOMER_ID' INTEGER," + // 20: customerId
                 "'CUSTOMER_NAME' TEXT," + // 21: customerName
                 "'UPLOAD_STATUS' TEXT," + // 22: uploadStatus
                 "'STATUS' TEXT);"); // 23: status
@@ -196,7 +196,11 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         if (cashierName != null) {
             stmt.bindString(20, cashierName);
         }
-        stmt.bindLong(21, entity.getCustomerId());
+ 
+        Long customerId = entity.getCustomerId();
+        if (customerId != null) {
+            stmt.bindLong(21, customerId);
+        }
  
         String customerName = entity.getCustomerName();
         if (customerName != null) {
@@ -250,7 +254,7 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
             cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // paymentType
             cursor.getLong(offset + 18), // cashierId
             cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // cashierName
-            cursor.getLong(offset + 20), // customerId
+            cursor.isNull(offset + 20) ? null : cursor.getLong(offset + 20), // customerId
             cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // customerName
             cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // uploadStatus
             cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23) // status
@@ -281,7 +285,7 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         entity.setPaymentType(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
         entity.setCashierId(cursor.getLong(offset + 18));
         entity.setCashierName(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setCustomerId(cursor.getLong(offset + 20));
+        entity.setCustomerId(cursor.isNull(offset + 20) ? null : cursor.getLong(offset + 20));
         entity.setCustomerName(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
         entity.setUploadStatus(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
         entity.setStatus(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
@@ -326,7 +330,7 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
     }
 
     /** Internal query to resolve the "transactionsList" to-many relationship of Customer. */
-    public List<Transactions> _queryCustomer_TransactionsList(long customerId) {
+    public List<Transactions> _queryCustomer_TransactionsList(Long customerId) {
         synchronized (this) {
             if (customer_TransactionsListQuery == null) {
                 QueryBuilder<Transactions> queryBuilder = queryBuilder();
@@ -379,9 +383,7 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         offset += daoSession.getUserDao().getAllColumns().length;
 
         Customer customer = loadCurrentOther(daoSession.getCustomerDao(), cursor, offset);
-         if(customer != null) {
-            entity.setCustomer(customer);
-        }
+        entity.setCustomer(customer);
 
         return entity;    
     }

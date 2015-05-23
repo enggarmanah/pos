@@ -1,12 +1,15 @@
 package com.android.pos.cashier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.EmployeeDaoService;
+import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
+import com.android.pos.model.PriceBean;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
 
@@ -29,13 +32,16 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	
 	public interface ProductActionListener {
 		
-		public void onProductQuantitySelected(Product product, Employee personInCharge, int quantity, String remarks);
+		public void onProductQuantitySelected(Product product, Integer price, Employee personInCharge, int quantity, String remarks);
 	}
 	
-	TextView mProductText;
+	Spinner mPriceSp;
 	Spinner mPersonInChargeSp;
+	
+	TextView mProductText;
 	TextView mQuantityText;
 	
+	LinearLayout mProductCountPanel;
 	LinearLayout mNumberBtnPanel;
 	
 	TextView mRemarksBtn;
@@ -60,11 +66,14 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	Button mCancelBtn;
 	
 	Product mProduct;
+	Integer mPrice;
+	Employee mPersonInCharge;
 	String mRemarks;
-	int mQuantity;
+	Integer mQuantity;
 	
 	ProductActionListener mActionListener;
 	
+	CashierProductCountPriceSpinnerArrayAdapter mPriceArrayAdapter;
 	CashierProductCountPicSpinnerArrayAdapter mPicArrayAdapter;
 	
 	private static String PRODUCT = "PRODUCT";
@@ -110,6 +119,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		super.onStart();
 		
 		mProductText = (TextView) getView().findViewById(R.id.productText);
+		mPriceSp = (Spinner) getView().findViewById(R.id.priceSp);
 		mPersonInChargeSp = (Spinner) getView().findViewById(R.id.personInChargeSp);
 		mQuantityText = (TextView) getView().findViewById(R.id.countText);
 		
@@ -118,6 +128,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		mRemarksText = (EditText) getView().findViewById(R.id.remarksText);
 		
 		mNumberBtnPanel = (LinearLayout) getView().findViewById(R.id.numberBtnPanel);
+		mProductCountPanel = (LinearLayout) getView().findViewById(R.id.productCountPanel);
 		
 		number0Btn = (Button) getView().findViewById(R.id.number0Btn);
 		number1Btn = (Button) getView().findViewById(R.id.number1Btn);
@@ -155,10 +166,6 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		mOkBtn.setOnClickListener(getOkBtnOnClickListener());
 		mCancelBtn.setOnClickListener(getCancelBtnOnClickListener());
 		
-		mPicArrayAdapter = new CashierProductCountPicSpinnerArrayAdapter(mPersonInChargeSp, getActivity(), getPersonInCharge());
-
-		mPersonInChargeSp.setAdapter(mPicArrayAdapter);
-		
 		refreshDisplay();
 	}
 	
@@ -190,12 +197,12 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			
 			mQuantity = 1;
 			
-			mPersonInChargeSp.setVisibility(View.VISIBLE);
+			mProductCountPanel.setVisibility(View.GONE);
 			mNumberBtnPanel.setVisibility(View.GONE);
 		
 		} else {
 			
-			mPersonInChargeSp.setVisibility(View.GONE);
+			mProductCountPanel.setVisibility(View.VISIBLE);
 			mNumberBtnPanel.setVisibility(View.VISIBLE);
 		}
 		
@@ -204,13 +211,112 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		mQuantityText.setText(String.valueOf(mQuantity));
 		
 		displayRemarks(!CommonUtil.isEmpty(mRemarks));
+		
+		PriceBean[] prices = getPrices();
+		Employee[] employees = getEmployees();
+		
+		mPriceArrayAdapter = new CashierProductCountPriceSpinnerArrayAdapter(mPriceSp, getActivity(), prices);
+		mPriceSp.setAdapter(mPriceArrayAdapter);
+		
+		if (prices != null && prices.length == 1) {
+			mPriceSp.setEnabled(false);
+		} else {
+			mPriceSp.setEnabled(true);
+			mPriceSp.setSelection(getPriceSelectedIndex(prices, mPrice));
+		}
+			
+		mPicArrayAdapter = new CashierProductCountPicSpinnerArrayAdapter(mPersonInChargeSp, getActivity(), getEmployees());
+		mPersonInChargeSp.setAdapter(mPicArrayAdapter);
+		
+		if (Constant.STATUS_YES.equals(mProduct.getPicRequired())) {
+			
+			if (employees != null && employees.length > 0) {
+				mPersonInChargeSp.setVisibility(View.VISIBLE);
+			} else {
+				mPersonInChargeSp.setVisibility(View.GONE);
+			}
+		} else {
+			mPersonInChargeSp.setVisibility(View.GONE);
+		}
+		
+		
+		mPersonInChargeSp.setSelection(getPicSelectedIndex(employees, mPersonInCharge));
 	}
 	
-	private Employee[] getPersonInCharge() {
+	private int getPriceSelectedIndex(PriceBean[] prices, int selectedPrice) {
+		
+		int index = 0;
+		
+		if (prices != null) {
+			
+			for (PriceBean priceBean : prices) {
+				if (priceBean.getValue() == selectedPrice) {
+					break;
+				}
+				index++;
+			}
+		}
+		
+		return index;
+	}
+		
+	private int getPicSelectedIndex(Employee[] employees, Employee selectedEmployee) {
+		
+		int index = 0;
+		
+		if (employees != null && selectedEmployee != null) {
+			
+			for (Employee employee : employees) {
+				if (employee.getId() == selectedEmployee.getId()) {
+					break;
+				}
+				index++;
+			}
+		}
+		
+		return index;
+	}
+	
+	private Employee[] getEmployees() {
 
 		List<Employee> list = mEmployeeDaoService.getEmployees(Constant.EMPTY_STRING, 0);
 		
 		return list.toArray(new Employee[list.size()]);
+	}
+	
+	private PriceBean[] getPrices() {
+		
+		List<PriceBean> list = new ArrayList<PriceBean>();
+		
+		if (mProduct != null) {
+		
+			Merchant merchant = MerchantUtil.getMerchant();
+			
+			PriceBean price1 = new PriceBean(merchant.getPriceLabel1(), mProduct.getPrice1());
+			PriceBean price2 = new PriceBean(merchant.getPriceLabel2(), mProduct.getPrice2());
+			PriceBean price3 = new PriceBean(merchant.getPriceLabel3(), mProduct.getPrice3());
+			
+			list.add(price1);
+			
+			int priceTypeCount = merchant.getPriceTypeCount() != null ? merchant.getPriceTypeCount() : 1;
+			
+			boolean isPrice2Available = price2.getValue() != null && price2.getValue() > 0;
+			boolean isPrice3Available = price3.getValue() != null && price3.getValue() > 0;
+			
+			if (priceTypeCount >= 2 && isPrice2Available) {
+				list.add(price2);
+			}
+			
+			if (priceTypeCount >= 3 && isPrice3Available) {
+				list.add(price3);
+			}
+			
+			if (list.size() == 1) {
+				price1.setType(getString(R.string.field_price));
+			}
+		}
+		
+		return list.toArray(new PriceBean[list.size()]);
 	}
 	
 	private View.OnClickListener getNumberBtnOnClickListener(final String numberText) {
@@ -274,8 +380,10 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 					personInCharge = (Employee) mPersonInChargeSp.getSelectedItem();
 				}
 				
+				Integer price = ((PriceBean) mPriceSp.getSelectedItem()).getValue();
+				
 				mQuantity = Integer.valueOf(mQuantityText.getText().toString());
-				mActionListener.onProductQuantitySelected(mProduct, personInCharge, mQuantity, mRemarksText.getText().toString());
+				mActionListener.onProductQuantitySelected(mProduct, price, personInCharge, mQuantity, mRemarksText.getText().toString());
 				dismiss();
 			}
 		};
@@ -313,9 +421,11 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		};
 	}
 	
-	public void setProduct(Product product, int quantity, String remarks) {
+	public void setProduct(Product product, Integer price, Employee personInCharge, Integer quantity, String remarks) {
 		
 		this.mProduct = product;
+		this.mPrice = price;
+		this.mPersonInCharge = personInCharge;
 		this.mRemarks = remarks;
 		this.mQuantity = quantity;
 		

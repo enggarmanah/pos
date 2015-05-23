@@ -463,7 +463,12 @@ public class PrintUtil {
 		
 		if (transaction.getDiscountName() != null) {
 			
-			String discountLabel = transaction.getDiscountName() + " " + transaction.getDiscountPercentage() + "%";
+			String discountLabel = transaction.getDiscountName();
+			
+			if (transaction.getDiscountPercentage() != 0) {
+				discountLabel +=  " " + transaction.getDiscountPercentage() + "%";
+			}
+			
 			String discountText = "- " + CommonUtil.formatCurrency(transaction.getDiscountAmount());
 			
 			line.setLength(0);

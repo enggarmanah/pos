@@ -32,14 +32,14 @@
     </style>
 
     <style name="SpinnerStyle" parent="android:Widget.ListView.DropDown">
-        <item name="android:divider">@color/border_gray_light</item>
+        <item name="android:divider">@color/border_blue_light</item>
         <item name="android:dividerHeight">0.5dp</item>
     </style>
 
     <style name="MainActivityStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/background_grey</item>
+        <item name="android:background">@color/background_blue_light</item>
     </style>
 
     <style name="MenuDrawerStyle">
@@ -63,8 +63,18 @@
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginBottom">3dp</item>
     </style>
-
-    <style name="LeftFragmentStyle">
+	
+    <style name="PlainFragmentStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:padding">1dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/background</item>
+    </style>
+    
+    <style name="BorderFragmentStyle">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">fill_parent</item>
@@ -72,6 +82,16 @@
         <item name="android:padding">1dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/bg_border_gray</item>
+    </style>
+    
+    <style name="LeftFragmentStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:padding">1dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/bg_border_dark</item>
     </style>
 
     <style name="RightFragmentStyle">
@@ -81,7 +101,7 @@
         <item name="android:layout_margin">2dp</item>
         <item name="android:padding">1dp</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@drawable/bg_border_gray</item>
+        <item name="android:background">@drawable/bg_border_dark</item>
     </style>
 
     <style name="ListViewWrapperStyle">
@@ -116,6 +136,8 @@
     <style name="ListViewStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
         <item name="android:divider">@color/border_gray_light</item>
         <item name="android:dividerHeight">0.5dp</item>
         <item name="android:background">#FFF</item>
@@ -566,7 +588,7 @@
         <item name="android:layout_gravity">top</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_default</item>
+        <item name="android:textColor">@color/text_dark</item>
         <item name="android:layout_marginTop">1dp</item>
         <item name="android:layout_marginLeft">15dp</item>
         <item name="android:background">@drawable/bg_first_letter</item>
@@ -668,28 +690,37 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
     </style>
-
+	
     <style name="SpinnerRowDropDownTextSelectedStyle" parent="SpinnerRowDropDownTextStyle">
         <item name="android:textColor">@color/list_row_selected_text</item>
         <item name="android:background">@color/list_row_selected_background</item>
     </style>
-
+	
     <style name="CashierSpinnerRowTextStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">21sp</item>
         <item name="android:textColor">@color/text_default</item>
         <item name="android:singleLine">true</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:padding">7dp</item>
         <item name="android:background">@color/section_header_background</item>
     </style>
-
+	
+    <style name="CashierSpinnerRowPriceLabelStyle" parent="CashierSpinnerRowTextStyle">
+        <item name="android:layout_width">150dp</item>
+    </style>
+    
+    <style name="CashierSpinnerRowPriceValueStyle" parent="CashierSpinnerRowTextStyle">
+        <item name="android:gravity">right</item>
+    </style>
+    
     <style name="CashierSpinnerRowDropDownTextStyle">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/text_default</item>
@@ -697,11 +728,27 @@
         <item name="android:singleLine">true</item>
         <item name="android:padding">10dp</item>
     </style>
-
+	
+    <style name="CashierSpinnerRowDropDownLeftTextStyle" parent="CashierSpinnerRowDropDownTextStyle">
+        <item name="android:gravity">left</item>
+    </style>
+    
+    <style name="CashierSpinnerRowDropDownRightTextStyle" parent="CashierSpinnerRowDropDownTextStyle">
+        <item name="android:gravity">right</item>
+    </style>
+    
     <style name="CashierSpinnerRowDropDownTextSelectedStyle" parent="CashierSpinnerRowDropDownTextStyle">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/list_row_selected_text</item>
         <item name="android:background">@color/list_row_selected_background</item>
+    </style>
+    
+    <style name="CashierSpinnerRowDropDownLeftTextSelectedStyle" parent="CashierSpinnerRowDropDownTextSelectedStyle">
+        <item name="android:gravity">left</item>
+    </style>
+    
+    <style name="CashierSpinnerRowDropDownRightTextSelectedStyle" parent="CashierSpinnerRowDropDownTextSelectedStyle">
+        <item name="android:gravity">right</item>
     </style>
 
     <style name="CashierOrderDiscountSpinnerRowTextStyle">
@@ -762,7 +809,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">26sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_default</item>
+        <item name="android:textColor">@color/text_number</item>
         <item name="android:background">@drawable/selector_number_btn</item>
     </style>
     
@@ -831,6 +878,12 @@
         <item name="android:layout_height">0.5dp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:background">@color/border_gray_light</item>
+    </style>
+    
+    <style name="SectionDividerWhiteStyle">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:background">@color/border_white</item>
     </style>
     
     <style name="PaymentRowContentStyle">

@@ -164,7 +164,7 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 	@Override
 	public void onItemSelected(TransactionItem transactionItem) {
 		
-		mActionListener.onProductSelected(transactionItem.getProduct(), transactionItem.getQuantity(), transactionItem.getRemarks());
+		mActionListener.onProductSelected(transactionItem.getProduct(), transactionItem.getPrice(), transactionItem.getEmployee(), transactionItem.getQuantity(), transactionItem.getRemarks());
 	}
 	
 	public void setTransactionItems(List<TransactionItem> transactionItems) {
@@ -191,10 +191,11 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 				if (item.getQuantity() == 0) {
 					mTransactionItems.remove(transItem);
 				} else {
-					if (item.getEmployeeId() != 0) {
+					if (item.getEmployeeId() != null) {
 						transItem.setEmployee(item.getEmployee());
 					}
 					transItem.setQuantity(item.getQuantity());
+					transItem.setPrice(item.getPrice());
 					transItem.setRemarks(item.getRemarks());
 				}
 				isExist = true;
@@ -278,6 +279,12 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			}
 			
 			mDiscountText.setText("- " + CommonUtil.formatCurrency(discount));
+				
+			if (mDiscount.getPercentage() == 0 && mDiscount.getAmount() == 0) {
+
+				mDiscountLabelText.setText("Tanpa Diskon");
+				mDiscountText.setText(Constant.EMPTY_STRING);
+			}
 			
 		} else {
 			mDiscountLabelText.setText("Tanpa Diskon");

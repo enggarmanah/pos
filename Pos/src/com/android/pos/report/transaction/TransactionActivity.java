@@ -13,6 +13,7 @@ import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.PrintUtil;
+import com.android.pos.util.UserUtil;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -356,7 +357,10 @@ public class TransactionActivity extends BaseActivity
 				
 			} else if (mIsDisplayTransaction) {
 				mUpItem.setVisible(true);
-				mPrintItem.setVisible(true);
+				
+				if (Constant.USER_ROLE_CASHIER.equals(UserUtil.getUser().getRole())) {
+					mPrintItem.setVisible(true);
+				}
 			}
 		}
 	}

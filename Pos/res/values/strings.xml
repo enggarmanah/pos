@@ -40,7 +40,8 @@
     <string name="menu_inventory">Data Inventori</string>
     <string name="menu_bills">Data Pengeluaran</string>
     <string name="menu_user_management">Data Pengguna</string>
-    <string name="menu_data_management">Data Referensi</string>
+    <string name="menu_data_management">Data Referensi</string>	
+	<string name="menu_printer">Printer</string>
     <string name="menu_logout">Keluar</string> 
     
     <string name="module_merchant">Data Merchant</string>
@@ -90,7 +91,8 @@
     <string name="field_name">Nama</string>
     <string name="field_type">Tipe</string>
     <string name="field_group">Kategori</string>
-    <string name="field_price">Harga Jual</string>
+    <string name="field_price">Harga</string>
+    <string name="field_selling_price">Harga Jual</string>
     <string name="field_cost_price">Harga Beli</string>
     <string name="field_pic_required">Butuh PIC</string>
     <string name="field_commision">Komisi</string>
@@ -133,10 +135,18 @@
     <string name="field_payment_date">Tgl. Bayar</string>
     <string name="field_payment">Bayar</string>
     <string name="field_date">Tanggal</string>
+    
+    <string name="field_price_type_count">Jumlah Harga</string>
+    <string name="field_price_label_1">Tipe Harga 1</string>
+    <string name="field_price_label_2">Tipe Harga 2</string>
+    <string name="field_price_label_3">Tipe Harga 3</string>
+    
    
     <string name="field_printer_required">Printer</string>
     <string name="field_printer_mini_font">Font Kecil</string>
     <string name="field_printer_line_size">Teks / Baris</string>
+    
+    <string name="field_discount_type">Tipe Diskon</string>
     
     <string name="favorite_customer_title">Pelanggan</string>
     <string name="favorite_customer_quantity">Jumlah</string>
@@ -274,6 +284,8 @@
     <string name="transaction_list">Daftar Transaksi</string>
     <string name="transaction_recap">Rekap Transaksi</string>
     <string name="transaction_total">Total Transaksi</string>
+    
+    <string name="printer_settings">Konfigurasi Printer</string>
     
     <string name="none_paired">Tidak ada printer yang terhubung</string>
     <string name="scanning">Scanning perangkat printer</string>

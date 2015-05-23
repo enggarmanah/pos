@@ -3,7 +3,11 @@
     style="@style/SpinnerRowStyle">
 
     <TextView
-        android:id="@+id/nameText"
-        style="@style/CashierSpinnerRowTextStyle"/>
+        android:id="@+id/label1Text"
+        style="@style/CashierSpinnerRowPriceLabelStyle"/>
+    
+    <TextView
+        android:id="@+id/label2Text"
+        style="@style/CashierSpinnerRowPriceValueStyle"/>
 
 </LinearLayout>

@@ -10,6 +10,7 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table PRODUCT.
  */
+
 @SuppressWarnings("serial")
 public class Product implements Serializable {
 
@@ -19,7 +20,9 @@ public class Product implements Serializable {
     private String code;
     private String name;
     private String type;
-    private Integer price;
+    private Integer price1;
+    private Integer price2;
+    private Integer price3;
     private Integer costPrice;
     private String picRequired;
     private Integer commision;
@@ -55,14 +58,16 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(Long id, long merchantId, Long productGroupId, String code, String name, String type, Integer price, Integer costPrice, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, Integer stock, Integer minStock, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Product(Long id, long merchantId, Long productGroupId, String code, String name, String type, Integer price1, Integer price2, Integer price3, Integer costPrice, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, Integer stock, Integer minStock, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.merchantId = merchantId;
         this.productGroupId = productGroupId;
         this.code = code;
         this.name = name;
         this.type = type;
-        this.price = price;
+        this.price1 = price1;
+        this.price2 = price2;
+        this.price3 = price3;
         this.costPrice = costPrice;
         this.picRequired = picRequired;
         this.commision = commision;
@@ -133,12 +138,28 @@ public class Product implements Serializable {
         this.type = type;
     }
 
-    public Integer getPrice() {
-        return price;
+    public Integer getPrice1() {
+        return price1;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setPrice1(Integer price1) {
+        this.price1 = price1;
+    }
+
+    public Integer getPrice2() {
+        return price2;
+    }
+
+    public void setPrice2(Integer price2) {
+        this.price2 = price2;
+    }
+
+    public Integer getPrice3() {
+        return price3;
+    }
+
+    public void setPrice3(Integer price3) {
+        this.price3 = price3;
     }
 
     public Integer getCostPrice() {

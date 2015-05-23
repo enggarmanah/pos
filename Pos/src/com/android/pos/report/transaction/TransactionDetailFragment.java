@@ -185,7 +185,10 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		}
 		
 		if (!CommonUtil.isEmpty(mTransaction.getDiscountName())) {
-			String label = mTransaction.getDiscountName() + " " + CommonUtil.intToStr(mTransaction.getDiscountPercentage()) + "%";
+			String label = mTransaction.getDiscountName();
+			if (mTransaction.getDiscountPercentage() != 0) {
+				label += " " + CommonUtil.intToStr(mTransaction.getDiscountPercentage()) + "%";
+			}
 			mDiscountLabelText.setText(label);
 			mDiscountText.setText(CommonUtil.formatCurrency(mTransaction.getDiscountAmount()));
 			

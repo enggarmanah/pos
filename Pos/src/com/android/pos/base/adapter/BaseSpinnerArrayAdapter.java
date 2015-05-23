@@ -48,7 +48,9 @@ public abstract class BaseSpinnerArrayAdapter<T> extends ArrayAdapter<T> {
 		return position;
 	}
 	
-	protected abstract String getLabel(T option);
+	protected abstract String getLabel1(T option);
+	
+	protected String getLabel2(T option) { return null; };
 	
 	protected abstract String getValue(T option);
 	
@@ -93,7 +95,9 @@ public abstract class BaseSpinnerArrayAdapter<T> extends ArrayAdapter<T> {
 		boolean isSelected = getValue(option).equals(getSelectedValue());
 		
 		View rowView = convertView;
-		TextView itemName = null;
+		
+		TextView label1Text = null;
+		TextView label2Text = null;
 			
 		if (isDropDown) {
 			rowView = inflater.inflate(isSelected ? mListSelectedLayout : mListNormalLayout, parent, false);
@@ -101,8 +105,21 @@ public abstract class BaseSpinnerArrayAdapter<T> extends ArrayAdapter<T> {
 			rowView = inflater.inflate(mItemSelected, parent, false);
 		}
 		
-		itemName = (TextView) rowView.findViewById(R.id.nameText);
-		itemName.setText(getLabel(option));
+		label1Text = (TextView) rowView.findViewById(R.id.label1Text);
+		label1Text.setText(getLabel1(option));
+		
+		label2Text = (TextView) rowView.findViewById(R.id.label2Text);
+		
+		if (label2Text != null) {
+			
+			if (getLabel2(option) != null) {
+				label2Text.setVisibility(View.VISIBLE);
+				label2Text.setText(getLabel2(option));
+			} else {
+				label2Text.setVisibility(View.GONE);
+			}
+			
+		}
 		
 		return rowView;
 	}

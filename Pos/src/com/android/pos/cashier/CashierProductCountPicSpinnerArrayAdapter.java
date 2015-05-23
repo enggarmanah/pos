@@ -29,7 +29,7 @@ public class CashierProductCountPicSpinnerArrayAdapter extends BaseSpinnerArrayA
 	}
 
 	@Override
-	protected String getLabel(Employee employee) {
+	protected String getLabel1(Employee employee) {
 
 		return employee.getName();
 	}

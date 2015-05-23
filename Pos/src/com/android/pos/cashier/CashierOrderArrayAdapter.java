@@ -91,7 +91,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 		productQuantity.setText(String.valueOf(transactionItem.getQuantity()));
 		productName.setText(transactionItem.getProductName());
 		
-		if (transactionItem.getEmployeeId() != 0) {
+		if (transactionItem.getEmployeeId() != null) {
 			
 			productInfo.setText(transactionItem.getEmployee().getName());
 			productInfo.setVisibility(View.VISIBLE);

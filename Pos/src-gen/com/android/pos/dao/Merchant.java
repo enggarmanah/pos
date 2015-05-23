@@ -32,6 +32,11 @@ public class Merchant implements Serializable {
     private String password;
     private java.util.Date periodStart;
     private java.util.Date periodEnd;
+    private Integer priceTypeCount;
+    private String priceLabel1;
+    private String priceLabel2;
+    private String priceLabel3;
+    private String discountType;
     private Integer taxPercentage;
     private Integer serviceChargePercentage;
     private Boolean isLogin;
@@ -61,7 +66,7 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer priceTypeCount, String priceLabel1, String priceLabel2, String priceLabel3, String discountType, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -79,6 +84,11 @@ public class Merchant implements Serializable {
         this.password = password;
         this.periodStart = periodStart;
         this.periodEnd = periodEnd;
+        this.priceTypeCount = priceTypeCount;
+        this.priceLabel1 = priceLabel1;
+        this.priceLabel2 = priceLabel2;
+        this.priceLabel3 = priceLabel3;
+        this.discountType = discountType;
         this.taxPercentage = taxPercentage;
         this.serviceChargePercentage = serviceChargePercentage;
         this.isLogin = isLogin;
@@ -232,6 +242,46 @@ public class Merchant implements Serializable {
 
     public void setPeriodEnd(java.util.Date periodEnd) {
         this.periodEnd = periodEnd;
+    }
+
+    public Integer getPriceTypeCount() {
+        return priceTypeCount;
+    }
+
+    public void setPriceTypeCount(Integer priceTypeCount) {
+        this.priceTypeCount = priceTypeCount;
+    }
+
+    public String getPriceLabel1() {
+        return priceLabel1;
+    }
+
+    public void setPriceLabel1(String priceLabel1) {
+        this.priceLabel1 = priceLabel1;
+    }
+
+    public String getPriceLabel2() {
+        return priceLabel2;
+    }
+
+    public void setPriceLabel2(String priceLabel2) {
+        this.priceLabel2 = priceLabel2;
+    }
+
+    public String getPriceLabel3() {
+        return priceLabel3;
+    }
+
+    public void setPriceLabel3(String priceLabel3) {
+        this.priceLabel3 = priceLabel3;
+    }
+
+    public String getDiscountType() {
+        return discountType;
+    }
+
+    public void setDiscountType(String discountType) {
+        this.discountType = discountType;
     }
 
     public Integer getTaxPercentage() {

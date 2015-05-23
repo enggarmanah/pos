@@ -1,9 +1,12 @@
 package com.android.pos.cashier;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Discount;
+import com.android.pos.dao.Employee;
+import com.android.pos.dao.Product;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.NotificationUtil;
+import com.android.pos.util.MerchantUtil;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -16,10 +19,15 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class CashierDiscountAmountDlgFragment extends DialogFragment {
+public class CashierDiscountNominalDlgFragment extends DialogFragment {
 	
+	public interface ProductActionListener {
+		
+		public void onProductQuantitySelected(Product product, Employee personInCharge, int quantity, String remarks);
+	}
+	
+	TextView mCurrencyText;
 	TextView mDiscountText;
-	TextView mAmountText;
 	
 	LinearLayout mNumberBtnPanel;
 	
@@ -41,12 +49,11 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 	Button mCancelBtn;
 	
 	Discount mDiscount;
-	int mAmount;
+	int mDiscountAmount;
 	
 	CashierActionListener mActionListener;
 	
-	private static String DISCOUNT = "DISCOUNT";
-	private static String AMOUNT = "AMOUNT";
+	private static String QUANTITY = "QUANTITY";
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +63,7 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
         
         if (savedInstanceState != null) {
         	
-        	mDiscount = (Discount) savedInstanceState.get(DISCOUNT);
-        	mAmount = (Integer) savedInstanceState.get(AMOUNT);
+        	mDiscountAmount = (Integer) savedInstanceState.get(QUANTITY);
         }
         
         setCancelable(false);
@@ -66,16 +72,15 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		
-		mAmount = Integer.valueOf(mAmountText.getText().toString());
+		mDiscountAmount = Integer.valueOf(mDiscountText.getText().toString());
 		
-		outState.putSerializable(DISCOUNT, mDiscount);
-		outState.putSerializable(AMOUNT, mAmount);
+		outState.putSerializable(QUANTITY, mDiscountAmount);
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.cashier_discount_amount_fragment, container, false);
+		View view = inflater.inflate(R.layout.cashier_discount_nominal_fragment, container, false);
 
 		return view;
 	}
@@ -85,8 +90,8 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 		
 		super.onStart();
 		
+		mCurrencyText = (TextView) getView().findViewById(R.id.currencyText);
 		mDiscountText = (TextView) getView().findViewById(R.id.discountText);
-		mAmountText = (TextView) getView().findViewById(R.id.amountText);
 		
 		mNumberBtnPanel = (LinearLayout) getView().findViewById(R.id.numberBtnPanel);
 		
@@ -139,16 +144,29 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
         }
     }
 	
+	public void setDiscount(Discount discount) {
+		
+		mDiscount = discount;
+		
+		refreshDisplay();
+	}
+	
 	private void refreshDisplay() {
 		
 		if (getView() == null) {
 			return;
 		}
 		
-		mDiscountText.setText(mDiscount.getName());
-		mAmountText.setText(CommonUtil.formatNumber(mAmount));
-	}
+		mDiscountAmount = 0;
 		
+		if (mDiscount != null) {
+			mDiscountAmount = mDiscount.getAmount();
+		}
+		
+		mCurrencyText.setText(MerchantUtil.getCurrency());
+		mDiscountText.setText(CommonUtil.formatNumber(mDiscountAmount));	
+	}
+	
 	private View.OnClickListener getNumberBtnOnClickListener(final String numberText) {
 		
 		return new View.OnClickListener() {
@@ -156,14 +174,14 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				int payment = CommonUtil.parseCurrency(mAmountText.getText().toString());
-				String number = String.valueOf(payment);
+				int discount = CommonUtil.parseCurrency(mDiscountText.getText().toString());
+				String number = String.valueOf(discount);
 				
 				if (number.equals("0")) {
-					mAmountText.setText(numberText);
+					mDiscountText.setText(numberText);
 				} else {
 					number = CommonUtil.formatNumber(number + numberText);
-					mAmountText.setText(number);
+					mDiscountText.setText(number);
 				}
 			}
 		};
@@ -176,7 +194,7 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mAmountText.setText("0");
+				mDiscountText.setText("0");
 			}
 		};
 	}
@@ -188,14 +206,14 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				int payment = CommonUtil.parseCurrency(mAmountText.getText().toString());
-				String number = String.valueOf(payment);
+				int discount = CommonUtil.parseCurrency(mDiscountText.getText().toString());
+				String number = String.valueOf(discount);
 				
 				if (number.length() == 1) {
-					mAmountText.setText("0");
+					mDiscountText.setText("0");
 				} else {
 					number = CommonUtil.formatNumber(number.substring(0, number.length()-1));
-					mAmountText.setText(number);
+					mDiscountText.setText(number);
 				}
 			}
 		};
@@ -207,19 +225,15 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 			
 			@Override
 			public void onClick(View v) {
-
-				mAmount = CommonUtil.parseCurrency(mAmountText.getText().toString());
 				
-				if (mAmount == 0) {
-					
-					NotificationUtil.setAlertMessage(getFragmentManager(), "Nominal diskon tidak boleh kosong.");
-	    			
-	    			return;
-				}
-	    			
-				mDiscount.setAmount(mAmount);
+				mDiscountAmount = CommonUtil.parseCurrency(mDiscountText.getText().toString());
 				
-				mActionListener.onDiscountSelected(mDiscount);
+				Discount discount = new Discount();
+				discount.setName(Constant.DISCOUNT_TYPE_NOMINAL_DESC);
+				discount.setPercentage(0);
+				discount.setAmount(mDiscountAmount);
+				
+				mActionListener.onDiscountSelected(discount);
 				dismiss();
 			}
 		};
@@ -235,12 +249,5 @@ public class CashierDiscountAmountDlgFragment extends DialogFragment {
 				dismiss();
 			}
 		};
-	}
-	
-	public void setDiscount(Discount discount) {
-		
-		this.mDiscount = discount;
-		
-		refreshDisplay();
 	}
 }

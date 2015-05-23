@@ -25,7 +25,7 @@ public class TransactionItem {
 	private Integer discount;
 	private Integer quantity;
 	private Integer commision;
-	private long employee_id;
+	private Long employee_id;
 
 	public void setBean(TransactionItem bean) {
 
@@ -140,11 +140,11 @@ public class TransactionItem {
 		this.commision = commision;
 	}
 
-	public long getEmployee_id() {
+	public Long getEmployee_id() {
 		return employee_id;
 	}
 
-	public void setEmployee_id(long employee_id) {
+	public void setEmployee_id(Long employee_id) {
 		this.employee_id = employee_id;
 	}
 }
