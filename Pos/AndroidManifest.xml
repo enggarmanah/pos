@@ -144,7 +144,7 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name="com.android.pos.report.commision.CommisionActivity"
+            android:name="com.android.pos.report.commission.CommissionActivity"
             android:launchMode="singleTask" >
         </activity>
         <activity

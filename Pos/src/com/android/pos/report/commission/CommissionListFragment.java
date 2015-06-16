@@ -1,4 +1,4 @@
-package com.android.pos.report.commision;
+package com.android.pos.report.commission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +19,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CommisionListFragment extends BaseFragment 
-	implements CommisionMonthArrayAdapter.ItemActionListener,
-		CommisionYearArrayAdapter.ItemActionListener {
+public class CommissionListFragment extends BaseFragment 
+	implements CommissionMonthArrayAdapter.ItemActionListener,
+		CommissionYearArrayAdapter.ItemActionListener {
 	
 	private ImageButton mBackButton;
 	
@@ -36,16 +36,16 @@ public class CommisionListFragment extends BaseFragment
 	private CommisionYearBean mSelectedCommisionYear;
 	private CommisionMonthBean mSelectedCommisionMonth;
 	
-	private CommisionYearArrayAdapter mCommisionYearAdapter;
-	private CommisionMonthArrayAdapter mCommisionMonthAdapter;
+	private CommissionYearArrayAdapter mCommisionYearAdapter;
+	private CommissionMonthArrayAdapter mCommisionMonthAdapter;
 	
-	private CommisionActionListener mActionListener;
+	private CommissionActionListener mActionListener;
 	
 	private ProductDaoService mProductDaoService = new ProductDaoService();
 	
 	private String mStatus;
 	
-	public CommisionListFragment() {
+	public CommissionListFragment() {
 		
 		initList();
 	}
@@ -67,8 +67,8 @@ public class CommisionListFragment extends BaseFragment
 		
 		View view = inflater.inflate(R.layout.report_transaction_list_fragment, container, false);
 		
-		mCommisionYearAdapter = new CommisionYearArrayAdapter(getActivity(), mCommisionYears, this);
-		mCommisionMonthAdapter = new CommisionMonthArrayAdapter(getActivity(), mCommisionMonths, this);
+		mCommisionYearAdapter = new CommissionYearArrayAdapter(getActivity(), mCommisionYears, this);
+		mCommisionMonthAdapter = new CommissionMonthArrayAdapter(getActivity(), mCommisionMonths, this);
 		
 		return view;
 	}
@@ -107,7 +107,7 @@ public class CommisionListFragment extends BaseFragment
         super.onAttach(activity);
 
         try {
-            mActionListener = (CommisionActionListener) activity;
+            mActionListener = (CommissionActionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement CommisionActionListener");
@@ -131,13 +131,13 @@ public class CommisionListFragment extends BaseFragment
 			return;
 		}
 		
-		if (CommisionActivity.DISPLAY_TRANSACTION_ALL_YEARS.equals(mStatus)) {
+		if (CommissionActivity.DISPLAY_TRANSACTION_ALL_YEARS.equals(mStatus)) {
 			displayCommisionAllYears();
 			
-		} else if (CommisionActivity.DISPLAY_TRANSACTION_ON_YEAR.equals(mStatus)) {
+		} else if (CommissionActivity.DISPLAY_TRANSACTION_ON_YEAR.equals(mStatus)) {
 			displayCommisionOnYear(mSelectedCommisionYear);
 			
-		} else if (CommisionActivity.DISPLAY_TRANSACTION_ON_MONTH.equals(mStatus)) {
+		} else if (CommissionActivity.DISPLAY_TRANSACTION_ON_MONTH.equals(mStatus)) {
 			displayCommisionOnMonth(mSelectedCommisionMonth);
 		}
 	}
@@ -150,7 +150,7 @@ public class CommisionListFragment extends BaseFragment
 			return;
 		}
 		
-		mStatus = CommisionActivity.DISPLAY_TRANSACTION_ON_YEAR;
+		mStatus = CommissionActivity.DISPLAY_TRANSACTION_ON_YEAR;
 		
 		if (isViewInitialized()) {
 			updateContent();
@@ -165,7 +165,7 @@ public class CommisionListFragment extends BaseFragment
 			return;
 		}
 		
-		mStatus = CommisionActivity.DISPLAY_TRANSACTION_ON_MONTH;
+		mStatus = CommissionActivity.DISPLAY_TRANSACTION_ON_MONTH;
 		
 		if (isViewInitialized()) {
 			updateContent();
@@ -201,7 +201,7 @@ public class CommisionListFragment extends BaseFragment
 	
 	public void displayCommisionAllYears() {
 		
-		mStatus = CommisionActivity.DISPLAY_TRANSACTION_ALL_YEARS;
+		mStatus = CommissionActivity.DISPLAY_TRANSACTION_ALL_YEARS;
 		
 		mCommisionYears.clear();
 		
@@ -222,7 +222,7 @@ public class CommisionListFragment extends BaseFragment
 	
 	public void displayCommisionOnYear(CommisionYearBean transactionYear) {
 		
-		mStatus = CommisionActivity.DISPLAY_TRANSACTION_ON_YEAR;
+		mStatus = CommissionActivity.DISPLAY_TRANSACTION_ON_YEAR;
 		
 		mCommisionMonths.clear();
 		
@@ -243,7 +243,7 @@ public class CommisionListFragment extends BaseFragment
 	
 	public void displayCommisionOnMonth(CommisionMonthBean transactionMonth) {
 		
-		mStatus = CommisionActivity.DISPLAY_TRANSACTION_ON_MONTH;
+		mStatus = CommissionActivity.DISPLAY_TRANSACTION_ON_MONTH;
 		
 		mCommisionList.setAdapter(mCommisionMonthAdapter);
 		mCommisionMonthAdapter.notifyDataSetChanged();

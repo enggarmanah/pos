@@ -1,4 +1,4 @@
-package com.android.pos.report.commision;
+package com.android.pos.report.commission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import com.android.pos.model.CommisionMonthBean;
 import com.android.pos.model.EmployeeCommisionBean;
 import com.android.pos.util.CommonUtil;
 
-public class CommisionDetailFragment extends BaseFragment implements CommisionDetailArrayAdapter.ItemActionListener {
+public class CommissionDetailFragment extends BaseFragment implements CommissionDetailArrayAdapter.ItemActionListener {
 	
 	private ImageButton mBackButton;
 	
@@ -35,10 +35,10 @@ public class CommisionDetailFragment extends BaseFragment implements CommisionDe
 	protected List<EmployeeCommisionBean> mEmployeeCommisions;
 	protected List<EmployeeCommisionBean> mEmployeeCommisionDetails;
 	
-	private CommisionActionListener mActionListener;
+	private CommissionActionListener mActionListener;
 	
-	private CommisionDetailArrayAdapter mCommisionAdapter;
-	private CommisionDetailEmployeeArrayAdapter mCommisionDetailAdapter;
+	private CommissionDetailArrayAdapter mCommisionAdapter;
+	private CommissionDetailEmployeeArrayAdapter mCommisionDetailAdapter;
 	
 	private ProductDaoService mProductDaoService = new ProductDaoService();
 	
@@ -55,8 +55,8 @@ public class CommisionDetailFragment extends BaseFragment implements CommisionDe
 			mEmployeeCommisionDetails = new ArrayList<EmployeeCommisionBean>();
 		}
 		
-		mCommisionAdapter = new CommisionDetailArrayAdapter(getActivity(), mEmployeeCommisions, this);
-		mCommisionDetailAdapter = new CommisionDetailEmployeeArrayAdapter(getActivity(), mEmployeeCommisionDetails);
+		mCommisionAdapter = new CommissionDetailArrayAdapter(getActivity(), mEmployeeCommisions, this);
+		mCommisionDetailAdapter = new CommissionDetailEmployeeArrayAdapter(getActivity(), mEmployeeCommisionDetails);
 		
 		return view;
 	}
@@ -99,7 +99,7 @@ public class CommisionDetailFragment extends BaseFragment implements CommisionDe
         super.onAttach(activity);
 
         try {
-            mActionListener = (CommisionActionListener) activity;
+            mActionListener = (CommissionActionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement TransactionActionListener");

@@ -1,10 +1,10 @@
-package com.android.pos.report.commision;
+package com.android.pos.report.commission;
 
 import com.android.pos.dao.Employee;
 import com.android.pos.model.CommisionMonthBean;
 import com.android.pos.model.CommisionYearBean;
 
-public interface CommisionActionListener {
+public interface CommissionActionListener {
 	
 	public void onCommisionYearSelected(CommisionYearBean transactionYear);
 	

@@ -55,7 +55,7 @@
     <ListView
         android:id="@+id/customerListView"
         style="@style/ListViewStyle"
-        android:layout_height="350dp">
+        android:layout_height="357dp">
     </ListView>
 
     <TextView

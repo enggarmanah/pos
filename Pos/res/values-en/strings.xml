@@ -295,7 +295,7 @@
     
     <string name="order_table_no_add_on">"Table No Add On : "</string>
     <string name="order_customer_add_on">"Customer Add On : "</string>
-  	<string name="order_transaction_list">"Transaction List"</string>
+  	<string name="order_transaction_list">"Transaction Items"</string>
   	<string name="order_order_list">"Order List"</string>
     
     <string name="transaction_summary">Transaction Confirmation</string>

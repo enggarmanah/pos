@@ -1,4 +1,4 @@
-package com.android.pos.report.commision;
+package com.android.pos.report.commission;
 
 import java.io.Serializable;
 
@@ -13,11 +13,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class CommisionActivity extends BaseActivity 
-	implements CommisionActionListener {
+public class CommissionActivity extends BaseActivity 
+	implements CommissionActionListener {
 	
-	protected CommisionListFragment mProductStatisticListFragment;
-	protected CommisionDetailFragment mProductStatisticDetailFragment;
+	protected CommissionListFragment mProductStatisticListFragment;
+	protected CommissionDetailFragment mProductStatisticDetailFragment;
 	
 	boolean mIsMultiplesPane = false;
 	
@@ -94,19 +94,19 @@ public class CommisionActivity extends BaseActivity
 		
 		mIsMultiplesPane = getResources().getBoolean(R.bool.has_multiple_panes);
 
-		mProductStatisticListFragment = (CommisionListFragment) getFragmentManager().findFragmentByTag(mProductStatisticListFragmentTag);
+		mProductStatisticListFragment = (CommissionListFragment) getFragmentManager().findFragmentByTag(mProductStatisticListFragmentTag);
 		
 		if (mProductStatisticListFragment == null) {
-			mProductStatisticListFragment = new CommisionListFragment();
+			mProductStatisticListFragment = new CommissionListFragment();
 
 		} else {
 			removeFragment(mProductStatisticListFragment);
 		}
 		
-		mProductStatisticDetailFragment = (CommisionDetailFragment) getFragmentManager().findFragmentByTag(mProductStatisticDetailFragmentTag);
+		mProductStatisticDetailFragment = (CommissionDetailFragment) getFragmentManager().findFragmentByTag(mProductStatisticDetailFragmentTag);
 		
 		if (mProductStatisticDetailFragment == null) {
-			mProductStatisticDetailFragment = new CommisionDetailFragment();
+			mProductStatisticDetailFragment = new CommissionDetailFragment();
 
 		} else {
 			removeFragment(mProductStatisticDetailFragment);

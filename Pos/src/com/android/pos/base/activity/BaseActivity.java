@@ -29,7 +29,7 @@ import com.android.pos.inventory.InventoryMgtActivity;
 import com.android.pos.order.OrderActivity;
 import com.android.pos.printer.PrinterSelectActivity;
 import com.android.pos.report.cashflow.CashFlowActivity;
-import com.android.pos.report.commision.CommisionActivity;
+import com.android.pos.report.commission.CommissionActivity;
 import com.android.pos.report.inventory.InventoryReportActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
@@ -482,7 +482,7 @@ public abstract class BaseActivity extends Activity
 
 		} else if (getString(R.string.menu_report_commision).equals(menu)) {
 
-			Intent intent = new Intent(this, CommisionActivity.class);
+			Intent intent = new Intent(this, CommissionActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_report_cashflow).equals(menu)) {

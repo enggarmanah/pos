@@ -1,4 +1,4 @@
-package com.android.pos.report.commision;
+package com.android.pos.report.commission;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class CommisionDetailArrayAdapter extends ArrayAdapter<EmployeeCommisionBean> {
+public class CommissionDetailArrayAdapter extends ArrayAdapter<EmployeeCommisionBean> {
 
 	private Context context;
 	private List<EmployeeCommisionBean> employeeCommisions;
@@ -30,7 +30,7 @@ public class CommisionDetailArrayAdapter extends ArrayAdapter<EmployeeCommisionB
 		TextView commisionText;
 	}
 
-	public CommisionDetailArrayAdapter(Context context, List<EmployeeCommisionBean> employeeCommisions, ItemActionListener listener) {
+	public CommissionDetailArrayAdapter(Context context, List<EmployeeCommisionBean> employeeCommisions, ItemActionListener listener) {
 
 		super(context, R.layout.report_commision_detail_list_item, employeeCommisions);
 		
