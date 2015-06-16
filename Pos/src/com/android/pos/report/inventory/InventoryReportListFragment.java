@@ -96,12 +96,12 @@ public class InventoryReportListFragment extends BaseFragment
 		
 		if (mIsShowAllProducts) {
 			
-			mTitleText.setText("Produk");
+			mTitleText.setText(getString(R.string.product));
 			mProductList.setAdapter(mAdapter);
 			
 		} else if (mIsShowBelowStockLimitProducts) {
 			
-			mTitleText.setText("Produk Dibawah Min. Stok");
+			mTitleText.setText(getString(R.string.product_below_min_stock));
 			mProductList.setAdapter(mStockAlertAdapter);
 		}
 		
@@ -150,7 +150,11 @@ public class InventoryReportListFragment extends BaseFragment
 		mIsShowAllProducts = true;
 		mIsShowBelowStockLimitProducts =  false;
 		
-		mTitleText.setText("Produk");
+		if (!isViewInitialized()) {
+			return;
+		}
+		
+		mTitleText.setText(getString(R.string.product));
 		mProductList.setAdapter(mAdapter);
 	}
 	
@@ -159,7 +163,11 @@ public class InventoryReportListFragment extends BaseFragment
 		mIsShowAllProducts = false;
 		mIsShowBelowStockLimitProducts =  true;
 		
-		mTitleText.setText("Produk Dibawah Min. Stok");
+		if (!isViewInitialized()) {
+			return;
+		}
+		
+		mTitleText.setText(getString(R.string.product_below_min_stock));
 		mProductList.setAdapter(mStockAlertAdapter);
 	}
 	
@@ -238,9 +246,9 @@ public class InventoryReportListFragment extends BaseFragment
 					String message = Constant.EMPTY_STRING;
 					
 					if (mIsEndOfList) {
-						message = "Tidak lagi terdapat data untuk ditampilkan!";
+						message = getString(R.string.alert_data_no_more);
 					} else {
-						message = "Menampilkan data selanjutnya ...";
+						message = getString(R.string.alert_data_show_next);
 					}
 					
 					Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);

@@ -22,6 +22,8 @@ import com.android.pos.dao.User;
 import com.android.pos.data.merchant.MerchantMgtActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
+import com.android.pos.util.CodeUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
@@ -47,9 +49,13 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
     	
+		CommonUtil.initTracker(this);
+		
 		setContentView(R.layout.auth_merchant_login_activity);
 		
 		DbUtil.initDb(this);
+		
+		CodeUtil.initCodes(this);
 		
 		mMerchantDaoService = new MerchantDaoService();
 		
@@ -193,6 +199,10 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 				
 				if (Constant.ROOT.equals(loginId)) {
 					
+					if (mProgressDialog.isAdded()) {
+						return;
+					}
+					
 					mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 						
 					mHttpAsyncManager = new HttpAsyncManager(context);
@@ -232,6 +242,10 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 								
 								MerchantUtil.recreateDao();
 								
+								if (mProgressDialog.isAdded()) {
+									return;
+								}
+								
 								mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 								
 								mHttpAsyncManager = new HttpAsyncManager(context);
@@ -244,6 +258,10 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 						}
 						
 					} else {
+						
+						if (mProgressDialog.isAdded()) {
+							return;
+						}
 						
 						mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 						
@@ -375,7 +393,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			mProgressDialog.dismiss();
 		}
 		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "Tidak dapat terhubung ke Server!");
+		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_server_not_connected));
 	}
 	
 	@Override
@@ -387,7 +405,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			mProgressDialog.dismiss();
 		}
 		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "Error dalam sync data ke Server!");
+		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_server_sync_error));
 	}
 	
 	@Override
@@ -404,6 +422,6 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	
 	private void showFailedAuthenticationMessage() {
 		
-		NotificationUtil.setAlertMessage(getFragmentManager(), "ID Merchant & password anda salah!");
+		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_merchant_authentication_error));
 	}
 }

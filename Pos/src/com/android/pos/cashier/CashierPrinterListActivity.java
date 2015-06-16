@@ -44,7 +44,7 @@ import android.widget.TextView;
  * by the user, the MAC address of the device is sent back to the parent
  * Activity in the result Intent.
  */
-public class CashierPaymentDeviceListActivity extends Activity {
+public class CashierPrinterListActivity extends Activity {
     // Debugging
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
@@ -59,6 +59,20 @@ public class CashierPaymentDeviceListActivity extends Activity {
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
     
     private CashierPrinterConnectProgressDlgFragment mProgressDialog;
+    
+    @Override
+    public void onStart() {
+    	
+    	super.onStart();
+    	
+    	if (mNewDevicesArrayAdapter.getCount() == 0) {
+	    	
+	    	// Turn off sub-title for new devices
+	        findViewById(R.id.title_new_devices).setVisibility(View.GONE);
+	        // Turn off list for new devices
+	        findViewById(R.id.new_devices).setVisibility(View.GONE);
+    	}
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +168,8 @@ public class CashierPaymentDeviceListActivity extends Activity {
 
         // Turn on sub-title for new devices
         findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
-
+        findViewById(R.id.new_devices).setVisibility(View.VISIBLE);
+        
         // If we're already discovering, stop it
         if (mBtAdapter.isDiscovering()) {
             mBtAdapter.cancelDiscovery();
@@ -163,9 +178,12 @@ public class CashierPaymentDeviceListActivity extends Activity {
         // Request discover from BluetoothAdapter
         mBtAdapter.startDiscovery();
         
+        if (mProgressDialog.isAdded()) {
+			return;
+		}
+        
 		mProgressDialog.show(getFragmentManager(), "progressDialogTag");
     }
-    
     
     // The on-click listener for all devices in the ListViews
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {

@@ -11,28 +11,28 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table TRANSACTIONS.
  */
-
 @SuppressWarnings("serial")
 public class Transactions implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private String transactionNo;
     private String orderType;
     private String orderReference;
     /** Not-null value. */
     private java.util.Date transactionDate;
-    private Integer billAmount;
+    private Float billAmount;
     private String discountName;
-    private Integer discountPercentage;
-    private Integer discountAmount;
-    private Integer taxPercentage;
-    private Integer taxAmount;
-    private Integer serviceChargePercentage;
-    private Integer serviceChargeAmount;
-    private Integer totalAmount;
-    private Integer paymentAmount;
-    private Integer returnAmount;
+    private Float discountPercentage;
+    private Float discountAmount;
+    private Float taxPercentage;
+    private Float taxAmount;
+    private Float serviceChargePercentage;
+    private Float serviceChargeAmount;
+    private Float totalAmount;
+    private Float paymentAmount;
+    private Float returnAmount;
     private String paymentType;
     private long cashierId;
     private String cashierName;
@@ -65,8 +65,9 @@ public class Transactions implements Serializable {
         this.id = id;
     }
 
-    public Transactions(Long id, long merchantId, String transactionNo, String orderType, String orderReference, java.util.Date transactionDate, Integer billAmount, String discountName, Integer discountPercentage, Integer discountAmount, Integer taxPercentage, Integer taxAmount, Integer serviceChargePercentage, Integer serviceChargeAmount, Integer totalAmount, Integer paymentAmount, Integer returnAmount, String paymentType, long cashierId, String cashierName, Long customerId, String customerName, String uploadStatus, String status) {
+    public Transactions(Long id, String refId, long merchantId, String transactionNo, String orderType, String orderReference, java.util.Date transactionDate, Float billAmount, String discountName, Float discountPercentage, Float discountAmount, Float taxPercentage, Float taxAmount, Float serviceChargePercentage, Float serviceChargeAmount, Float totalAmount, Float paymentAmount, Float returnAmount, String paymentType, long cashierId, String cashierName, Long customerId, String customerName, String uploadStatus, String status) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.transactionNo = transactionNo;
         this.orderType = orderType;
@@ -104,6 +105,14 @@ public class Transactions implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {
@@ -148,11 +157,11 @@ public class Transactions implements Serializable {
         this.transactionDate = transactionDate;
     }
 
-    public Integer getBillAmount() {
+    public Float getBillAmount() {
         return billAmount;
     }
 
-    public void setBillAmount(Integer billAmount) {
+    public void setBillAmount(Float billAmount) {
         this.billAmount = billAmount;
     }
 
@@ -164,75 +173,75 @@ public class Transactions implements Serializable {
         this.discountName = discountName;
     }
 
-    public Integer getDiscountPercentage() {
+    public Float getDiscountPercentage() {
         return discountPercentage;
     }
 
-    public void setDiscountPercentage(Integer discountPercentage) {
+    public void setDiscountPercentage(Float discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
 
-    public Integer getDiscountAmount() {
+    public Float getDiscountAmount() {
         return discountAmount;
     }
 
-    public void setDiscountAmount(Integer discountAmount) {
+    public void setDiscountAmount(Float discountAmount) {
         this.discountAmount = discountAmount;
     }
 
-    public Integer getTaxPercentage() {
+    public Float getTaxPercentage() {
         return taxPercentage;
     }
 
-    public void setTaxPercentage(Integer taxPercentage) {
+    public void setTaxPercentage(Float taxPercentage) {
         this.taxPercentage = taxPercentage;
     }
 
-    public Integer getTaxAmount() {
+    public Float getTaxAmount() {
         return taxAmount;
     }
 
-    public void setTaxAmount(Integer taxAmount) {
+    public void setTaxAmount(Float taxAmount) {
         this.taxAmount = taxAmount;
     }
 
-    public Integer getServiceChargePercentage() {
+    public Float getServiceChargePercentage() {
         return serviceChargePercentage;
     }
 
-    public void setServiceChargePercentage(Integer serviceChargePercentage) {
+    public void setServiceChargePercentage(Float serviceChargePercentage) {
         this.serviceChargePercentage = serviceChargePercentage;
     }
 
-    public Integer getServiceChargeAmount() {
+    public Float getServiceChargeAmount() {
         return serviceChargeAmount;
     }
 
-    public void setServiceChargeAmount(Integer serviceChargeAmount) {
+    public void setServiceChargeAmount(Float serviceChargeAmount) {
         this.serviceChargeAmount = serviceChargeAmount;
     }
 
-    public Integer getTotalAmount() {
+    public Float getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Integer totalAmount) {
+    public void setTotalAmount(Float totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public Integer getPaymentAmount() {
+    public Float getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(Integer paymentAmount) {
+    public void setPaymentAmount(Float paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 
-    public Integer getReturnAmount() {
+    public Float getReturnAmount() {
         return returnAmount;
     }
 
-    public void setReturnAmount(Integer returnAmount) {
+    public void setReturnAmount(Float returnAmount) {
         this.returnAmount = returnAmount;
     }
 

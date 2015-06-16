@@ -15,6 +15,7 @@ import de.greenrobot.dao.DaoException;
 public class Merchant implements Serializable {
 
     private Long id;
+    private String refId;
     /** Not-null value. */
     private String name;
     private String type;
@@ -37,8 +38,8 @@ public class Merchant implements Serializable {
     private String priceLabel2;
     private String priceLabel3;
     private String discountType;
-    private Integer taxPercentage;
-    private Integer serviceChargePercentage;
+    private Float taxPercentage;
+    private Float serviceChargePercentage;
     private Boolean isLogin;
     private String status;
     private String uploadStatus;
@@ -66,8 +67,9 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer priceTypeCount, String priceLabel1, String priceLabel2, String priceLabel3, String discountType, Integer taxPercentage, Integer serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String refId, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer priceTypeCount, String priceLabel1, String priceLabel2, String priceLabel3, String discountType, Float taxPercentage, Float serviceChargePercentage, Boolean isLogin, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.name = name;
         this.type = type;
         this.address = address;
@@ -112,6 +114,14 @@ public class Merchant implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     /** Not-null value. */
@@ -284,19 +294,19 @@ public class Merchant implements Serializable {
         this.discountType = discountType;
     }
 
-    public Integer getTaxPercentage() {
+    public Float getTaxPercentage() {
         return taxPercentage;
     }
 
-    public void setTaxPercentage(Integer taxPercentage) {
+    public void setTaxPercentage(Float taxPercentage) {
         this.taxPercentage = taxPercentage;
     }
 
-    public Integer getServiceChargePercentage() {
+    public Float getServiceChargePercentage() {
         return serviceChargePercentage;
     }
 
-    public void setServiceChargePercentage(Integer serviceChargePercentage) {
+    public void setServiceChargePercentage(Float serviceChargePercentage) {
         this.serviceChargePercentage = serviceChargePercentage;
     }
 

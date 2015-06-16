@@ -1,6 +1,7 @@
 package com.android.pos.printer;
 
 import com.android.pos.CodeBean;
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.dao.Merchant;
@@ -8,6 +9,7 @@ import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
+import com.android.pos.util.PrintUtil;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,10 +24,10 @@ public class PrinterSelectActivity extends Activity {
 	EditText mPrinterLineSizeText;
 
 	Spinner mPrinterRequiredSp;
-	Spinner mPrinterMiniFontSp;
+	Spinner mPrinterFontSizeSp;
 
 	CodeSpinnerArrayAdapter printerRequiredArrayAdapter;
-	CodeSpinnerArrayAdapter printerMiniFontArrayAdapter;
+	CodeSpinnerArrayAdapter printerFontSizeArrayAdapter;
 	
 	Button mOkBtn;
 	Button mCancelBtn;
@@ -51,7 +53,7 @@ public class PrinterSelectActivity extends Activity {
 		mPrinterLineSizeText = (EditText) findViewById(R.id.printerLineSizeText);
 
 		mPrinterRequiredSp = (Spinner) findViewById(R.id.printerRequiredSp);
-		mPrinterMiniFontSp = (Spinner) findViewById(R.id.printerMiniFontSp);
+		mPrinterFontSizeSp = (Spinner) findViewById(R.id.printerFontSizeSp);
 		
 		mOkBtn = (Button) findViewById(R.id.okBtn);
 		mCancelBtn = (Button) findViewById(R.id.cancelBtn);
@@ -59,18 +61,18 @@ public class PrinterSelectActivity extends Activity {
 		printerRequiredArrayAdapter = new CodeSpinnerArrayAdapter(mPrinterRequiredSp, this, CodeUtil.getStatus());
 		mPrinterRequiredSp.setAdapter(printerRequiredArrayAdapter);
 
-		printerMiniFontArrayAdapter = new CodeSpinnerArrayAdapter(mPrinterMiniFontSp, this, CodeUtil.getBooleans());
-		mPrinterMiniFontSp.setAdapter(printerMiniFontArrayAdapter);
+		printerFontSizeArrayAdapter = new CodeSpinnerArrayAdapter(mPrinterFontSizeSp, this, CodeUtil.getFontSizes());
+		mPrinterFontSizeSp.setAdapter(printerFontSizeArrayAdapter);
 
 		Merchant merchant = MerchantUtil.getMerchant();
 
 		int printerRequiredIndex = printerRequiredArrayAdapter.getPosition(merchant.getPrinterRequired());
-		int printerMiniFontIndex = printerMiniFontArrayAdapter.getPosition(merchant.getPrinterMiniFont());
+		int printerMiniFontIndex = printerFontSizeArrayAdapter.getPosition(merchant.getPrinterMiniFont());
 
 		mPrinterLineSizeText.setText(CommonUtil.formatString(merchant.getPrinterLineSize()));
 
 		mPrinterRequiredSp.setSelection(printerRequiredIndex);
-		mPrinterMiniFontSp.setSelection(printerMiniFontIndex);
+		mPrinterFontSizeSp.setSelection(printerMiniFontIndex);
 
 		mPrinterRequiredSp.requestFocus();
 		
@@ -87,8 +89,10 @@ public class PrinterSelectActivity extends Activity {
 
 				Merchant merchant = mMerchantDaoService.getMerchant(MerchantUtil.getMerchantId());
 				
+				boolean isPrinterActiveBefore = Constant.STATUS_ACTIVE.equals(merchant.getPrinterRequired());
+				
 				String printerRequired = CodeBean.getNvlCode((CodeBean) mPrinterRequiredSp.getSelectedItem());
-		    	String printerMiniFont = CodeBean.getNvlCode((CodeBean) mPrinterMiniFontSp.getSelectedItem());
+		    	String printerMiniFont = CodeBean.getNvlCode((CodeBean) mPrinterFontSizeSp.getSelectedItem());
 		    	Integer printerLineSize = CommonUtil.parseInteger(mPrinterLineSizeText.getText().toString());
 				
 		    	merchant.setPrinterRequired(printerRequired);
@@ -98,6 +102,15 @@ public class PrinterSelectActivity extends Activity {
 				mMerchantDaoService.updateMerchant(merchant);
 				
 				MerchantUtil.setMerchant(merchant);
+				
+				boolean isPrinterActiveNow = Constant.STATUS_ACTIVE.equals(merchant.getPrinterRequired());
+				
+				if (!isPrinterActiveBefore && isPrinterActiveNow) {
+					PrintUtil.selectBluetoothPrinter();
+					
+				} else if (isPrinterActiveBefore && !isPrinterActiveNow) {
+					PrintUtil.disablePrinterOptions();
+				}
 				
 				finish();
 			}

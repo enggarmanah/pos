@@ -24,6 +24,10 @@ public class DiscountDaoService {
 	
 	public void addDiscount(Discount discount) {
 		
+		if (CommonUtil.isEmpty(discount.getRefId())) {
+			discount.setRefId(CommonUtil.generateRefId());
+		}
+		
 		discountDao.insert(discount);
 	}
 	
@@ -104,6 +108,10 @@ public class DiscountDaoService {
 	
 	public void updateDiscounts(List<DiscountBean> discounts) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<DiscountBean> shiftedBeans = new ArrayList<DiscountBean>();
+		
 		for (DiscountBean bean : discounts) {
 			
 			boolean isAdd = false;
@@ -113,6 +121,10 @@ public class DiscountDaoService {
 			if (discount == null) {
 				discount = new Discount();
 				isAdd = true;
+				
+			} else if (!CommonUtil.compareString(discount.getRefId(), bean.getRef_id())) {
+				DiscountBean shiftedBean = BeanUtil.getBean(discount);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(discount, bean);
@@ -122,7 +134,21 @@ public class DiscountDaoService {
 			} else {
 				discountDao.update(discount);
 			}
-		} 
+		}
+		
+		for (DiscountBean bean : shiftedBeans) {
+			
+			Discount discount = new Discount();
+			BeanUtil.updateBean(discount, bean);
+			
+			discount.setId(null);
+			discount.setUploadStatus(Constant.STATUS_YES);
+			
+			discountDao.insert(discount);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
 	}
 	
 	public void updateDiscountStatus(List<SyncStatusBean> syncStatusBeans) {

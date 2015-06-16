@@ -15,6 +15,7 @@ import de.greenrobot.dao.DaoException;
 public class Employee implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private String name;
     private String telephone;
@@ -44,8 +45,9 @@ public class Employee implements Serializable {
         this.id = id;
     }
 
-    public Employee(Long id, long merchantId, String name, String telephone, String address, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Employee(Long id, String refId, long merchantId, String name, String telephone, String address, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.name = name;
         this.telephone = telephone;
@@ -70,6 +72,14 @@ public class Employee implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {

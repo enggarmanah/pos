@@ -1,6 +1,7 @@
 package com.android.pos.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.android.pos.dao.DaoSession;
 
@@ -10,27 +11,28 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table PRODUCT.
  */
-
 @SuppressWarnings("serial")
 public class Product implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private Long productGroupId;
     private String code;
     private String name;
     private String type;
-    private Integer price1;
-    private Integer price2;
-    private Integer price3;
-    private Integer costPrice;
+    private Float price1;
+    private Float price2;
+    private Float price3;
+    private Float costPrice;
     private String picRequired;
-    private Integer commision;
-    private Integer promoPrice;
+    private Float commision;
+    private Float promoPrice;
     private java.util.Date promoStart;
     private java.util.Date promoEnd;
-    private Integer stock;
-    private Integer minStock;
+    private String quantityType;
+    private Float stock;
+    private Float minStock;
     private String status;
     private String uploadStatus;
     private String createBy;
@@ -50,6 +52,8 @@ public class Product implements Serializable {
     private ProductGroup productGroup;
     private Long productGroup__resolvedKey;
 
+    private List<TransactionItem> transactionItemList;
+    private List<Inventory> inventoryList;
 
     public Product() {
     }
@@ -58,8 +62,9 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(Long id, long merchantId, Long productGroupId, String code, String name, String type, Integer price1, Integer price2, Integer price3, Integer costPrice, String picRequired, Integer commision, Integer promoPrice, java.util.Date promoStart, java.util.Date promoEnd, Integer stock, Integer minStock, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Product(Long id, String refId, long merchantId, Long productGroupId, String code, String name, String type, Float price1, Float price2, Float price3, Float costPrice, String picRequired, Float commision, Float promoPrice, java.util.Date promoStart, java.util.Date promoEnd, String quantityType, Float stock, Float minStock, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.productGroupId = productGroupId;
         this.code = code;
@@ -74,6 +79,7 @@ public class Product implements Serializable {
         this.promoPrice = promoPrice;
         this.promoStart = promoStart;
         this.promoEnd = promoEnd;
+        this.quantityType = quantityType;
         this.stock = stock;
         this.minStock = minStock;
         this.status = status;
@@ -96,6 +102,14 @@ public class Product implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {
@@ -138,35 +152,35 @@ public class Product implements Serializable {
         this.type = type;
     }
 
-    public Integer getPrice1() {
+    public Float getPrice1() {
         return price1;
     }
 
-    public void setPrice1(Integer price1) {
+    public void setPrice1(Float price1) {
         this.price1 = price1;
     }
 
-    public Integer getPrice2() {
+    public Float getPrice2() {
         return price2;
     }
 
-    public void setPrice2(Integer price2) {
+    public void setPrice2(Float price2) {
         this.price2 = price2;
     }
 
-    public Integer getPrice3() {
+    public Float getPrice3() {
         return price3;
     }
 
-    public void setPrice3(Integer price3) {
+    public void setPrice3(Float price3) {
         this.price3 = price3;
     }
 
-    public Integer getCostPrice() {
+    public Float getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(Integer costPrice) {
+    public void setCostPrice(Float costPrice) {
         this.costPrice = costPrice;
     }
 
@@ -178,19 +192,19 @@ public class Product implements Serializable {
         this.picRequired = picRequired;
     }
 
-    public Integer getCommision() {
+    public Float getCommision() {
         return commision;
     }
 
-    public void setCommision(Integer commision) {
+    public void setCommision(Float commision) {
         this.commision = commision;
     }
 
-    public Integer getPromoPrice() {
+    public Float getPromoPrice() {
         return promoPrice;
     }
 
-    public void setPromoPrice(Integer promoPrice) {
+    public void setPromoPrice(Float promoPrice) {
         this.promoPrice = promoPrice;
     }
 
@@ -210,19 +224,27 @@ public class Product implements Serializable {
         this.promoEnd = promoEnd;
     }
 
-    public Integer getStock() {
+    public String getQuantityType() {
+        return quantityType;
+    }
+
+    public void setQuantityType(String quantityType) {
+        this.quantityType = quantityType;
+    }
+
+    public Float getStock() {
         return stock;
     }
 
-    public void setStock(Integer stock) {
+    public void setStock(Float stock) {
         this.stock = stock;
     }
 
-    public Integer getMinStock() {
+    public Float getMinStock() {
         return minStock;
     }
 
-    public void setMinStock(Integer minStock) {
+    public void setMinStock(Float minStock) {
         this.minStock = minStock;
     }
 
@@ -325,6 +347,50 @@ public class Product implements Serializable {
             productGroupId = productGroup == null ? null : productGroup.getId();
             productGroup__resolvedKey = productGroupId;
         }
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<TransactionItem> getTransactionItemList() {
+        if (transactionItemList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            TransactionItemDao targetDao = daoSession.getTransactionItemDao();
+            List<TransactionItem> transactionItemListNew = targetDao._queryProduct_TransactionItemList(id);
+            synchronized (this) {
+                if(transactionItemList == null) {
+                    transactionItemList = transactionItemListNew;
+                }
+            }
+        }
+        return transactionItemList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetTransactionItemList() {
+        transactionItemList = null;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Inventory> getInventoryList() {
+        if (inventoryList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            InventoryDao targetDao = daoSession.getInventoryDao();
+            List<Inventory> inventoryListNew = targetDao._queryProduct_InventoryList(id);
+            synchronized (this) {
+                if(inventoryList == null) {
+                    inventoryList = inventoryListNew;
+                }
+            }
+        }
+        return inventoryList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetInventoryList() {
+        inventoryList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

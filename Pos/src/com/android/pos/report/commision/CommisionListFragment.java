@@ -234,7 +234,7 @@ public class CommisionListFragment extends BaseFragment
 		
 		setBackButtonVisible(true);
 		
-		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
+		mNavigationTitle.setText(getString(R.string.report_year, CommonUtil.formatYear(transactionYear.getYear())));
 		
 		mNavText.setText(CommonUtil.formatCurrency(getCommisionMonthsTotalAmount(mCommisionMonths)));
 		

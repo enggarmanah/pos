@@ -1,12 +1,10 @@
 package com.android.pos.cashier;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.Product;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.MerchantUtil;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -49,7 +47,7 @@ public class CashierDiscountNominalDlgFragment extends DialogFragment {
 	Button mCancelBtn;
 	
 	Discount mDiscount;
-	int mDiscountAmount;
+	float mDiscountAmount;
 	
 	CashierActionListener mActionListener;
 	
@@ -123,11 +121,17 @@ public class CashierDiscountNominalDlgFragment extends DialogFragment {
 		number8Btn.setOnClickListener(getNumberBtnOnClickListener("8"));
 		number9Btn.setOnClickListener(getNumberBtnOnClickListener("9"));
 		
-		mActionCBtn.setOnClickListener(getClearBtnOnClickListener());
 		mActionXBtn.setOnClickListener(getDeleteBtnOnClickListener());
 		
 		mOkBtn.setOnClickListener(getOkBtnOnClickListener());
 		mCancelBtn.setOnClickListener(getCancelBtnOnClickListener());
+		
+		if (CommonUtil.isDecimalCurrency()) {
+			mActionCBtn.setText(CommonUtil.getCurrencyDecimalSeparator());
+			mActionCBtn.setOnClickListener(getCommaBtnOnClickListener());
+		} else {
+			mActionCBtn.setOnClickListener(getClearBtnOnClickListener());
+		}
 		
 		refreshDisplay();
 	}
@@ -163,7 +167,7 @@ public class CashierDiscountNominalDlgFragment extends DialogFragment {
 			mDiscountAmount = mDiscount.getAmount();
 		}
 		
-		mCurrencyText.setText(MerchantUtil.getCurrency());
+		mCurrencyText.setText(CommonUtil.getCurrencySymbol());
 		mDiscountText.setText(CommonUtil.formatNumber(mDiscountAmount));	
 	}
 	
@@ -174,14 +178,19 @@ public class CashierDiscountNominalDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				int discount = CommonUtil.parseCurrency(mDiscountText.getText().toString());
-				String number = String.valueOf(discount);
+				String discountText = mDiscountText.getText().toString();
+				String decimalSeparator = CommonUtil.getCurrencyDecimalSeparator(); 
 				
-				if (number.equals("0")) {
-					mDiscountText.setText(numberText);
+				if (decimalSeparator != null && discountText.contains(decimalSeparator)) {
+					mDiscountText.setText(mDiscountText.getText() + numberText);
+					
 				} else {
-					number = CommonUtil.formatNumber(number + numberText);
-					mDiscountText.setText(number);
+					float discount = CommonUtil.parseFloatNumber(mDiscountText.getText().toString());
+					float number = CommonUtil.parseFloatNumber(numberText);
+					
+					float total = discount * 10 + number;
+					
+					mDiscountText.setText(CommonUtil.formatNumber(total));
 				}
 			}
 		};
@@ -199,6 +208,23 @@ public class CashierDiscountNominalDlgFragment extends DialogFragment {
 		};
 	}
 	
+	private View.OnClickListener getCommaBtnOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				String discountText = mDiscountText.getText().toString();
+				String decimalSeparator = CommonUtil.getCurrencyDecimalSeparator(); 
+				
+				if (!discountText.contains(decimalSeparator)) {
+					mDiscountText.setText(mDiscountText.getText() + decimalSeparator);
+				}
+			}
+		};
+	}
+	
 	private View.OnClickListener getDeleteBtnOnClickListener() {
 		
 		return new View.OnClickListener() {
@@ -206,8 +232,8 @@ public class CashierDiscountNominalDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				int discount = CommonUtil.parseCurrency(mDiscountText.getText().toString());
-				String number = String.valueOf(discount);
+				float discount = CommonUtil.parseFloatNumber(mDiscountText.getText().toString());
+				String number = CommonUtil.isRound(discount) ? String.valueOf((int) discount) : String.valueOf(discount);
 				
 				if (number.length() == 1) {
 					mDiscountText.setText("0");
@@ -226,11 +252,11 @@ public class CashierDiscountNominalDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mDiscountAmount = CommonUtil.parseCurrency(mDiscountText.getText().toString());
+				mDiscountAmount = CommonUtil.parseFloatCurrency(mDiscountText.getText().toString());
 				
 				Discount discount = new Discount();
-				discount.setName(Constant.DISCOUNT_TYPE_NOMINAL_DESC);
-				discount.setPercentage(0);
+				discount.setName(getString(R.string.discount));
+				discount.setPercentage(Float.valueOf(0));
 				discount.setAmount(mDiscountAmount);
 				
 				mActionListener.onDiscountSelected(discount);

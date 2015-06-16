@@ -8,9 +8,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.Employee;
+import com.android.pos.dao.Inventory;
+import com.android.pos.dao.InventoryDao;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
+import com.android.pos.dao.TransactionItem;
+import com.android.pos.dao.TransactionItemDao;
 import com.android.pos.model.CommisionMonthBean;
 import com.android.pos.model.CommisionYearBean;
 import com.android.pos.model.EmployeeCommisionBean;
@@ -29,8 +34,14 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class ProductDaoService {
 	
 	private ProductDao productDao = DbUtil.getSession().getProductDao();
+	private TransactionItemDao transactionItemDao = DbUtil.getSession().getTransactionItemDao();
+	private InventoryDao inventoryDao = DbUtil.getSession().getInventoryDao();
 	
 	public void addProduct(Product product) {
+		
+		if (CommonUtil.isEmpty(product.getRefId())) {
+			product.setRefId(CommonUtil.generateRefId());
+		}
 		
 		productDao.insert(product);
 	}
@@ -203,6 +214,10 @@ public class ProductDaoService {
 	
 	public void updateProducts(List<ProductBean> products) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<ProductBean> shiftedBeans = new ArrayList<ProductBean>();
+		
 		for (ProductBean bean : products) {
 			
 			boolean isAdd = false;
@@ -212,6 +227,10 @@ public class ProductDaoService {
 			if (product == null) {
 				product = new Product();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(product.getRefId(), bean.getRef_id())) {
+				ProductBean shiftedBean = BeanUtil.getBean(product);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(product, bean);
@@ -221,7 +240,50 @@ public class ProductDaoService {
 			} else {
 				productDao.update(product);
 			}
-		} 
+		}
+		
+		for (ProductBean bean : shiftedBeans) {
+			
+			Product product = new Product();
+			BeanUtil.updateBean(product, bean);
+			
+			Long oldId = product.getId();
+			
+			product.setId(null);
+			product.setUploadStatus(Constant.STATUS_YES);
+			
+			Long newId = productDao.insert(product);
+			
+			updateTransactionItemFk(oldId, newId);
+			updateInventoryFk(oldId, newId);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
+	}
+	
+	private void updateTransactionItemFk(Long oldId, Long newId) {
+		
+		Product p = productDao.load(oldId);
+		
+		for (TransactionItem ti : p.getTransactionItemList()) {
+			
+			ti.setProductId(newId);
+			ti.setUploadStatus(Constant.STATUS_YES);
+			transactionItemDao.update(ti);
+		}
+	}
+	
+	private void updateInventoryFk(Long oldId, Long newId) {
+		
+		Product p = productDao.load(oldId);
+		
+		for (Inventory i : p.getInventoryList()) {
+			
+			i.setProductId(newId);
+			i.setUploadStatus(Constant.STATUS_YES);
+			inventoryDao.update(i);
+		}
 	}
 	
 	public void updateProductStatus(List<SyncStatusBean> syncStatusBeans) {

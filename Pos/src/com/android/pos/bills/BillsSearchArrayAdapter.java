@@ -78,14 +78,14 @@ public class BillsSearchArrayAdapter extends BaseSearchArrayAdapter<Bills> {
 	    nameText.setText(getItemName(item));
 	    
 	    if (CommonUtil.isEmpty(item.getBillReferenceNo())) {
-	    	nameText.setText("Tanpa Nota");
+	    	nameText.setText(context.getString(R.string.bill_no_receipt));
 		}
 	    
 		billDateText.setText(CommonUtil.formatDate(item.getBillDate()));
 		remarksText.setText(remarks);
 		
-		int payment = CommonUtil.getNvl(item.getPayment());
-		int billAmount = CommonUtil.getNvl(item.getBillAmount());
+		float payment = CommonUtil.getNvlFloat(item.getPayment());
+		float billAmount = CommonUtil.getNvlFloat(item.getBillAmount());
 		
 		if (payment < billAmount) {
 			billAmountText.setText(CommonUtil.formatCurrency(billAmount - payment));

@@ -85,7 +85,7 @@ public class MerchantAccessDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		sql.append(" ORDER BY m.id");
 		
@@ -105,7 +105,7 @@ public class MerchantAccessDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE sync_date > :lastSyncDate");
 		
 		sql.append(" ORDER BY m.id");
 		
@@ -124,7 +124,7 @@ public class MerchantAccessDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		
@@ -142,7 +142,7 @@ public class MerchantAccessDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		

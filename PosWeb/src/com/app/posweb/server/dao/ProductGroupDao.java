@@ -85,7 +85,7 @@ public class ProductGroupDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT pg FROM ProductGroup pg WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT pg FROM ProductGroup pg WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		sql.append(" ORDER BY pg.name");
 		
@@ -105,7 +105,7 @@ public class ProductGroupDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT COUNT(p.id) FROM ProductGroup p WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT COUNT(p.id) FROM ProductGroup p WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		

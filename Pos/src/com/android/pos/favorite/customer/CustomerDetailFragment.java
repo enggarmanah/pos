@@ -159,7 +159,9 @@ public class CustomerDetailFragment extends BaseFragment {
 			Long month = averageTransactionPeriod / amonth;
 			Long day = averageTransactionPeriod % amonth / 30;
 			
-			String averageTransaction = month + "," + String.valueOf(day).substring(0, 1) + " Bulan";
+			String dayStr = String.valueOf(day).substring(0, 1);
+			
+			String averageTransaction = getString(R.string.favorite_average_transaction, month, dayStr);
 			
 			mFirstTransactionText.setText(CommonUtil.formatDate(firstTransaction));
 			mLastTransactionText.setText(CommonUtil.formatDate(lastTransaction));

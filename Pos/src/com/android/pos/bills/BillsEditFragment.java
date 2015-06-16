@@ -18,11 +18,13 @@ import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -62,6 +64,13 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     
     String mBillType;
     String mBillStatus;
+    
+    @Override
+    protected void hideKeyboard() {
+    	
+    	InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mRemarksText.getWindowToken(), 0);
+    }
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -123,12 +132,9 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	enableInputFields(false);
     	
     	mandatoryFields = new ArrayList<BillsEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mBillDate, R.string.field_bills_date));
-    	mandatoryFields.add(new FormField(mBillAmountText, R.string.field_total));
-    	mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
     	
-    	mBillAmountText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mBillAmountText));
-    	mPaymentText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener(mPaymentText));
+    	mBillAmountText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
+    	mPaymentText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
     	
     	typeArrayAdapter = new CodeSpinnerArrayAdapter(mTypeSp, getActivity(), CodeUtil.getBillTypes());
     	mTypeSp.setAdapter(typeArrayAdapter);
@@ -136,10 +142,10 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getBillStatus());
     	mStatusSp.setAdapter(statusArrayAdapter);
     	
-    	mBillDate.setOnClickListener(getDateFieldOnClickListener(mBillDate, "billsDatePicker"));
-    	mBillDueDate.setOnClickListener(getDateFieldOnClickListener(mBillDueDate, "billsDueDatePicker"));
-    	mPaymentDate.setOnClickListener(getDateFieldOnClickListener(mPaymentDate, "paymentDatePicker"));
-    	mDeliveryDate.setOnClickListener(getDateFieldOnClickListener(mDeliveryDate, "deliveryDatePicker"));
+    	mBillDate.setOnClickListener(getDateFieldOnClickListener("billsDatePicker"));
+    	mBillDueDate.setOnClickListener(getDateFieldOnClickListener("billsDueDatePicker"));
+    	mPaymentDate.setOnClickListener(getDateFieldOnClickListener("paymentDatePicker"));
+    	mDeliveryDate.setOnClickListener(getDateFieldOnClickListener("deliveryDatePicker"));
     	
     	linkDatePickerWithInputField("billsDatePicker", mBillDate);
     	linkDatePickerWithInputField("billsDueDatePicker", mBillDueDate);
@@ -161,6 +167,8 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
         
         mTypeSp.setOnItemSelectedListener(getTypeOnItemSelectedListener());
         mStatusSp.setOnItemSelectedListener(getStatusOnItemSelectedListener());
+        
+        refreshVisibleField();
     }
     
     @Override
@@ -205,10 +213,10 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	String billReferenceNo = mBillReferenceNoText.getText().toString();
     	Date billDate = CommonUtil.parseDate(mBillDate.getText().toString());
     	Date billDueDate = CommonUtil.parseDate(mBillDueDate.getText().toString());
-    	Integer billAmount = CommonUtil.parseCurrency(mBillAmountText.getText().toString());
+    	Float billAmount = CommonUtil.parseFloatCurrency(mBillAmountText.getText().toString());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	Date paymentDate = CommonUtil.parseDate(mPaymentDate.getText().toString());
-    	Integer payment = CommonUtil.parseCurrency(mPaymentText.getText().toString());
+    	Float payment = CommonUtil.parseFloatCurrency(mPaymentText.getText().toString());
     	Date deliveryDate = CommonUtil.parseDate(mDeliveryDate.getText().toString());
     	String remarks = mRemarksText.getText().toString();
     	
@@ -271,8 +279,8 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     @Override
     protected boolean updateItem() {
     	
-    	int payment = CommonUtil.getNvl(mItem.getPayment());
-		int billAmount = CommonUtil.getNvl(mItem.getBillAmount());
+    	float payment = CommonUtil.getNvlFloat(mItem.getPayment());
+		float billAmount = CommonUtil.getNvlFloat(mItem.getBillAmount());
 		
 		mItem.setPayment(payment);
 		mItem.setBillAmount(billAmount);
@@ -342,7 +350,15 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
 		mPaymentDatePanel.setVisibility(View.VISIBLE);
 		mPaymentAmountPanel.setVisibility(View.VISIBLE);
     	
-    	if (Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT.equals(mBillType)) {
+		mandatoryFields.clear();
+		
+    	if (Constant.BILL_TYPE_PRODUCT_PURCHASE.equals(mBillType)) {
+    		
+    		mandatoryFields.add(new FormField(mBillDate, R.string.field_bills_date));
+        	mandatoryFields.add(new FormField(mBillAmountText, R.string.field_total));
+        	mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
+    		
+    	} else if (Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT.equals(mBillType)) {
     		
     		mSupplierPanel.setVisibility(View.GONE);
     		mBillReferenceNoPanel.setVisibility(View.GONE);
@@ -351,22 +367,38 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     		mBillAmountPanel.setVisibility(View.GONE);
     		mBillStatusPanel.setVisibility(View.GONE);
     		mDeliveryDatePanel.setVisibility(View.GONE);
+    		
+    		mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
     	
     	} else if (Constant.BILL_TYPE_EXPENSE_WITH_RECEIPT.equals(mBillType)) {
     		
     		mSupplierPanel.setVisibility(View.GONE);
     		mDeliveryDatePanel.setVisibility(View.GONE);
+    		
+    		mandatoryFields.add(new FormField(mBillDate, R.string.field_bills_date));
+        	mandatoryFields.add(new FormField(mBillAmountText, R.string.field_total));
+        	mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
     	}
     	
-    	if (Constant.BILL_STATUS_PAID.equals(mBillStatus)) {
-    		
-    		mBillDueDatePanel.setVisibility(View.GONE);
-    	
-    	} else if (Constant.BILL_STATUS_UNPAID.equals(mBillStatus)) {
+    	if (Constant.BILL_STATUS_UNPAID.equals(mBillStatus)) {
     		
     		mPaymentDatePanel.setVisibility(View.GONE);
     		mPaymentAmountPanel.setVisibility(View.GONE);
+    		
+    	} else if (Constant.BILL_STATUS_PARTIAL.equals(mBillStatus)) {
+    		
+    		mandatoryFields.add(new FormField(mPaymentDate, R.string.field_payment_date));
+        	mandatoryFields.add(new FormField(mPaymentText, R.string.field_payment));
+    		
+    	} else if (Constant.BILL_STATUS_PAID.equals(mBillStatus)) {
+    		
+    		mBillDueDatePanel.setVisibility(View.GONE);
+    		
+    		mandatoryFields.add(new FormField(mPaymentDate, R.string.field_payment_date));
+        	mandatoryFields.add(new FormField(mPaymentText, R.string.field_payment));
     	} 
+    	
+    	highlightMandatoryFields();
     }
     
     private View.OnClickListener getSupplierOnClickListener() {

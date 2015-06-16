@@ -365,7 +365,7 @@
     </style>
     
     <style name="ListViewRowProductNameTextStyle" parent="ListViewRowProductTextStyle">
-        <item name="android:layout_weight">3</item>
+        <item name="android:layout_weight">2</item>
         <item name="android:gravity">center_vertical|left</item>
     </style>
 
@@ -412,13 +412,13 @@
 
     <style name="ListViewRowTransItemCountTextStyle" parent="ListViewRowTransItemBaseTextStyle">
         <item name="android:layout_weight">0</item>
-        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_width">35dp</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:layout_gravity">top</item>
     </style>
 
     <style name="ListViewRowTransItemProductTextStyle" parent="ListViewRowTransItemBaseTextStyle">
-        <item name="android:layout_weight">5</item>
+        <item name="android:layout_weight">40</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:layout_gravity">top</item>
     </style>
@@ -435,7 +435,7 @@
     </style>
 
     <style name="ListViewRowTransItemPriceTextStyle" parent="ListViewRowTransItemBaseTextStyle">
-        <item name="android:layout_weight">3</item>
+        <item name="android:layout_weight">25</item>
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:layout_gravity">top</item>
         <item name="android:paddingRight">5dp</item>
@@ -443,7 +443,7 @@
     </style>
 
     <style name="ListViewRowTransItemTotalPriceTextStyle" parent="ListViewRowTransItemBaseTextStyle">
-        <item name="android:layout_weight">3</item>
+        <item name="android:layout_weight">35</item>
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:layout_gravity">top</item>
     </style>
@@ -625,9 +625,9 @@
     </style>
     
     <style name="FormInputNumericStyle" parent="@style/FormInputStyle">
-        <item name="android:inputType">number</item>
+        <item name="android:inputType">text</item>
     </style>
-
+    
     <style name="FormInputPasswordStyle" parent="@style/FormInputStyle">
         <item name="android:inputType">textPassword</item>
     </style>
@@ -648,7 +648,7 @@
     <style name="FormInputListStyle" parent="@style/FormInputStyle">
         <item name="android:paddingLeft">0dp</item>
         <item name="android:inputType">text</item>
-        <item name="android:background">@drawable/spinner_default</item>
+        <item name="android:background">@drawable/selector_spinner</item>
     </style>
 
     <style name="FormButtonLayoutStyle">
@@ -709,7 +709,7 @@
     </style>
 	
     <style name="CashierSpinnerRowPriceLabelStyle" parent="CashierSpinnerRowTextStyle">
-        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_width">wrap_content</item>
     </style>
     
     <style name="CashierSpinnerRowPriceValueStyle" parent="CashierSpinnerRowTextStyle">
@@ -717,8 +717,7 @@
     </style>
     
     <style name="CashierSpinnerRowDropDownTextStyle">
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
@@ -730,7 +729,7 @@
     </style>
 	
     <style name="CashierSpinnerRowDropDownLeftTextStyle" parent="CashierSpinnerRowDropDownTextStyle">
-        <item name="android:gravity">left</item>
+        <item name="android:layout_width">fill_parent</item>
     </style>
     
     <style name="CashierSpinnerRowDropDownRightTextStyle" parent="CashierSpinnerRowDropDownTextStyle">
@@ -744,7 +743,7 @@
     </style>
     
     <style name="CashierSpinnerRowDropDownLeftTextSelectedStyle" parent="CashierSpinnerRowDropDownTextSelectedStyle">
-        <item name="android:gravity">left</item>
+        <item name="android:layout_width">fill_parent</item>
     </style>
     
     <style name="CashierSpinnerRowDropDownRightTextSelectedStyle" parent="CashierSpinnerRowDropDownTextSelectedStyle">
@@ -1163,8 +1162,7 @@
     </style>
 
     <style name="ConfirmTextStyle">
-        <item name="android:minWidth">350dp</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">320dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:paddingTop">35dp</item>

@@ -88,7 +88,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 			totalProductPrice = viewHolder.totalPriceText;
 		}
 		
-		productQuantity.setText(String.valueOf(transactionItem.getQuantity()));
+		productQuantity.setText(CommonUtil.formatNumber(transactionItem.getQuantity()));
 		productName.setText(transactionItem.getProductName());
 		
 		if (transactionItem.getEmployeeId() != null) {
@@ -106,7 +106,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 			productInfo.setVisibility(View.GONE);
 		}
 		
-		productPrice.setText(CommonUtil.formatCurrency(transactionItem.getPrice()));
+		productPrice.setText(CommonUtil.formatCurrencyWithoutSymbol(transactionItem.getPrice()));
 		totalProductPrice.setText(CommonUtil.formatCurrency(transactionItem.getQuantity() * transactionItem.getPrice()));
 		
 		if (UserUtil.isWaitress()) {

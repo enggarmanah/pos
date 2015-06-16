@@ -136,9 +136,9 @@ public class PastDueDetailFragment extends BaseFragment {
 		mReferenceNoText.setText(mPastDueBill.getBillReferenceNo());
 		mDateText.setText(CommonUtil.formatDate(mPastDueBill.getBillDate()));
 
-		Integer totalAmount = mPastDueBill.getBillAmount();
-		Integer paymentAmount = mPastDueBill.getPayment();
-		Integer outstandingAmount = totalAmount - paymentAmount;
+		Float totalAmount = mPastDueBill.getBillAmount();
+		Float paymentAmount = mPastDueBill.getPayment();
+		Float outstandingAmount = totalAmount - paymentAmount;
 		
 		mSupplierText.setText(mPastDueBill.getSupplierName());
 		mDueDateText.setText(CommonUtil.formatDate(mPastDueBill.getBillDueDate()));

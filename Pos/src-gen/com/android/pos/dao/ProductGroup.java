@@ -15,6 +15,7 @@ import de.greenrobot.dao.DaoException;
 public class ProductGroup implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     /** Not-null value. */
     private String name;
@@ -43,8 +44,9 @@ public class ProductGroup implements Serializable {
         this.id = id;
     }
 
-    public ProductGroup(Long id, long merchantId, String name, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public ProductGroup(Long id, String refId, long merchantId, String name, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.name = name;
         this.status = status;
@@ -67,6 +69,14 @@ public class ProductGroup implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {

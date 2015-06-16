@@ -7,8 +7,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.Customer;
+import com.android.pos.dao.Product;
+import com.android.pos.dao.ProductDao;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDao;
+import com.android.pos.dao.Supplier;
 import com.android.pos.model.ProductGroupBean;
 import com.android.pos.model.ProductGroupStatisticBean;
 import com.android.pos.model.SyncStatusBean;
@@ -22,8 +26,13 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class ProductGroupDaoService {
 	
 	private ProductGroupDao productGroupDao = DbUtil.getSession().getProductGroupDao();
+	private ProductDao productDao = DbUtil.getSession().getProductDao();
 	
 	public void addProductGroup(ProductGroup productGroup) {
+		
+		if (CommonUtil.isEmpty(productGroup.getRefId())) {
+			productGroup.setRefId(CommonUtil.generateRefId());
+		}
 		
 		productGroupDao.insert(productGroup);
 	}
@@ -105,6 +114,10 @@ public class ProductGroupDaoService {
 	
 	public void updateProductGroups(List<ProductGroupBean> productGroups) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<ProductGroupBean> shiftedBeans = new ArrayList<ProductGroupBean>();
+		
 		for (ProductGroupBean bean : productGroups) {
 			
 			boolean isAdd = false;
@@ -114,6 +127,10 @@ public class ProductGroupDaoService {
 			if (productGroup == null) {
 				productGroup = new ProductGroup();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(productGroup.getRefId(), bean.getRef_id())) {
+				ProductGroupBean shiftedBean = BeanUtil.getBean(productGroup);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(productGroup, bean);
@@ -124,6 +141,36 @@ public class ProductGroupDaoService {
 				productGroupDao.update(productGroup);
 			}
 		} 
+		
+		for (ProductGroupBean bean : shiftedBeans) {
+			
+			ProductGroup productGroup = new ProductGroup();
+			BeanUtil.updateBean(productGroup, bean);
+			
+			Long oldId = productGroup.getId();
+			
+			productGroup.setId(null);
+			productGroup.setUploadStatus(Constant.STATUS_YES);
+			
+			Long newId = productGroupDao.insert(productGroup);
+			
+			updateProductFk(oldId, newId);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
+	}
+	
+	private void updateProductFk(Long oldId, Long newId) {
+		
+		ProductGroup pg = productGroupDao.load(oldId);
+		
+		for (Product p : pg.getProductList()) {
+			
+			p.setProductGroupId(newId);
+			p.setUploadStatus(Constant.STATUS_YES);
+			productDao.update(p);
+		}
 	}
 	
 	public void updateProductGroupStatus(List<SyncStatusBean> syncStatusBeans) {

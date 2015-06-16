@@ -85,7 +85,7 @@ public class CustomerDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT c FROM Customer c WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT c FROM Customer c WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		sql.append(" ORDER BY c.name");
 		
@@ -105,7 +105,7 @@ public class CustomerDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT COUNT(c.id) FROM Customer c WHERE merchant_id = :merchantId AND sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT COUNT(c.id) FROM Customer c WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		

@@ -75,7 +75,7 @@ public class SupplierInventoryArrayAdapter extends ArrayAdapter<Inventory> {
 			amountText = viewHolder.amountText;
 		}
 		
-		Integer price = inventory.getProductCostPrice();
+		Float price = inventory.getProductCostPrice();
 		
 		productNameText.setText(inventory.getProductName());
 		deliveryDateText.setText(CommonUtil.formatDate(inventory.getDeliveryDate()));

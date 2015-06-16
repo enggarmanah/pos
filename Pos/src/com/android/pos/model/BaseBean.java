@@ -5,6 +5,7 @@ import java.util.Date;
 public class BaseBean {
 
 	protected Long id;
+	private String ref_id;
 	protected Long merchant_id;
 	protected Long remote_id;
 	protected String create_by;
@@ -19,6 +20,14 @@ public class BaseBean {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getRef_id() {
+		return ref_id;
+	}
+
+	public void setRef_id(String ref_id) {
+		this.ref_id = ref_id;
 	}
 
 	public Long getMerchant_id() {

@@ -29,29 +29,30 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property TransactionNo = new Property(2, String.class, "transactionNo", false, "TRANSACTION_NO");
-        public final static Property OrderType = new Property(3, String.class, "orderType", false, "ORDER_TYPE");
-        public final static Property OrderReference = new Property(4, String.class, "orderReference", false, "ORDER_REFERENCE");
-        public final static Property TransactionDate = new Property(5, java.util.Date.class, "transactionDate", false, "TRANSACTION_DATE");
-        public final static Property BillAmount = new Property(6, Integer.class, "billAmount", false, "BILL_AMOUNT");
-        public final static Property DiscountName = new Property(7, String.class, "discountName", false, "DISCOUNT_NAME");
-        public final static Property DiscountPercentage = new Property(8, Integer.class, "discountPercentage", false, "DISCOUNT_PERCENTAGE");
-        public final static Property DiscountAmount = new Property(9, Integer.class, "discountAmount", false, "DISCOUNT_AMOUNT");
-        public final static Property TaxPercentage = new Property(10, Integer.class, "taxPercentage", false, "TAX_PERCENTAGE");
-        public final static Property TaxAmount = new Property(11, Integer.class, "taxAmount", false, "TAX_AMOUNT");
-        public final static Property ServiceChargePercentage = new Property(12, Integer.class, "serviceChargePercentage", false, "SERVICE_CHARGE_PERCENTAGE");
-        public final static Property ServiceChargeAmount = new Property(13, Integer.class, "serviceChargeAmount", false, "SERVICE_CHARGE_AMOUNT");
-        public final static Property TotalAmount = new Property(14, Integer.class, "totalAmount", false, "TOTAL_AMOUNT");
-        public final static Property PaymentAmount = new Property(15, Integer.class, "paymentAmount", false, "PAYMENT_AMOUNT");
-        public final static Property ReturnAmount = new Property(16, Integer.class, "returnAmount", false, "RETURN_AMOUNT");
-        public final static Property PaymentType = new Property(17, String.class, "paymentType", false, "PAYMENT_TYPE");
-        public final static Property CashierId = new Property(18, long.class, "cashierId", false, "CASHIER_ID");
-        public final static Property CashierName = new Property(19, String.class, "cashierName", false, "CASHIER_NAME");
-        public final static Property CustomerId = new Property(20, Long.class, "customerId", false, "CUSTOMER_ID");
-        public final static Property CustomerName = new Property(21, String.class, "customerName", false, "CUSTOMER_NAME");
-        public final static Property UploadStatus = new Property(22, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property Status = new Property(23, String.class, "status", false, "STATUS");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property MerchantId = new Property(2, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property TransactionNo = new Property(3, String.class, "transactionNo", false, "TRANSACTION_NO");
+        public final static Property OrderType = new Property(4, String.class, "orderType", false, "ORDER_TYPE");
+        public final static Property OrderReference = new Property(5, String.class, "orderReference", false, "ORDER_REFERENCE");
+        public final static Property TransactionDate = new Property(6, java.util.Date.class, "transactionDate", false, "TRANSACTION_DATE");
+        public final static Property BillAmount = new Property(7, Float.class, "billAmount", false, "BILL_AMOUNT");
+        public final static Property DiscountName = new Property(8, String.class, "discountName", false, "DISCOUNT_NAME");
+        public final static Property DiscountPercentage = new Property(9, Float.class, "discountPercentage", false, "DISCOUNT_PERCENTAGE");
+        public final static Property DiscountAmount = new Property(10, Float.class, "discountAmount", false, "DISCOUNT_AMOUNT");
+        public final static Property TaxPercentage = new Property(11, Float.class, "taxPercentage", false, "TAX_PERCENTAGE");
+        public final static Property TaxAmount = new Property(12, Float.class, "taxAmount", false, "TAX_AMOUNT");
+        public final static Property ServiceChargePercentage = new Property(13, Float.class, "serviceChargePercentage", false, "SERVICE_CHARGE_PERCENTAGE");
+        public final static Property ServiceChargeAmount = new Property(14, Float.class, "serviceChargeAmount", false, "SERVICE_CHARGE_AMOUNT");
+        public final static Property TotalAmount = new Property(15, Float.class, "totalAmount", false, "TOTAL_AMOUNT");
+        public final static Property PaymentAmount = new Property(16, Float.class, "paymentAmount", false, "PAYMENT_AMOUNT");
+        public final static Property ReturnAmount = new Property(17, Float.class, "returnAmount", false, "RETURN_AMOUNT");
+        public final static Property PaymentType = new Property(18, String.class, "paymentType", false, "PAYMENT_TYPE");
+        public final static Property CashierId = new Property(19, long.class, "cashierId", false, "CASHIER_ID");
+        public final static Property CashierName = new Property(20, String.class, "cashierName", false, "CASHIER_NAME");
+        public final static Property CustomerId = new Property(21, Long.class, "customerId", false, "CUSTOMER_ID");
+        public final static Property CustomerName = new Property(22, String.class, "customerName", false, "CUSTOMER_NAME");
+        public final static Property UploadStatus = new Property(23, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property Status = new Property(24, String.class, "status", false, "STATUS");
     };
 
     private DaoSession daoSession;
@@ -73,29 +74,30 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'TRANSACTIONS' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'TRANSACTION_NO' TEXT," + // 2: transactionNo
-                "'ORDER_TYPE' TEXT," + // 3: orderType
-                "'ORDER_REFERENCE' TEXT," + // 4: orderReference
-                "'TRANSACTION_DATE' INTEGER NOT NULL ," + // 5: transactionDate
-                "'BILL_AMOUNT' INTEGER," + // 6: billAmount
-                "'DISCOUNT_NAME' TEXT," + // 7: discountName
-                "'DISCOUNT_PERCENTAGE' INTEGER," + // 8: discountPercentage
-                "'DISCOUNT_AMOUNT' INTEGER," + // 9: discountAmount
-                "'TAX_PERCENTAGE' INTEGER," + // 10: taxPercentage
-                "'TAX_AMOUNT' INTEGER," + // 11: taxAmount
-                "'SERVICE_CHARGE_PERCENTAGE' INTEGER," + // 12: serviceChargePercentage
-                "'SERVICE_CHARGE_AMOUNT' INTEGER," + // 13: serviceChargeAmount
-                "'TOTAL_AMOUNT' INTEGER," + // 14: totalAmount
-                "'PAYMENT_AMOUNT' INTEGER," + // 15: paymentAmount
-                "'RETURN_AMOUNT' INTEGER," + // 16: returnAmount
-                "'PAYMENT_TYPE' TEXT," + // 17: paymentType
-                "'CASHIER_ID' INTEGER NOT NULL ," + // 18: cashierId
-                "'CASHIER_NAME' TEXT," + // 19: cashierName
-                "'CUSTOMER_ID' INTEGER," + // 20: customerId
-                "'CUSTOMER_NAME' TEXT," + // 21: customerName
-                "'UPLOAD_STATUS' TEXT," + // 22: uploadStatus
-                "'STATUS' TEXT);"); // 23: status
+                "'REF_ID' TEXT," + // 1: refId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 2: merchantId
+                "'TRANSACTION_NO' TEXT," + // 3: transactionNo
+                "'ORDER_TYPE' TEXT," + // 4: orderType
+                "'ORDER_REFERENCE' TEXT," + // 5: orderReference
+                "'TRANSACTION_DATE' INTEGER NOT NULL ," + // 6: transactionDate
+                "'BILL_AMOUNT' DECIMAL(10,2)," + // 7: billAmount
+                "'DISCOUNT_NAME' TEXT," + // 8: discountName
+                "'DISCOUNT_PERCENTAGE' DECIMAL(10,2)," + // 9: discountPercentage
+                "'DISCOUNT_AMOUNT' DECIMAL(10,2)," + // 10: discountAmount
+                "'TAX_PERCENTAGE' DECIMAL(10,2)," + // 11: taxPercentage
+                "'TAX_AMOUNT' DECIMAL(10,2)," + // 12: taxAmount
+                "'SERVICE_CHARGE_PERCENTAGE' DECIMAL(10,2)," + // 13: serviceChargePercentage
+                "'SERVICE_CHARGE_AMOUNT' DECIMAL(10,2)," + // 14: serviceChargeAmount
+                "'TOTAL_AMOUNT' DECIMAL(10,2)," + // 15: totalAmount
+                "'PAYMENT_AMOUNT' DECIMAL(10,2)," + // 16: paymentAmount
+                "'RETURN_AMOUNT' DECIMAL(10,2)," + // 17: returnAmount
+                "'PAYMENT_TYPE' TEXT," + // 18: paymentType
+                "'CASHIER_ID' INTEGER NOT NULL ," + // 19: cashierId
+                "'CASHIER_NAME' TEXT," + // 20: cashierName
+                "'CUSTOMER_ID' INTEGER," + // 21: customerId
+                "'CUSTOMER_NAME' TEXT," + // 22: customerName
+                "'UPLOAD_STATUS' TEXT," + // 23: uploadStatus
+                "'STATUS' TEXT);"); // 24: status
     }
 
     /** Drops the underlying database table. */
@@ -113,108 +115,113 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMerchantId());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindLong(3, entity.getMerchantId());
  
         String transactionNo = entity.getTransactionNo();
         if (transactionNo != null) {
-            stmt.bindString(3, transactionNo);
+            stmt.bindString(4, transactionNo);
         }
  
         String orderType = entity.getOrderType();
         if (orderType != null) {
-            stmt.bindString(4, orderType);
+            stmt.bindString(5, orderType);
         }
  
         String orderReference = entity.getOrderReference();
         if (orderReference != null) {
-            stmt.bindString(5, orderReference);
+            stmt.bindString(6, orderReference);
         }
-        stmt.bindLong(6, entity.getTransactionDate().getTime());
+        stmt.bindLong(7, entity.getTransactionDate().getTime());
  
-        Integer billAmount = entity.getBillAmount();
+        Float billAmount = entity.getBillAmount();
         if (billAmount != null) {
-            stmt.bindLong(7, billAmount);
+            stmt.bindDouble(8, billAmount);
         }
  
         String discountName = entity.getDiscountName();
         if (discountName != null) {
-            stmt.bindString(8, discountName);
+            stmt.bindString(9, discountName);
         }
  
-        Integer discountPercentage = entity.getDiscountPercentage();
+        Float discountPercentage = entity.getDiscountPercentage();
         if (discountPercentage != null) {
-            stmt.bindLong(9, discountPercentage);
+            stmt.bindDouble(10, discountPercentage);
         }
  
-        Integer discountAmount = entity.getDiscountAmount();
+        Float discountAmount = entity.getDiscountAmount();
         if (discountAmount != null) {
-            stmt.bindLong(10, discountAmount);
+            stmt.bindDouble(11, discountAmount);
         }
  
-        Integer taxPercentage = entity.getTaxPercentage();
+        Float taxPercentage = entity.getTaxPercentage();
         if (taxPercentage != null) {
-            stmt.bindLong(11, taxPercentage);
+            stmt.bindDouble(12, taxPercentage);
         }
  
-        Integer taxAmount = entity.getTaxAmount();
+        Float taxAmount = entity.getTaxAmount();
         if (taxAmount != null) {
-            stmt.bindLong(12, taxAmount);
+            stmt.bindDouble(13, taxAmount);
         }
  
-        Integer serviceChargePercentage = entity.getServiceChargePercentage();
+        Float serviceChargePercentage = entity.getServiceChargePercentage();
         if (serviceChargePercentage != null) {
-            stmt.bindLong(13, serviceChargePercentage);
+            stmt.bindDouble(14, serviceChargePercentage);
         }
  
-        Integer serviceChargeAmount = entity.getServiceChargeAmount();
+        Float serviceChargeAmount = entity.getServiceChargeAmount();
         if (serviceChargeAmount != null) {
-            stmt.bindLong(14, serviceChargeAmount);
+            stmt.bindDouble(15, serviceChargeAmount);
         }
  
-        Integer totalAmount = entity.getTotalAmount();
+        Float totalAmount = entity.getTotalAmount();
         if (totalAmount != null) {
-            stmt.bindLong(15, totalAmount);
+            stmt.bindDouble(16, totalAmount);
         }
  
-        Integer paymentAmount = entity.getPaymentAmount();
+        Float paymentAmount = entity.getPaymentAmount();
         if (paymentAmount != null) {
-            stmt.bindLong(16, paymentAmount);
+            stmt.bindDouble(17, paymentAmount);
         }
  
-        Integer returnAmount = entity.getReturnAmount();
+        Float returnAmount = entity.getReturnAmount();
         if (returnAmount != null) {
-            stmt.bindLong(17, returnAmount);
+            stmt.bindDouble(18, returnAmount);
         }
  
         String paymentType = entity.getPaymentType();
         if (paymentType != null) {
-            stmt.bindString(18, paymentType);
+            stmt.bindString(19, paymentType);
         }
-        stmt.bindLong(19, entity.getCashierId());
+        stmt.bindLong(20, entity.getCashierId());
  
         String cashierName = entity.getCashierName();
         if (cashierName != null) {
-            stmt.bindString(20, cashierName);
+            stmt.bindString(21, cashierName);
         }
  
         Long customerId = entity.getCustomerId();
         if (customerId != null) {
-            stmt.bindLong(21, customerId);
+            stmt.bindLong(22, customerId);
         }
  
         String customerName = entity.getCustomerName();
         if (customerName != null) {
-            stmt.bindString(22, customerName);
+            stmt.bindString(23, customerName);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(23, uploadStatus);
+            stmt.bindString(24, uploadStatus);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(24, status);
+            stmt.bindString(25, status);
         }
     }
 
@@ -235,29 +242,30 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
     public Transactions readEntity(Cursor cursor, int offset) {
         Transactions entity = new Transactions( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // merchantId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // transactionNo
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // orderType
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // orderReference
-            new java.util.Date(cursor.getLong(offset + 5)), // transactionDate
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // billAmount
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // discountName
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // discountPercentage
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // discountAmount
-            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // taxPercentage
-            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // taxAmount
-            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // serviceChargePercentage
-            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // serviceChargeAmount
-            cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14), // totalAmount
-            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // paymentAmount
-            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // returnAmount
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // paymentType
-            cursor.getLong(offset + 18), // cashierId
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // cashierName
-            cursor.isNull(offset + 20) ? null : cursor.getLong(offset + 20), // customerId
-            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // customerName
-            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // uploadStatus
-            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23) // status
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getLong(offset + 2), // merchantId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // transactionNo
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // orderType
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // orderReference
+            new java.util.Date(cursor.getLong(offset + 6)), // transactionDate
+            cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7), // billAmount
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // discountName
+            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9), // discountPercentage
+            cursor.isNull(offset + 10) ? null : cursor.getFloat(offset + 10), // discountAmount
+            cursor.isNull(offset + 11) ? null : cursor.getFloat(offset + 11), // taxPercentage
+            cursor.isNull(offset + 12) ? null : cursor.getFloat(offset + 12), // taxAmount
+            cursor.isNull(offset + 13) ? null : cursor.getFloat(offset + 13), // serviceChargePercentage
+            cursor.isNull(offset + 14) ? null : cursor.getFloat(offset + 14), // serviceChargeAmount
+            cursor.isNull(offset + 15) ? null : cursor.getFloat(offset + 15), // totalAmount
+            cursor.isNull(offset + 16) ? null : cursor.getFloat(offset + 16), // paymentAmount
+            cursor.isNull(offset + 17) ? null : cursor.getFloat(offset + 17), // returnAmount
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // paymentType
+            cursor.getLong(offset + 19), // cashierId
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // cashierName
+            cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21), // customerId
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // customerName
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // uploadStatus
+            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24) // status
         );
         return entity;
     }
@@ -266,29 +274,30 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
     @Override
     public void readEntity(Cursor cursor, Transactions entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setTransactionNo(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setOrderType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setOrderReference(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setTransactionDate(new java.util.Date(cursor.getLong(offset + 5)));
-        entity.setBillAmount(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setDiscountName(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setDiscountPercentage(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setDiscountAmount(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setTaxPercentage(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
-        entity.setTaxAmount(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
-        entity.setServiceChargePercentage(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
-        entity.setServiceChargeAmount(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
-        entity.setTotalAmount(cursor.isNull(offset + 14) ? null : cursor.getInt(offset + 14));
-        entity.setPaymentAmount(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
-        entity.setReturnAmount(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
-        entity.setPaymentType(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setCashierId(cursor.getLong(offset + 18));
-        entity.setCashierName(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setCustomerId(cursor.isNull(offset + 20) ? null : cursor.getLong(offset + 20));
-        entity.setCustomerName(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setUploadStatus(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
-        entity.setStatus(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMerchantId(cursor.getLong(offset + 2));
+        entity.setTransactionNo(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setOrderType(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setOrderReference(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setTransactionDate(new java.util.Date(cursor.getLong(offset + 6)));
+        entity.setBillAmount(cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7));
+        entity.setDiscountName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setDiscountPercentage(cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9));
+        entity.setDiscountAmount(cursor.isNull(offset + 10) ? null : cursor.getFloat(offset + 10));
+        entity.setTaxPercentage(cursor.isNull(offset + 11) ? null : cursor.getFloat(offset + 11));
+        entity.setTaxAmount(cursor.isNull(offset + 12) ? null : cursor.getFloat(offset + 12));
+        entity.setServiceChargePercentage(cursor.isNull(offset + 13) ? null : cursor.getFloat(offset + 13));
+        entity.setServiceChargeAmount(cursor.isNull(offset + 14) ? null : cursor.getFloat(offset + 14));
+        entity.setTotalAmount(cursor.isNull(offset + 15) ? null : cursor.getFloat(offset + 15));
+        entity.setPaymentAmount(cursor.isNull(offset + 16) ? null : cursor.getFloat(offset + 16));
+        entity.setReturnAmount(cursor.isNull(offset + 17) ? null : cursor.getFloat(offset + 17));
+        entity.setPaymentType(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setCashierId(cursor.getLong(offset + 19));
+        entity.setCashierName(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setCustomerId(cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21));
+        entity.setCustomerName(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setUploadStatus(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
+        entity.setStatus(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
      }
     
     /** @inheritdoc */

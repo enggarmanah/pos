@@ -19,7 +19,7 @@ public class OrderItem implements Serializable {
     private String orderNo;
     private long productId;
     private String productName;
-    private Integer quantity;
+    private Float quantity;
     private String remarks;
 
     /** Used to resolve relations */
@@ -45,7 +45,7 @@ public class OrderItem implements Serializable {
         this.id = id;
     }
 
-    public OrderItem(Long id, long merchantId, long orderId, String orderNo, long productId, String productName, Integer quantity, String remarks) {
+    public OrderItem(Long id, long merchantId, long orderId, String orderNo, long productId, String productName, Float quantity, String remarks) {
         this.id = id;
         this.merchantId = merchantId;
         this.orderId = orderId;
@@ -110,11 +110,11 @@ public class OrderItem implements Serializable {
         this.productName = productName;
     }
 
-    public Integer getQuantity() {
+    public Float getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Float quantity) {
         this.quantity = quantity;
     }
 

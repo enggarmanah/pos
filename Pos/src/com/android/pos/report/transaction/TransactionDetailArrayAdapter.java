@@ -87,7 +87,7 @@ public class TransactionDetailArrayAdapter extends ArrayAdapter<TransactionItem>
 			totalPriceText = viewHolder.totalPriceText;
 		}
 		
-		quantityText.setText(String.valueOf(transactionItem.getQuantity()));
+		quantityText.setText(CommonUtil.formatNumber(transactionItem.getQuantity()));
 		nameText.setText(transactionItem.getProductName());
 		
 		if (transactionItem.getEmployee() != null) {
@@ -100,7 +100,7 @@ public class TransactionDetailArrayAdapter extends ArrayAdapter<TransactionItem>
 			remarksText.setVisibility(View.GONE);
 		}
 		
-		priceText.setText(CommonUtil.formatCurrency(transactionItem.getPrice()));
+		priceText.setText(CommonUtil.formatCurrencyWithoutSymbol(transactionItem.getPrice()));
 		totalPriceText.setText(CommonUtil.formatCurrency(transactionItem.getQuantity() * transactionItem.getPrice()));
 
 		rowView.setOnClickListener(getItemOnClickListener(transactionItem));

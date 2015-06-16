@@ -2,8 +2,10 @@ package com.android.pos.cashier;
 
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Discount;
+import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -63,10 +65,10 @@ public class CashierDiscountArrayAdapter extends ArrayAdapter<Discount> {
 		}
 		
 		String discountLabel = discount.getName(); 
-		int percentage = discount.getPercentage(); 
+		float percentage = discount.getPercentage(); 
 		
 		if (percentage != 0) {
-			discountLabel = discountLabel + " - " + percentage + "%";
+			discountLabel = discountLabel + Constant.SPACE_STRING + context.getString(R.string.sign_negative) + Constant.SPACE_STRING + CommonUtil.formatPercentage(percentage);
 		}
 		
 		discountName.setText(discountLabel);

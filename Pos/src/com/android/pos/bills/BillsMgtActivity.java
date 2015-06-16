@@ -39,7 +39,7 @@ public class BillsMgtActivity extends BaseItemMgtActivity<BillsSearchFragment, B
 		
 		super.onStart();
 
-		setTitle(getString(R.string.module_bills));
+		setTitle(getString(R.string.menu_bills));
 		setSelectedMenu(getString(R.string.menu_bills));
 	}
 	
@@ -182,6 +182,10 @@ public class BillsMgtActivity extends BaseItemMgtActivity<BillsSearchFragment, B
 	}
 	
 	public void onSelectSupplier(boolean isMandatory) {
+		
+		if (mSupplierDlgFragment.isAdded()) {
+			return;
+		}
 		
 		mSupplierDlgFragment.setMandatory(isMandatory);
 		mSupplierDlgFragment.show(getFragmentManager(), mSupplierDlgFragmentTag);

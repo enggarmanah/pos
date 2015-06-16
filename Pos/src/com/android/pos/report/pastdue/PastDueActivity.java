@@ -7,7 +7,6 @@ import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Bills;
 import com.android.pos.report.cashflow.CashFlowActivity;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,8 +38,6 @@ public class PastDueActivity extends BaseActivity
 		initInstanceState(savedInstanceState);
 		
 		setContentView(R.layout.report_transaction_activity);
-
-		DbUtil.initDb(this);
 
 		initDrawerMenu();
 		

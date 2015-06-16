@@ -93,15 +93,15 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<Bills> {
 		
 		
 		if (CommonUtil.isEmpty(billReferenceNo)) {
-	    	billReferenceNo = "Tanpa Nota";
+	    	billReferenceNo = context.getString(R.string.bill_no_receipt);
 		}
 		
 	    nameText.setText(billReferenceNo);
 	    billDateText.setText(CommonUtil.formatDate(bill.getBillDate()));
 		remarksText.setText(remarks);
 		
-		int payment = CommonUtil.getNvl(bill.getPayment());
-		int billAmount = CommonUtil.getNvl(bill.getBillAmount());
+		float payment = CommonUtil.getNvlFloat(bill.getPayment());
+		float billAmount = CommonUtil.getNvlFloat(bill.getBillAmount());
 		
 		if (payment < billAmount) {
 			billAmountText.setText(CommonUtil.formatCurrency(billAmount - payment));

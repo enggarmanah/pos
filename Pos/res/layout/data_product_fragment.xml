@@ -8,7 +8,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_N" />
+                android:text="@string/field_name_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -23,7 +23,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_K" />
+                android:text="@string/field_code_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -38,7 +38,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_T" />
+                android:text="@string/field_type_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -53,7 +53,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_K" />
+                android:text="@string/field_group_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -63,14 +63,14 @@
                 android:id="@+id/productGrpSp"
                 style="@style/FormInputListStyle" />
         </LinearLayout>
-
+        
         <LinearLayout 
             android:id="@+id/price1Panel"
             style="@style/FormRowStyle" >
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_H" />
+                android:text="@string/field_price_fl" />
             
             <TextView
                 android:id="@+id/priceLabel1Text"
@@ -88,7 +88,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_H" />
+                android:text="@string/field_price_fl" />
             
             <TextView
                 android:id="@+id/priceLabel2Text"
@@ -106,7 +106,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_H" />
+                android:text="@string/field_price_fl" />
             
             <TextView
                 android:id="@+id/priceLabel3Text"
@@ -122,7 +122,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_H" />
+                android:text="@string/field_cost_price_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -137,7 +137,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_B" />
+                android:text="@string/field_pic_required_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -152,7 +152,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_K" />
+                android:text="@string/field_commision_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -167,7 +167,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_H" />
+                android:text="@string/field_promo_price_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -182,7 +182,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_A" />
+                android:text="@string/field_promo_start_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -197,7 +197,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_A" />
+                android:text="@string/field_promo_end_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -208,12 +208,27 @@
                 style="@style/FormInputDateStyle" />
         </LinearLayout>
 		
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/field_quantity_type_fl" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_quantity_type" />
+
+            <Spinner
+                android:id="@+id/quantityTypeSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
         <LinearLayout style="@style/FormRowStyle"
             android:visibility="gone">
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_J" />
+                android:text="@string/field_stock_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -228,7 +243,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_M" />
+                android:text="@string/field_min_stock_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -243,7 +258,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_S" />
+                android:text="@string/field_status_fl" />
             
             <TextView
                 style="@style/FormTextStyle"

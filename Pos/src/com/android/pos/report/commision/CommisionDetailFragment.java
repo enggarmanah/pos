@@ -16,8 +16,8 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.ProductDaoService;
-import com.android.pos.model.EmployeeCommisionBean;
 import com.android.pos.model.CommisionMonthBean;
+import com.android.pos.model.EmployeeCommisionBean;
 import com.android.pos.util.CommonUtil;
 
 public class CommisionDetailFragment extends BaseFragment implements CommisionDetailArrayAdapter.ItemActionListener {

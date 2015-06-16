@@ -5,7 +5,7 @@ import java.util.Date;
 public class MerchantBean {
 
 	protected Long id;
-
+	
 	private String name;
 	private String type;
 	private String address;
@@ -22,14 +22,16 @@ public class MerchantBean {
 	private String price_label_2;
 	private String price_label_3;
 	private String discount_type;
-	private Integer tax_percentage;
-	private Integer service_charge_percentage;
+	private Float tax_percentage;
+	private Float service_charge_percentage;
 	private String printer_mini_font;
     private Integer printer_line_size;
     private String printer_required;
 	private String status;
 
 	protected Long remote_id;
+	protected String ref_id;
+	
 	protected String create_by;
 	protected Date create_date;
 	protected String update_by;
@@ -42,6 +44,14 @@ public class MerchantBean {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getRef_id() {
+		return ref_id;
+	}
+
+	public void setRef_id(String ref_id) {
+		this.ref_id = ref_id;
 	}
 
 	public String getName() {
@@ -172,22 +182,22 @@ public class MerchantBean {
 		this.discount_type = discount_type;
 	}
 
-	public Integer getTax_percentage() {
+	public Float getTax_percentage() {
 		return tax_percentage;
 	}
 
-	public void setTax_percentage(Integer tax_percentage) {
+	public void setTax_percentage(Float tax_percentage) {
 		this.tax_percentage = tax_percentage;
 	}
 
-	public Integer getService_charge_percentage() {
+	public Float getService_charge_percentage() {
 		return service_charge_percentage;
 	}
 
-	public void setService_charge_percentage(Integer service_charge_percentage) {
+	public void setService_charge_percentage(Float service_charge_percentage) {
 		this.service_charge_percentage = service_charge_percentage;
 	}
-	
+
 	public String getPrinter_mini_font() {
 		return printer_mini_font;
 	}

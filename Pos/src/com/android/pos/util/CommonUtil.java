@@ -7,17 +7,81 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 
 import com.android.pos.Constant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 @SuppressLint("SimpleDateFormat")
 public class CommonUtil {
 	
 	public static Boolean LOCK = true;
+	
+	private static final AtomicLong LAST_TIME_MS = new AtomicLong();
+	
+	public static GoogleAnalytics analytics;
+	public static Tracker tracker;
+	
+	public static void initTracker(Context context) {
+		
+		analytics = GoogleAnalytics.getInstance(context);
+	    analytics.setLocalDispatchPeriod(1800);
+
+	    tracker = analytics.newTracker("UA-64012601-1"); // Replace with actual tracker/property Id
+	    tracker.enableExceptionReporting(true);
+	    tracker.enableAdvertisingIdCollection(false);
+	    tracker.enableAutoActivityTracking(true);
+	}
+	
+	public static Tracker getTracker() {
+		
+		return tracker;
+	}
+	
+	public static String generateRefId() {
+	    
+		long now = System.currentTimeMillis();
+
+		while (true) {
+
+			long lastTime = LAST_TIME_MS.get();
+
+			if (lastTime >= now) {
+				now = lastTime + 1;
+			}
+
+			if (LAST_TIME_MS.compareAndSet(lastTime, now)) {
+				break;
+			}
+			
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Date date = new Date(now);
+		
+		return formatDateTimeMiliSeconds(date); 
+	}
+	
+	public static boolean compareString(String str1, String str2) {
+		
+		if (str1 != null && str2 != null && str1.equals(str2)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public static boolean isEmpty(String str) {
 		
@@ -37,10 +101,19 @@ public class CommonUtil {
 		}
 	}
 	
-	public static Integer getNvl(Integer value) {
+	public static Integer getNvlInt(Integer value) {
 		
 		if (value == null) {
 			return 0;
+		} else {
+			return value;
+		}
+	}
+	
+	public static Float getNvlFloat(Float value) {
+		
+		if (value == null) {
+			return Float.valueOf(0);
 		} else {
 			return value;
 		}
@@ -90,7 +163,35 @@ public class CommonUtil {
 		return number;
 	}
 	
+	public static Float strToFloat(String s) {
+		
+		Float number = null;
+		
+		try {
+			number = Float.parseFloat(s);
+		} catch (NumberFormatException e) {
+			// do nothing
+		}
+		
+		return number;
+	}
+	
 	public static String intToStr(Integer i) {
+		
+		String number = null;
+		
+		try {
+			if (i != null) {
+				number = String.valueOf(i);
+			}
+		} catch (NumberFormatException e) {
+			// do nothing
+		}
+		
+		return number;
+	}
+	
+	public static String floatToStr(Float i) {
 		
 		String number = null;
 		
@@ -110,7 +211,8 @@ public class CommonUtil {
 	public static Locale getLocale() {
 		
 		if (locale == null) {
-			locale = new Locale("id", "ID");
+			//locale = new Locale("id", "ID");
+			locale = Locale.getDefault();
 		}
 		
 		return locale;
@@ -130,10 +232,15 @@ public class CommonUtil {
 		
 		return new SimpleDateFormat("dd MMM yyyy, HH:mm", getLocale());
 	}
+		
+	public static DateFormat getDateTimeMiliSecondsFormat() {
+		
+		return new SimpleDateFormat("yyyyMMddHHmmssSSS", getLocale());
+	}
 	
 	public static DateFormat getDayDateTimeFormat() {
 		
-		return new SimpleDateFormat("EEEE, dd MMM yyyy, HH:mm", getLocale());
+		return new SimpleDateFormat("EEE, dd MMM yyyy, HH:mm", getLocale());
 	}
 	
 	public static String getOtpKey() {
@@ -265,7 +372,7 @@ public class CommonUtil {
 		String dateStr = Constant.EMPTY_STRING;
 		
 		try {
-			dateStr = getDateFormat("EEEE, dd MMM yyyy").format(inputDate);
+			dateStr = getDateFormat("EEE, dd MMM yyyy").format(inputDate);
 		} catch (Exception e) {
 			// do nothing
 		}
@@ -325,6 +432,19 @@ public class CommonUtil {
 		return dateStr;
 	}
 	
+	public static String formatDateTimeMiliSeconds(Date inputDate) {
+		
+		String dateStr = Constant.EMPTY_STRING;
+		
+		try {
+			dateStr = getDateTimeMiliSecondsFormat().format(inputDate);
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+		return dateStr;
+	}
+	
 	public static String getTransactionNo() {
 		
 		Date inputDate = new Date();
@@ -368,36 +488,141 @@ public class CommonUtil {
 		}
 	}
 	
+	public static String formatString(Float inputInt) {
+		
+		if (inputInt != null) {
+			return String.valueOf(inputInt);
+		} else {
+			return Constant.EMPTY_STRING;
+		}
+	}
+	
+	public static int getFirstNumberIndex(String input) {
+		
+		Matcher matcher = Pattern.compile("\\d+").matcher(input);
+		matcher.find();
+		
+		return matcher.start();
+	}
+	
 	public static String formatCurrency(String inputStr) {
 		
+		String currency = inputStr;
 		String formatted = inputStr;
 		
 		NumberFormat nf = NumberFormat.getCurrencyInstance(getLocale());
 		
         try{
-            formatted = nf.format(Long.parseLong(inputStr));
-            formatted = formatted.replace("Rp", "Rp ");
+            formatted = nf.format(Double.parseDouble(inputStr));
+            
+            int firstNumberIndex = getFirstNumberIndex(formatted);
+            
+            String symbol = Constant.EMPTY_STRING;
+            String value = formatted;
+            
+            if (firstNumberIndex != -1) {
+            	
+            	symbol = formatted.substring(0, firstNumberIndex);
+            	value = formatted.substring(firstNumberIndex, formatted.length());
+            }
+            
+            currency = symbol + " " + value;
+            
         } catch (NumberFormatException nfe) {
         	// do nothing
         }
         
-        return formatted;
+        return currency;
 	}
 	
-	public static String formatNumber(String inputStr) {
+	/*public static String formatNumber(String inputStr) {
 		
-		String formatted = getNvlString(inputStr);
+		String currency = inputStr;
+		String formatted = inputStr;
 		
 		NumberFormat nf = NumberFormat.getCurrencyInstance(getLocale());
 		
         try{
-            formatted = nf.format(Long.parseLong(inputStr));
-            formatted = formatted.replace("Rp", "");
+            formatted = nf.format(Double.parseDouble(inputStr));
+            
+            int firstNumberIndex = getFirstNumberIndex(formatted);
+            
+            if (firstNumberIndex != -1) {
+            	currency = formatted.substring(firstNumberIndex, formatted.length());
+            }
+            
         } catch (NumberFormatException nfe) {
         	// do nothing
         }
         
-        return formatted;
+        return currency;
+	}*/
+	
+	public static boolean isRound(Float value) {
+		
+		return Math.round(value) == value;
+	}
+	
+	public static boolean isDecimalCurrency() {
+		
+		String separator = getCurrencyDecimalSeparator();
+		
+		return separator != null && (separator.contains(".") || separator.contains(","));
+	}
+	
+	public static String getCurrencyDecimalSeparator() {
+		
+		String separator = formatCurrency(Float.valueOf(0));
+		separator = separator.replaceAll("[^.,]", "");
+		
+		separator = "".equals(separator) ? null : separator;
+		
+		return separator;
+	}
+	
+	public static String getNumberDecimalSeparator() {
+		
+		String separator = formatNumber(Float.valueOf(1)/2);
+		separator = separator.replaceAll("[^.,]", "");
+		
+		separator = "".equals(separator) ? null : separator;
+		
+		return separator;
+	}
+	
+	public static String formatNumber(String inputStr) {
+		
+		String number = inputStr;
+		
+		NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
+		
+        try{
+            number = nf.format(Double.parseDouble(inputStr));
+        } catch (NumberFormatException nfe) {
+        	// do nothing
+        }
+        
+        return number;
+	}
+	
+	public static String formatPercentage(Float inputFloat) {
+		
+		return formatPercentage(formatString(inputFloat));
+	}
+	
+	public static String formatPercentage(String inputStr) {
+		
+		String number = inputStr;
+		
+		NumberFormat nf = NumberFormat.getPercentInstance(getLocale());
+		
+        try{
+            number = nf.format(Float.parseFloat(inputStr) / 100);
+        } catch (NumberFormatException nfe) {
+        	// do nothing
+        }
+        
+        return number;
 	}
 	
 	public static String formatCurrency(Integer inputInt) {
@@ -410,6 +635,16 @@ public class CommonUtil {
 		return formatCurrency(formatString(inputInt));
 	}
 	
+	public static String formatCurrency(Float inputInt) {
+		
+		return formatCurrency(formatString(inputInt));
+	}
+		
+	public static String formatCurrencyWithoutSymbol(Float inputInt) {
+		
+		return formatCurrency(formatString(inputInt)).replace(getCurrencySymbol() + " ", "");
+	}
+	
 	public static String formatNumber(Integer inputInt) {
 		
 		return formatNumber(formatString(inputInt));
@@ -420,13 +655,69 @@ public class CommonUtil {
 		return formatNumber(formatString(inputInt));
 	}
 	
-	public static Integer parseNumber(String inputStr) {
+	public static String formatNumber(Float inputInt) {
+		
+		return formatNumber(formatString(inputInt));
+	}
+		
+	public static String formatPlainNumber(Float inputInt) {
+		
+		String number = formatNumber(inputInt);
+		
+		if (".".equals(getNumberDecimalSeparator())) {
+			number = number.replaceAll(",", "");
+		} else {
+			number = number.replaceAll("\\.", "");
+		}
+		
+		return number; 
+	}
+	
+	public static Integer parseIntNumber(String inputStr) {
 		
 		String unformatted = inputStr;
 		Integer number = null;
 		
 		if (!isEmpty(inputStr)) {
-			unformatted = inputStr.replaceAll("\\D", "");
+			unformatted = inputStr.replaceAll("[^1234567890.,]", "");
+		}
+        
+		try {
+			NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
+			number = (nf.parse(unformatted)).intValue();
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+        return number; 
+	}
+	
+	public static Float parseFloatNumber(String inputStr) {
+		
+		String unformatted = inputStr;
+		Float number = null;
+		
+		if (!isEmpty(inputStr)) {
+			unformatted = inputStr.replaceAll("[^1234567890.,]", "");
+		}
+        
+		try {
+			NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
+			number = (nf.parse(unformatted)).floatValue();
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+        return number; 
+	}
+	
+	public static Integer parseIntCurrency(String inputStr) {
+		
+		String unformatted = inputStr;
+		Integer number = null;
+		
+		if (!isEmpty(inputStr)) {
+			unformatted = inputStr.replaceAll("[^1234567890.,]", "");
 		}
         
 		try {
@@ -438,17 +729,18 @@ public class CommonUtil {
         return number; 
 	}
 	
-	public static Integer parseCurrency(String inputStr) {
+	public static Float parseFloatCurrency(String inputStr) {
 		
 		String unformatted = inputStr;
-		Integer number = null;
+		Float number = null;
 		
 		if (!isEmpty(inputStr)) {
-			unformatted = inputStr.replaceAll("\\D", "");
+			unformatted = inputStr.replaceAll("[^1234567890.,]", "");
 		}
         
 		try {
-			number = Integer.valueOf(unformatted);
+			NumberFormat nf = NumberFormat.getNumberInstance(getLocale());
+			number = nf.parse(unformatted).floatValue();
 		} catch (Exception e) {
 			// do nothing
 		}
@@ -461,7 +753,7 @@ public class CommonUtil {
 		String unformatted = inputStr;
 		
 		if (!isEmpty(inputStr)) {
-			unformatted = inputStr.replaceAll("\\D", "");
+			unformatted = inputStr.replaceAll("[^1234567890.,]", "");
 		}
         
 		return unformatted; 
@@ -482,9 +774,24 @@ public class CommonUtil {
         return number; 
 	}
 	
-	public static Integer getCurrentPrice(Product product) {
+	public static Float parseFloat(String inputStr) {
 		
-		Integer price = product.getPrice1();
+		Float number = null;
+		
+		try {
+			if (!isEmpty(inputStr)) {
+				number = Float.valueOf(inputStr);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+        return number; 
+	}
+	
+	public static Float getCurrentPrice(Product product) {
+		
+		Float price = product.getPrice1();
 		
 		if (product.getPromoStart() != null && product.getPromoEnd() != null && product.getPromoPrice() != null) {
 			
@@ -498,5 +805,26 @@ public class CommonUtil {
 		}
 		
 		return price;
+	}
+		
+	public static String getCurrencySymbol() {
+		
+		String symbol = Constant.EMPTY_STRING;
+		NumberFormat nf = NumberFormat.getCurrencyInstance(getLocale());
+		
+        try{
+            String formatted = nf.format(Double.valueOf(0));
+            
+            int firstNumberIndex = getFirstNumberIndex(formatted);
+            
+            if (firstNumberIndex != -1) {
+            	symbol = formatted.substring(0, firstNumberIndex);
+            }
+            
+        } catch (NumberFormatException nfe) {
+        	// do nothing
+        }
+        
+        return symbol;
 	}
 }

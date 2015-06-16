@@ -95,14 +95,14 @@ public class PastDueArrayAdapter extends ArrayAdapter<Bills> {
 	    billReferenceText.setText(bill.getBillReferenceNo());
 	    
 	    if (CommonUtil.isEmpty(bill.getBillReferenceNo())) {
-	    	billReferenceText.setText("Tanpa Nota");
+	    	billReferenceText.setText(mContext.getString(R.string.bill_no_receipt));
 		}
 	    
 		billDateText.setText(CommonUtil.formatDate(bill.getBillDueDate()));
 		remarksText.setText(remarks);
 		
-		int payment = CommonUtil.getNvl(bill.getPayment());
-		int billAmount = CommonUtil.getNvl(bill.getBillAmount());
+		float payment = CommonUtil.getNvlFloat(bill.getPayment());
+		float billAmount = CommonUtil.getNvlFloat(bill.getBillAmount());
 		
 		if (payment < billAmount) {
 			billAmountText.setText(CommonUtil.formatCurrency(billAmount - payment));

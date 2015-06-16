@@ -6,9 +6,9 @@ public class BillsBean extends BaseBean {
 	private String bill_type;
 	private java.util.Date bill_date;
 	private java.util.Date bill_due_date;
-	private Integer bill_amount;
+	private Float bill_amount;
 	private java.util.Date payment_date;
-	private Integer payment;
+	private Float payment;
 	private Long supplier_id;
 	private String supplier_name;
 	private java.util.Date delivery_date;
@@ -47,11 +47,11 @@ public class BillsBean extends BaseBean {
 		this.bill_due_date = bill_due_date;
 	}
 
-	public Integer getBill_amount() {
+	public Float getBill_amount() {
 		return bill_amount;
 	}
 
-	public void setBill_amount(Integer bill_amount) {
+	public void setBill_amount(Float bill_amount) {
 		this.bill_amount = bill_amount;
 	}
 
@@ -63,11 +63,11 @@ public class BillsBean extends BaseBean {
 		this.payment_date = payment_date;
 	}
 
-	public Integer getPayment() {
+	public Float getPayment() {
 		return payment;
 	}
 
-	public void setPayment(Integer payment) {
+	public void setPayment(Float payment) {
 		this.payment = payment;
 	}
 

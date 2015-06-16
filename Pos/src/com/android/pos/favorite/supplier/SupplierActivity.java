@@ -8,7 +8,6 @@ import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Supplier;
 import com.android.pos.model.SupplierStatisticBean;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
@@ -52,8 +51,6 @@ public class SupplierActivity extends BaseActivity
 		
 		setContentView(R.layout.report_inventory_activity);
 
-		DbUtil.initDb(this);
-		
 		initDrawerMenu();
 		
 		initFragments();
@@ -221,6 +218,10 @@ public class SupplierActivity extends BaseActivity
 	
 	@Override
 	public void showSupplierInventories(Supplier supplier) {
+		
+		if (mSupplierTransactionDlgFragment.isAdded()) {
+			return;
+		}
 		
 		mSupplierTransactionDlgFragment.show(getFragmentManager(), mSupplierTransactionDlgFragmentTag);
 		mSupplierTransactionDlgFragment.setSupplier(supplier);

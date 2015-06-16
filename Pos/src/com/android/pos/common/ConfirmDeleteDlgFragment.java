@@ -96,7 +96,7 @@ public class ConfirmDeleteDlgFragment<T> extends BaseDialogFragment {
 			return;
 		}
 		
-		mConfirmationText.setText("Hapus " + mLabel + " ?");
+		mConfirmationText.setText(getString(R.string.confirm_delete, mLabel));
 	}
 	
 	public void setItemToBeDeleted(T item, String label) {

@@ -27,7 +27,7 @@ public class UserUtil {
 			mUserDaoService = new UserDaoService();
 			mUserAccessDaoService = new UserAccessDaoService();
 			
-			setUser(mUserDaoService.getUser(Long.valueOf(2)));
+			setUser(mUserDaoService.getUser(Long.valueOf(1)));
 		}
 		
 		return mUser;

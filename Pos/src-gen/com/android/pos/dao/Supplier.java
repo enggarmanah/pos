@@ -1,6 +1,7 @@
 package com.android.pos.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.android.pos.dao.DaoSession;
 
@@ -14,6 +15,7 @@ import de.greenrobot.dao.DaoException;
 public class Supplier implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private String name;
     private String telephone;
@@ -37,6 +39,8 @@ public class Supplier implements Serializable {
     private Merchant merchant;
     private Long merchant__resolvedKey;
 
+    private List<Bills> billsList;
+    private List<Inventory> inventoryList;
 
     public Supplier() {
     }
@@ -45,8 +49,9 @@ public class Supplier implements Serializable {
         this.id = id;
     }
 
-    public Supplier(Long id, long merchantId, String name, String telephone, String address, String picName, String picTelephone, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Supplier(Long id, String refId, long merchantId, String name, String telephone, String address, String picName, String picTelephone, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.name = name;
         this.telephone = telephone;
@@ -74,6 +79,14 @@ public class Supplier implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {
@@ -206,6 +219,50 @@ public class Supplier implements Serializable {
             merchantId = merchant.getId();
             merchant__resolvedKey = merchantId;
         }
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Bills> getBillsList() {
+        if (billsList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            BillsDao targetDao = daoSession.getBillsDao();
+            List<Bills> billsListNew = targetDao._querySupplier_BillsList(id);
+            synchronized (this) {
+                if(billsList == null) {
+                    billsList = billsListNew;
+                }
+            }
+        }
+        return billsList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetBillsList() {
+        billsList = null;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Inventory> getInventoryList() {
+        if (inventoryList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            InventoryDao targetDao = daoSession.getInventoryDao();
+            List<Inventory> inventoryListNew = targetDao._querySupplier_InventoryList(id);
+            synchronized (this) {
+                if(inventoryList == null) {
+                    inventoryList = inventoryListNew;
+                }
+            }
+        }
+        return inventoryList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetInventoryList() {
+        inventoryList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

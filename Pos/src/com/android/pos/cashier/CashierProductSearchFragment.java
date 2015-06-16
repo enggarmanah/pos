@@ -185,8 +185,6 @@ public class CashierProductSearchFragment extends BaseFragment
 	@Override
 	public void onProductGroupSelected(ProductGroup prdGroup) {
 		
-		System.out.println("Product Group : " + prdGroup.getName());
-		
 		mSelectedPrdGroup = prdGroup;
 		
 		mSearchQuery = Constant.EMPTY_STRING;
@@ -203,7 +201,7 @@ public class CashierProductSearchFragment extends BaseFragment
 	public void onProductSelected(Product product) {
 		
 		Employee personInCharge = null;
-		Integer quantity = 0;
+		Float quantity = Float.valueOf(0);
 		
 		mActionListener.onProductSelected(product, CommonUtil.getCurrentPrice(product), personInCharge, quantity, Constant.EMPTY_STRING);
 	}

@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -47,6 +48,10 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     EditText mPriceLabel1Text;
     EditText mPriceLabel2Text;
     EditText mPriceLabel3Text;
+    
+    LinearLayout mPriceLabel1Panel;
+    LinearLayout mPriceLabel2Panel;
+    LinearLayout mPriceLabel3Panel;
     
     Spinner mPriceTypeCountSp;
     Spinner mDiscountTypeSp;
@@ -115,11 +120,24 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mPriceTypeCountSp = (Spinner) view.findViewById(R.id.priceTypeCountSp);
     	mDiscountTypeSp = (Spinner) view.findViewById(R.id.discountTypeSp);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
-
+    	
+    	mPriceTypeCountSp.setOnItemSelectedListener(getPriceTypeCountOnItemSelectedListener());
+    	
     	mStatusPanel = (LinearLayout) view.findViewById(R.id.statusPanel);
+    	
+    	mPriceLabel1Panel = (LinearLayout) view.findViewById(R.id.priceLabel1Panel);
+    	mPriceLabel2Panel = (LinearLayout) view.findViewById(R.id.priceLabel2Panel);
+    	mPriceLabel3Panel = (LinearLayout) view.findViewById(R.id.priceLabel3Panel);
     	
     	accessRightRowPanel = (LinearLayout) view.findViewById(R.id.accessRightsRowPanel);
     	accessRightPanel = (LinearLayout) view.findViewById(R.id.accessRightsPanel);
+    	
+    	registerRootField(mNameText);
+    	registerRootField(mTypeSp);
+    	registerRootField(mAddressText);
+    	registerRootField(mTelephoneText);
+    	registerRootField(mPeriodStartDate);
+    	registerRootField(mPeriodEndDate);
     	
     	registerField(mNameText);
     	registerField(mTypeSp);
@@ -144,26 +162,10 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	enableInputFields(false);
     	
     	mandatoryFields = new ArrayList<MerchantEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
-    	mandatoryFields.add(new FormField(mAddressText, R.string.field_address));
-    	//mandatoryFields.add(new FormField(mTelephoneText, R.string.field_telephone));
-    	mandatoryFields.add(new FormField(mContactNameText, R.string.field_contact_name));
-    	mandatoryFields.add(new FormField(mContactTelephoneText, R.string.field_contact_telephone));
-    	mandatoryFields.add(new FormField(mLoginIdText, R.string.field_login_id));
-    	mandatoryFields.add(new FormField(mPasswordText, R.string.field_password));
-    	mandatoryFields.add(new FormField(mPeriodStartDate, R.string.field_period_start));
-    	mandatoryFields.add(new FormField(mPeriodEndDate, R.string.field_period_end));
-    	mandatoryFields.add(new FormField(mTaxText, R.string.field_tax_percentage));
-    	mandatoryFields.add(new FormField(mServiceChargeText, R.string.field_service_charge_percentage));
     	
-    	// only root can access validity period
-    	
-    	if (UserUtil.isRoot()) {
-    		
-    		mPeriodStartDate.setOnClickListener(getDateFieldOnClickListener(mPeriodStartDate, "startDatePicker"));
-        	mPeriodEndDate.setOnClickListener(getDateFieldOnClickListener(mPeriodEndDate, "endDatePicker"));
-		}
-    	
+    	mPeriodStartDate.setOnClickListener(getDateFieldOnClickListener("startDatePicker"));
+        mPeriodEndDate.setOnClickListener(getDateFieldOnClickListener("endDatePicker"));
+		
     	linkDatePickerWithInputField("startDatePicker", mPeriodStartDate);
     	linkDatePickerWithInputField("endDatePicker", mPeriodEndDate);
     	
@@ -240,7 +242,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     			checkedButton.setEnabled(mIsEnableInputFields);
     			mCheckedButtons.add(checkedButton);
     			
-    			nameText.setText(merchantAccess.getName());
+    			char c = 8226;
+    			
+    			nameText.setText(c + " " + CodeUtil.getModuleAccessLabel(merchantAccess.getCode()));
     			
     			boolean isChecked = Constant.STATUS_YES.equals(merchantAccess.getStatus());
     			
@@ -274,6 +278,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     			accessRightPanel.addView(accessView);
         	}
     		
+    		refreshVisibleField();
+    		
     		showView();
     		
     	} else {
@@ -294,8 +300,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	String contactEmail = mContactEmailText.getText().toString();
     	String loginId = mLoginIdText.getText().toString();
     	String password = mPasswordText.getText().toString();
-    	Integer tax = CommonUtil.parseInteger(mTaxText.getText().toString());
-    	Integer serviceCharge = CommonUtil.parseInteger(mServiceChargeText.getText().toString());
+    	Float tax = CommonUtil.parseFloat(mTaxText.getText().toString());
+    	Float serviceCharge = CommonUtil.parseFloat(mServiceChargeText.getText().toString());
     	Date startDate = CommonUtil.parseDate(mPeriodStartDate.getText().toString());
     	Date endDate = CommonUtil.parseDate(mPeriodEndDate.getText().toString());
     	Integer priceTypeCount = Integer.valueOf(CodeBean.getNvlCode((CodeBean) mPriceTypeCountSp.getSelectedItem()));
@@ -459,5 +465,63 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	for (ImageButton button : mCheckedButtons) {
     		button.setEnabled(isEnabled);
     	}
+    }
+    
+    private AdapterView.OnItemSelectedListener getPriceTypeCountOnItemSelectedListener() {
+    	
+    	return new AdapterView.OnItemSelectedListener() {
+			
+        	@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				
+        		refreshVisibleField();
+        	}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		};
+    }
+    
+    private void refreshVisibleField() {
+    	
+    	Integer priceTypeCount = Integer.valueOf(CodeBean.getNvlCode((CodeBean) mPriceTypeCountSp.getSelectedItem()));
+    	
+    	mPriceLabel1Panel.setVisibility(View.GONE);
+    	mPriceLabel2Panel.setVisibility(View.GONE);
+    	mPriceLabel3Panel.setVisibility(View.GONE);
+    	
+		mandatoryFields.clear();
+		mandatoryFields.add(new FormField(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormField(mAddressText, R.string.field_address));
+    	mandatoryFields.add(new FormField(mContactNameText, R.string.field_contact_name));
+    	mandatoryFields.add(new FormField(mContactTelephoneText, R.string.field_contact_telephone));
+    	mandatoryFields.add(new FormField(mLoginIdText, R.string.field_login_id));
+    	mandatoryFields.add(new FormField(mPasswordText, R.string.field_password));
+    	mandatoryFields.add(new FormField(mPeriodStartDate, R.string.field_period_start));
+    	mandatoryFields.add(new FormField(mPeriodEndDate, R.string.field_period_end));
+    	mandatoryFields.add(new FormField(mTaxText, R.string.field_tax_percentage));
+    	mandatoryFields.add(new FormField(mServiceChargeText, R.string.field_service_charge_percentage));
+		
+    	if (priceTypeCount == 2) {
+    		
+    		mPriceLabel1Panel.setVisibility(View.VISIBLE);
+    		mPriceLabel2Panel.setVisibility(View.VISIBLE);	
+    		
+    		mandatoryFields.add(new FormField(mPriceLabel1Text, R.string.field_price_label_1));
+    		mandatoryFields.add(new FormField(mPriceLabel2Text, R.string.field_price_label_2));
+    		
+    	} else if (priceTypeCount == 3) {
+    		
+    		mPriceLabel1Panel.setVisibility(View.VISIBLE);
+    		mPriceLabel2Panel.setVisibility(View.VISIBLE);	
+    		mPriceLabel3Panel.setVisibility(View.VISIBLE);
+    		
+    		mandatoryFields.add(new FormField(mPriceLabel1Text, R.string.field_price_label_1));
+    		mandatoryFields.add(new FormField(mPriceLabel2Text, R.string.field_price_label_2));
+    		mandatoryFields.add(new FormField(mPriceLabel3Text, R.string.field_price_label_3));
+    	}
+    	
+    	highlightMandatoryFields();
     }
 }

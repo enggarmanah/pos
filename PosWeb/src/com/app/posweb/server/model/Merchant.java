@@ -19,6 +19,7 @@ public class Merchant {
 	protected Long id;
 
 	protected Long remote_id;
+	protected String ref_id;
 	
 	private String name;
 	private String type;
@@ -36,8 +37,8 @@ public class Merchant {
 	private String price_label_2;
 	private String price_label_3;
 	private String discount_type;
-	private Integer tax_percentage;
-	private Integer service_charge_percentage;
+	private Float tax_percentage;
+	private Float service_charge_percentage;
 	private String printer_mini_font;
     private Integer printer_line_size;
     private String printer_required;
@@ -56,7 +57,43 @@ public class Merchant {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date sync_date;
+	
+	public void setBean(Merchant bean) {
 
+		this.id = bean.getId();
+		
+		this.name = bean.getName();
+		this.type = bean.getType();
+		this.address = bean.getAddress();
+		this.telephone = bean.getTelephone();
+		this.contact_name = bean.getContact_name();
+		this.contact_telephone = bean.getContact_telephone();
+		this.contact_email = bean.getContact_email();
+		this.login_id = bean.getLogin_id();
+		this.password = bean.getPassword();
+		this.period_start = bean.getPeriod_start();
+		this.period_end = bean.getPeriod_end();
+		this.price_type_count = bean.getPrice_type_count();
+		this.price_label_1 = bean.getPrice_label_1();
+		this.price_label_2 = bean.getPrice_label_2();
+		this.price_label_3 = bean.getPrice_label_3();
+		this.discount_type = bean.getDiscount_type();
+		this.tax_percentage = bean.getTax_percentage();
+		this.service_charge_percentage = bean.getService_charge_percentage();
+		this.printer_required = bean.getPrinter_required();
+		this.printer_mini_font = bean.getPrinter_mini_font();
+		this.printer_line_size = bean.getPrinter_line_size();
+		this.status = bean.getStatus();
+
+		this.remote_id = bean.getRemote_id();
+		this.ref_id = bean.getRef_id();
+		this.create_by = bean.getCreate_by();
+		this.create_date = bean.getCreate_date();
+		this.update_by = bean.getUpdate_by();
+		this.update_date = bean.getUpdate_date();
+		this.sync_date = bean.getSync_date();
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -71,6 +108,14 @@ public class Merchant {
 
 	public void setRemote_id(Long remote_id) {
 		this.remote_id = remote_id;
+	}
+	
+	public String getRef_id() {
+		return ref_id;
+	}
+
+	public void setRef_id(String ref_id) {
+		this.ref_id = ref_id;
 	}
 
 	public String getName() {
@@ -201,22 +246,22 @@ public class Merchant {
 		this.discount_type = discount_type;
 	}
 
-	public Integer getTax_percentage() {
+	public Float getTax_percentage() {
 		return tax_percentage;
 	}
 
-	public void setTax_percentage(Integer tax_percentage) {
+	public void setTax_percentage(Float tax_percentage) {
 		this.tax_percentage = tax_percentage;
 	}
 
-	public Integer getService_charge_percentage() {
+	public Float getService_charge_percentage() {
 		return service_charge_percentage;
 	}
 
-	public void setService_charge_percentage(Integer service_charge_percentage) {
+	public void setService_charge_percentage(Float service_charge_percentage) {
 		this.service_charge_percentage = service_charge_percentage;
 	}
-	
+
 	public String getPrinter_mini_font() {
 		return printer_mini_font;
 	}
@@ -287,40 +332,5 @@ public class Merchant {
 
 	public void setSync_date(Date sync_date) {
 		this.sync_date = sync_date;
-	}
-
-	public void setBean(Merchant bean) {
-
-		this.id = bean.getId();
-		
-		this.name = bean.getName();
-		this.type = bean.getType();
-		this.address = bean.getAddress();
-		this.telephone = bean.getTelephone();
-		this.contact_name = bean.getContact_name();
-		this.contact_telephone = bean.getContact_telephone();
-		this.contact_email = bean.getContact_email();
-		this.login_id = bean.getLogin_id();
-		this.password = bean.getPassword();
-		this.period_start = bean.getPeriod_start();
-		this.period_end = bean.getPeriod_end();
-		this.price_type_count = bean.getPrice_type_count();
-		this.price_label_1 = bean.getPrice_label_1();
-		this.price_label_2 = bean.getPrice_label_2();
-		this.price_label_3 = bean.getPrice_label_3();
-		this.discount_type = bean.getDiscount_type();
-		this.tax_percentage = bean.getTax_percentage();
-		this.service_charge_percentage = bean.getService_charge_percentage();
-		this.printer_required = bean.getPrinter_required();
-		this.printer_mini_font = bean.getPrinter_mini_font();
-		this.printer_line_size = bean.getPrinter_line_size();
-		this.status = bean.getStatus();
-
-		this.remote_id = bean.getRemote_id();
-		this.create_by = bean.getCreate_by();
-		this.create_date = bean.getCreate_date();
-		this.update_by = bean.getUpdate_by();
-		this.update_date = bean.getUpdate_date();
-		this.sync_date = bean.getSync_date();
 	}
 }

@@ -297,6 +297,31 @@ public class DbUtil {
             	ProductDao.createTable(db, true);
             }
             
+            // handle version 38 changes
+            if (oldVersion < 38) {
+            	
+            	db.execSQL("ALTER TABLE 'PRODUCT' ADD 'QUANTITY_TYPE' DECIMAL(10,2)");
+            }
+            
+            // handle version 38 changes
+            if (oldVersion < 39) {
+            	
+            	db.execSQL("ALTER TABLE 'BILLS' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'CUSTOMER' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'DISCOUNT' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'EMPLOYEE' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'INVENTORY' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'MERCHANT_ACCESS' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'PRODUCT' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'PRODUCT_GROUP' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'SUPPLIER' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'TRANSACTION_ITEM' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'USER' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'USER_ACCESS' ADD 'REF_ID' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -308,7 +333,7 @@ public class DbUtil {
     	
     	if (daoSession == null) {
     		
-    		DevOpenHelper helper = new DbOpenHelper(context, "pos-db", null);
+    		DevOpenHelper helper = new DbOpenHelper(context, "pos.db", null);
             db = helper.getWritableDatabase();
             daoMaster = new DaoMaster(db);
             daoSession = daoMaster.newSession();
@@ -320,10 +345,7 @@ public class DbUtil {
     private static Long getDbId() {
     	
     	String dbFile = db.getPath();
-    	dbFile = dbFile.substring(dbFile.indexOf("pos-db"));
-    	
-    	String strId = dbFile.replace("pos-db-", "");
-    	strId = strId.replace("pos-db", "");
+    	String strId = dbFile.replaceAll("[^0-9]", "");
     	
     	Long dbId = null;
     	
@@ -344,9 +366,11 @@ public class DbUtil {
     	
     	System.out.println("Close DB : " + db);
     	
-    	db.close();
+    	if (db != null) {
+    		db.close();
+    	}
     	
-    	String dbFile = (merchantId == null ? "pos-db" : "pos-db-" + merchantId);
+    	String dbFile = (merchantId == null ? "pos.db" : "pos-" + merchantId + ".db");
     	
     	DevOpenHelper helper = new DbOpenHelper(context, dbFile, null);
         db = helper.getWritableDatabase();

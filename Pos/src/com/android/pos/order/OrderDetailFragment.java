@@ -151,11 +151,11 @@ public class OrderDetailFragment extends BaseFragment implements OrderItemArrayA
 		
 		if (Constant.ORDER_TYPE_DINE_IN.equals(orderType)) {
 			
-			mOrderInfo.setText("No Meja : " + orderReference);
+			mOrderInfo.setText(getString(R.string.order_table_no, orderReference));
 			
 		} else {
 			
-			mOrderInfo.setText("Pelanggan : " + orderReference);
+			mOrderInfo.setText(getString(R.string.order_customer, orderReference));
 		}
 	}
 	

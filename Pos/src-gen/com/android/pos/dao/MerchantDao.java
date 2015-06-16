@@ -24,36 +24,37 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property Type = new Property(2, String.class, "type", false, "TYPE");
-        public final static Property Address = new Property(3, String.class, "address", false, "ADDRESS");
-        public final static Property Telephone = new Property(4, String.class, "telephone", false, "TELEPHONE");
-        public final static Property ContactName = new Property(5, String.class, "contactName", false, "CONTACT_NAME");
-        public final static Property ContactTelephone = new Property(6, String.class, "contactTelephone", false, "CONTACT_TELEPHONE");
-        public final static Property ContactEmail = new Property(7, String.class, "contactEmail", false, "CONTACT_EMAIL");
-        public final static Property LoginId = new Property(8, String.class, "loginId", false, "LOGIN_ID");
-        public final static Property PrinterType = new Property(9, String.class, "printerType", false, "PRINTER_TYPE");
-        public final static Property PrinterAddress = new Property(10, String.class, "printerAddress", false, "PRINTER_ADDRESS");
-        public final static Property PrinterMiniFont = new Property(11, String.class, "printerMiniFont", false, "PRINTER_MINI_FONT");
-        public final static Property PrinterLineSize = new Property(12, Integer.class, "printerLineSize", false, "PRINTER_LINE_SIZE");
-        public final static Property PrinterRequired = new Property(13, String.class, "printerRequired", false, "PRINTER_REQUIRED");
-        public final static Property Password = new Property(14, String.class, "password", false, "PASSWORD");
-        public final static Property PeriodStart = new Property(15, java.util.Date.class, "periodStart", false, "PERIOD_START");
-        public final static Property PeriodEnd = new Property(16, java.util.Date.class, "periodEnd", false, "PERIOD_END");
-        public final static Property PriceTypeCount = new Property(17, Integer.class, "priceTypeCount", false, "PRICE_TYPE_COUNT");
-        public final static Property PriceLabel1 = new Property(18, String.class, "priceLabel1", false, "PRICE_LABEL1");
-        public final static Property PriceLabel2 = new Property(19, String.class, "priceLabel2", false, "PRICE_LABEL2");
-        public final static Property PriceLabel3 = new Property(20, String.class, "priceLabel3", false, "PRICE_LABEL3");
-        public final static Property DiscountType = new Property(21, String.class, "discountType", false, "DISCOUNT_TYPE");
-        public final static Property TaxPercentage = new Property(22, Integer.class, "taxPercentage", false, "TAX_PERCENTAGE");
-        public final static Property ServiceChargePercentage = new Property(23, Integer.class, "serviceChargePercentage", false, "SERVICE_CHARGE_PERCENTAGE");
-        public final static Property IsLogin = new Property(24, Boolean.class, "isLogin", false, "IS_LOGIN");
-        public final static Property Status = new Property(25, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(26, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(27, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(28, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(29, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(30, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
+        public final static Property Type = new Property(3, String.class, "type", false, "TYPE");
+        public final static Property Address = new Property(4, String.class, "address", false, "ADDRESS");
+        public final static Property Telephone = new Property(5, String.class, "telephone", false, "TELEPHONE");
+        public final static Property ContactName = new Property(6, String.class, "contactName", false, "CONTACT_NAME");
+        public final static Property ContactTelephone = new Property(7, String.class, "contactTelephone", false, "CONTACT_TELEPHONE");
+        public final static Property ContactEmail = new Property(8, String.class, "contactEmail", false, "CONTACT_EMAIL");
+        public final static Property LoginId = new Property(9, String.class, "loginId", false, "LOGIN_ID");
+        public final static Property PrinterType = new Property(10, String.class, "printerType", false, "PRINTER_TYPE");
+        public final static Property PrinterAddress = new Property(11, String.class, "printerAddress", false, "PRINTER_ADDRESS");
+        public final static Property PrinterMiniFont = new Property(12, String.class, "printerMiniFont", false, "PRINTER_MINI_FONT");
+        public final static Property PrinterLineSize = new Property(13, Integer.class, "printerLineSize", false, "PRINTER_LINE_SIZE");
+        public final static Property PrinterRequired = new Property(14, String.class, "printerRequired", false, "PRINTER_REQUIRED");
+        public final static Property Password = new Property(15, String.class, "password", false, "PASSWORD");
+        public final static Property PeriodStart = new Property(16, java.util.Date.class, "periodStart", false, "PERIOD_START");
+        public final static Property PeriodEnd = new Property(17, java.util.Date.class, "periodEnd", false, "PERIOD_END");
+        public final static Property PriceTypeCount = new Property(18, Integer.class, "priceTypeCount", false, "PRICE_TYPE_COUNT");
+        public final static Property PriceLabel1 = new Property(19, String.class, "priceLabel1", false, "PRICE_LABEL1");
+        public final static Property PriceLabel2 = new Property(20, String.class, "priceLabel2", false, "PRICE_LABEL2");
+        public final static Property PriceLabel3 = new Property(21, String.class, "priceLabel3", false, "PRICE_LABEL3");
+        public final static Property DiscountType = new Property(22, String.class, "discountType", false, "DISCOUNT_TYPE");
+        public final static Property TaxPercentage = new Property(23, Float.class, "taxPercentage", false, "TAX_PERCENTAGE");
+        public final static Property ServiceChargePercentage = new Property(24, Float.class, "serviceChargePercentage", false, "SERVICE_CHARGE_PERCENTAGE");
+        public final static Property IsLogin = new Property(25, Boolean.class, "isLogin", false, "IS_LOGIN");
+        public final static Property Status = new Property(26, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(27, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(28, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(29, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(30, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(31, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
 
     private DaoSession daoSession;
@@ -73,36 +74,37 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'MERCHANT' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'NAME' TEXT NOT NULL ," + // 1: name
-                "'TYPE' TEXT," + // 2: type
-                "'ADDRESS' TEXT," + // 3: address
-                "'TELEPHONE' TEXT," + // 4: telephone
-                "'CONTACT_NAME' TEXT," + // 5: contactName
-                "'CONTACT_TELEPHONE' TEXT," + // 6: contactTelephone
-                "'CONTACT_EMAIL' TEXT," + // 7: contactEmail
-                "'LOGIN_ID' TEXT," + // 8: loginId
-                "'PRINTER_TYPE' TEXT," + // 9: printerType
-                "'PRINTER_ADDRESS' TEXT," + // 10: printerAddress
-                "'PRINTER_MINI_FONT' TEXT," + // 11: printerMiniFont
-                "'PRINTER_LINE_SIZE' INTEGER," + // 12: printerLineSize
-                "'PRINTER_REQUIRED' TEXT," + // 13: printerRequired
-                "'PASSWORD' TEXT," + // 14: password
-                "'PERIOD_START' INTEGER," + // 15: periodStart
-                "'PERIOD_END' INTEGER," + // 16: periodEnd
-                "'PRICE_TYPE_COUNT' INTEGER," + // 17: priceTypeCount
-                "'PRICE_LABEL1' TEXT," + // 18: priceLabel1
-                "'PRICE_LABEL2' TEXT," + // 19: priceLabel2
-                "'PRICE_LABEL3' TEXT," + // 20: priceLabel3
-                "'DISCOUNT_TYPE' TEXT," + // 21: discountType
-                "'TAX_PERCENTAGE' INTEGER," + // 22: taxPercentage
-                "'SERVICE_CHARGE_PERCENTAGE' INTEGER," + // 23: serviceChargePercentage
-                "'IS_LOGIN' INTEGER," + // 24: isLogin
-                "'STATUS' TEXT," + // 25: status
-                "'UPLOAD_STATUS' TEXT," + // 26: uploadStatus
-                "'CREATE_BY' TEXT," + // 27: createBy
-                "'CREATE_DATE' INTEGER," + // 28: createDate
-                "'UPDATE_BY' TEXT," + // 29: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 30: updateDate
+                "'REF_ID' TEXT," + // 1: refId
+                "'NAME' TEXT NOT NULL ," + // 2: name
+                "'TYPE' TEXT," + // 3: type
+                "'ADDRESS' TEXT," + // 4: address
+                "'TELEPHONE' TEXT," + // 5: telephone
+                "'CONTACT_NAME' TEXT," + // 6: contactName
+                "'CONTACT_TELEPHONE' TEXT," + // 7: contactTelephone
+                "'CONTACT_EMAIL' TEXT," + // 8: contactEmail
+                "'LOGIN_ID' TEXT," + // 9: loginId
+                "'PRINTER_TYPE' TEXT," + // 10: printerType
+                "'PRINTER_ADDRESS' TEXT," + // 11: printerAddress
+                "'PRINTER_MINI_FONT' TEXT," + // 12: printerMiniFont
+                "'PRINTER_LINE_SIZE' INTEGER," + // 13: printerLineSize
+                "'PRINTER_REQUIRED' TEXT," + // 14: printerRequired
+                "'PASSWORD' TEXT," + // 15: password
+                "'PERIOD_START' INTEGER," + // 16: periodStart
+                "'PERIOD_END' INTEGER," + // 17: periodEnd
+                "'PRICE_TYPE_COUNT' INTEGER," + // 18: priceTypeCount
+                "'PRICE_LABEL1' TEXT," + // 19: priceLabel1
+                "'PRICE_LABEL2' TEXT," + // 20: priceLabel2
+                "'PRICE_LABEL3' TEXT," + // 21: priceLabel3
+                "'DISCOUNT_TYPE' TEXT," + // 22: discountType
+                "'TAX_PERCENTAGE' DECIMAL(10,2)," + // 23: taxPercentage
+                "'SERVICE_CHARGE_PERCENTAGE' DECIMAL(10,2)," + // 24: serviceChargePercentage
+                "'IS_LOGIN' INTEGER," + // 25: isLogin
+                "'STATUS' TEXT," + // 26: status
+                "'UPLOAD_STATUS' TEXT," + // 27: uploadStatus
+                "'CREATE_BY' TEXT," + // 28: createBy
+                "'CREATE_DATE' INTEGER," + // 29: createDate
+                "'UPDATE_BY' TEXT," + // 30: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 31: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -120,151 +122,156 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindString(2, entity.getName());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindString(3, entity.getName());
  
         String type = entity.getType();
         if (type != null) {
-            stmt.bindString(3, type);
+            stmt.bindString(4, type);
         }
  
         String address = entity.getAddress();
         if (address != null) {
-            stmt.bindString(4, address);
+            stmt.bindString(5, address);
         }
  
         String telephone = entity.getTelephone();
         if (telephone != null) {
-            stmt.bindString(5, telephone);
+            stmt.bindString(6, telephone);
         }
  
         String contactName = entity.getContactName();
         if (contactName != null) {
-            stmt.bindString(6, contactName);
+            stmt.bindString(7, contactName);
         }
  
         String contactTelephone = entity.getContactTelephone();
         if (contactTelephone != null) {
-            stmt.bindString(7, contactTelephone);
+            stmt.bindString(8, contactTelephone);
         }
  
         String contactEmail = entity.getContactEmail();
         if (contactEmail != null) {
-            stmt.bindString(8, contactEmail);
+            stmt.bindString(9, contactEmail);
         }
  
         String loginId = entity.getLoginId();
         if (loginId != null) {
-            stmt.bindString(9, loginId);
+            stmt.bindString(10, loginId);
         }
  
         String printerType = entity.getPrinterType();
         if (printerType != null) {
-            stmt.bindString(10, printerType);
+            stmt.bindString(11, printerType);
         }
  
         String printerAddress = entity.getPrinterAddress();
         if (printerAddress != null) {
-            stmt.bindString(11, printerAddress);
+            stmt.bindString(12, printerAddress);
         }
  
         String printerMiniFont = entity.getPrinterMiniFont();
         if (printerMiniFont != null) {
-            stmt.bindString(12, printerMiniFont);
+            stmt.bindString(13, printerMiniFont);
         }
  
         Integer printerLineSize = entity.getPrinterLineSize();
         if (printerLineSize != null) {
-            stmt.bindLong(13, printerLineSize);
+            stmt.bindLong(14, printerLineSize);
         }
  
         String printerRequired = entity.getPrinterRequired();
         if (printerRequired != null) {
-            stmt.bindString(14, printerRequired);
+            stmt.bindString(15, printerRequired);
         }
  
         String password = entity.getPassword();
         if (password != null) {
-            stmt.bindString(15, password);
+            stmt.bindString(16, password);
         }
  
         java.util.Date periodStart = entity.getPeriodStart();
         if (periodStart != null) {
-            stmt.bindLong(16, periodStart.getTime());
+            stmt.bindLong(17, periodStart.getTime());
         }
  
         java.util.Date periodEnd = entity.getPeriodEnd();
         if (periodEnd != null) {
-            stmt.bindLong(17, periodEnd.getTime());
+            stmt.bindLong(18, periodEnd.getTime());
         }
  
         Integer priceTypeCount = entity.getPriceTypeCount();
         if (priceTypeCount != null) {
-            stmt.bindLong(18, priceTypeCount);
+            stmt.bindLong(19, priceTypeCount);
         }
  
         String priceLabel1 = entity.getPriceLabel1();
         if (priceLabel1 != null) {
-            stmt.bindString(19, priceLabel1);
+            stmt.bindString(20, priceLabel1);
         }
  
         String priceLabel2 = entity.getPriceLabel2();
         if (priceLabel2 != null) {
-            stmt.bindString(20, priceLabel2);
+            stmt.bindString(21, priceLabel2);
         }
  
         String priceLabel3 = entity.getPriceLabel3();
         if (priceLabel3 != null) {
-            stmt.bindString(21, priceLabel3);
+            stmt.bindString(22, priceLabel3);
         }
  
         String discountType = entity.getDiscountType();
         if (discountType != null) {
-            stmt.bindString(22, discountType);
+            stmt.bindString(23, discountType);
         }
  
-        Integer taxPercentage = entity.getTaxPercentage();
+        Float taxPercentage = entity.getTaxPercentage();
         if (taxPercentage != null) {
-            stmt.bindLong(23, taxPercentage);
+            stmt.bindDouble(24, taxPercentage);
         }
  
-        Integer serviceChargePercentage = entity.getServiceChargePercentage();
+        Float serviceChargePercentage = entity.getServiceChargePercentage();
         if (serviceChargePercentage != null) {
-            stmt.bindLong(24, serviceChargePercentage);
+            stmt.bindDouble(25, serviceChargePercentage);
         }
  
         Boolean isLogin = entity.getIsLogin();
         if (isLogin != null) {
-            stmt.bindLong(25, isLogin ? 1l: 0l);
+            stmt.bindLong(26, isLogin ? 1l: 0l);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(26, status);
+            stmt.bindString(27, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(27, uploadStatus);
+            stmt.bindString(28, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(28, createBy);
+            stmt.bindString(29, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(29, createDate.getTime());
+            stmt.bindLong(30, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(30, updateBy);
+            stmt.bindString(31, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(31, updateDate.getTime());
+            stmt.bindLong(32, updateDate.getTime());
         }
     }
 
@@ -285,36 +292,37 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
     public Merchant readEntity(Cursor cursor, int offset) {
         Merchant entity = new Merchant( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // name
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // type
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // address
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // telephone
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // contactName
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // contactTelephone
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // contactEmail
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // loginId
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // printerType
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // printerAddress
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // printerMiniFont
-            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // printerLineSize
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // printerRequired
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // password
-            cursor.isNull(offset + 15) ? null : new java.util.Date(cursor.getLong(offset + 15)), // periodStart
-            cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)), // periodEnd
-            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // priceTypeCount
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // priceLabel1
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // priceLabel2
-            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // priceLabel3
-            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // discountType
-            cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22), // taxPercentage
-            cursor.isNull(offset + 23) ? null : cursor.getInt(offset + 23), // serviceChargePercentage
-            cursor.isNull(offset + 24) ? null : cursor.getShort(offset + 24) != 0, // isLogin
-            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // status
-            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // uploadStatus
-            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // createBy
-            cursor.isNull(offset + 28) ? null : new java.util.Date(cursor.getLong(offset + 28)), // createDate
-            cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29), // updateBy
-            cursor.isNull(offset + 30) ? null : new java.util.Date(cursor.getLong(offset + 30)) // updateDate
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getString(offset + 2), // name
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // type
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // address
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // telephone
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // contactName
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // contactTelephone
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // contactEmail
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // loginId
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // printerType
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // printerAddress
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // printerMiniFont
+            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // printerLineSize
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // printerRequired
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // password
+            cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)), // periodStart
+            cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)), // periodEnd
+            cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // priceTypeCount
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // priceLabel1
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // priceLabel2
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // priceLabel3
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // discountType
+            cursor.isNull(offset + 23) ? null : cursor.getFloat(offset + 23), // taxPercentage
+            cursor.isNull(offset + 24) ? null : cursor.getFloat(offset + 24), // serviceChargePercentage
+            cursor.isNull(offset + 25) ? null : cursor.getShort(offset + 25) != 0, // isLogin
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // status
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // uploadStatus
+            cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28), // createBy
+            cursor.isNull(offset + 29) ? null : new java.util.Date(cursor.getLong(offset + 29)), // createDate
+            cursor.isNull(offset + 30) ? null : cursor.getString(offset + 30), // updateBy
+            cursor.isNull(offset + 31) ? null : new java.util.Date(cursor.getLong(offset + 31)) // updateDate
         );
         return entity;
     }
@@ -323,36 +331,37 @@ public class MerchantDao extends AbstractDao<Merchant, Long> {
     @Override
     public void readEntity(Cursor cursor, Merchant entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setName(cursor.getString(offset + 1));
-        entity.setType(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setAddress(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setTelephone(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setContactName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setContactTelephone(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setContactEmail(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setLoginId(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setPrinterType(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setPrinterAddress(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setPrinterMiniFont(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setPrinterLineSize(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
-        entity.setPrinterRequired(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setPassword(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setPeriodStart(cursor.isNull(offset + 15) ? null : new java.util.Date(cursor.getLong(offset + 15)));
-        entity.setPeriodEnd(cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)));
-        entity.setPriceTypeCount(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
-        entity.setPriceLabel1(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setPriceLabel2(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setPriceLabel3(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
-        entity.setDiscountType(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setTaxPercentage(cursor.isNull(offset + 22) ? null : cursor.getInt(offset + 22));
-        entity.setServiceChargePercentage(cursor.isNull(offset + 23) ? null : cursor.getInt(offset + 23));
-        entity.setIsLogin(cursor.isNull(offset + 24) ? null : cursor.getShort(offset + 24) != 0);
-        entity.setStatus(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
-        entity.setUploadStatus(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
-        entity.setCreateBy(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
-        entity.setCreateDate(cursor.isNull(offset + 28) ? null : new java.util.Date(cursor.getLong(offset + 28)));
-        entity.setUpdateBy(cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29));
-        entity.setUpdateDate(cursor.isNull(offset + 30) ? null : new java.util.Date(cursor.getLong(offset + 30)));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setName(cursor.getString(offset + 2));
+        entity.setType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setAddress(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setTelephone(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setContactName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setContactTelephone(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setContactEmail(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setLoginId(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setPrinterType(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setPrinterAddress(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setPrinterMiniFont(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setPrinterLineSize(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
+        entity.setPrinterRequired(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setPassword(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setPeriodStart(cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)));
+        entity.setPeriodEnd(cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)));
+        entity.setPriceTypeCount(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
+        entity.setPriceLabel1(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setPriceLabel2(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setPriceLabel3(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setDiscountType(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setTaxPercentage(cursor.isNull(offset + 23) ? null : cursor.getFloat(offset + 23));
+        entity.setServiceChargePercentage(cursor.isNull(offset + 24) ? null : cursor.getFloat(offset + 24));
+        entity.setIsLogin(cursor.isNull(offset + 25) ? null : cursor.getShort(offset + 25) != 0);
+        entity.setStatus(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
+        entity.setUploadStatus(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setCreateBy(cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28));
+        entity.setCreateDate(cursor.isNull(offset + 29) ? null : new java.util.Date(cursor.getLong(offset + 29)));
+        entity.setUpdateBy(cursor.isNull(offset + 30) ? null : cursor.getString(offset + 30));
+        entity.setUpdateDate(cursor.isNull(offset + 31) ? null : new java.util.Date(cursor.getLong(offset + 31)));
      }
     
     /** @inheritdoc */

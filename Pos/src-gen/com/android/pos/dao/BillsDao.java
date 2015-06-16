@@ -10,6 +10,8 @@ import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 
 import com.android.pos.dao.Bills;
 
@@ -27,28 +29,30 @@ public class BillsDao extends AbstractDao<Bills, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property BillReferenceNo = new Property(2, String.class, "billReferenceNo", false, "BILL_REFERENCE_NO");
-        public final static Property BillType = new Property(3, String.class, "billType", false, "BILL_TYPE");
-        public final static Property BillDate = new Property(4, java.util.Date.class, "billDate", false, "BILL_DATE");
-        public final static Property BillDueDate = new Property(5, java.util.Date.class, "billDueDate", false, "BILL_DUE_DATE");
-        public final static Property BillAmount = new Property(6, Integer.class, "billAmount", false, "BILL_AMOUNT");
-        public final static Property PaymentDate = new Property(7, java.util.Date.class, "paymentDate", false, "PAYMENT_DATE");
-        public final static Property Payment = new Property(8, Integer.class, "payment", false, "PAYMENT");
-        public final static Property SupplierId = new Property(9, Long.class, "supplierId", false, "SUPPLIER_ID");
-        public final static Property SupplierName = new Property(10, String.class, "supplierName", false, "SUPPLIER_NAME");
-        public final static Property DeliveryDate = new Property(11, java.util.Date.class, "deliveryDate", false, "DELIVERY_DATE");
-        public final static Property Remarks = new Property(12, String.class, "remarks", false, "REMARKS");
-        public final static Property Status = new Property(13, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(14, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(15, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(16, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(17, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(18, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property MerchantId = new Property(2, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property BillReferenceNo = new Property(3, String.class, "billReferenceNo", false, "BILL_REFERENCE_NO");
+        public final static Property BillType = new Property(4, String.class, "billType", false, "BILL_TYPE");
+        public final static Property BillDate = new Property(5, java.util.Date.class, "billDate", false, "BILL_DATE");
+        public final static Property BillDueDate = new Property(6, java.util.Date.class, "billDueDate", false, "BILL_DUE_DATE");
+        public final static Property BillAmount = new Property(7, Float.class, "billAmount", false, "BILL_AMOUNT");
+        public final static Property PaymentDate = new Property(8, java.util.Date.class, "paymentDate", false, "PAYMENT_DATE");
+        public final static Property Payment = new Property(9, Float.class, "payment", false, "PAYMENT");
+        public final static Property SupplierId = new Property(10, Long.class, "supplierId", false, "SUPPLIER_ID");
+        public final static Property SupplierName = new Property(11, String.class, "supplierName", false, "SUPPLIER_NAME");
+        public final static Property DeliveryDate = new Property(12, java.util.Date.class, "deliveryDate", false, "DELIVERY_DATE");
+        public final static Property Remarks = new Property(13, String.class, "remarks", false, "REMARKS");
+        public final static Property Status = new Property(14, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(15, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(16, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(17, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(18, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(19, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
 
     private DaoSession daoSession;
 
+    private Query<Bills> supplier_BillsListQuery;
 
     public BillsDao(DaoConfig config) {
         super(config);
@@ -64,24 +68,25 @@ public class BillsDao extends AbstractDao<Bills, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'BILLS' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'BILL_REFERENCE_NO' TEXT," + // 2: billReferenceNo
-                "'BILL_TYPE' TEXT," + // 3: billType
-                "'BILL_DATE' INTEGER," + // 4: billDate
-                "'BILL_DUE_DATE' INTEGER," + // 5: billDueDate
-                "'BILL_AMOUNT' INTEGER," + // 6: billAmount
-                "'PAYMENT_DATE' INTEGER," + // 7: paymentDate
-                "'PAYMENT' INTEGER," + // 8: payment
-                "'SUPPLIER_ID' INTEGER," + // 9: supplierId
-                "'SUPPLIER_NAME' TEXT," + // 10: supplierName
-                "'DELIVERY_DATE' INTEGER," + // 11: deliveryDate
-                "'REMARKS' TEXT," + // 12: remarks
-                "'STATUS' TEXT," + // 13: status
-                "'UPLOAD_STATUS' TEXT," + // 14: uploadStatus
-                "'CREATE_BY' TEXT," + // 15: createBy
-                "'CREATE_DATE' INTEGER," + // 16: createDate
-                "'UPDATE_BY' TEXT," + // 17: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 18: updateDate
+                "'REF_ID' TEXT," + // 1: refId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 2: merchantId
+                "'BILL_REFERENCE_NO' TEXT," + // 3: billReferenceNo
+                "'BILL_TYPE' TEXT," + // 4: billType
+                "'BILL_DATE' INTEGER," + // 5: billDate
+                "'BILL_DUE_DATE' INTEGER," + // 6: billDueDate
+                "'BILL_AMOUNT' DECIMAL(10,2)," + // 7: billAmount
+                "'PAYMENT_DATE' INTEGER," + // 8: paymentDate
+                "'PAYMENT' DECIMAL(10,2)," + // 9: payment
+                "'SUPPLIER_ID' INTEGER," + // 10: supplierId
+                "'SUPPLIER_NAME' TEXT," + // 11: supplierName
+                "'DELIVERY_DATE' INTEGER," + // 12: deliveryDate
+                "'REMARKS' TEXT," + // 13: remarks
+                "'STATUS' TEXT," + // 14: status
+                "'UPLOAD_STATUS' TEXT," + // 15: uploadStatus
+                "'CREATE_BY' TEXT," + // 16: createBy
+                "'CREATE_DATE' INTEGER," + // 17: createDate
+                "'UPDATE_BY' TEXT," + // 18: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 19: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -99,91 +104,96 @@ public class BillsDao extends AbstractDao<Bills, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMerchantId());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindLong(3, entity.getMerchantId());
  
         String billReferenceNo = entity.getBillReferenceNo();
         if (billReferenceNo != null) {
-            stmt.bindString(3, billReferenceNo);
+            stmt.bindString(4, billReferenceNo);
         }
  
         String billType = entity.getBillType();
         if (billType != null) {
-            stmt.bindString(4, billType);
+            stmt.bindString(5, billType);
         }
  
         java.util.Date billDate = entity.getBillDate();
         if (billDate != null) {
-            stmt.bindLong(5, billDate.getTime());
+            stmt.bindLong(6, billDate.getTime());
         }
  
         java.util.Date billDueDate = entity.getBillDueDate();
         if (billDueDate != null) {
-            stmt.bindLong(6, billDueDate.getTime());
+            stmt.bindLong(7, billDueDate.getTime());
         }
  
-        Integer billAmount = entity.getBillAmount();
+        Float billAmount = entity.getBillAmount();
         if (billAmount != null) {
-            stmt.bindLong(7, billAmount);
+            stmt.bindDouble(8, billAmount);
         }
  
         java.util.Date paymentDate = entity.getPaymentDate();
         if (paymentDate != null) {
-            stmt.bindLong(8, paymentDate.getTime());
+            stmt.bindLong(9, paymentDate.getTime());
         }
  
-        Integer payment = entity.getPayment();
+        Float payment = entity.getPayment();
         if (payment != null) {
-            stmt.bindLong(9, payment);
+            stmt.bindDouble(10, payment);
         }
  
         Long supplierId = entity.getSupplierId();
         if (supplierId != null) {
-            stmt.bindLong(10, supplierId);
+            stmt.bindLong(11, supplierId);
         }
  
         String supplierName = entity.getSupplierName();
         if (supplierName != null) {
-            stmt.bindString(11, supplierName);
+            stmt.bindString(12, supplierName);
         }
  
         java.util.Date deliveryDate = entity.getDeliveryDate();
         if (deliveryDate != null) {
-            stmt.bindLong(12, deliveryDate.getTime());
+            stmt.bindLong(13, deliveryDate.getTime());
         }
  
         String remarks = entity.getRemarks();
         if (remarks != null) {
-            stmt.bindString(13, remarks);
+            stmt.bindString(14, remarks);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(14, status);
+            stmt.bindString(15, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(15, uploadStatus);
+            stmt.bindString(16, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(16, createBy);
+            stmt.bindString(17, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(17, createDate.getTime());
+            stmt.bindLong(18, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(18, updateBy);
+            stmt.bindString(19, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(19, updateDate.getTime());
+            stmt.bindLong(20, updateDate.getTime());
         }
     }
 
@@ -204,24 +214,25 @@ public class BillsDao extends AbstractDao<Bills, Long> {
     public Bills readEntity(Cursor cursor, int offset) {
         Bills entity = new Bills( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // merchantId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // billReferenceNo
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // billType
-            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // billDate
-            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // billDueDate
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // billAmount
-            cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)), // paymentDate
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // payment
-            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // supplierId
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // supplierName
-            cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)), // deliveryDate
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // remarks
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // status
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // uploadStatus
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // createBy
-            cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)), // createDate
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // updateBy
-            cursor.isNull(offset + 18) ? null : new java.util.Date(cursor.getLong(offset + 18)) // updateDate
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getLong(offset + 2), // merchantId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // billReferenceNo
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // billType
+            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // billDate
+            cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)), // billDueDate
+            cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7), // billAmount
+            cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)), // paymentDate
+            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9), // payment
+            cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10), // supplierId
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // supplierName
+            cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)), // deliveryDate
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // remarks
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // status
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // uploadStatus
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // createBy
+            cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)), // createDate
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // updateBy
+            cursor.isNull(offset + 19) ? null : new java.util.Date(cursor.getLong(offset + 19)) // updateDate
         );
         return entity;
     }
@@ -230,24 +241,25 @@ public class BillsDao extends AbstractDao<Bills, Long> {
     @Override
     public void readEntity(Cursor cursor, Bills entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setBillReferenceNo(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setBillType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setBillDate(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
-        entity.setBillDueDate(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
-        entity.setBillAmount(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setPaymentDate(cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)));
-        entity.setPayment(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setSupplierId(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
-        entity.setSupplierName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setDeliveryDate(cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)));
-        entity.setRemarks(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setStatus(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setUploadStatus(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setCreateBy(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setCreateDate(cursor.isNull(offset + 16) ? null : new java.util.Date(cursor.getLong(offset + 16)));
-        entity.setUpdateBy(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setUpdateDate(cursor.isNull(offset + 18) ? null : new java.util.Date(cursor.getLong(offset + 18)));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMerchantId(cursor.getLong(offset + 2));
+        entity.setBillReferenceNo(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setBillType(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setBillDate(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setBillDueDate(cursor.isNull(offset + 6) ? null : new java.util.Date(cursor.getLong(offset + 6)));
+        entity.setBillAmount(cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7));
+        entity.setPaymentDate(cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)));
+        entity.setPayment(cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9));
+        entity.setSupplierId(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
+        entity.setSupplierName(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setDeliveryDate(cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)));
+        entity.setRemarks(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setStatus(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setUploadStatus(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setCreateBy(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setCreateDate(cursor.isNull(offset + 17) ? null : new java.util.Date(cursor.getLong(offset + 17)));
+        entity.setUpdateBy(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setUpdateDate(cursor.isNull(offset + 19) ? null : new java.util.Date(cursor.getLong(offset + 19)));
      }
     
     /** @inheritdoc */
@@ -273,6 +285,21 @@ public class BillsDao extends AbstractDao<Bills, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "billsList" to-many relationship of Supplier. */
+    public List<Bills> _querySupplier_BillsList(Long supplierId) {
+        synchronized (this) {
+            if (supplier_BillsListQuery == null) {
+                QueryBuilder<Bills> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.SupplierId.eq(null));
+                queryBuilder.orderRaw("_id ASC");
+                supplier_BillsListQuery = queryBuilder.build();
+            }
+        }
+        Query<Bills> query = supplier_BillsListQuery.forCurrentThread();
+        query.setParameter(0, supplierId);
+        return query.list();
+    }
+
     private String selectDeep;
 
     protected String getSelectDeep() {

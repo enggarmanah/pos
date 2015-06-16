@@ -2,11 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/background_blue_light"
-    android:padding="2dp">
+    android:background="@color/section_header_background"
+    android:padding="4dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/bg_border_gray"
@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/syncMessageText"
-            android:layout_width="300dp"
+            android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:gravity="center"
             android:textSize="16sp"

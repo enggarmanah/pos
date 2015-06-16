@@ -1,7 +1,9 @@
 package com.android.pos.async;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +35,7 @@ public class ProgressDlgFragment extends DialogFragment {
 			mProgress = savedInstanceState.getInt(PROGRESS_PERCENTAGE);
 			mMessage = savedInstanceState.getString(PROGRESS_MESSAGE);
 		}
-
+		
 		setCancelable(false);
 	}
 	
@@ -65,7 +67,22 @@ public class ProgressDlgFragment extends DialogFragment {
 		setProgress(mProgress);
 		mSyncMessage.setText(mMessage);
 		
-		System.out.println("Progress Message : " + mMessage);
+		if (getDialog() != null) {
+			getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+				
+				@Override
+				public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+	
+					if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
+						HttpAsyncManager.stopSyncTask();
+						dismiss();
+						return true;
+					} else {
+						return false;
+					}
+				}
+			});
+		}
 	}
 	
 	public void setProgress(int progress) {
@@ -89,5 +106,13 @@ public class ProgressDlgFragment extends DialogFragment {
 		}
 		
 		mSyncMessage.setText(message);
+	}
+	
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		
+	    if (HttpAsyncManager.stopSyncTask()) {
+			super.onCancel(dialog);
+	    }
 	}
 }

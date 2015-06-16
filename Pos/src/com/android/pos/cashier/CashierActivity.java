@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncManager;
@@ -33,7 +32,6 @@ import com.android.pos.popup.search.CustomerDlgFragment;
 import com.android.pos.popup.search.CustomerSelectionListener;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.ConfirmationUtil;
-import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.PrintUtil;
@@ -137,12 +135,6 @@ public class CashierActivity extends BaseActivity
 		
 		mState = Constant.CASHIER_STATE_CASHIER;
 		
-		DbUtil.initDb(this);
-		
-		if (Config.isDevelopment()) {
-			MerchantUtil.getMerchant();
-		}
-		
 		mTransactionDaoService = new TransactionsDaoService();
 		mTransactionItemDaoService = new TransactionItemDaoService();
 		mProductDaoService = new ProductDaoService();
@@ -168,7 +160,11 @@ public class CashierActivity extends BaseActivity
 			
 			isTryToConnect = true;
 			connectToMerchantPrinter();
-		}
+		
+		} else {
+			
+			PrintUtil.initBluetooth(this);
+		} 
 	}
 	
 	@Override
@@ -176,11 +172,13 @@ public class CashierActivity extends BaseActivity
 		
 		super.onStart();
 
-		setSelectedMenu(Constant.MENU_CASHIER);
+		setSelectedMenu(getString(R.string.menu_cashier));
 		
 		if (PrintUtil.isPrinterActive() && !PrintUtil.isPrinterConnected() && !UserUtil.isWaitress()) {
-			setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
-		}	
+			setMessage(getString(R.string.printer_please_check_printer));
+		} else {
+			clearMessage();
+		}
 		
 		mOrderFragment.setCashierState(mState);
 	}
@@ -195,12 +193,12 @@ public class CashierActivity extends BaseActivity
 			
 			if (!CommonUtil.isEmpty(printerAddress)) {
 				
-				setMessage(Constant.MESSAGE_PRINTER_CONNECTED_TO + printerAddress);
+				setMessage(getString(R.string.printer_connected_to, printerAddress));
 				connectToPrinter(printerType, printerAddress);
 			
 			} else {
 				
-				setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
+				setMessage(getString(R.string.printer_please_check_printer));
 				PrintUtil.selectBluetoothPrinter();
 			}
 		}
@@ -216,6 +214,15 @@ public class CashierActivity extends BaseActivity
 		
 		messageText.setText(Constant.EMPTY_STRING);
 		messagePanel.setVisibility(View.GONE);
+	}
+	
+	public void disablePrinterOption() {
+		
+		clearMessage();
+		
+		if (mSelectPrinterItem != null) {
+			mSelectPrinterItem.setVisible(false);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -405,6 +412,7 @@ public class CashierActivity extends BaseActivity
 				
 			case R.id.menu_item_select_printer:
 				
+				PrintUtil.initBluetooth(this);
 				PrintUtil.selectBluetoothPrinter();
 	
 				return true;
@@ -511,7 +519,7 @@ public class CashierActivity extends BaseActivity
 				
 				if (!PrintUtil.isBluetoothEnabled()) {
 					
-					NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_PRINTER_BLUETOOTH_INACTIVE);
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.printer_bluetooth_inactive));
 	    			
 	    			return;
 				}
@@ -521,7 +529,7 @@ public class CashierActivity extends BaseActivity
 		};
 	}
 	
-	public TransactionItem getTransactionItem(Product product, Integer price, Employee personInCharge, int quantity, String remarks) {
+	public TransactionItem getTransactionItem(Product product, Float price, Employee personInCharge, Float quantity, String remarks) {
 
 		TransactionItem transItem = new TransactionItem();
 
@@ -538,16 +546,16 @@ public class CashierActivity extends BaseActivity
 			transItem.setCommision(product.getCommision());
 		}
 		
-		int costPrice = product.getCostPrice() != null ? product.getCostPrice() : CommonUtil.getCurrentPrice(product);
+		float costPrice = product.getCostPrice() != null ? product.getCostPrice() : CommonUtil.getCurrentPrice(product);
 		
 		transItem.setPrice(price);
 		transItem.setCostPrice(costPrice);
 		
-		int discountAmount = 0;
+		float discountAmount = 0;
 		
 		if (mDiscount != null) {
 			
-			int discountPercentage = mDiscount.getPercentage();
+			float discountPercentage = mDiscount.getPercentage();
 			discountAmount = discountPercentage * transItem.getPrice() / 100;
 		}
 		
@@ -568,18 +576,22 @@ public class CashierActivity extends BaseActivity
 	public void onProductSelected(Product product) {
 		
 		if (!PrintUtil.isPrinterConnected()) {
-			setMessage(Constant.MESSAGE_PRINTER_PLEASE_CHECK_PRINTER);
+			setMessage(getString(R.string.printer_please_check_printer));
 			setSelectPrinterVisible(true);
 		}
 		
-		onProductSelected(product, CommonUtil.getCurrentPrice(product), null, 0, Constant.EMPTY_STRING);
+		onProductSelected(product, CommonUtil.getCurrentPrice(product), null, Float.valueOf(0), Constant.EMPTY_STRING);
 	}
 
 	@Override
-	public void onProductSelected(Product product, int price, Employee personInCharge, int quantity, String remarks) {
-
+	public void onProductSelected(Product product, Float price, Employee personInCharge, Float quantity, String remarks) {
+		
+		if (mProductCountDlgFragment.isAdded()) {
+			return;
+		}
+		
 		mSelectedProduct = product;
-
+		
 		mProductCountDlgFragment.show(getFragmentManager(), mProductCountDlgFragmentTag);
 		mProductCountDlgFragment.setProduct(product, price, personInCharge, quantity, remarks);
 		
@@ -587,7 +599,7 @@ public class CashierActivity extends BaseActivity
 	}
 
 	@Override
-	public void onProductQuantitySelected(Product product, Integer price, Employee personInCharge, int quantity, String remarks) {
+	public void onProductQuantitySelected(Product product, Float price, Employee personInCharge, Float quantity, String remarks) {
 
 		mSelectedProduct = null;
 
@@ -602,28 +614,44 @@ public class CashierActivity extends BaseActivity
 	}
 
 	@Override
-	public void onPaymentRequested(int totalBill) {
+	public void onPaymentRequested(Float totalBill) {
+		
+		if (mPaymentDlgFragment.isAdded()) {
+			return;
+		}
 		
 		mPaymentDlgFragment.show(getFragmentManager(), mPaymentDlgFragmentTag);
 		mPaymentDlgFragment.setTotalBill(totalBill);
 	}
 	
 	@Override
-	public void onOrderRequested(int totalOrder) {
-
+	public void onOrderRequested(Integer totalOrder) {
+		
+		if (mOrderDlgFragment.isAdded()) {
+			return;
+		}
+		
 		mOrderDlgFragment.show(getFragmentManager(), mOrderDlgFragmentTag);
 		mOrderDlgFragment.setTotalOrder(totalOrder);
 	}
 
 	@Override
-	public void onPaymentInfoProvided(Customer customer, String paymentType, int totalBill, int payment) {
-
+	public void onPaymentInfoProvided(Customer customer, String paymentType, Float totalBill, Float payment) {
+		
+		if (mPaymentSummaryDlgFragment.isAdded()) {
+			return;
+		}
+		
 		mPaymentSummaryDlgFragment.show(getFragmentManager(), mPaymentSummaryDlgFragmentTag);
 		mPaymentSummaryDlgFragment.setPaymentInfo(customer, paymentType, totalBill, payment);
 	}
 	
 	@Override
 	public void onOrderInfoProvided(String orderReference, String orderType) {
+		
+		if (mOrderSummaryDlgFragment.isAdded()) {
+			return;
+		}
 		
 		mOrderSummaryDlgFragment.show(getFragmentManager(), mOrderSummaryDlgFragmentTag);
 		mOrderSummaryDlgFragment.setOrderInfo(orderReference, orderType);
@@ -635,7 +663,7 @@ public class CashierActivity extends BaseActivity
 		transaction.setOrderType(mOrderType);
 		transaction.setOrderReference(mOrderReference);
 		
-		int totalBill = 0;
+		float totalBill = 0;
 		
 		for (TransactionItem transactionItem : mTransactionItems) {
 			totalBill += transactionItem.getQuantity() * transactionItem.getPrice();
@@ -643,7 +671,7 @@ public class CashierActivity extends BaseActivity
 		
 		transaction.setBillAmount(totalBill);
 		
-		int discountAmount = 0;
+		float discountAmount = 0;
 		
 		if (mDiscount != null) {
 			
@@ -662,12 +690,12 @@ public class CashierActivity extends BaseActivity
 		
 		Merchant merchant = MerchantUtil.getMerchant();
 		
-		int taxAmount = merchant.getTaxPercentage() * totalBill / 100;
+		float taxAmount = merchant.getTaxPercentage() * totalBill / 100;
 		
 		transaction.setTaxPercentage(merchant.getTaxPercentage());
 		transaction.setTaxAmount(taxAmount);
 		
-		int serviceChargeAmount = merchant.getServiceChargePercentage() * totalBill / 100;
+		float serviceChargeAmount = merchant.getServiceChargePercentage() * totalBill / 100;
 		
 		transaction.setServiceChargePercentage(merchant.getServiceChargePercentage());
 		transaction.setServiceChargeAmount(serviceChargeAmount);
@@ -699,7 +727,6 @@ public class CashierActivity extends BaseActivity
 				inventory.setBillReferenceNo(transaction.getTransactionNo());
 				inventory.setProduct(transactionItem.getProduct());
 				inventory.setProductName(transactionItem.getProductName());
-				inventory.setQuantityStr(String.valueOf(transactionItem.getQuantity()));
 				inventory.setQuantity(-transactionItem.getQuantity());
 				inventory.setProductCostPrice(transactionItem.getCostPrice());
 				inventory.setDeliveryDate(new Date());
@@ -772,6 +799,10 @@ public class CashierActivity extends BaseActivity
 			
 			mIsSubmitOrder = true;
 			
+			if (mProgressDialog.isAdded()) {
+				return;
+			}
+			
 			mProgressDialog.show(getFragmentManager(), progressDialogTag);
 			
 			if (mHttpAsyncManager == null) {
@@ -790,7 +821,7 @@ public class CashierActivity extends BaseActivity
 		try {
 			PrintUtil.print(transaction);
 		} catch (Exception e) {
-			showMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+			showMessage(getString(R.string.printer_cant_print));
 		}
 	}
 	
@@ -802,10 +833,10 @@ public class CashierActivity extends BaseActivity
 		try {
 			PrintUtil.printOrder(order);
 		} catch (Exception e) {
-			showMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+			showMessage(getString(R.string.printer_cant_print));
 		}
 		
-		String message = "Cetak nota untuk pelanggan ?";
+		String message = getString(R.string.confirm_print_customer_copy);
 		
 		ConfirmationUtil.confirmTask(getFragmentManager(), this, ConfirmationUtil.PRINT_ORDER, message);
 	}
@@ -814,9 +845,20 @@ public class CashierActivity extends BaseActivity
 	public void onSelectDiscount() {
 		
 		if (Constant.DISCOUNT_TYPE_NOMINAL.equals(MerchantUtil.getMerchant().getDiscountType())) {
+			
+			if (mDiscountNominalDlgFragment.isAdded()) {
+				return;
+			}
+			
 			mDiscountNominalDlgFragment.show(getFragmentManager(), mDiscountNominalDlgFragmentTag);
 			mDiscountNominalDlgFragment.setDiscount(mDiscount);
+			
 		} else {
+			
+			if (mDiscountPercentageDlgFragment.isAdded()) {
+				return;
+			}
+			
 			mDiscountPercentageDlgFragment.show(getFragmentManager(), mDiscountPercentageDlgFragmentTag);
 		}
 	}
@@ -846,9 +888,9 @@ public class CashierActivity extends BaseActivity
 		
 		for (TransactionItem transactionItem : mTransactionItems) {
 			
-			int discountPercentage = 0;
-			int discountNominal = 0;
-			int discountAmount = 0;
+			float discountPercentage = 0;
+			float discountNominal = 0;
+			float discountAmount = 0;
 			
 			if (mDiscount != null) {
 				
@@ -868,6 +910,10 @@ public class CashierActivity extends BaseActivity
 	
 	public void onSelectCustomer() {
 		
+		if (mCustomerDlgFragment.isAdded()) {
+			return;
+		}
+		
 		mCustomerDlgFragment.show(getFragmentManager(), mCustomerDlgFragmentTag);
 	}
 	
@@ -879,12 +925,13 @@ public class CashierActivity extends BaseActivity
 	@Override
 	public void onConfirm(String task) {
 		
-		if (ConfirmationUtil.PRINT_ORDER.equals(task)) {
+		if (ConfirmationUtil.PRINT_ORDER.equals(task) &&
+			PrintUtil.isPrinterActive()) {
 			
 			try {
 				PrintUtil.printOrder(mOrder);
 			} catch (Exception e) {
-				showMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+				showMessage(getString(R.string.printer_cant_print));
 			}
 		
 		} else if (ConfirmationUtil.CANCEL_TRANSACTION.equals(task)) {
@@ -953,7 +1000,7 @@ public class CashierActivity extends BaseActivity
 			
 			mIsSubmitOrder = false;
 			
-			NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_ORDER_SUBMIT_OK);
+			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.order_submit_ok));
 		}
 		
 		onClearTransaction();
@@ -983,10 +1030,10 @@ public class CashierActivity extends BaseActivity
 			if (resultCode == Activity.RESULT_OK) {
 				
 				// Get the device Printer Type
-				String printerType = intent.getExtras().getString(CashierPaymentDeviceListActivity.EXTRA_PRINTER_TYPE);
+				String printerType = intent.getExtras().getString(CashierPrinterListActivity.EXTRA_PRINTER_TYPE);
 				
 				// Get the device MAC address
-				String address = intent.getExtras().getString(CashierPaymentDeviceListActivity.EXTRA_DEVICE_ADDRESS);
+				String address = intent.getExtras().getString(CashierPrinterListActivity.EXTRA_DEVICE_ADDRESS);
 				
 				Merchant merchant = MerchantUtil.getMerchant();
 				merchant.setPrinterType(printerType);
@@ -1005,7 +1052,7 @@ public class CashierActivity extends BaseActivity
 			// When the request to enable Bluetooth returns
 			if (resultCode == Activity.RESULT_OK) {
 				
-				setMessage(Constant.MESSAGE_PRINTER_CONNECTING);
+				setMessage(getString(R.string.printer_connecting));
 				
 				// Bluetooth is now enabled, so set up a chat session
 				PrintUtil.selectBluetoothPrinter();
@@ -1015,7 +1062,7 @@ public class CashierActivity extends BaseActivity
 			} else {
 
 				// User did not enable Bluetooth or an error occured
-				showMessage(Constant.MESSAGE_PRINTER_BLUETOOTH_INACTIVE);
+				showMessage(getString(R.string.printer_bluetooth_inactive));
 			}
 			
 			break;

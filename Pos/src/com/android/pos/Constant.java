@@ -9,6 +9,8 @@ public class Constant {
 	public static final String QUERY_LIMIT = "50";
 	
 	public static final String EMPTY_STRING = "";
+	public static final String SPACE_STRING = " ";
+	public static final String CR_STRING = "\r";
 	
 	public static final String STATUS_YES = "Y";
 	public static final String STATUS_NO = "N";
@@ -26,10 +28,6 @@ public class Constant {
 	public static final String USER_ROLE_ADMIN = "A";
 	public static final String USER_ROLE_WAITRESS = "W";
 	
-	public static final String USER_ROLE_CASHIER_DESC = "Kasir";
-	public static final String USER_ROLE_ADMIN_DESC = "Admin";
-	public static final String USER_ROLE_WAITRESS_DESC = "Pramuniaga";
-	
 	public static final String PRODUCT_QUANTITY = "PRODUCT_QUANTITY";
 	public static final String PRODUCT_REVENUE = "PRODUCT_REVENUE";
 	public static final String PRODUCT_PROFIT = "PRODUCT_PROFIT";
@@ -42,33 +40,18 @@ public class Constant {
 	public static final String DISCOUNT_TYPE_NOMINAL = "N";
 	public static final String DISCOUNT_TYPE_PERCENTAGE = "P";
 	
-	public static final String DISCOUNT_TYPE_NOMINAL_DESC = "Diskon";
-	
 	public static final String PRICE_TYPE_COUNT_1 = "1";
-	public static final String PRICE_TYPE_COUNT_1_DESC = "1 Tipe Harga";
-	
 	public static final String PRICE_TYPE_COUNT_2 = "2";
-	public static final String PRICE_TYPE_COUNT_2_DESC = "2 Tipe Harga";
-	
 	public static final String PRICE_TYPE_COUNT_3 = "3";
-	public static final String PRICE_TYPE_COUNT_3_DESC = "3 Tipe Harga";
+	
+	public static final String QUANTITY_TYPE_PIECE = "Pc";
+	public static final String QUANTITY_TYPE_METER = "M";
+	public static final String QUANTITY_TYPE_LITER = "L";
+	
+	public static final String FONT_SIZE_REGULAR = "R";
+	public static final String FONT_SIZE_SMALL = "S";
 	
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 200;
-	
-	public static final String MESSAGE_PRINTER_CANT_CONNECT = "Tidak dapat terhubung ke Printer";
-	public static final String MESSAGE_PRINTER_CONNECTION_LOST = "Koneksi ke Printer telah terputus";
-	public static final String MESSAGE_PRINTER_CONNECTED_TO = "Terkoneksi dengan Printer : ";
-	public static final String MESSAGE_PRINTER_CONNECTING = "Melaksanakan koneksi ke Printer ...";
-	public static final String MESSAGE_PRINTER_PLEASE_CHECK_PRINTER = "Tidak dapat terhubung ke Printer. Pastikan Printer anda aktif.";
-	public static final String MESSAGE_PRINTER_CONNECT_PRINTER_FROM_CASHIER = "Tidak dapat terhubung ke Printer.\nKoneksikan printer anda dari modul kasir.";
-	public static final String MESSAGE_PRINTER_CANT_PRINT = "Tidak dapat terhubung ke printer.\nStruk tidak dapat dicetak";
-	public static final String MESSAGE_PRINTER_BLUETOOTH_INACTIVE = "Bluetooth tidak aktif, aktifkan bluetooth terlebih dahulu.";
-	
-	public static final String MESSAGE_SERVER_CANT_CONNECT = "Tidak dapat terhubung ke Server!";
-	public static final String MESSAGE_SERVER_SYNC_ERROR = "Error dalam sync data ke Server!";
-	
-	public static final String MESSAGE_ORDER_SUBMIT_OK = "Pesanan telah berhasil disubmit ke Server!";
-	public static final String MESSAGE_ORDER_DOWNLOAD_OK = "Pesanan telah berhasil didownload dari Server!";
 	
 	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	public static final String TASK_VALIDATE_USER = "TASK_VALIDATE_USER";
@@ -175,36 +158,4 @@ public class Constant {
 	public static final String ACCESS_REPORT_CASHFLOW = "RCFL";
 	public static final String ACCESS_FAVORITE_CUSTOMER = "FVCS";
 	public static final String ACCESS_FAVORITE_SUPPLIER = "FVSP";
-	
-	public static final String MENU_USER = "User";
-	public static final String MENU_CASHIER = "Kasir";
-	public static final String MENU_WAITRESS = "Pramuniaga";
-	public static final String MENU_ORDER = "Pemesanan";
-	public static final String MENU_DATA = "Data";
-	public static final String MENU_CUSTOMER = "Data Pelanggan";
-	public static final String MENU_PATIENT = "Data Pasien";
-	public static final String MENU_MERCHANT = "Data Merchant";
-	public static final String MENU_DATA_MANAGEMENT = "Referensi";
-	public static final String MENU_INVENTORY = "Data Inventori";
-	public static final String MENU_USER_ACCESS = "Data Pengguna";
-	public static final String MENU_BILLS = "Data Pengeluaran";
-	public static final String MENU_REPORT = "Laporan";
-	public static final String MENU_REPORT_TRANSACTION = "Laporan Transaksi";
-	public static final String MENU_REPORT_PRODUCT_STATISTIC = "Laporan Penjualan";
-	public static final String MENU_REPORT_COMMISION = "Laporan Komisi";
-	public static final String MENU_REPORT_INVENTORY = "Laporan Inventori";
-	public static final String MENU_REPORT_CASHFLOW = "Laporan Keuangan";
-	public static final String MENU_FAVORITE = "Favorit";
-	public static final String MENU_FAVORITE_CUSTOMER = "Pelanggan Favorit";
-	public static final String MENU_FAVORITE_PATIENT = "Pasien Favorit";
-	public static final String MENU_FAVORITE_SUPPLIER = "Supplier Favorit";
-	public static final String MENU_REFERENCE_MERCHANT = "Merchant";
-	public static final String MENU_REFERENCE_PRODUCT_GROUP = "Group Produk";
-	public static final String MENU_REFERENCE_PRODUCT = "Produk";
-	public static final String MENU_REFERENCE_EMPLOYEE = "Pegawai";
-	public static final String MENU_REFERENCE_SUPPLIER = "Supplier";
-	public static final String MENU_REFERENCE_DISCOUNT = "Diskon";
-	public static final String MENU_PRINTER = "Printer";
-	public static final String MENU_EXIT = "Keluar";
-	public static final String MENU_SYNC = "Sync";
 }

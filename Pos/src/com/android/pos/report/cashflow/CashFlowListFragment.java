@@ -323,7 +323,7 @@ public class CashFlowListFragment extends BaseFragment
 		
 		setBackButtonVisible(true);
 		
-		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(cashFlowYear.getYear()));
+		mNavigationTitle.setText(getString(R.string.report_year, CommonUtil.formatYear(cashFlowYear.getYear())));
 		
 		mNavText.setText(CommonUtil.formatCurrency(getCashFlowMonthsTotalAmount(mCashFlowMonths)));
 		

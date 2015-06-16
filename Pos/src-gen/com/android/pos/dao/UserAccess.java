@@ -14,6 +14,7 @@ import de.greenrobot.dao.DaoException;
 public class UserAccess implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private long userId;
     private String name;
@@ -45,8 +46,9 @@ public class UserAccess implements Serializable {
         this.id = id;
     }
 
-    public UserAccess(Long id, long merchantId, long userId, String name, String code, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public UserAccess(Long id, String refId, long merchantId, long userId, String name, String code, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.userId = userId;
         this.name = name;
@@ -71,6 +73,14 @@ public class UserAccess implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {

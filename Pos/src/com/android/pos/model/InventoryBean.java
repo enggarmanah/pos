@@ -1,12 +1,11 @@
 package com.android.pos.model;
 
 public class InventoryBean extends BaseBean {
-
+	
 	private Long product_id;
 	private String product_name;
-	private Integer product_cost_price;
-	private String quantity_str;
-	private Integer quantity;
+	private Float product_cost_price;
+	private Float quantity;
 	private Long bill_id;
 	private String bill_reference_no;
 	private Long supplier_id;
@@ -14,7 +13,7 @@ public class InventoryBean extends BaseBean {
 	private java.util.Date delivery_date;
 	private String remarks;
 	private String status;
-
+	
 	public Long getProduct_id() {
 		return product_id;
 	}
@@ -31,27 +30,19 @@ public class InventoryBean extends BaseBean {
 		this.product_name = product_name;
 	}
 	
-	public Integer getProduct_cost_price() {
+	public Float getProduct_cost_price() {
 		return product_cost_price;
 	}
 
-	public void setProduct_cost_price(Integer product_cost_price) {
+	public void setProduct_cost_price(Float product_cost_price) {
 		this.product_cost_price = product_cost_price;
 	}
 
-	public String getQuantity_str() {
-		return quantity_str;
-	}
-
-	public void setQuantity_str(String quantity_str) {
-		this.quantity_str = quantity_str;
-	}
-
-	public Integer getQuantity() {
+	public Float getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(Float quantity) {
 		this.quantity = quantity;
 	}
 

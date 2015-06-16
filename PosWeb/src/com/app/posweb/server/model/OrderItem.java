@@ -20,7 +20,7 @@ public class OrderItem {
 	private String order_no;
     private long product_id;
     private String product_name;
-    private Integer quantity;
+    private Float quantity;
     private String remarks;
 
 	public void setBean(OrderItem bean) {
@@ -92,11 +92,11 @@ public class OrderItem {
 		this.product_name = product_name;
 	}
 
-	public Integer getQuantity() {
+	public Float getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(Float quantity) {
 		this.quantity = quantity;
 	}
 

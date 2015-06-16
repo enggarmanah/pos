@@ -22,11 +22,12 @@ import com.android.pos.dao.UserDaoService;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 import com.android.pos.waitress.WaitressActivity;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class UserLoginActivity extends Activity {
 
@@ -50,8 +51,6 @@ public class UserLoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
     	
 		setContentView(R.layout.auth_user_login_activity);
-		
-		DbUtil.initDb(this);
 		
 		mMerchantNameTxt = (TextView) findViewById(R.id.merchantNameText);
 		mMerchantAddrTxt = (TextView) findViewById(R.id.merchantAddrText);
@@ -84,7 +83,7 @@ public class UserLoginActivity extends Activity {
 		String contact = mMerchant.getAddress();
 		
 		if (!CommonUtil.isEmpty(mMerchant.getTelephone())) {
-			contact = contact + "\nTelp. " + mMerchant.getTelephone();
+			contact = contact + "\n" + getString(R.string.login_telephone) + " " + mMerchant.getTelephone();
 		}
 		
 		mMerchantNameTxt.setText(name);
@@ -122,6 +121,9 @@ public class UserLoginActivity extends Activity {
 					
 				} else {
 					
+					Tracker t = CommonUtil.getTracker();
+					t.send(new HitBuilders.EventBuilder().setCategory("CAT1").setAction("ACTION1").setLabel("LABEL1").build());
+					
 					User user = mUserDaoService.validateUser(mMerchant.getId(), loginId, password);
 					
 					if (user != null) {
@@ -148,7 +150,7 @@ public class UserLoginActivity extends Activity {
 						
 					} else {
 						
-						NotificationUtil.setAlertMessage(getFragmentManager(), "ID Pengguna & password salah!");
+						NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_user_authentication_error));
 		    			
 		    			mPasswordTxt.setText(Constant.EMPTY_STRING);
 		    			mPasswordTxt.requestFocus();

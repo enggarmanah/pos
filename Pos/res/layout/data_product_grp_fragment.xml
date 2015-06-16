@@ -8,7 +8,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_N" />
+                android:text="@string/field_name_fl" />
             
             <TextView
                 style="@style/FormTextStyle"

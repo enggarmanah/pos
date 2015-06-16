@@ -12,13 +12,14 @@ import de.greenrobot.dao.DaoException;
  */
 @SuppressWarnings("serial")
 public class Discount implements Serializable {
-
+	
     private Long id;
+    private String refId;
     private long merchantId;
     /** Not-null value. */
     private String name;
-    private Integer percentage;
-    private Integer amount;
+    private Float percentage;
+    private Float amount;
     private String status;
     private String uploadStatus;
     private String createBy;
@@ -43,8 +44,9 @@ public class Discount implements Serializable {
         this.id = id;
     }
 
-    public Discount(Long id, long merchantId, String name, Integer percentage, Integer amount, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Discount(Long id, String refId, long merchantId, String name, Float percentage, Float amount, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.name = name;
         this.percentage = percentage;
@@ -71,6 +73,14 @@ public class Discount implements Serializable {
         this.id = id;
     }
 
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
     public long getMerchantId() {
         return merchantId;
     }
@@ -89,19 +99,19 @@ public class Discount implements Serializable {
         this.name = name;
     }
 
-    public Integer getPercentage() {
+    public Float getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(Integer percentage) {
+    public void setPercentage(Float percentage) {
         this.percentage = percentage;
     }
 
-    public Integer getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 

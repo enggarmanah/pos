@@ -90,9 +90,9 @@ public abstract class BaseSearchFragment<T> extends BaseFragment
 					String message = Constant.EMPTY_STRING;
 					
 					if (mIsEndOfList) {
-						message = "Tidak lagi terdapat data untuk ditampilkan!";
+						message = getString(R.string.alert_data_no_more);
 					} else {
-						message = "Menampilkan data selanjutnya ...";
+						message = getString(R.string.alert_data_show_next);
 					}
 					
 					Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);

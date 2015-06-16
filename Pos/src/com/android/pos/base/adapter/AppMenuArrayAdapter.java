@@ -3,7 +3,6 @@ package com.android.pos.base.adapter;
 import java.util.List;
 
 import com.android.pos.Config;
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
@@ -84,27 +83,35 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		
 		boolean isSubMenu = false;
 		
-		if (Constant.MENU_USER.equals(menu)) {
+		if (context.getString(R.string.menu_user).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_account_circle_black));
-		} else if (Constant.MENU_CASHIER.equals(menu)) {
+		} else if (context.getString(R.string.menu_cashier).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_home_black));
-		} else if (Constant.MENU_WAITRESS.equals(menu)) {
+		} else if (context.getString(R.string.menu_waitress).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_home_black));
-		} else if (Constant.MENU_ORDER.equals(menu)) {
+		} else if (context.getString(R.string.menu_order).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_content_paste_black));
-		} else if (Constant.MENU_REPORT.equals(menu)) {
+		} else if (context.getString(R.string.menu_report).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_assessment_black));
-		} else if (Constant.MENU_FAVORITE.equals(menu)) {
+		} else if (context.getString(R.string.menu_favorite).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_outline_black));
-		} else if (Constant.MENU_DATA.equals(menu)) {
+		} else if (context.getString(R.string.menu_bills).equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_local_atm_black));
+		} else if (context.getString(R.string.menu_inventory).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_view_list_black));
-		} else if (Constant.MENU_SYNC.equals(menu)) {
+		} else if (UserUtil.isRoot() && context.getString(R.string.menu_merchant).equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_view_list_black));
+		} else if (context.getString(R.string.menu_customer).equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_person_black));
+		} else if (context.getString(R.string.menu_user_access).equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_vpn_key_black));
+		} else if (context.getString(R.string.menu_sync).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_cached_black));
-		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
+		} else if (context.getString(R.string.menu_data_management).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_turned_in_not_black));
-		} else if (Constant.MENU_PRINTER.equals(menu)) {
+		} else if (context.getString(R.string.menu_printer).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_print_black));
-		} else if (Constant.MENU_EXIT.equals(menu)) {
+		} else if (context.getString(R.string.menu_exit).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_exit_to_app_black));
 		} else {
 			menuImage.setImageDrawable(null);
@@ -117,7 +124,7 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuText.setTextColor(context.getResources().getColor(R.color.text_dark));
 		}
 		
-		if (Constant.MENU_USER.equals(menu)) {
+		if (context.getString(R.string.menu_user).equals(menu)) {
 			
 			if (UserUtil.getUser() != null) {
 				menuText.setText(UserUtil.getUser().getName());
@@ -126,7 +133,7 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuText.setText(menu);
 		}
 		
-		if (Constant.MENU_REPORT.equals(menu)) {
+		if (context.getString(R.string.menu_report).equals(menu)) {
 			
 			countText.setVisibility(View.VISIBLE);
 			
@@ -145,16 +152,16 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 				countText.setVisibility(View.GONE);
 			}
 			
-		} else if (Constant.MENU_REPORT_INVENTORY.equals(menu) ||
-			Constant.MENU_REPORT_CASHFLOW.equals(menu)) {
+		} else if (context.getString(R.string.menu_report_inventory).equals(menu) ||
+				context.getString(R.string.menu_report_cashflow).equals(menu)) {
 			
 			countText.setVisibility(View.VISIBLE);
 			
 			Integer count = 0;
 			
-			if (Constant.MENU_REPORT_INVENTORY.equals(menu)) {
+			if (context.getString(R.string.menu_report_inventory).equals(menu)) {
 				count = MerchantUtil.getBelowStockLimitProductCount();
-			} else if (Constant.MENU_REPORT_CASHFLOW.equals(menu)) {
+			} else if (context.getString(R.string.menu_report_cashflow).equals(menu)) {
 				count = MerchantUtil.getPastDueBillsCount();
 			}
 			

@@ -4,7 +4,8 @@ public class CodeBean {
 
 	private String code;
 	private String label;
-
+	private String order;
+	
 	public String getCode() {
 		return code;
 	}
@@ -21,6 +22,14 @@ public class CodeBean {
 		this.label = label;
 	}
 	
+	public String getOrder() {
+		return order;
+	}
+
+	public void setOrder(String order) {
+		this.order = order;
+	}
+
 	public static String getNvlCode(CodeBean bean) {
 		
 		if (bean == null) {

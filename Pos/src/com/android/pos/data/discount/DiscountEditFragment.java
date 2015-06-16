@@ -65,7 +65,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     	if (discount != null) {
     		
     		mNameText.setText(discount.getName());
-    		mPercentageText.setText(CommonUtil.intToStr(discount.getPercentage()));
+    		mPercentageText.setText(CommonUtil.floatToStr(discount.getPercentage()));
     		
     		showView();
     		
@@ -79,7 +79,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     protected void saveItem() {
     	
     	String name = mNameText.getText().toString();
-    	Integer percentage = CommonUtil.strToInt(mPercentageText.getText().toString());
+    	Float percentage = CommonUtil.strToFloat(mPercentageText.getText().toString());
     	
     	if (mItem != null) {
     		
@@ -88,7 +88,7 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     		mItem.setMerchantId(merchantId);
     		mItem.setName(name);
     		mItem.setPercentage(percentage);
-    		mItem.setAmount(0);
+    		mItem.setAmount(Float.valueOf(0));
     		mItem.setStatus(Constant.STATUS_ACTIVE);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);

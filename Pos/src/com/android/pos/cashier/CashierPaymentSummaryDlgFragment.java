@@ -12,6 +12,7 @@ import com.android.pos.dao.Transactions;
 import com.android.pos.dao.User;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.PrintUtil;
 import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
@@ -38,9 +39,9 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 	
 	Customer mCustomer;
 	String mPaymentType;
-	int mTotalBill;
-	int mPayment;
-	int mChange;
+	Float mTotalBill;
+	Float mPayment;
+	Float mChange;
 
 	CashierActionListener mActionListener;
 
@@ -61,9 +62,9 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 
 		if (savedInstanceState != null) {
 			mCustomer = (Customer) savedInstanceState.getSerializable(CUSTOMER);
-			mTotalBill = (Integer) savedInstanceState.getSerializable(TOTAL_BILL);
+			mTotalBill = (Float) savedInstanceState.getSerializable(TOTAL_BILL);
 			mPaymentType = (String) savedInstanceState.getSerializable(PAYMENT_TYPE);
-			mPayment = (Integer) savedInstanceState.getSerializable(PAYMENT);
+			mPayment = (Float) savedInstanceState.getSerializable(PAYMENT);
 			mChange = mPayment - mTotalBill;
 		}
 	}
@@ -149,7 +150,11 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 				Transactions transaction = getTransaction();
 				
 				mActionListener.onPaymentCompleted(transaction);
-				mActionListener.onPrintReceipt(transaction);
+				
+				if (PrintUtil.isPrinterActive()) {
+					mActionListener.onPrintReceipt(transaction);
+				}
+				
 				mActionListener.onClearTransaction();
 					
 				dismiss();
@@ -169,7 +174,7 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 		};
 	}
 
-	public void setPaymentInfo(Customer customer, String paymentType, int totalBill, int payment) {
+	public void setPaymentInfo(Customer customer, String paymentType, Float totalBill, Float payment) {
 
 		mCustomer = customer;
 		mPaymentType = paymentType;

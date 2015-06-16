@@ -7,10 +7,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.Transactions;
+import com.android.pos.dao.TransactionsDao;
 import com.android.pos.dao.User;
+import com.android.pos.dao.UserAccess;
+import com.android.pos.dao.UserAccessDao;
 import com.android.pos.dao.UserDao;
-import com.android.pos.model.UserBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.model.UserBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
@@ -21,8 +25,14 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class UserDaoService {
 	
 	private UserDao userDao = DbUtil.getSession().getUserDao();
+	private UserAccessDao userAccessDao = DbUtil.getSession().getUserAccessDao();
+	private TransactionsDao transactionDao = DbUtil.getSession().getTransactionsDao();
 	
 	public void addUser(User user) {
+		
+		if (CommonUtil.isEmpty(user.getRefId())) {
+			user.setRefId(CommonUtil.generateRefId());
+		}
 		
 		Long id = userDao.insert(user);
 		user.setId(id);
@@ -107,6 +117,10 @@ public class UserDaoService {
 	
 	public void updateUsers(List<UserBean> users) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<UserBean> shiftedBeans = new ArrayList<UserBean>();
+		
 		for (UserBean bean : users) {
 			
 			boolean isAdd = false;
@@ -116,6 +130,10 @@ public class UserDaoService {
 			if (user == null) {
 				user = new User();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(user.getRefId(), bean.getRef_id())) {
+				UserBean shiftedBean = BeanUtil.getBean(user);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(user, bean);
@@ -125,7 +143,49 @@ public class UserDaoService {
 			} else {
 				userDao.update(user);
 			}
-		} 
+		}
+				
+		for (UserBean bean : shiftedBeans) {
+			
+			User user = new User();
+			BeanUtil.updateBean(user, bean);
+			
+			Long oldId = user.getId();
+			
+			user.setId(null);
+			user.setUploadStatus(Constant.STATUS_YES);
+			
+			Long newId = userDao.insert(user);
+			
+			updateUserAccessFk(oldId, newId);
+			updateTransactionsFk(oldId, newId);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
+	}
+	
+	private void updateUserAccessFk(Long oldId, Long newId) {
+		
+		User user = userDao.load(oldId);
+		
+		for (UserAccess ua : user.getUserAccessList()) {
+			ua.setUserId(newId);
+			ua.setUploadStatus(Constant.STATUS_YES);
+			userAccessDao.update(ua);
+		}
+	}
+		
+	private void updateTransactionsFk(Long oldId, Long newId) {
+		
+		User user = userDao.load(oldId);
+		
+		for (Transactions transactions : user.getTransactionsList()) {
+			
+			transactions.setCashierId(newId);
+			transactions.setUploadStatus(Constant.STATUS_YES);
+			transactionDao.update(transactions);
+		}
 	}
 	
 	public void updateUserStatus(List<SyncStatusBean> syncStatusBeans) {

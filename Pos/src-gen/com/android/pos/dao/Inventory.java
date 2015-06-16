@@ -10,17 +10,16 @@ import de.greenrobot.dao.DaoException;
 /**
  * Entity mapped to table INVENTORY.
  */
-
 @SuppressWarnings("serial")
 public class Inventory implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private long productId;
     private String productName;
-    private Integer productCostPrice;
-    private String quantityStr;
-    private Integer quantity;
+    private Float productCostPrice;
+    private Float quantity;
     private Long billId;
     private String billReferenceNo;
     private Long supplierId;
@@ -60,13 +59,13 @@ public class Inventory implements Serializable {
         this.id = id;
     }
 
-    public Inventory(Long id, long merchantId, long productId, String productName, Integer productCostPrice, String quantityStr, Integer quantity, Long billId, String billReferenceNo, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Inventory(Long id, String refId, long merchantId, long productId, String productName, Float productCostPrice, Float quantity, Long billId, String billReferenceNo, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.productId = productId;
         this.productName = productName;
         this.productCostPrice = productCostPrice;
-        this.quantityStr = quantityStr;
         this.quantity = quantity;
         this.billId = billId;
         this.billReferenceNo = billReferenceNo;
@@ -96,6 +95,14 @@ public class Inventory implements Serializable {
         this.id = id;
     }
 
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
+    }
+
     public long getMerchantId() {
         return merchantId;
     }
@@ -120,27 +127,19 @@ public class Inventory implements Serializable {
         this.productName = productName;
     }
 
-    public Integer getProductCostPrice() {
+    public Float getProductCostPrice() {
         return productCostPrice;
     }
 
-    public void setProductCostPrice(Integer productCostPrice) {
+    public void setProductCostPrice(Float productCostPrice) {
         this.productCostPrice = productCostPrice;
     }
 
-    public String getQuantityStr() {
-        return quantityStr;
-    }
-
-    public void setQuantityStr(String quantityStr) {
-        this.quantityStr = quantityStr;
-    }
-
-    public Integer getQuantity() {
+    public Float getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Float quantity) {
         this.quantity = quantity;
     }
 

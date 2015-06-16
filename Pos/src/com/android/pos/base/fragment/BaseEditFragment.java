@@ -8,11 +8,15 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.NotificationUtil;
+import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -29,8 +33,75 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     BaseItemListener<T> mItemListener;
     
     List<Object> mInputFields = new ArrayList<Object>();
+    List<Object> mRootInputFields = new ArrayList<Object>();
     
     protected boolean isEnableInputFields = false;
+    
+    protected List<FormField> mandatoryFields;
+	
+	protected boolean isValidated() {
+    	
+    	for (FormField field : mandatoryFields) {
+    		
+    		View input = field.getField();
+    		String value = null;
+    		
+    		if (input instanceof TextView) {
+    			
+    			TextView inputText = (TextView) input;
+    			value = inputText.getText().toString();
+    		}
+    		
+    		if (CommonUtil.isEmpty(value)) {
+    			
+    			String fieldLabel = getString(field.getLabel());
+    			
+    			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_empty_mandatory_field, fieldLabel));
+    			
+    			input.requestFocus();
+    			
+    			return false;
+    		}
+    	}
+    	
+    	return true;
+    }
+	
+	protected void highlightMandatoryFields() {
+    	
+		for (Object field : mInputFields) {
+			
+			if (field instanceof EditText) {
+    			
+				EditText editText = (EditText) field;
+    			editText.setBackground(getResources().getDrawable(R.drawable.selector_input_text));
+    		}
+		}
+		
+    	for (FormField field : mandatoryFields) {
+    		
+    		View input = field.getField();
+    		String value = null;
+    		EditText editText = null;
+    		
+    		if (input instanceof EditText) {
+    			
+    			editText = (EditText) input;
+    			value = editText.getText().toString();
+    			
+    			editText.addTextChangedListener(getMandataryFieldOnTextChangedListener(editText));
+    		}
+    		
+    		if (editText != null) {
+    			
+    			if (CommonUtil.isEmpty(value)) {
+    				editText.setBackground(getResources().getDrawable(R.drawable.selector_input_text_required));
+    			} else {
+    				editText.setBackground(getResources().getDrawable(R.drawable.selector_input_text));
+    			}
+    		}
+    	}
+    }
     
     @SuppressWarnings("unchecked")
 	@Override
@@ -73,21 +144,48 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     	mInputFields.add(field);
     }
     
+    protected void registerRootField(Object field) {
+    	
+    	mRootInputFields.add(field);
+    }
+    
     public void enableInputFields(boolean isEnabled) {
     	
     	isEnableInputFields = isEnabled;
     	
     	for (Object field : mInputFields) {
     		
-    		if (field instanceof TextView) {
+    		if (field instanceof EditText) {
     			
-    			TextView textView = (TextView) field;
-    			textView.setEnabled(isEnabled);
+    			EditText editText = (EditText) field;
+    			
+    			if (mRootInputFields.contains(field)) {
+    				
+    				if (UserUtil.isRoot()) {
+    					editText.setEnabled(isEnabled);
+    				} else {
+    					editText.setEnabled(false);
+    				}
     		
+    			} else {
+    				editText.setEnabled(isEnabled);
+    			}
+    			
     		} else if (field instanceof Spinner) {
     			
     			Spinner spinner = (Spinner) field;
-    			spinner.setEnabled(isEnabled);
+    			
+    			if (mRootInputFields.contains(field)) {
+    				
+    				if (UserUtil.isRoot()) {
+    					spinner.setEnabled(isEnabled);
+    				} else {
+    					spinner.setEnabled(false);
+    				}
+    		
+    			} else {
+    				spinner.setEnabled(isEnabled);
+    			}
     		}
     	}
     }
@@ -100,12 +198,14 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     	}
     }
     
-    protected View.OnClickListener getDateFieldOnClickListener(final EditText dateInput, final String fragmentTag) {
+    protected View.OnClickListener getDateFieldOnClickListener(final String fragmentTag) {
     	
     	return new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+				
+				EditText dateInput = (EditText) v;
 				
 				if (getActivity().getCurrentFocus() != null) {
 					getActivity().getCurrentFocus().clearFocus();
@@ -119,25 +219,30 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 					fragment = new DatePickerFragment(dateInput);
 				}
 				
+				if (fragment.isAdded()) {
+					return;
+				}
+				
 				fragment.show(getFragmentManager(), fragmentTag);
 			}
 		};
     }
     
-    protected View.OnFocusChangeListener getCurrencyFieldOnFocusChangeListener(final EditText numberInput) {
+    protected View.OnFocusChangeListener getCurrencyFieldOnFocusChangeListener() {
     	
     	return new View.OnFocusChangeListener() {
 			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				
+				EditText numberInput = (EditText) v;
 				String digits = numberInput.getText().toString();
 				
 				String value = Constant.EMPTY_STRING;
 				
 				if (hasFocus) {
-                	value = CommonUtil.formatString(CommonUtil.parseCurrency(digits));
-                	numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                	value = CommonUtil.formatPlainNumber(CommonUtil.parseFloatCurrency(digits));
+                	numberInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 	numberInput.setText(value);
 				} else {
 					value = CommonUtil.formatCurrency(digits);
@@ -148,20 +253,21 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 		};
     }
     
-    protected View.OnFocusChangeListener getNumberFieldOnFocusChangeListener(final EditText numberInput) {
+    protected View.OnFocusChangeListener getNumberFieldOnFocusChangeListener() {
     	
     	return new View.OnFocusChangeListener() {
 			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				
+				EditText numberInput = (EditText) v;
 				String digits = numberInput.getText().toString();
 				
 				String value = Constant.EMPTY_STRING;
 				
 				if (hasFocus) {
-                	value = CommonUtil.formatString(CommonUtil.parseCurrency(digits));
-                	numberInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                	value = CommonUtil.formatPlainNumber(CommonUtil.parseFloatNumber(digits));
+                	numberInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 	numberInput.setText(value);
 				} else {
 					value = CommonUtil.formatNumber(digits);
@@ -171,10 +277,36 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
 			}
 		};
     }
+    	
+    protected TextWatcher getMandataryFieldOnTextChangedListener(final EditText editText) {
+    	
+    	return new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				
+				String value = editText.getText().toString();
+				
+				if (CommonUtil.isEmpty(value)) {
+    				editText.setBackground(getResources().getDrawable(R.drawable.selector_input_text_required));
+    			} else {
+    				editText.setBackground(getResources().getDrawable(R.drawable.selector_input_text));
+    			}
+			}
+		};
+    }
     
     protected abstract void updateView(T product);
     
     protected void showView() {
+    	
+    	highlightMandatoryFields();
     	
     	if (getView().getVisibility() == View.INVISIBLE) {
     		
@@ -272,5 +404,33 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     public void addItem(T item) {
     	
     	this.mItem = item;
+    }
+    
+    protected class FormField {
+
+		View field;
+		int label;
+		
+		public FormField(View field, int label) {
+			
+			this.field = field;
+			this.label = label;
+		}
+		
+		public View getField() {
+			return field;
+		}
+
+		public void setField(View field) {
+			this.field = field;
+		}
+
+		public int getLabel() {
+			return label;
+		}
+
+		public void setLabel(int label) {
+			this.label = label;
+		}
     }
 }

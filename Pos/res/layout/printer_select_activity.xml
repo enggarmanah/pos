@@ -7,7 +7,7 @@
     android:background="@color/background">
 
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:background="@color/background_blue_dark"
         android:orientation="horizontal"
@@ -28,7 +28,7 @@
 
         <TextView
             style="@style/FormTextFirstLetterStyle"
-            android:text="@string/letter_P" />
+            android:text="@string/field_printer_required_fl" />
 
         <TextView
             style="@style/FormTextStyle"
@@ -45,14 +45,14 @@
 
         <TextView
             style="@style/FormTextFirstLetterStyle"
-            android:text="@string/letter_F" />
+            android:text="@string/field_printer_font_fl" />
 
         <TextView
             style="@style/FormTextStyle"
-            android:text="@string/field_printer_mini_font" />
+            android:text="@string/field_printer_font" />
 
         <Spinner
-            android:id="@+id/printerMiniFontSp"
+            android:id="@+id/printerFontSizeSp"
             style="@style/FormInputListStyle" />
     </LinearLayout>
 
@@ -62,7 +62,7 @@
 
         <TextView
             style="@style/FormTextFirstLetterStyle"
-            android:text="@string/letter_T" />
+            android:text="@string/field_printer_line_size_fl" />
 
         <TextView
             style="@style/FormTextStyle"

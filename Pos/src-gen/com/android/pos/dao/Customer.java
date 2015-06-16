@@ -3,7 +3,6 @@ package com.android.pos.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import com.android.pos.Constant;
 import com.android.pos.dao.DaoSession;
 
 import de.greenrobot.dao.DaoException;
@@ -16,11 +15,12 @@ import de.greenrobot.dao.DaoException;
 public class Customer implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private String name;
     private String telephone;
     private String email;
-    private String emailStatus = Constant.STATUS_NO;
+    private String emailStatus;
     private String address;
     private String status;
     private String uploadStatus;
@@ -47,8 +47,9 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
-    public Customer(Long id, long merchantId, String name, String telephone, String email, String emailStatus, String address, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Customer(Long id, String refId, long merchantId, String name, String telephone, String email, String emailStatus, String address, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.name = name;
         this.telephone = telephone;
@@ -75,6 +76,14 @@ public class Customer implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {

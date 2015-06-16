@@ -3,7 +3,7 @@ package com.android.pos.model;
 public class DiscountBean extends BaseBean {
 
 	private String name;
-	private Integer percentage;
+	private Float percentage;
 	private String status;
 
 	public String getName() {
@@ -14,11 +14,11 @@ public class DiscountBean extends BaseBean {
 		this.name = name;
 	}
 
-	public Integer getPercentage() {
+	public Float getPercentage() {
 		return percentage;
 	}
 
-	public void setPercentage(Integer percentage) {
+	public void setPercentage(Float percentage) {
 		this.percentage = percentage;
 	}
 

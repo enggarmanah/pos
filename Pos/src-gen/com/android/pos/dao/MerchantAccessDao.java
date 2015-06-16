@@ -29,15 +29,16 @@ public class MerchantAccessDao extends AbstractDao<MerchantAccess, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
-        public final static Property Code = new Property(3, String.class, "code", false, "CODE");
-        public final static Property Status = new Property(4, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(5, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(6, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(7, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(8, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(9, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property MerchantId = new Property(2, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property Name = new Property(3, String.class, "name", false, "NAME");
+        public final static Property Code = new Property(4, String.class, "code", false, "CODE");
+        public final static Property Status = new Property(5, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(6, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(7, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(8, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(9, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(10, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
 
     private DaoSession daoSession;
@@ -58,15 +59,16 @@ public class MerchantAccessDao extends AbstractDao<MerchantAccess, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'MERCHANT_ACCESS' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'NAME' TEXT," + // 2: name
-                "'CODE' TEXT," + // 3: code
-                "'STATUS' TEXT," + // 4: status
-                "'UPLOAD_STATUS' TEXT," + // 5: uploadStatus
-                "'CREATE_BY' TEXT," + // 6: createBy
-                "'CREATE_DATE' INTEGER," + // 7: createDate
-                "'UPDATE_BY' TEXT," + // 8: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 9: updateDate
+                "'REF_ID' TEXT," + // 1: refId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 2: merchantId
+                "'NAME' TEXT," + // 3: name
+                "'CODE' TEXT," + // 4: code
+                "'STATUS' TEXT," + // 5: status
+                "'UPLOAD_STATUS' TEXT," + // 6: uploadStatus
+                "'CREATE_BY' TEXT," + // 7: createBy
+                "'CREATE_DATE' INTEGER," + // 8: createDate
+                "'UPDATE_BY' TEXT," + // 9: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 10: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -84,46 +86,51 @@ public class MerchantAccessDao extends AbstractDao<MerchantAccess, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMerchantId());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindLong(3, entity.getMerchantId());
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(3, name);
+            stmt.bindString(4, name);
         }
  
         String code = entity.getCode();
         if (code != null) {
-            stmt.bindString(4, code);
+            stmt.bindString(5, code);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(5, status);
+            stmt.bindString(6, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(6, uploadStatus);
+            stmt.bindString(7, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(7, createBy);
+            stmt.bindString(8, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(8, createDate.getTime());
+            stmt.bindLong(9, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(9, updateBy);
+            stmt.bindString(10, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(10, updateDate.getTime());
+            stmt.bindLong(11, updateDate.getTime());
         }
     }
 
@@ -144,15 +151,16 @@ public class MerchantAccessDao extends AbstractDao<MerchantAccess, Long> {
     public MerchantAccess readEntity(Cursor cursor, int offset) {
         MerchantAccess entity = new MerchantAccess( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // merchantId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // code
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // status
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // uploadStatus
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // createBy
-            cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)), // createDate
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // updateBy
-            cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)) // updateDate
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getLong(offset + 2), // merchantId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // code
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // status
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // uploadStatus
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // createBy
+            cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)), // createDate
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // updateBy
+            cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)) // updateDate
         );
         return entity;
     }
@@ -161,15 +169,16 @@ public class MerchantAccessDao extends AbstractDao<MerchantAccess, Long> {
     @Override
     public void readEntity(Cursor cursor, MerchantAccess entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setCode(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setStatus(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setUploadStatus(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setCreateBy(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setCreateDate(cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)));
-        entity.setUpdateBy(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setUpdateDate(cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMerchantId(cursor.getLong(offset + 2));
+        entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setCode(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setStatus(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setUploadStatus(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setCreateBy(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setCreateDate(cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)));
+        entity.setUpdateBy(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setUpdateDate(cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)));
      }
     
     /** @inheritdoc */

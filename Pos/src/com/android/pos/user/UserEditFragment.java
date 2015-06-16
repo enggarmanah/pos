@@ -135,7 +135,9 @@ public class UserEditFragment extends BaseEditFragment<User> {
     			checkedButton.setEnabled(mIsEnableInputFields);
     			mCheckedButtons.add(checkedButton);
     			
-    			nameText.setText(userAccess.getName());
+    			char c = 8226;
+    			
+    			nameText.setText(c + " " + CodeUtil.getModuleAccessLabel(userAccess.getCode()));
     			
     			boolean isChecked = Constant.STATUS_YES.equals(userAccess.getStatus());
     			
@@ -219,11 +221,11 @@ public class UserEditFragment extends BaseEditFragment<User> {
     			userAccess.setUploadStatus(Constant.STATUS_YES);
         		
         		if (userAccess.getCreateBy() == null) {
-        			userAccess.setCreateBy(userId);
+        			userAccess.setCreateBy(loginId);
         			userAccess.setCreateDate(new Date());
         		}
         		
-        		userAccess.setUpdateBy(userId);
+        		userAccess.setUpdateBy(loginId);
         		userAccess.setUpdateDate(new Date());
         	}
     	}

@@ -17,7 +17,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_revenue"
-        android:icon="@drawable/ic_shopping_basket_white"
+        android:icon="@drawable/ic_star_outline_white"
         android:title="@string/info_revenue"
         android:showAsAction="ifRoom|collapseActionView">
     </item>

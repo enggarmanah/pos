@@ -13,13 +13,13 @@ public interface CashierActionListener {
 	
 	public void onProductSelected(Product product);
 	
-	public void onProductSelected(Product product, int price, Employee personInCharge, int quantity, String remarks);
+	public void onProductSelected(Product product, Float price, Employee personInCharge, Float quantity, String remarks);
 	
-	public void onPaymentRequested(int totalBill);
+	public void onPaymentRequested(Float totalBill);
 	
-	public void onOrderRequested(int totalOrder);
+	public void onOrderRequested(Integer totalOrder);
 	
-	public void onPaymentInfoProvided(Customer customer, String paymentType, int totalBill, int payment);
+	public void onPaymentInfoProvided(Customer customer, String paymentType, Float totalBill, Float payment);
 	
 	public void onOrderInfoProvided(String orderReference, String orderType);
 	

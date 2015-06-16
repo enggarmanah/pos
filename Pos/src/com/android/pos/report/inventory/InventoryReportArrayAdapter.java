@@ -74,7 +74,7 @@ public class InventoryReportArrayAdapter extends ArrayAdapter<Product> {
 			productStockText = viewHolder.productStockText;
 		}
 		
-		Integer stock = CommonUtil.getNvl(product.getStock());
+		Float stock = CommonUtil.getNvlFloat(product.getStock());
 		
 		productNameText.setText(product.getName());
 		productStockText.setText(CommonUtil.formatNumber(stock));

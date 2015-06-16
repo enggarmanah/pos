@@ -22,6 +22,8 @@ public class Base{
 	
 	protected Long remote_id;
 	
+	protected String ref_id;
+	
 	protected String create_by;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -34,7 +36,20 @@ public class Base{
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date sync_date;
-
+	
+	public void setBean(Base bean) {
+		
+		this.id = bean.getId();
+		this.merchant_id = bean.getMerchant_id();
+		this.remote_id = bean.getRemote_id();
+		this.ref_id = bean.getRef_id();
+		this.create_by = bean.getCreate_by();
+		this.create_date = bean.getCreate_date();
+		this.update_by = bean.getUpdate_by();
+		this.update_date = bean.getUpdate_date();
+		this.sync_date = bean.getSync_date();
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,6 +72,14 @@ public class Base{
 
 	public void setRemote_id(Long remote_id) {
 		this.remote_id = remote_id;
+	}
+	
+	public String getRef_id() {
+		return ref_id;
+	}
+
+	public void setRef_id(String ref_id) {
+		this.ref_id = ref_id;
 	}
 
 	public String getCreate_by() {
@@ -97,17 +120,5 @@ public class Base{
 
 	public void setSync_date(Date sync_date) {
 		this.sync_date = sync_date;
-	}
-
-	public void setBean(Base bean) {
-		
-		this.id = bean.getId();
-		this.merchant_id = bean.getMerchant_id();
-		this.remote_id = bean.getRemote_id();
-		this.create_by = bean.getCreate_by();
-		this.create_date = bean.getCreate_date();
-		this.update_by = bean.getUpdate_by();
-		this.update_date = bean.getUpdate_date();
-		this.sync_date = bean.getSync_date();
 	}
 }

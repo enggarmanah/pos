@@ -17,7 +17,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
-import com.android.pos.Constant;
+import com.android.pos.R;
 
 public class BluetoothPrintDriver {
 	
@@ -47,11 +47,14 @@ public class BluetoothPrintDriver {
 	public static final int Code128_B = 8;
 	public static final int CODE11 = 9;
 	public static final int MSI = 10;
+	
+	private Context mContext;
 
 	@SuppressLint({ "NewApi" })
 	public BluetoothPrintDriver(Context context, Handler handler) {
 		this.mAdapter = BluetoothAdapter.getDefaultAdapter();
 		mState = 0;
+		this.mContext = context;
 		this.mHandler = handler;
 	}
 
@@ -227,7 +230,7 @@ public class BluetoothPrintDriver {
 
 		Message msg = this.mHandler.obtainMessage(5);
 		Bundle bundle = new Bundle();
-		bundle.putString("toast", Constant.MESSAGE_PRINTER_CANT_CONNECT);
+		bundle.putString("toast", mContext.getString(R.string.printer_cant_connect));
 		msg.setData(bundle);
 		this.mHandler.sendMessage(msg);
 	}
@@ -237,7 +240,7 @@ public class BluetoothPrintDriver {
 
 		Message msg = this.mHandler.obtainMessage(5);
 		Bundle bundle = new Bundle();
-		bundle.putString("toast", Constant.MESSAGE_PRINTER_CONNECTION_LOST);
+		bundle.putString("toast", mContext.getString(R.string.printer_connection_lost));
 		msg.setData(bundle);
 		this.mHandler.sendMessage(msg);
 	}

@@ -110,6 +110,7 @@
             style="@style/PaymentRowStyle" >
 			
             <TextView
+                android:id="@+id/taxLabel"
                 style="@style/PaymentRowContentLeftStyle"
                 android:text="@string/tax" />
 
@@ -127,6 +128,7 @@
             style="@style/PaymentRowStyle" >
 
             <TextView
+                android:id="@+id/serviceChargeLabel"
                 style="@style/PaymentRowContentLeftStyle"
                 android:text="@string/service_charge" />
 
@@ -148,7 +150,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/transactionItemList"
+        android:id="@+id/newDeviceList"
         style="@style/ListViewStyle"
         android:layout_above="@id/belowPanel"
         android:layout_below="@id/topPanel" />

@@ -8,6 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.Bills;
+import com.android.pos.dao.BillsDao;
+import com.android.pos.dao.Inventory;
+import com.android.pos.dao.InventoryDao;
 import com.android.pos.dao.Supplier;
 import com.android.pos.dao.SupplierDao;
 import com.android.pos.model.SupplierBean;
@@ -23,8 +27,14 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class SupplierDaoService {
 	
 	private SupplierDao supplierDao = DbUtil.getSession().getSupplierDao();
+	private InventoryDao inventoryDao = DbUtil.getSession().getInventoryDao();
+	private BillsDao billDao = DbUtil.getSession().getBillsDao();
 	
 	public void addSupplier(Supplier supplier) {
+		
+		if (CommonUtil.isEmpty(supplier.getRefId())) {
+			supplier.setRefId(CommonUtil.generateRefId());
+		}
 		
 		supplierDao.insert(supplier);
 	}
@@ -95,6 +105,10 @@ public class SupplierDaoService {
 	
 	public void updateSuppliers(List<SupplierBean> suppliers) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<SupplierBean> shiftedBeans = new ArrayList<SupplierBean>();
+		
 		for (SupplierBean bean : suppliers) {
 			
 			boolean isAdd = false;
@@ -104,6 +118,10 @@ public class SupplierDaoService {
 			if (supplier == null) {
 				supplier = new Supplier();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(supplier.getRefId(), bean.getRef_id())) {
+				SupplierBean shiftedBean = BeanUtil.getBean(supplier);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(supplier, bean);
@@ -113,7 +131,50 @@ public class SupplierDaoService {
 			} else {
 				supplierDao.update(supplier);
 			}
-		} 
+		}
+		
+		for (SupplierBean bean : shiftedBeans) {
+			
+			Supplier supplier = new Supplier();
+			BeanUtil.updateBean(supplier, bean);
+			
+			Long oldId = supplier.getId();
+			
+			supplier.setId(null);
+			supplier.setUploadStatus(Constant.STATUS_YES);
+			
+			Long newId = supplierDao.insert(supplier);
+			
+			updateInventoryFk(oldId, newId);
+			updateBillFk(oldId, newId);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
+	}
+	
+	private void updateInventoryFk(Long oldId, Long newId) {
+		
+		Supplier supplier = supplierDao.load(oldId);
+		
+		for (Inventory i : supplier.getInventoryList()) {
+			
+			i.setSupplierId(newId);
+			i.setUploadStatus(Constant.STATUS_YES);
+			inventoryDao.update(i);
+		}
+	}
+	
+	private void updateBillFk(Long oldId, Long newId) {
+		
+		Supplier supplier = supplierDao.load(oldId);
+		
+		for (Bills b : supplier.getBillsList()) {
+			
+			b.setSupplierId(newId);
+			b.setUploadStatus(Constant.STATUS_YES);
+			billDao.update(b);
+		}
 	}
 	
 	public void updateSupplierStatus(List<SyncStatusBean> syncStatusBeans) {

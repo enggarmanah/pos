@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.OrderItemDao;
+import com.android.pos.dao.Orders;
+import com.android.pos.dao.OrdersDao;
 import com.android.pos.model.OrderItemBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.DbUtil;

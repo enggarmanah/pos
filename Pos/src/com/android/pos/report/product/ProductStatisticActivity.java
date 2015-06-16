@@ -8,7 +8,6 @@ import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.model.TransactionMonthBean;
 import com.android.pos.model.TransactionYearBean;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -55,8 +54,6 @@ public class ProductStatisticActivity extends BaseActivity
 		
 		setContentView(R.layout.report_transaction_activity);
 
-		DbUtil.initDb(this);
-		
 		initDrawerMenu();
 		
 		initFragments();
@@ -69,8 +66,8 @@ public class ProductStatisticActivity extends BaseActivity
 		
 		super.onStart();
 		
-		setTitle(getString(R.string.menu_statistic_product));
-		setSelectedMenu(getString(R.string.menu_statistic_product));
+		setTitle(getString(R.string.menu_report_product_statistic));
+		setSelectedMenu(getString(R.string.menu_report_product_statistic));
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {

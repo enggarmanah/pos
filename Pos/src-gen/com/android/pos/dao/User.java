@@ -15,8 +15,8 @@ import de.greenrobot.dao.DaoException;
 public class User implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
-    
     private String name;
     private String userId;
     private String password;
@@ -38,6 +38,7 @@ public class User implements Serializable {
     private Long merchant__resolvedKey;
 
     private List<Transactions> transactionsList;
+    private List<UserAccess> userAccessList;
 
     public User() {
     }
@@ -46,8 +47,9 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Long id, long merchantId, String name, String userId, String password, String role, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public User(Long id, String refId, long merchantId, String name, String userId, String password, String role, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.name = name;
         this.userId = userId;
@@ -73,6 +75,14 @@ public class User implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {
@@ -211,6 +221,28 @@ public class User implements Serializable {
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     public synchronized void resetTransactionsList() {
         transactionsList = null;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<UserAccess> getUserAccessList() {
+        if (userAccessList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UserAccessDao targetDao = daoSession.getUserAccessDao();
+            List<UserAccess> userAccessListNew = targetDao._queryUser_UserAccessList(id);
+            synchronized (this) {
+                if(userAccessList == null) {
+                    userAccessList = userAccessListNew;
+                }
+            }
+        }
+        return userAccessList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetUserAccessList() {
+        userAccessList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

@@ -3,9 +3,9 @@ package com.android.pos.model;
 public class PriceBean {
 	
 	private String type;
-	private Integer value;
+	private Float value;
 	
-	public PriceBean(String type, Integer value) {
+	public PriceBean(String type, Float value) {
 		this.type = type;
 		this.value = value;
 	}
@@ -16,10 +16,10 @@ public class PriceBean {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Integer getValue() {
+	public Float getValue() {
 		return value;
 	}
-	public void setValue(Integer value) {
+	public void setValue(Float value) {
 		this.value = value;
 	}
 }

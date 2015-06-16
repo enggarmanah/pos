@@ -3,7 +3,7 @@ package com.android.pos.data.product;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.Constant;
+import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Product;
 
@@ -25,8 +25,8 @@ public class ProductMgtActivity extends BaseItemMgtActivity<ProductSearchFragmen
 		
 		super.onStart();
 
-		setTitle(Constant.MENU_REFERENCE_PRODUCT);
-		setSelectedMenu(Constant.MENU_REFERENCE_PRODUCT);
+		setTitle(getString(R.string.menu_reference_product));
+		setSelectedMenu(getString(R.string.menu_reference_product));
 	}
 	
 	@Override

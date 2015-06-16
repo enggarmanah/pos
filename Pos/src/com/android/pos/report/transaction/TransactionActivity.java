@@ -1,16 +1,19 @@
 package com.android.pos.report.transaction;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
+import com.android.pos.dao.Inventory;
+import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Transactions;
+import com.android.pos.dao.TransactionsDaoService;
 import com.android.pos.model.TransactionDayBean;
 import com.android.pos.model.TransactionMonthBean;
 import com.android.pos.model.TransactionYearBean;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.PrintUtil;
 import com.android.pos.util.UserUtil;
@@ -25,6 +28,7 @@ public class TransactionActivity extends BaseActivity
 	
 	protected TransactionListFragment mTransactionListFragment;
 	protected TransactionDetailFragment mTransactionDetailFragment;
+	protected TransactionDeleteDlgFragment mTransactionDeleteFragment;
 	
 	boolean mIsMultiplesPane = false;
 	
@@ -40,6 +44,7 @@ public class TransactionActivity extends BaseActivity
 	
 	private String mTransactionListFragmentTag = "transactionListFragmentTag";
 	private String mTransactionDetailFragmentTag = "transactionDetailFragmentTag";
+	private String mTransactionDeleteFragmentTag = "transactionDeleteFragmentTag";
 	
 	private boolean mIsDisplayTransactionAllYears = false;
 	private boolean mIsDisplayTransactionYear = false;
@@ -48,7 +53,11 @@ public class TransactionActivity extends BaseActivity
 	private boolean mIsDisplayTransaction = false;
 	
 	private MenuItem mPrintItem;
+	private MenuItem mDeleteItem;
 	private MenuItem mUpItem;
+	
+	private TransactionsDaoService mTransactionsDaoService;
+	private InventoryDaoService mInventoryDaoService;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +67,14 @@ public class TransactionActivity extends BaseActivity
 		
 		setContentView(R.layout.report_transaction_activity);
 
-		DbUtil.initDb(this);
-
 		initDrawerMenu();
 		
 		initFragments();
 		
 		initWaitAfterFragmentRemovedTask(mTransactionListFragmentTag, mTransactionDetailFragmentTag);
+
+		mTransactionsDaoService = new TransactionsDaoService();
+		mInventoryDaoService = new InventoryDaoService();
 	}
 	
 	@Override
@@ -72,8 +82,8 @@ public class TransactionActivity extends BaseActivity
 		
 		super.onStart();
 
-		setTitle(getString(R.string.menu_transaction));
-		setSelectedMenu(getString(R.string.menu_transaction));
+		setTitle(getString(R.string.menu_report_transaction));
+		setSelectedMenu(getString(R.string.menu_report_transaction));
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {
@@ -130,6 +140,12 @@ public class TransactionActivity extends BaseActivity
 		} else {
 			removeFragment(mTransactionDetailFragment);
 		}
+		
+		mTransactionDeleteFragment = (TransactionDeleteDlgFragment) getFragmentManager().findFragmentByTag(mTransactionDeleteFragmentTag);
+		
+		if (mTransactionDeleteFragment == null) {
+			mTransactionDeleteFragment = new TransactionDeleteDlgFragment();
+		}
 	}
 
 	@Override
@@ -184,6 +200,7 @@ public class TransactionActivity extends BaseActivity
 		inflater.inflate(R.menu.report_transaction_menu, menu);
 		
 		mPrintItem = menu.findItem(R.id.menu_item_print);
+		mDeleteItem = menu.findItem(R.id.menu_item_delete);
 		mUpItem = menu.findItem(R.id.menu_item_up);
 
 		return super.onCreateOptionsMenu(menu);
@@ -208,11 +225,22 @@ public class TransactionActivity extends BaseActivity
 					try {
 						PrintUtil.print(mSelectedTransaction);
 					} catch (Exception e) {
-						showMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+						showMessage(getString(R.string.printer_cant_print));
 					}
 				} else {
-					NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_PRINTER_CONNECT_PRINTER_FROM_CASHIER);
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.printer_please_check_printer));
 				}
+				
+				return true;
+				
+			case R.id.menu_item_delete:
+				
+				if (mTransactionDeleteFragment.isAdded()) {
+					return true;
+				}
+				
+				mTransactionDeleteFragment.show(getFragmentManager(), mTransactionDeleteFragmentTag);
+				mTransactionDeleteFragment.setTransactionToBeDeleted(mSelectedTransaction, mSelectedTransaction.getTransactionNo());
 				
 				return true;
 		
@@ -230,6 +258,7 @@ public class TransactionActivity extends BaseActivity
 	private void hideAllMenus() {
 		
 		mPrintItem.setVisible(false);
+		mDeleteItem.setVisible(false);
 		mUpItem.setVisible(false);
 	}
 	
@@ -290,6 +319,22 @@ public class TransactionActivity extends BaseActivity
 	}
 	
 	@Override
+	public void onTransactionDeleted(Transactions transaction) {
+		
+		mTransactionsDaoService.deleteTransactions(transaction);
+		
+		List<Inventory> inventories = mInventoryDaoService.getInventories(transaction.getTransactionNo());
+		
+		for (Inventory inventory : inventories) {
+			inventory.setStatus(Constant.STATUS_DELETED);
+			inventory.setUploadStatus(Constant.STATUS_YES);
+			mInventoryDaoService.updateInventory(inventory);
+		}
+		
+		onBackToParent();
+	}
+	
+	@Override
 	public void onBackPressed() {
 		
 		synchronized (CommonUtil.LOCK) {
@@ -333,6 +378,12 @@ public class TransactionActivity extends BaseActivity
 		
 		} else if (mIsDisplayTransaction) {
 			mUpItem.setVisible(true);
+			
+			if (Constant.USER_ROLE_CASHIER.equals(UserUtil.getUser().getRole())) {
+				mPrintItem.setVisible(true);
+			} else if (Constant.USER_ROLE_ADMIN.equals(UserUtil.getUser().getRole())) {
+				mDeleteItem.setVisible(true);
+			}
 		}
 	}
 	
@@ -360,6 +411,8 @@ public class TransactionActivity extends BaseActivity
 				
 				if (Constant.USER_ROLE_CASHIER.equals(UserUtil.getUser().getRole())) {
 					mPrintItem.setVisible(true);
+				} else if (Constant.USER_ROLE_ADMIN.equals(UserUtil.getUser().getRole())) {
+					mDeleteItem.setVisible(true);
 				}
 			}
 		}
@@ -404,10 +457,12 @@ public class TransactionActivity extends BaseActivity
 			
 			if (mIsMultiplesPane) {
 				
-				mIsDisplayTransactionDay = false;
+				/*mIsDisplayTransactionDay = false;
 				mSelectedTransactionDay = null;
 				
-				mIsDisplayTransactionMonth = true;
+				mIsDisplayTransactionMonth = true;*/
+				
+				mIsDisplayTransactionDay = true;
 				
 			} else {
 				mIsDisplayTransactionDay = true;

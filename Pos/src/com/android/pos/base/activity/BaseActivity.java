@@ -34,6 +34,8 @@ import com.android.pos.report.inventory.InventoryReportActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.user.UserMgtActivity;
+import com.android.pos.util.CodeUtil;
+import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.PrintUtil;
@@ -85,6 +87,14 @@ public abstract class BaseActivity extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		CodeUtil.initCodes(this);
+		
+		if (Config.isDevelopment()) {
+
+			DbUtil.initDb(this);
+			MerchantUtil.getMerchant();
+		}
 		
 		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(progressDialogTag);
 		
@@ -195,35 +205,30 @@ public abstract class BaseActivity extends Activity
 	
 	protected void showSelectedMenu() {
 		
-		if (Constant.MENU_REPORT_CASHFLOW.equals(getSelectedMenu()) || 
-			Constant.MENU_REPORT_COMMISION.equals(getSelectedMenu()) ||
-			Constant.MENU_REPORT_INVENTORY.equals(getSelectedMenu()) ||
-			Constant.MENU_REPORT_PRODUCT_STATISTIC.equals(getSelectedMenu()) ||
-			Constant.MENU_REPORT_TRANSACTION.equals(getSelectedMenu())) {
+		if (getString(R.string.menu_report_cashflow).equals(getSelectedMenu()) || 
+			getString(R.string.menu_report_commision).equals(getSelectedMenu()) ||
+			getString(R.string.menu_report_inventory).equals(getSelectedMenu()) ||
+			getString(R.string.menu_report_product_statistic).equals(getSelectedMenu()) ||
+			getString(R.string.menu_report_transaction).equals(getSelectedMenu())) {
 			
 			Config.setMenuReportExpanded(true);
 		
-		} else if (Constant.MENU_FAVORITE_CUSTOMER.equals(getSelectedMenu()) ||
-			Constant.MENU_FAVORITE_PATIENT.equals(getSelectedMenu()) ||
-			Constant.MENU_FAVORITE_SUPPLIER.equals(getSelectedMenu())) {
+		} else if (getString(R.string.menu_favorite_customer).equals(getSelectedMenu()) ||
+			getString(R.string.menu_favorite_patient).equals(getSelectedMenu()) ||
+			getString(R.string.menu_favorite_supplier).equals(getSelectedMenu())) {
 			
 			Config.setMenuFavoriteExpanded(true);
 		
-		} else if (Constant.MENU_BILLS.equals(getSelectedMenu()) ||
-			Constant.MENU_INVENTORY.equals(getSelectedMenu()) ||
-			Constant.MENU_CUSTOMER.equals(getSelectedMenu()) ||
-			Constant.MENU_USER_ACCESS.equals(getSelectedMenu())) {
+		} else if (getString(R.string.menu_reference_discount).equals(getSelectedMenu()) ||
+			getString(R.string.menu_reference_employee).equals(getSelectedMenu()) ||
+			getString(R.string.menu_reference_merchant).equals(getSelectedMenu()) ||
+			getString(R.string.menu_reference_product).equals(getSelectedMenu()) ||
+			getString(R.string.menu_reference_product_group).equals(getSelectedMenu()) ||
+			getString(R.string.menu_reference_supplier).equals(getSelectedMenu())) {
 			
-			Config.setMenuDataExpanded(true);
-		
-		} else if (Constant.MENU_REFERENCE_DISCOUNT.equals(getSelectedMenu()) ||
-				Constant.MENU_REFERENCE_EMPLOYEE.equals(getSelectedMenu()) ||
-				Constant.MENU_REFERENCE_MERCHANT.equals(getSelectedMenu()) ||
-				Constant.MENU_REFERENCE_PRODUCT.equals(getSelectedMenu()) ||
-				Constant.MENU_REFERENCE_PRODUCT_GROUP.equals(getSelectedMenu()) ||
-				Constant.MENU_REFERENCE_SUPPLIER.equals(getSelectedMenu())) {
-			
-			Config.setMenuDataReferenceExpanded(true);
+			if (!UserUtil.isRoot()) {
+				Config.setMenuDataReferenceExpanded(true);
+			}
 		} 
 	}
 	
@@ -231,36 +236,34 @@ public abstract class BaseActivity extends Activity
 		
 		mMenus.clear();
 		
-		mMenus.add(Constant.MENU_USER);
+		mMenus.add(getString(R.string.menu_user));
 		
 		UserUtil.getUser();
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
-			mMenus.add(Constant.MENU_CASHIER);
+			mMenus.add(getString(R.string.menu_cashier));
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_WAITRESS)) {
-			mMenus.add(Constant.MENU_WAITRESS);
+			mMenus.add(getString(R.string.menu_waitress));
 		}
 		
-		mMenus.add(Constant.MENU_SYNC);
+		mMenus.add(getString(R.string.menu_sync));
 		
 		UserUtil.getUser();
 		
 		if (UserUtil.isRoot()) {
 			
-			mMenus.add(Constant.MENU_DATA);
-			mMenus.add(Constant.MENU_MERCHANT);
+			mMenus.add(getString(R.string.menu_merchant));
 		}
 		
 		if (UserUtil.isMerchant()) {
 			
-			mMenus.add(Constant.MENU_DATA);
-			mMenus.add(Constant.MENU_USER_ACCESS);
+			mMenus.add(getString(R.string.menu_user_access));
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
-			mMenus.add(Constant.MENU_ORDER);
+			mMenus.add(getString(R.string.menu_order));
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION) ||
@@ -268,36 +271,36 @@ public abstract class BaseActivity extends Activity
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
 			
-			mMenus.add(Constant.MENU_REPORT);
+			mMenus.add(getString(R.string.menu_report));
 		}
 		
 		if (Config.isMenuReportExpanded()) {
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION)) {
-				mMenus.add(Constant.MENU_REPORT_TRANSACTION);
+				mMenus.add(getString(R.string.menu_report_transaction));
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC)) {
-				mMenus.add(Constant.MENU_REPORT_PRODUCT_STATISTIC);
+				mMenus.add(getString(R.string.menu_report_product_statistic));
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_COMMISION)) {
-				mMenus.add(Constant.MENU_REPORT_COMMISION);
+				mMenus.add(getString(R.string.menu_report_commision));
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
-				mMenus.add(Constant.MENU_REPORT_CASHFLOW);
+				mMenus.add(getString(R.string.menu_report_cashflow));
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
-				mMenus.add(Constant.MENU_REPORT_INVENTORY);
+				mMenus.add(getString(R.string.menu_report_inventory));
 			}
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_SUPPLIER)) {
 				
-			mMenus.add(Constant.MENU_FAVORITE);
+			mMenus.add(getString(R.string.menu_favorite));
 		}
 		
 		if (Config.isMenuFavoriteExpanded()) {
@@ -305,68 +308,57 @@ public abstract class BaseActivity extends Activity
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER)) {
 				
 				if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
-					mMenus.add(Constant.MENU_FAVORITE_PATIENT);
+					mMenus.add(getString(R.string.menu_favorite_patient));
 				} else {
-					mMenus.add(Constant.MENU_FAVORITE_CUSTOMER);
+					mMenus.add(getString(R.string.menu_favorite_customer));
 				}
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_SUPPLIER)) {
-				mMenus.add(Constant.MENU_FAVORITE_SUPPLIER);
+				mMenus.add(getString(R.string.menu_favorite_supplier));
 			}
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) ||
-			UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY) ||
-			UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
-			
-			mMenus.add(Constant.MENU_DATA);
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS)) {
+			mMenus.add(getString(R.string.menu_bills));
 		}
 		
-		if (Config.isMenuDataExpanded()) {
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+			mMenus.add(getString(R.string.menu_inventory));
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS)) {
-				mMenus.add(Constant.MENU_BILLS);
-			}
-			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
-				mMenus.add(Constant.MENU_INVENTORY);
-			}
-			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
-				
-				if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
-					mMenus.add(Constant.MENU_PATIENT);
-				} else {
-					mMenus.add(Constant.MENU_CUSTOMER);
-				}
-				
-			}
-			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
-				mMenus.add(Constant.MENU_USER_ACCESS);
-			}
+			if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+				mMenus.add(getString(R.string.menu_patient));
+			} else {
+				mMenus.add(getString(R.string.menu_customer));
+			}	
+		}
+		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
+			mMenus.add(getString(R.string.menu_user_access));
 		}
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
-			mMenus.add(Constant.MENU_DATA_MANAGEMENT);
+			mMenus.add(getString(R.string.menu_data_management));
 		}
 		
 		if (Config.isMenuDataReferenceExpanded()) {
 			
-			mMenus.add(Constant.MENU_REFERENCE_MERCHANT);
-			mMenus.add(Constant.MENU_REFERENCE_PRODUCT_GROUP);
-			mMenus.add(Constant.MENU_REFERENCE_PRODUCT);
-			mMenus.add(Constant.MENU_REFERENCE_EMPLOYEE);
-			mMenus.add(Constant.MENU_REFERENCE_SUPPLIER);
+			mMenus.add(getString(R.string.menu_reference_merchant));
+			mMenus.add(getString(R.string.menu_reference_product_group));
+			mMenus.add(getString(R.string.menu_reference_product));
+			mMenus.add(getString(R.string.menu_reference_employee));
+			mMenus.add(getString(R.string.menu_reference_supplier));
 		}
 		
-		if (UserUtil.isCashier()) {
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
 			
-			mMenus.add(Constant.MENU_PRINTER);
+			mMenus.add(getString(R.string.menu_printer));
 		}
 		
-		mMenus.add(Constant.MENU_EXIT);
+		mMenus.add(getString(R.string.menu_exit));
 		
 		mAppMenuArrayAdapter.notifyDataSetChanged();
 	}
@@ -433,7 +425,7 @@ public abstract class BaseActivity extends Activity
 			return;
 		}
 		
-		if (Constant.MENU_REPORT.equals(menu)) {
+		if (getString(R.string.menu_report).equals(menu)) {
 			
 			boolean isExpanded = Config.isMenuReportExpanded();
 			
@@ -442,7 +434,7 @@ public abstract class BaseActivity extends Activity
 			refreshMenus();
 			return;
 			
-		} else if (Constant.MENU_FAVORITE.equals(menu)) {
+		} else if (getString(R.string.menu_favorite).equals(menu)) {
 			
 			boolean isExpanded = Config.isMenuFavoriteExpanded();
 			
@@ -451,16 +443,7 @@ public abstract class BaseActivity extends Activity
 			refreshMenus();
 			return;
 			
-		} else if (Constant.MENU_DATA.equals(menu)) {
-			
-			boolean isExpanded = Config.isMenuDataExpanded();
-			
-			Config.setMenusExpanded(false);
-			Config.setMenuDataExpanded(!isExpanded);
-			refreshMenus();
-			return;
-		
-		} else if (Constant.MENU_DATA_MANAGEMENT.equals(menu)) {
+		} else if (getString(R.string.menu_data_management).equals(menu)) {
 			
 			boolean isExpanded = Config.isMenuDataReferenceExpanded();
 			
@@ -472,109 +455,113 @@ public abstract class BaseActivity extends Activity
 		
 		mDrawerLayout.closeDrawer(mDrawerList);
 		
-		if (Constant.MENU_CASHIER.equals(menu)) {
+		if (getString(R.string.menu_cashier).equals(menu)) {
 
 			Intent intent = new Intent(this, CashierActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_WAITRESS.equals(menu)) {
+		} else if (getString(R.string.menu_waitress).equals(menu)) {
 
 			Intent intent = new Intent(this, WaitressActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_ORDER.equals(menu)) {
+		} else if (getString(R.string.menu_order).equals(menu)) {
 
 			Intent intent = new Intent(this, OrderActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_REPORT_TRANSACTION.equals(menu)) {
+		} else if (getString(R.string.menu_report_transaction).equals(menu)) {
 
 			Intent intent = new Intent(this, TransactionActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_REPORT_PRODUCT_STATISTIC.equals(menu)) {
+		} else if (getString(R.string.menu_report_product_statistic).equals(menu)) {
 
 			Intent intent = new Intent(this, ProductStatisticActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_REPORT_COMMISION.equals(menu)) {
+		} else if (getString(R.string.menu_report_commision).equals(menu)) {
 
 			Intent intent = new Intent(this, CommisionActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_REPORT_CASHFLOW.equals(menu)) {
+		} else if (getString(R.string.menu_report_cashflow).equals(menu)) {
 
 			Intent intent = new Intent(this, CashFlowActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_REPORT_INVENTORY.equals(menu)) {
+		} else if (getString(R.string.menu_report_inventory).equals(menu)) {
 
 			Intent intent = new Intent(this, InventoryReportActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_FAVORITE_CUSTOMER.equals(menu) ||
-				   Constant.MENU_FAVORITE_PATIENT.equals(menu)) {
+		} else if (getString(R.string.menu_favorite_customer).equals(menu) ||
+				   getString(R.string.menu_favorite_patient).equals(menu)) {
 
 			Intent intent = new Intent(this, CustomerActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_FAVORITE_SUPPLIER.equals(menu)) {
+		} else if (getString(R.string.menu_favorite_supplier).equals(menu)) {
 
 			Intent intent = new Intent(this, SupplierActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_BILLS.equals(menu)) {
+		} else if (getString(R.string.menu_bills).equals(menu)) {
 
 			Intent intent = new Intent(this, BillsMgtActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_INVENTORY.equals(menu)) {
+		} else if (getString(R.string.menu_inventory).equals(menu)) {
 
 			Intent intent = new Intent(this, InventoryMgtActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_CUSTOMER.equals(menu) ||
-				   Constant.MENU_PATIENT.equals(menu)) {
+		} else if (getString(R.string.menu_customer).equals(menu) ||
+				   getString(R.string.menu_patient).equals(menu)) {
 
 			Intent intent = new Intent(this, CustomerMgtActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_USER_ACCESS.equals(menu)) {
+		} else if (getString(R.string.menu_user_access).equals(menu)) {
 
 			Intent intent = new Intent(this, UserMgtActivity.class);
 			startActivity(intent);
 
-		} else if (Constant.MENU_REFERENCE_MERCHANT.equals(menu)) {
+		} else if (getString(R.string.menu_reference_merchant).equals(menu)) {
 
 			Intent intent = new Intent(this, MerchantMgtActivity.class);
 			startActivity(intent);
 			
-		} else if (Constant.MENU_REFERENCE_PRODUCT_GROUP.equals(menu)) {
+		} else if (getString(R.string.menu_reference_product_group).equals(menu)) {
 
 			Intent intent = new Intent(this, ProductGrpMgtActivity.class);
 			startActivity(intent);
 			
-		} else if (Constant.MENU_REFERENCE_PRODUCT.equals(menu)) {
+		} else if (getString(R.string.menu_reference_product).equals(menu)) {
 
 			Intent intent = new Intent(this, ProductMgtActivity.class);
 			startActivity(intent);
 			
-		} else if (Constant.MENU_REFERENCE_EMPLOYEE.equals(menu)) {
+		} else if (getString(R.string.menu_reference_employee).equals(menu)) {
 
 			Intent intent = new Intent(this, EmployeeMgtActivity.class);
 			startActivity(intent);
 			
-		} else if (Constant.MENU_REFERENCE_SUPPLIER.equals(menu)) {
+		} else if (getString(R.string.menu_reference_supplier).equals(menu)) {
 
 			Intent intent = new Intent(this, SupplierMgtActivity.class);
 			startActivity(intent);
 			
-		} else if (Constant.MENU_REFERENCE_DISCOUNT.equals(menu)) {
+		} else if (getString(R.string.menu_reference_discount).equals(menu)) {
 
 			Intent intent = new Intent(this, DiscountMgtActivity.class);
 			startActivity(intent);
 			
-		} else if (Constant.MENU_SYNC.equals(menu)) {
+		} else if (getString(R.string.menu_sync).equals(menu)) {
+			
+			if (mProgressDialog.isAdded()) {
+				return;
+			}
 			
 			mProgressDialog.show(getFragmentManager(), progressDialogTag);
 			
@@ -595,12 +582,12 @@ public abstract class BaseActivity extends Activity
 				mHttpAsyncManager.syncMerchants();
 			}
 			
-		} else if (Constant.MENU_PRINTER.equals(menu)) {
+		} else if (getString(R.string.menu_printer).equals(menu)) {
 
 			Intent intent = new Intent(this, PrinterSelectActivity.class);
 			startActivityForResult(intent, -1);
 			
-		} else if (Constant.MENU_EXIT.equals(menu)) {
+		} else if (getString(R.string.menu_exit).equals(menu)) {
 			
 			UserUtil.resetUser();
 			PrintUtil.reset();
@@ -672,14 +659,29 @@ public abstract class BaseActivity extends Activity
 	}
 
 	protected void addFragment(Object fragment, String fragmentTag) {
-		getFragmentManager().beginTransaction().add(R.id.fragment_container, (Fragment) fragment, fragmentTag).commit();
+		
+		Fragment f = (Fragment) fragment;
+		
+		if (f.isAdded()) {
+			return;
+		}
+		
+		getFragmentManager().beginTransaction().add(R.id.fragment_container, f, fragmentTag).commit();
 	}
 
 	protected void replaceFragment(Object fragment, String fragmentTag) {
-		getFragmentManager().beginTransaction().replace(R.id.fragment_container, (Fragment) fragment, fragmentTag).commit();
+		
+		Fragment f = (Fragment) fragment;
+		
+		if (f.isAdded()) {
+			return;
+		}
+		
+		getFragmentManager().beginTransaction().replace(R.id.fragment_container, f, fragmentTag).commit();
 	}
 
 	protected void removeFragment(Object fragment) {
+		
 		getFragmentManager().beginTransaction().remove((Fragment) fragment).commit();
 	}
 
@@ -742,7 +744,7 @@ public abstract class BaseActivity extends Activity
 		
 		for (Product product : products) {
 			
-			Integer quantity = inventoryDaoServie.getProductQuantity(product);
+			Float quantity = inventoryDaoServie.getProductQuantity(product);
 			product.setStock(quantity);
 			
 			productDaoService.updateProduct(product);
@@ -800,7 +802,7 @@ public abstract class BaseActivity extends Activity
 			mProgressDialog.dismiss();
 		}
 		
-		NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_SERVER_CANT_CONNECT);
+		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.server_cant_connect));
 	}
 	
 	@Override
@@ -812,7 +814,7 @@ public abstract class BaseActivity extends Activity
 			mProgressDialog.dismiss();
 		}
 		
-		NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_SERVER_SYNC_ERROR);
+		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.server_sync_error));
 	}
 	
 	@Override

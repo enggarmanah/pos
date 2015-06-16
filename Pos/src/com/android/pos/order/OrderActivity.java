@@ -15,7 +15,6 @@ import com.android.pos.dao.OrderItemDaoService;
 import com.android.pos.dao.Orders;
 import com.android.pos.dao.Product;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 import com.android.pos.util.NotificationUtil;
 
 import android.annotation.SuppressLint;
@@ -61,8 +60,6 @@ public class OrderActivity extends BaseActivity
 		initInstanceState(savedInstanceState);
 		
 		setContentView(R.layout.report_transaction_activity);
-
-		DbUtil.initDb(this);
 
 		initDrawerMenu();
 		
@@ -217,6 +214,10 @@ public class OrderActivity extends BaseActivity
 				
 			case R.id.menu_item_sync:
 				
+				if (mProgressDialog.isAdded()) {
+					return true;
+				}
+				
 				mProgressDialog.show(getFragmentManager(), progressDialogTag);
 				
 				if (mHttpAsyncManager == null) {
@@ -282,12 +283,16 @@ public class OrderActivity extends BaseActivity
 		
 		Employee personInCharge = null;
 		
+		if (mProductCountDlgFragment.isAdded()) {
+			return;
+		}
+		
 		mProductCountDlgFragment.show(getFragmentManager(), mProductCountDlgFragmentTag);
 		mProductCountDlgFragment.setProduct(orderItem.getProduct(), CommonUtil.getCurrentPrice(orderItem.getProduct()), personInCharge, orderItem.getQuantity(), orderItem.getRemarks());
 	}
 	
 	@Override
-	public void onProductQuantitySelected(Product product, Integer price, Employee personInCharge, int quantity, String remarks) {
+	public void onProductQuantitySelected(Product product, Float price, Employee personInCharge, Float quantity, String remarks) {
 		
 		mSelectedOrderItem.setQuantity(quantity);
 		mSelectedOrderItem.setRemarks(remarks);
@@ -310,6 +315,6 @@ public class OrderActivity extends BaseActivity
 		
 		refreshOrders();
 		
-		NotificationUtil.setAlertMessage(getFragmentManager(), Constant.MESSAGE_ORDER_DOWNLOAD_OK);
+		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.order_download_ok));
 	}
 }

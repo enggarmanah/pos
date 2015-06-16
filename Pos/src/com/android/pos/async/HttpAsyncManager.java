@@ -27,6 +27,7 @@ import android.util.Log;
 import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.Installation;
+import com.android.pos.R;
 import com.android.pos.auth.LoginListener;
 import com.android.pos.dao.BillsDaoService;
 import com.android.pos.dao.CustomerDaoService;
@@ -63,7 +64,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class HttpAsyncManager {
-
+	
+	private static HttpAsyncTask task;
+	private static HttpAsyncListener mAsyncListener;
+	private static HttpPost httpPost;
+	
 	private Context mContext;
 	private DeviceBean mDevice;
 	private String mLoginId;
@@ -85,8 +90,6 @@ public class HttpAsyncManager {
 	private MerchantAccessDaoService mMerchantAccessDaoService;
 	private OrdersDaoService mOrdersDaoService;
 	private OrderItemDaoService mOrderItemDaoService;
-
-	private HttpAsyncListener mAsyncListener;
 
 	private int mTaskIndex = 0;
 	
@@ -140,47 +143,45 @@ public class HttpAsyncManager {
 		
 		taskMessage = new HashMap<String, String>();
 		
-		taskMessage.put(Constant.TASK_VALIDATE_MERCHANT, "Melaksanakan validasi ke Server ...");
-		taskMessage.put(Constant.TASK_VALIDATE_USER, "Melaksanakan validasi ke Server ...");
-		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT, "Download data merchant dari Server ...");
-		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT_ACCESS, "Download data akses merchant ke Server.");
-		taskMessage.put(Constant.TASK_SUBMIT_ORDERS, "Submit order ke Server ...");
-		taskMessage.put(Constant.TASK_SUBMIT_ORDER_ITEMS, "Submit detil order ke Server.");
-		taskMessage.put(Constant.TASK_GET_ORDERS, "Download pesanan dari Server ...");
-		taskMessage.put(Constant.TASK_GET_ORDER_ITEMS, "Download detil pesanan dari Server.");
-		taskMessage.put(Constant.TASK_DELETE_ORDERS, "Download detil pesanan dari Server.");
-		taskMessage.put(Constant.TASK_GET_PRODUCT_GROUP, "Download data group produk dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_PRODUCT_GROUP, "Upload data group produk ke server.");
-		taskMessage.put(Constant.TASK_GET_DISCOUNT, "Download data diskon dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_DISCOUNT, "Upload data diskon ke server.");
-		taskMessage.put(Constant.TASK_GET_EMPLOYEE, "Download data pegawai dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_EMPLOYEE, "Upload data pegawai ke server.");
-		taskMessage.put(Constant.TASK_GET_CUSTOMER, "Download data pelanggan dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_CUSTOMER, "Upload data pelanggan ke server.");
-		taskMessage.put(Constant.TASK_GET_PRODUCT, "Download data produk dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_PRODUCT, "Upload data produk ke server.");
-		taskMessage.put(Constant.TASK_GET_USER, "Download data pengguna dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_USER, "Upload data pengguna ke server.");
-		taskMessage.put(Constant.TASK_GET_USER_ACCESS, "Download data akses pengguna dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_USER_ACCESS, "Upload data akses pengguna ke server.");
-		taskMessage.put(Constant.TASK_GET_TRANSACTIONS, "Download data transaksi dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_TRANSACTIONS, "Upload data transaksi ke server.");
-		taskMessage.put(Constant.TASK_GET_TRANSACTION_ITEM, "Download data item transaksi dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_TRANSACTION_ITEM, "Upload data item transaksi ke server.");
-		taskMessage.put(Constant.TASK_GET_SUPPLIER, "Download data supplier dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_SUPPLIER, "Upload data supplier ke server.");
-		taskMessage.put(Constant.TASK_GET_BILL, "Download data pengeluaran dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_BILL, "Upload data pengeluaran ke server.");
-		taskMessage.put(Constant.TASK_GET_TRANSACTION_ITEM, "Download data inventori dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_TRANSACTION_ITEM, "Upload data inventori ke server.");
-		taskMessage.put(Constant.TASK_GET_INVENTORY, "Download data inventori dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_INVENTORY, "Upload data inventori ke server.");
-		taskMessage.put(Constant.TASK_GET_MERCHANT, "Download data merchant dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_MERCHANT, "Upload data merchant ke server.");
-		taskMessage.put(Constant.TASK_GET_MERCHANT_ACCESS, "Download data akses merchant dari server.");
-		taskMessage.put(Constant.TASK_UPDATE_MERCHANT_ACCESS, "Upload data akses merchant ke server.");
-		taskMessage.put(Constant.TASK_GET_LAST_SYNC, "Cek waktu terakhir sync up ke server.");
-		taskMessage.put(Constant.TASK_UPDATE_LAST_SYNC, "Update waktu terakhir sync up ke server.");
+		taskMessage.put(Constant.TASK_VALIDATE_MERCHANT, context.getString(R.string.task_validate_merchant));
+		taskMessage.put(Constant.TASK_VALIDATE_USER, context.getString(R.string.task_validate_user));
+		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT, context.getString(R.string.task_root_get_merchant));
+		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT_ACCESS, context.getString(R.string.task_root_get_merchant_access));
+		taskMessage.put(Constant.TASK_SUBMIT_ORDERS, context.getString(R.string.task_submit_orders));
+		taskMessage.put(Constant.TASK_SUBMIT_ORDER_ITEMS, context.getString(R.string.task_submit_order_items));
+		taskMessage.put(Constant.TASK_GET_ORDERS, context.getString(R.string.task_get_orders));
+		taskMessage.put(Constant.TASK_GET_ORDER_ITEMS, context.getString(R.string.task_get_order_item));
+		taskMessage.put(Constant.TASK_DELETE_ORDERS, context.getString(R.string.task_delete_orders));
+		taskMessage.put(Constant.TASK_GET_PRODUCT_GROUP, context.getString(R.string.task_get_product_group));
+		taskMessage.put(Constant.TASK_UPDATE_PRODUCT_GROUP, context.getString(R.string.task_update_product_group));
+		taskMessage.put(Constant.TASK_GET_DISCOUNT, context.getString(R.string.task_get_discount));
+		taskMessage.put(Constant.TASK_UPDATE_DISCOUNT, context.getString(R.string.task_update_discount));
+		taskMessage.put(Constant.TASK_GET_EMPLOYEE, context.getString(R.string.task_get_employee));
+		taskMessage.put(Constant.TASK_UPDATE_EMPLOYEE, context.getString(R.string.task_update_employee));
+		taskMessage.put(Constant.TASK_GET_CUSTOMER, context.getString(R.string.task_get_customer));
+		taskMessage.put(Constant.TASK_UPDATE_CUSTOMER, context.getString(R.string.task_update_customer));
+		taskMessage.put(Constant.TASK_GET_PRODUCT, context.getString(R.string.task_get_product));
+		taskMessage.put(Constant.TASK_UPDATE_PRODUCT, context.getString(R.string.task_update_product));
+		taskMessage.put(Constant.TASK_GET_USER, context.getString(R.string.task_get_user));
+		taskMessage.put(Constant.TASK_UPDATE_USER, context.getString(R.string.task_update_user));
+		taskMessage.put(Constant.TASK_GET_USER_ACCESS, context.getString(R.string.task_get_user_access));
+		taskMessage.put(Constant.TASK_UPDATE_USER_ACCESS, context.getString(R.string.task_update_user_access));
+		taskMessage.put(Constant.TASK_GET_TRANSACTIONS, context.getString(R.string.task_get_transactions));
+		taskMessage.put(Constant.TASK_UPDATE_TRANSACTIONS, context.getString(R.string.task_update_transactions));
+		taskMessage.put(Constant.TASK_GET_TRANSACTION_ITEM, context.getString(R.string.task_get_transaction_item));
+		taskMessage.put(Constant.TASK_UPDATE_TRANSACTION_ITEM, context.getString(R.string.task_update_transaction_item));
+		taskMessage.put(Constant.TASK_GET_SUPPLIER, context.getString(R.string.task_get_supplier));
+		taskMessage.put(Constant.TASK_UPDATE_SUPPLIER, context.getString(R.string.task_update_supplier));
+		taskMessage.put(Constant.TASK_GET_BILL, context.getString(R.string.task_get_bill));
+		taskMessage.put(Constant.TASK_UPDATE_BILL, context.getString(R.string.task_update_bill));
+		taskMessage.put(Constant.TASK_GET_INVENTORY, context.getString(R.string.task_get_inventory));
+		taskMessage.put(Constant.TASK_UPDATE_INVENTORY, context.getString(R.string.task_update_inventory));
+		taskMessage.put(Constant.TASK_GET_MERCHANT, context.getString(R.string.task_get_merchant));
+		taskMessage.put(Constant.TASK_UPDATE_MERCHANT, context.getString(R.string.task_update_merchant));
+		taskMessage.put(Constant.TASK_GET_MERCHANT_ACCESS, context.getString(R.string.task_get_merchant_access));
+		taskMessage.put(Constant.TASK_UPDATE_MERCHANT_ACCESS, context.getString(R.string.task_update_merchant_access));
+		taskMessage.put(Constant.TASK_GET_LAST_SYNC, context.getString(R.string.task_get_last_sync));
+		taskMessage.put(Constant.TASK_UPDATE_LAST_SYNC, context.getString(R.string.task_update_last_sync));
 	}
 	
 	private String getMessage(String task) {
@@ -206,29 +207,46 @@ public class HttpAsyncManager {
 		
 		mAsyncListener.setSyncProgress(progress);
 		mAsyncListener.setSyncMessage(message);
-			
+		
+		task = new HttpAsyncTask();
+		task.execute(taskName);
+		
 		if (mTaskIndex == 0) {
-			
-			final HttpAsyncTask task = new HttpAsyncTask();
-			task.execute(taskName);
 				
 			Handler handler = new Handler();
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					if (task.getStatus() == AsyncTask.Status.RUNNING) {
-						task.cancel(true);
-						mAsyncListener.onTimeOut();
-					}
-				}
-			}, Constant.TIMEOUT);
-			
-		} else {
-			
-			new HttpAsyncTask().execute(taskName);
+			handler.postDelayed(getTimeOutHandler(task), Constant.TIMEOUT);
 		}
 		
 		mTaskIndex++;    	
+	}
+	
+	public Runnable getTimeOutHandler(final HttpAsyncTask task) {
+		
+		return new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				if (task.getStatus() == AsyncTask.Status.RUNNING) {
+					task.cancel(true);
+					abortHttpRequest();
+					mAsyncListener.onTimeOut();
+				}
+			}
+		};
+	}
+	
+	public static boolean stopSyncTask() {
+		
+		boolean isCancelled = false;
+		
+		if (task.getStatus() == AsyncTask.Status.RUNNING) {
+			task.cancel(true);
+			abortHttpRequest();
+			isCancelled = true;
+		}
+		
+		return isCancelled;
 	}
 	
 	public void validateMerchant(String loginId, String password) {
@@ -749,13 +767,13 @@ public class HttpAsyncManager {
 				//mDevice.setLast_sync_date(mSyncDate);
 				request.setDevice(mDevice);
 			}
-
+			
 			return POST(url, request);
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-
+			
 			try {
 				
 				SyncResponseBean resp = mapper.readValue(result, SyncResponseBean.class);
@@ -972,7 +990,7 @@ public class HttpAsyncManager {
 
 			HttpClient httpclient = new DefaultHttpClient();
 
-			HttpPost httpPost = new HttpPost(url);
+			httpPost = new HttpPost(url);
 
 			final OutputStream out = new ByteArrayOutputStream();
 			final ObjectWriter writer = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -989,9 +1007,9 @@ public class HttpAsyncManager {
 
 			httpPost.setHeader("Accept", "application/json");
 			httpPost.setHeader("Content-type", "application/json");
-
+			
 			HttpResponse httpResponse = httpclient.execute(httpPost);
-
+			
 			inputStream = httpResponse.getEntity().getContent();
 			
 			if (inputStream != null)
@@ -1006,7 +1024,14 @@ public class HttpAsyncManager {
 
 		return result;
 	}
-
+	
+	private static void abortHttpRequest() {
+		
+		if (httpPost != null) {
+			httpPost.abort();
+		}
+	}
+	
 	public static byte[] compress(byte[] bytes) throws IOException {
 
 		ByteArrayOutputStream rstBao = new ByteArrayOutputStream();

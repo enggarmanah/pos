@@ -1,7 +1,10 @@
 package com.android.pos.util;
 
+import android.content.Context;
+
 import com.android.pos.CodeBean;
 import com.android.pos.Constant;
+import com.android.pos.R;
 
 public class CodeUtil {
 	
@@ -14,6 +17,7 @@ public class CodeUtil {
 	public static CodeBean[] roles;
 	public static CodeBean[] emailStatus;
 	public static CodeBean[] priceTypeCount;
+	public static CodeBean[] quantityType;
 	public static CodeBean[] discountTypes;
 	public static CodeBean[] paymentTypes;
 	public static CodeBean[] orderTypes;
@@ -21,340 +25,386 @@ public class CodeUtil {
 	public static CodeBean[] billStatus;
 	public static CodeBean[] inventoryStatus;
 	public static CodeBean[] moduleAccess;
+	public static CodeBean[] fontSizes;
 	
-	static {
+	private static Context mContext;
+	private static Boolean isInitialized = false;
+	
+	public static void initCodes(Context context) {
 		
-		status = new CodeBean[2];
+		if (isInitialized) {
+			return;
+		}
+		
+		mContext = context;
+		
+		roles = new CodeBean[3];
 		
 		CodeBean code = new CodeBean();
+		code.setCode(Constant.USER_ROLE_CASHIER);
+		code.setLabel(mContext.getString(R.string.user_role_cashier));
+		roles[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.USER_ROLE_WAITRESS);
+		code.setLabel(mContext.getString(R.string.user_role_waitress));
+		roles[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.USER_ROLE_ADMIN);
+		code.setLabel(mContext.getString(R.string.user_role_admin));
+		roles[2] = code;
+		
+		priceTypeCount = new CodeBean[3];
+		
+		code = new CodeBean();
+		code.setCode(Constant.PRICE_TYPE_COUNT_1);
+		code.setLabel(mContext.getString(R.string.price_type_count_1));
+		priceTypeCount[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.PRICE_TYPE_COUNT_2);
+		code.setLabel(mContext.getString(R.string.price_type_count_2));
+		priceTypeCount[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.PRICE_TYPE_COUNT_3);
+		code.setLabel(mContext.getString(R.string.price_type_count_3));
+		priceTypeCount[2] = code;
+		
+		fontSizes = new CodeBean[2];
+		
+		code = new CodeBean();
+		code.setCode(Constant.FONT_SIZE_SMALL);
+		code.setLabel(mContext.getString(R.string.font_size_small));
+		fontSizes[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.FONT_SIZE_REGULAR);
+		code.setLabel(mContext.getString(R.string.font_size_regular));
+		fontSizes[1] = code;
+		
+		quantityType = new CodeBean[3];
+		
+		code = new CodeBean();
+		code.setCode(Constant.QUANTITY_TYPE_PIECE);
+		code.setLabel(mContext.getString(R.string.quantity_type_piece));
+		quantityType[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.QUANTITY_TYPE_METER);
+		code.setLabel(mContext.getString(R.string.quantity_type_meter));
+		quantityType[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.QUANTITY_TYPE_LITER);
+		code.setLabel(mContext.getString(R.string.quantity_type_liter));
+		quantityType[2] = code;
+		
+		moduleAccess = new CodeBean[15];
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_CASHIER);
+		code.setLabel(mContext.getString(R.string.menu_cashier));
+		code.setOrder(mContext.getString(R.string.menu_cashier_order));
+		moduleAccess[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_WAITRESS);
+		code.setLabel(mContext.getString(R.string.menu_waitress));
+		code.setOrder(mContext.getString(R.string.menu_waitress_order));
+		moduleAccess[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_ORDER);
+		code.setLabel(mContext.getString(R.string.menu_order));
+		code.setOrder(mContext.getString(R.string.menu_order_order));
+		moduleAccess[2] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_DATA_MANAGEMENT);
+		code.setLabel(mContext.getString(R.string.menu_data_management));
+		code.setOrder(mContext.getString(R.string.menu_data_management_order));
+		moduleAccess[3] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_CUSTOMER);
+		code.setLabel(mContext.getString(R.string.menu_customer));
+		code.setOrder(mContext.getString(R.string.menu_customer_order));
+		moduleAccess[4] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_INVENTORY);
+		code.setLabel(mContext.getString(R.string.menu_inventory));
+		code.setOrder(mContext.getString(R.string.menu_inventory_order));
+		moduleAccess[5] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_BILLS);
+		code.setLabel(mContext.getString(R.string.menu_bills));
+		code.setOrder(mContext.getString(R.string.menu_bills_order));
+		moduleAccess[6] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_USER_ACCESS);
+		code.setLabel(mContext.getString(R.string.menu_user_access));
+		code.setOrder(mContext.getString(R.string.menu_user_access_order));
+		moduleAccess[7] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_TRANSACTION);
+		code.setLabel(mContext.getString(R.string.menu_report_transaction));
+		code.setOrder(mContext.getString(R.string.menu_report_transaction_order));
+		moduleAccess[8] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_PRODUCT_STATISTIC);
+		code.setLabel(mContext.getString(R.string.menu_report_product_statistic));
+		code.setOrder(mContext.getString(R.string.menu_report_product_statistic_order));
+		moduleAccess[9] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_COMMISION);
+		code.setLabel(mContext.getString(R.string.menu_report_commision));
+		code.setOrder(mContext.getString(R.string.menu_report_commision_order));
+		moduleAccess[10] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_INVENTORY);
+		code.setLabel(mContext.getString(R.string.menu_report_inventory));
+		code.setOrder(mContext.getString(R.string.menu_report_inventory_order));
+		moduleAccess[11] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_CASHFLOW);
+		code.setLabel(mContext.getString(R.string.menu_report_cashflow));
+		code.setOrder(mContext.getString(R.string.menu_report_cashflow_order));
+		moduleAccess[12] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_FAVORITE_CUSTOMER);
+		code.setLabel(mContext.getString(R.string.menu_favorite_customer));
+		code.setOrder(mContext.getString(R.string.menu_favorite_customer_order));
+		moduleAccess[13] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_FAVORITE_SUPPLIER);
+		code.setLabel(mContext.getString(R.string.menu_favorite_supplier));
+		code.setOrder(mContext.getString(R.string.menu_favorite_supplier_order));
+		moduleAccess[14] = code;
+				
+		status = new CodeBean[2];
+		
+		code = new CodeBean();
 		code.setCode(Constant.STATUS_ACTIVE);
-		code.setLabel("Aktif");
+		code.setLabel(mContext.getString(R.string.status_active));
 		status[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.STATUS_INACTIVE);
-		code.setLabel("Tidak Aktif");
+		code.setLabel(mContext.getString(R.string.status_inactive));
 		status[1] = code;
 		
 		productStatus = new CodeBean[2];
 		
 		code = new CodeBean();
 		code.setCode(Constant.STATUS_ACTIVE);
-		code.setLabel("Aktif / Tersedia");
+		code.setLabel(mContext.getString(R.string.product_status_active));
 		productStatus[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.STATUS_INACTIVE);
-		code.setLabel("Tidak Aktif / Tersedia");
+		code.setLabel(mContext.getString(R.string.product_status_inactive));
 		productStatus[1] = code;
 		
 		productTypes = new CodeBean[2];
 		
 		code = new CodeBean();
 		code.setCode("P");
-		code.setLabel("Barang");
+		code.setLabel(mContext.getString(R.string.product_type_goods));
 		productTypes[0] = code;
 		
 		code = new CodeBean();
 		code.setCode("S");
-		code.setLabel("Layanan");
+		code.setLabel(mContext.getString(R.string.product_type_service));
 		productTypes[1] = code;
 		
 		restoProductTypes = new CodeBean[2];
 		
 		code = new CodeBean();
 		code.setCode("P");
-		code.setLabel("Barang");
+		code.setLabel(mContext.getString(R.string.resto_product_type_goods));
 		restoProductTypes[0] = code;
 		
 		code = new CodeBean();
 		code.setCode("M");
-		code.setLabel("Menu");
+		code.setLabel(mContext.getString(R.string.resto_product_type_menu));
 		restoProductTypes[1] = code;
 		
 		booleans = new CodeBean[2];
 		
 		code = new CodeBean();
 		code.setCode(Constant.STATUS_YES);
-		code.setLabel("Ya");
+		code.setLabel(mContext.getString(R.string.status_yes));
 		booleans[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.STATUS_NO);
-		code.setLabel("Tidak");
+		code.setLabel(mContext.getString(R.string.status_no));
 		booleans[1] = code;
 		
 		merchantTypes = new CodeBean[4];
 		
 		code = new CodeBean();
 		code.setCode(Constant.MERCHANT_TYPE_RESTO);
-		code.setLabel("Resto");
+		code.setLabel(mContext.getString(R.string.merchant_type_resto));
 		merchantTypes[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.MERCHANT_TYPE_SHOP);
-		code.setLabel("Toko");
+		code.setLabel(mContext.getString(R.string.merchant_type_shop));
 		merchantTypes[1] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.MERCHANT_TYPE_BEAUTY_N_SPA);
-		code.setLabel("Salon Kecantikan & Spa");
+		code.setLabel(mContext.getString(R.string.merchant_type_beauty_spa));
 		merchantTypes[2] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.MERCHANT_TYPE_CLINIC);
-		code.setLabel("Klinik");
+		code.setLabel(mContext.getString(R.string.merchant_type_clinic));
 		merchantTypes[3] = code;
-		
-		roles = new CodeBean[3];
-		
-		code = new CodeBean();
-		code.setCode(Constant.USER_ROLE_CASHIER);
-		code.setLabel(Constant.USER_ROLE_CASHIER_DESC);
-		roles[0] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.USER_ROLE_WAITRESS);
-		code.setLabel(Constant.USER_ROLE_WAITRESS_DESC);
-		roles[1] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.USER_ROLE_ADMIN);
-		code.setLabel(Constant.USER_ROLE_ADMIN_DESC);
-		roles[2] = code;
-		
+	
 		emailStatus = new CodeBean[2];
 		
 		code = new CodeBean();
 		code.setCode(Constant.STATUS_YES);
-		code.setLabel("Kirim Email Promosi");
+		code.setLabel(mContext.getString(R.string.email_status_yes));
 		emailStatus[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.STATUS_NO);
-		code.setLabel("Tidak Kirim Email");
+		code.setLabel(mContext.getString(R.string.email_status_no));
 		emailStatus[1] = code;
 		
 		discountTypes = new CodeBean[2];
 		
 		code = new CodeBean();
 		code.setCode(Constant.DISCOUNT_TYPE_PERCENTAGE);
-		code.setLabel("Persentase");
+		code.setLabel(mContext.getString(R.string.discount_type_percent));
 		discountTypes[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.DISCOUNT_TYPE_NOMINAL);
-		code.setLabel("Nominal");
+		code.setLabel(mContext.getString(R.string.discount_type_amount));
 		discountTypes[1] = code;
-		
-		priceTypeCount = new CodeBean[3];
-		
-		code = new CodeBean();
-		code.setCode(Constant.PRICE_TYPE_COUNT_1);
-		code.setLabel(Constant.PRICE_TYPE_COUNT_1_DESC);
-		priceTypeCount[0] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.PRICE_TYPE_COUNT_2);
-		code.setLabel(Constant.PRICE_TYPE_COUNT_2_DESC);
-		priceTypeCount[1] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.PRICE_TYPE_COUNT_3);
-		code.setLabel(Constant.PRICE_TYPE_COUNT_3_DESC);
-		priceTypeCount[2] = code;
 		
 		paymentTypes = new CodeBean[3];
 		
 		code = new CodeBean();
 		code.setCode("CASH");
-		code.setLabel("Tunai");
+		code.setLabel(mContext.getString(R.string.payment_type_cash));
 		paymentTypes[0] = code;
 		
 		code = new CodeBean();
 		code.setCode("DEBIT");
-		code.setLabel("Debit Card");
+		code.setLabel(mContext.getString(R.string.payment_type_debit));
 		paymentTypes[1] = code;
 		
 		code = new CodeBean();
 		code.setCode("CREDIT");
-		code.setLabel("Credit Card");
+		code.setLabel(mContext.getString(R.string.payment_type_credit));
 		paymentTypes[2] = code;
 		
 		orderTypes = new CodeBean[2];
 		
 		code = new CodeBean();
 		code.setCode("DINE_IN");
-		code.setLabel("Makan di Tempat");
+		code.setLabel(mContext.getString(R.string.order_type_dine_in));
 		orderTypes[0] = code;
 		
 		code = new CodeBean();
 		code.setCode("TAKE_AWAY");
-		code.setLabel("Take Away");
+		code.setLabel(mContext.getString(R.string.order_type_take_away));
 		orderTypes[1] = code;
-		
+				
 		billTypes = new CodeBean[3];
 		
 		code = new CodeBean();
 		code.setCode(Constant.BILL_TYPE_PRODUCT_PURCHASE);
-		code.setLabel("Pembelian Produk");
+		code.setLabel(mContext.getString(R.string.bill_type_product_purchase));
 		billTypes[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.BILL_TYPE_EXPENSE_WITH_RECEIPT);
-		code.setLabel("Pengeluaran Dengan Nota");
+		code.setLabel(mContext.getString(R.string.bill_type_expense_with_receipt));
 		billTypes[1] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT);
-		code.setLabel("Pengeluaran Tanpa Nota");
+		code.setLabel(mContext.getString(R.string.bill_type_expense_without_receipt));
 		billTypes[2] = code;
 		
 		billStatus = new CodeBean[3];
 		
 		code = new CodeBean();
 		code.setCode(Constant.BILL_STATUS_UNPAID);
-		code.setLabel("Belum Dibayar");
+		code.setLabel(mContext.getString(R.string.bill_status_unpaid));
 		billStatus[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.BILL_STATUS_PARTIAL);
-		code.setLabel("Pembayaran Sebagian");
+		code.setLabel(mContext.getString(R.string.bill_status_partial));
 		billStatus[1] = code;
 
 		code = new CodeBean();
 		code.setCode(Constant.BILL_STATUS_PAID);
-		code.setLabel("Lunas");
+		code.setLabel(mContext.getString(R.string.bill_status_paid));
 		billStatus[2] = code;
 		
-		inventoryStatus = new CodeBean[10];
+		inventoryStatus = new CodeBean[8];
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_PURCHASE);
-		code.setLabel("Pembelian Produk");
+		code.setLabel(mContext.getString(R.string.inventory_status_purchase));
 		inventoryStatus[0] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_SALE);
-		code.setLabel("Penjualan Produk");
+		code.setLabel(mContext.getString(R.string.inventory_status_sale));
 		inventoryStatus[1] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_RETURN);
-		code.setLabel("Retur Produk Rusak");
+		code.setLabel(mContext.getString(R.string.inventory_status_return));
 		inventoryStatus[2] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_REFUND);
-		code.setLabel("Pembatalan Pembelian");
+		code.setLabel(mContext.getString(R.string.inventory_status_refund));
 		inventoryStatus[3] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_REPLACEMENT);
-		code.setLabel("Penggantian Produk Rusak");
+		code.setLabel(mContext.getString(R.string.inventory_status_replacement));
 		inventoryStatus[4] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_NOT_OWNED_IN);
-		code.setLabel("Produk Titipan Masuk");
+		code.setCode(Constant.INVENTORY_STATUS_LOST);
+		code.setLabel(mContext.getString(R.string.inventory_status_lost));
 		inventoryStatus[5] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_NOT_OWNED_OUT);
-		code.setLabel("Produk Titipan Keluar");
+		code.setCode(Constant.INVENTORY_STATUS_DAMAGE);
+		code.setLabel(mContext.getString(R.string.inventory_status_damage));
 		inventoryStatus[6] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_LOST);
-		code.setLabel("Produk Hilang");
+		code.setCode(Constant.INVENTORY_STATUS_INITIAL_STOCK);
+		code.setLabel(mContext.getString(R.string.inventory_status_initial_stock));
 		inventoryStatus[7] = code;
 		
-		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_DAMAGE);
-		code.setLabel("Produk Rusak");
-		inventoryStatus[8] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_INITIAL_STOCK);
-		code.setLabel("Stok Awal");
-		inventoryStatus[9] = code;
-		
-		moduleAccess = new CodeBean[15];
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_CASHIER);
-		code.setLabel(Constant.MENU_CASHIER);
-		moduleAccess[0] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_WAITRESS);
-		code.setLabel(Constant.MENU_WAITRESS);
-		moduleAccess[1] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_ORDER);
-		code.setLabel(Constant.MENU_ORDER);
-		moduleAccess[2] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_DATA_MANAGEMENT);
-		code.setLabel(Constant.MENU_DATA_MANAGEMENT);
-		moduleAccess[3] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_CUSTOMER);
-		code.setLabel(Constant.MENU_CUSTOMER);
-		moduleAccess[4] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_INVENTORY);
-		code.setLabel(Constant.MENU_INVENTORY);
-		moduleAccess[5] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_BILLS);
-		code.setLabel(Constant.MENU_BILLS);
-		moduleAccess[6] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_USER_ACCESS);
-		code.setLabel(Constant.MENU_USER_ACCESS);
-		moduleAccess[7] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_TRANSACTION);
-		code.setLabel(Constant.MENU_REPORT_TRANSACTION);
-		moduleAccess[8] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_PRODUCT_STATISTIC);
-		code.setLabel(Constant.MENU_REPORT_PRODUCT_STATISTIC);
-		moduleAccess[9] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_COMMISION);
-		code.setLabel(Constant.MENU_REPORT_COMMISION);
-		moduleAccess[10] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_INVENTORY);
-		code.setLabel(Constant.MENU_REPORT_INVENTORY);
-		moduleAccess[11] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_REPORT_CASHFLOW);
-		code.setLabel(Constant.MENU_REPORT_CASHFLOW);
-		moduleAccess[12] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_FAVORITE_CUSTOMER);
-		code.setLabel(Constant.MENU_FAVORITE_CUSTOMER);
-		moduleAccess[13] = code;
-		
-		code = new CodeBean();
-		code.setCode(Constant.ACCESS_FAVORITE_SUPPLIER);
-		code.setLabel(Constant.MENU_FAVORITE_SUPPLIER);
-		moduleAccess[14] = code;
+		isInitialized = true;
 	}
 	
 	public static CodeBean[] getMerchantTypes() {
@@ -393,6 +443,14 @@ public class CodeUtil {
 		return discountTypes;
 	}
 	
+	public static CodeBean[] getQuantityTypes() {
+		return quantityType;
+	}
+	
+	public static CodeBean[] getFontSizes() {
+		return fontSizes;
+	}
+	
 	public static CodeBean[] getPaymentTypes() {
 		return paymentTypes;
 	}
@@ -419,6 +477,20 @@ public class CodeUtil {
 	
 	public static CodeBean[] getModuleAccesses() {
 		return moduleAccess;
+	}
+	
+	public static String getModuleAccessLabel(String code) {
+		
+		String label = Constant.EMPTY_STRING;
+		
+		for (CodeBean codeBean : moduleAccess) {
+			if (codeBean.getCode().equals(code)) {
+				label = codeBean.getLabel();
+				break;
+			}
+		}
+		
+		return label;
 	}
 	
 	public static String getPaymentTypeLabel(String code) {

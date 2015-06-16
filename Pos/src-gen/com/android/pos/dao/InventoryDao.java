@@ -10,6 +10,8 @@ import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 
 import com.android.pos.dao.Inventory;
 
@@ -27,12 +29,12 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property ProductId = new Property(2, long.class, "productId", false, "PRODUCT_ID");
-        public final static Property ProductName = new Property(3, String.class, "productName", false, "PRODUCT_NAME");
-        public final static Property ProductCostPrice = new Property(4, Integer.class, "productCostPrice", false, "PRODUCT_COST_PRICE");
-        public final static Property QuantityStr = new Property(5, String.class, "quantityStr", false, "QUANTITY_STR");
-        public final static Property Quantity = new Property(6, Integer.class, "quantity", false, "QUANTITY");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property MerchantId = new Property(2, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property ProductId = new Property(3, long.class, "productId", false, "PRODUCT_ID");
+        public final static Property ProductName = new Property(4, String.class, "productName", false, "PRODUCT_NAME");
+        public final static Property ProductCostPrice = new Property(5, Float.class, "productCostPrice", false, "PRODUCT_COST_PRICE");
+        public final static Property Quantity = new Property(6, Float.class, "quantity", false, "QUANTITY");
         public final static Property BillId = new Property(7, Long.class, "billId", false, "BILL_ID");
         public final static Property BillReferenceNo = new Property(8, String.class, "billReferenceNo", false, "BILL_REFERENCE_NO");
         public final static Property SupplierId = new Property(9, Long.class, "supplierId", false, "SUPPLIER_ID");
@@ -49,6 +51,9 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
 
     private DaoSession daoSession;
 
+    private Query<Inventory> bills_InventoryListQuery;
+    private Query<Inventory> product_InventoryListQuery;
+    private Query<Inventory> supplier_InventoryListQuery;
 
     public InventoryDao(DaoConfig config) {
         super(config);
@@ -64,12 +69,12 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'INVENTORY' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'PRODUCT_ID' INTEGER NOT NULL ," + // 2: productId
-                "'PRODUCT_NAME' TEXT," + // 3: productName
-                "'PRODUCT_COST_PRICE' INTEGER," + // 4: productCostPrice
-                "'QUANTITY_STR' TEXT," + // 5: quantityStr
-                "'QUANTITY' INTEGER," + // 6: quantity
+                "'REF_ID' TEXT," + // 1: refId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 2: merchantId
+                "'PRODUCT_ID' INTEGER NOT NULL ," + // 3: productId
+                "'PRODUCT_NAME' TEXT," + // 4: productName
+                "'PRODUCT_COST_PRICE' DECIMAL(10,2)," + // 5: productCostPrice
+                "'QUANTITY' DECIMAL(10,2)," + // 6: quantity
                 "'BILL_ID' INTEGER," + // 7: billId
                 "'BILL_REFERENCE_NO' TEXT," + // 8: billReferenceNo
                 "'SUPPLIER_ID' INTEGER," + // 9: supplierId
@@ -99,27 +104,27 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMerchantId());
-        stmt.bindLong(3, entity.getProductId());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindLong(3, entity.getMerchantId());
+        stmt.bindLong(4, entity.getProductId());
  
         String productName = entity.getProductName();
         if (productName != null) {
-            stmt.bindString(4, productName);
+            stmt.bindString(5, productName);
         }
  
-        Integer productCostPrice = entity.getProductCostPrice();
+        Float productCostPrice = entity.getProductCostPrice();
         if (productCostPrice != null) {
-            stmt.bindLong(5, productCostPrice);
+            stmt.bindDouble(6, productCostPrice);
         }
  
-        String quantityStr = entity.getQuantityStr();
-        if (quantityStr != null) {
-            stmt.bindString(6, quantityStr);
-        }
- 
-        Integer quantity = entity.getQuantity();
+        Float quantity = entity.getQuantity();
         if (quantity != null) {
-            stmt.bindLong(7, quantity);
+            stmt.bindDouble(7, quantity);
         }
  
         Long billId = entity.getBillId();
@@ -200,12 +205,12 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
     public Inventory readEntity(Cursor cursor, int offset) {
         Inventory entity = new Inventory( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // merchantId
-            cursor.getLong(offset + 2), // productId
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // productName
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // productCostPrice
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // quantityStr
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // quantity
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getLong(offset + 2), // merchantId
+            cursor.getLong(offset + 3), // productId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // productName
+            cursor.isNull(offset + 5) ? null : cursor.getFloat(offset + 5), // productCostPrice
+            cursor.isNull(offset + 6) ? null : cursor.getFloat(offset + 6), // quantity
             cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7), // billId
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // billReferenceNo
             cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // supplierId
@@ -226,12 +231,12 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
     @Override
     public void readEntity(Cursor cursor, Inventory entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setProductId(cursor.getLong(offset + 2));
-        entity.setProductName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setProductCostPrice(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setQuantityStr(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setQuantity(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMerchantId(cursor.getLong(offset + 2));
+        entity.setProductId(cursor.getLong(offset + 3));
+        entity.setProductName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setProductCostPrice(cursor.isNull(offset + 5) ? null : cursor.getFloat(offset + 5));
+        entity.setQuantity(cursor.isNull(offset + 6) ? null : cursor.getFloat(offset + 6));
         entity.setBillId(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
         entity.setBillReferenceNo(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setSupplierId(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
@@ -269,6 +274,51 @@ public class InventoryDao extends AbstractDao<Inventory, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "inventoryList" to-many relationship of Bills. */
+    public List<Inventory> _queryBills_InventoryList(Long billId) {
+        synchronized (this) {
+            if (bills_InventoryListQuery == null) {
+                QueryBuilder<Inventory> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.BillId.eq(null));
+                queryBuilder.orderRaw("PRODUCT_NAME ASC");
+                bills_InventoryListQuery = queryBuilder.build();
+            }
+        }
+        Query<Inventory> query = bills_InventoryListQuery.forCurrentThread();
+        query.setParameter(0, billId);
+        return query.list();
+    }
+
+    /** Internal query to resolve the "inventoryList" to-many relationship of Product. */
+    public List<Inventory> _queryProduct_InventoryList(long productId) {
+        synchronized (this) {
+            if (product_InventoryListQuery == null) {
+                QueryBuilder<Inventory> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.ProductId.eq(null));
+                queryBuilder.orderRaw("_id ASC");
+                product_InventoryListQuery = queryBuilder.build();
+            }
+        }
+        Query<Inventory> query = product_InventoryListQuery.forCurrentThread();
+        query.setParameter(0, productId);
+        return query.list();
+    }
+
+    /** Internal query to resolve the "inventoryList" to-many relationship of Supplier. */
+    public List<Inventory> _querySupplier_InventoryList(Long supplierId) {
+        synchronized (this) {
+            if (supplier_InventoryListQuery == null) {
+                QueryBuilder<Inventory> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.SupplierId.eq(null));
+                queryBuilder.orderRaw("_id ASC");
+                supplier_InventoryListQuery = queryBuilder.build();
+            }
+        }
+        Query<Inventory> query = supplier_InventoryListQuery.forCurrentThread();
+        query.setParameter(0, supplierId);
+        return query.list();
+    }
+
     private String selectDeep;
 
     protected String getSelectDeep() {

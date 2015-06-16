@@ -17,6 +17,7 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.common.ConfirmListener;
 import com.android.pos.dao.Discount;
+import com.android.pos.dao.Employee;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Orders;
 import com.android.pos.dao.ProductGroup;
@@ -33,7 +34,9 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 	
 	private TextView mDiscountLabelText;
 	private TextView mDiscountText;
+	private TextView mTaxLabelText;
 	private TextView mTaxText;
+	private TextView mServiceChargeLabelText;
 	private TextView mServiceChargeText;
 	private TextView mTotalBillText;
 	
@@ -97,14 +100,16 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		mDiscountPanel.setOnClickListener(getDiscountPanelOnClickListener());
 		
 		mDiscountLabelText = (TextView) view.findViewById(R.id.discountLabelText);
-		mDiscountLabelText.setText("Tanpa Diskon");
+		mDiscountLabelText.setText(getString(R.string.no_discount));
 		
 		mDiscountText = (TextView) view.findViewById(R.id.discountText);
 		mDiscountText.setText(Constant.EMPTY_STRING);
 		
+		mTaxLabelText = (TextView) view.findViewById(R.id.taxLabel);
 		mTaxText = (TextView) view.findViewById(R.id.taxText);
 		mTaxText.setText(CommonUtil.formatNumber(0));
 		
+		mServiceChargeLabelText = (TextView) view.findViewById(R.id.serviceChargeLabel);
 		mServiceChargeText = (TextView) view.findViewById(R.id.serviceChargeText);
 		mServiceChargeText.setText(CommonUtil.formatNumber(0));
 		
@@ -164,7 +169,13 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 	@Override
 	public void onItemSelected(TransactionItem transactionItem) {
 		
-		mActionListener.onProductSelected(transactionItem.getProduct(), transactionItem.getPrice(), transactionItem.getEmployee(), transactionItem.getQuantity(), transactionItem.getRemarks());
+		Employee employee = null;
+		
+		if (transactionItem.getEmployeeId() != null) {
+			employee = transactionItem.getEmployee();
+		}
+		
+		mActionListener.onProductSelected(transactionItem.getProduct(), transactionItem.getPrice(), employee, transactionItem.getQuantity(), transactionItem.getRemarks());
 	}
 	
 	public void setTransactionItems(List<TransactionItem> transactionItems) {
@@ -252,7 +263,7 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			return;
 		}
 		
-		int totalBill = 0;
+		float totalBill = 0;
 		mTotalItem = 0;
 		
 		for (TransactionItem transItem : mTransactionItems) {
@@ -260,14 +271,14 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			mTotalItem += transItem.getQuantity();
 		}
 		
-		int discount = 0;
+		float discount = 0;
 		
 		if (mDiscount != null) {
 			
 			String label = mDiscount.getName();
 			
 			if (mDiscount.getPercentage() != 0) {
-				label = label + " " + CommonUtil.intToStr(mDiscount.getPercentage()) + "%";
+				label = label + " " + CommonUtil.formatPercentage(mDiscount.getPercentage());
 			}
 			
 			mDiscountLabelText.setText(label);
@@ -282,12 +293,12 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 				
 			if (mDiscount.getPercentage() == 0 && mDiscount.getAmount() == 0) {
 
-				mDiscountLabelText.setText("Tanpa Diskon");
+				mDiscountLabelText.setText(getString(R.string.no_discount));
 				mDiscountText.setText(Constant.EMPTY_STRING);
 			}
 			
 		} else {
-			mDiscountLabelText.setText("Tanpa Diskon");
+			mDiscountLabelText.setText(getString(R.string.no_discount));
 			mDiscountText.setText(Constant.EMPTY_STRING);
 		}
 		
@@ -295,11 +306,27 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		
 		Merchant merchant = MerchantUtil.getMerchant();
 		
-		int taxPercentage = CommonUtil.getNvl(merchant.getTaxPercentage());
-		int serviceChargePercentage = CommonUtil.getNvl(merchant.getServiceChargePercentage());
+		float taxPercentage = CommonUtil.getNvlFloat(merchant.getTaxPercentage());
+		float serviceChargePercentage = CommonUtil.getNvlFloat(merchant.getServiceChargePercentage());
 		
-		int tax = (int) Math.round(totalBill * taxPercentage / 100);
-		int serviceCharge = (int) Math.round(totalBill * serviceChargePercentage / 100);
+		float tax = (totalBill * taxPercentage / 100);
+		float serviceCharge = (int) Math.round(totalBill * serviceChargePercentage / 100);
+		
+		if (tax != 0) {
+			
+			String label = getString(R.string.field_tax_percentage) + " " + CommonUtil.formatPercentage(taxPercentage);
+			
+			mTaxLabelText.setText(label);
+			mTaxText.setText(CommonUtil.formatCurrency(tax));
+		}
+		
+		if (serviceCharge != 0) {
+			
+			String label = getString(R.string.field_service_charge_percentage) + " " + CommonUtil.formatPercentage(serviceChargePercentage);
+			
+			mServiceChargeLabelText.setText(label);
+			mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));
+		}
 		
 		mTaxText.setText(CommonUtil.formatCurrency(tax));
 		mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));
@@ -320,7 +347,7 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			mServiceChargePanel.setVisibility(View.GONE);
 		}
 		
-		int totalPayable = totalBill + tax + serviceCharge;
+		float totalPayable = totalBill + tax + serviceCharge;
 		
 		if (UserUtil.isWaitress()) {
 			mTotalBillText.setText(CommonUtil.formatNumber(mTotalItem));
@@ -339,21 +366,21 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			
 			if (Constant.ORDER_TYPE_DINE_IN.equals(mSelectedOrder.getOrderType())) {
 				
-				header = "Tambahan No. Meja : " + mSelectedOrder.getOrderReference();
+				header = getString(R.string.order_table_no_add_on) + mSelectedOrder.getOrderReference();
 			
 			} else {
 				
-				header = "Tambahan Pelanggan : " + mSelectedOrder.getOrderReference();
+				header = getString(R.string.order_customer_add_on) + mSelectedOrder.getOrderReference();
 			}
 			
 		} else {
 			
-			header = "Daftar Penjualan";
+			header = getString(R.string.order_transaction_list);
 		}
 		
 		if (UserUtil.isWaitress()) {
 			
-			header = "Daftar Pesanan";
+			header = getString(R.string.order_order_list);
 		}
 		
 		mHeaderText.setText(header);
@@ -459,9 +486,9 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		};
 	}
 	
-	private Integer getTotalQuantity(List<TransactionItem> transactionItems) {
+	private Float getTotalQuantity(List<TransactionItem> transactionItems) {
 		
-		Integer total = 0;
+		Float total = Float.valueOf(0);
 		
 		for (TransactionItem transactionItem : transactionItems) {
 			total = total + transactionItem.getQuantity();
@@ -478,9 +505,9 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			public void onClick(View v) {
 				
 				if (mTransactionItems != null && getTotalQuantity(mTransactionItems) == 0) {
-					NotificationUtil.setAlertMessage(getFragmentManager(), "Daftar item penjualan masih kosong");
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_transaction_list_empty));
 				} else {
-					mActionListener.onPaymentRequested(CommonUtil.parseCurrency(mTotalBillText.getText().toString()));
+					mActionListener.onPaymentRequested(CommonUtil.parseFloatCurrency(mTotalBillText.getText().toString()));
 				}
 			}
 		};
@@ -494,7 +521,7 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			public void onClick(View v) {
 				
 				if (mTransactionItems != null && mTransactionItems.size() == 0) {
-					NotificationUtil.setAlertMessage(getFragmentManager(), "Daftar item pesanan masih kosong");
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_order_list_empty));
 				} else {
 					mActionListener.onOrderInfoProvided(mSelectedOrder.getOrderReference(), mSelectedOrder.getOrderType());
 				}
@@ -510,7 +537,7 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			public void onClick(View v) {
 				
 				if (mTransactionItems != null && mTransactionItems.size() == 0) {
-					NotificationUtil.setAlertMessage(getFragmentManager(), "Daftar item pesanan masih kosong");
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_order_list_empty));
 				} else {
 					mActionListener.onOrderRequested(mTotalItem);
 				}
@@ -525,7 +552,7 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			@Override
 			public void onClick(View v) {
 				
-				ConfirmationUtil.confirmTask(getFragmentManager(), (ConfirmListener) getActivity(), ConfirmationUtil.CANCEL_TRANSACTION, "Batalkan transaksi ?");
+				ConfirmationUtil.confirmTask(getFragmentManager(), (ConfirmListener) getActivity(), ConfirmationUtil.CANCEL_TRANSACTION, getString(R.string.confirm_transaction_cancellation));
 			}
 		};
 	}

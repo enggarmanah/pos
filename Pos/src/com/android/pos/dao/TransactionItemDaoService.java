@@ -7,10 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.Customer;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.TransactionItemDao;
-import com.android.pos.model.TransactionItemBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.model.TransactionItemBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
@@ -23,6 +24,10 @@ public class TransactionItemDaoService {
 	private TransactionItemDao transactionItemDao = DbUtil.getSession().getTransactionItemDao();
 	
 	public void addTransactionItem(TransactionItem transactionItem) {
+		
+		if (CommonUtil.isEmpty(transactionItem.getRefId())) {
+			transactionItem.setRefId(CommonUtil.generateRefId());
+		}
 		
 		transactionItemDao.insert(transactionItem);
 	}
@@ -66,6 +71,10 @@ public class TransactionItemDaoService {
 	
 	public void updateTransactionItems(List<TransactionItemBean> transactionItems) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<TransactionItemBean> shiftedBeans = new ArrayList<TransactionItemBean>();
+		
 		for (TransactionItemBean bean : transactionItems) {
 			
 			boolean isAdd = false;
@@ -75,6 +84,10 @@ public class TransactionItemDaoService {
 			if (transactionItem == null) {
 				transactionItem = new TransactionItem();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(transactionItem.getRefId(), bean.getRef_id())) {
+				TransactionItemBean shiftedBean = BeanUtil.getBean(transactionItem);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(transactionItem, bean);
@@ -85,6 +98,20 @@ public class TransactionItemDaoService {
 				transactionItemDao.update(transactionItem);
 			}
 		} 
+		
+		for (TransactionItemBean bean : shiftedBeans) {
+			
+			TransactionItem transactionItem = new TransactionItem();
+			BeanUtil.updateBean(transactionItem, bean);
+			
+			transactionItem.setId(null);
+			transactionItem.setUploadStatus(Constant.STATUS_YES);
+			
+			transactionItemDao.insert(transactionItem);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
 	}
 	
 	public void updateTransactionItemStatus(List<SyncStatusBean> syncStatusBeans) {

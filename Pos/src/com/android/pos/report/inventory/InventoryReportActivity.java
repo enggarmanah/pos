@@ -7,7 +7,6 @@ import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Product;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 
 import android.app.ActionBar;
@@ -63,8 +62,6 @@ public class InventoryReportActivity extends BaseActivity
 		
 		setContentView(R.layout.report_inventory_activity);
 
-		DbUtil.initDb(this);
-		
 		initDrawerMenu();
 		
 		initFragments();
@@ -260,6 +257,8 @@ public class InventoryReportActivity extends BaseActivity
 			
 			case R.id.menu_item_list:
 				
+				showInventoryList();
+				
 				if (mBelowStockLimitProductCount != 0) {
 				
 					mIsShowAllProducts = true;
@@ -270,8 +269,6 @@ public class InventoryReportActivity extends BaseActivity
 					
 					mInventoryReportListFragment.showAllProducts();
 				}
-				
-				showInventoryList();
 				
 				return true;
 		

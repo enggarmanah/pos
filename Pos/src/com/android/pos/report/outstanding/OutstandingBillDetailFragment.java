@@ -136,9 +136,9 @@ public class OutstandingBillDetailFragment extends BaseFragment {
 		mReferenceNoText.setText(mBill.getBillReferenceNo());
 		mDateText.setText(CommonUtil.formatDate(mBill.getBillDate()));
 
-		Integer totalAmount = mBill.getBillAmount();
-		Integer paymentAmount = mBill.getPayment();
-		Integer outstandingAmount = totalAmount - paymentAmount;
+		Float totalAmount = mBill.getBillAmount();
+		Float paymentAmount = mBill.getPayment();
+		Float outstandingAmount = totalAmount - paymentAmount;
 		
 		mSupplierText.setText(mBill.getSupplierName());
 		mDueDateText.setText(CommonUtil.formatDate(mBill.getBillDueDate()));

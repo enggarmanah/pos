@@ -118,10 +118,10 @@ public class InventoryReportDetailFragment extends BaseFragment {
 		
 		if (mProduct != null) {
 			
-			Integer stock = CommonUtil.getNvl(mProduct.getStock());
+			Float stock = CommonUtil.getNvlFloat(mProduct.getStock());
 			
 			mProductNameText.setText(mProduct.getName());
-			mProductStockText.setText("Jumlah :  " + CommonUtil.formatNumber(stock));
+			mProductStockText.setText(getString(R.string.report_inventory_stock, CommonUtil.formatNumber(stock)));
 			
 			mInventories.clear();
 			
@@ -179,9 +179,9 @@ public class InventoryReportDetailFragment extends BaseFragment {
 					String message = Constant.EMPTY_STRING;
 					
 					if (mIsEndOfList) {
-						message = "Tidak lagi terdapat data untuk ditampilkan!";
+						message = getString(R.string.alert_data_no_more);
 					} else {
-						message = "Menampilkan data selanjutnya ...";
+						message = getString(R.string.alert_data_show_next);
 					}
 					
 					Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);

@@ -8,11 +8,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.MerchantAccess;
+import com.android.pos.dao.MerchantAccessDao;
 import com.android.pos.dao.UserAccess;
 import com.android.pos.dao.UserAccessDao;
-import com.android.pos.model.UserAccessBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.model.UserAccessBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 
@@ -25,6 +28,10 @@ public class UserAccessDaoService {
 	private MerchantAccessDao merchantAccessDao = DbUtil.getSession().getMerchantAccessDao();
 	
 	public void addUserAccess(UserAccess userAccess) {
+		
+		if (CommonUtil.isEmpty(userAccess.getRefId())) {
+			userAccess.setRefId(CommonUtil.generateRefId());
+		}
 		
 		userAccessDao.insert(userAccess);
 	}
@@ -116,6 +123,10 @@ public class UserAccessDaoService {
 	
 	public void updateUserAccesses(List<UserAccessBean> userAccesss) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<UserAccessBean> shiftedBeans = new ArrayList<UserAccessBean>();
+		
 		for (UserAccessBean bean : userAccesss) {
 			
 			boolean isAdd = false;
@@ -125,6 +136,10 @@ public class UserAccessDaoService {
 			if (userAccess == null) {
 				userAccess = new UserAccess();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(userAccess.getRefId(), bean.getRef_id())) {
+				UserAccessBean shiftedBean = BeanUtil.getBean(userAccess);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(userAccess, bean);
@@ -134,7 +149,21 @@ public class UserAccessDaoService {
 			} else {
 				userAccessDao.update(userAccess);
 			}
-		} 
+		}
+				
+		for (UserAccessBean bean : shiftedBeans) {
+			
+			UserAccess userAccess = new UserAccess();
+			BeanUtil.updateBean(userAccess, bean);
+			
+			userAccess.setId(null);
+			userAccess.setUploadStatus(Constant.STATUS_YES);
+			
+			userAccessDao.insert(userAccess);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
 	}
 	
 	public void updateUserAccessStatus(List<SyncStatusBean> syncStatusBeans) {

@@ -8,7 +8,6 @@ import com.android.pos.dao.Employee;
 import com.android.pos.model.CommisionMonthBean;
 import com.android.pos.model.CommisionYearBean;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -50,8 +49,6 @@ public class CommisionActivity extends BaseActivity
 		
 		setContentView(R.layout.report_commision_activity);
 
-		DbUtil.initDb(this);
-		
 		initDrawerMenu();
 		
 		initFragments();

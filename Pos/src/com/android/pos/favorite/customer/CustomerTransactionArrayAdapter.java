@@ -75,7 +75,7 @@ public class CustomerTransactionArrayAdapter extends ArrayAdapter<TransactionIte
 			amountText = viewHolder.amountText;
 		}
 		
-		Integer price = transactionItem.getPrice() - transactionItem.getDiscount();
+		Float price = transactionItem.getPrice() - transactionItem.getDiscount();
 		
 		productNameText.setText(transactionItem.getProductName());
 		transactionDateText.setText(CommonUtil.formatDate(transactionItem.getTransactions().getTransactionDate()));

@@ -42,6 +42,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(productGroup.getMerchantId());
 		bean.setRemote_id(productGroup.getId());
+		bean.setRef_id(productGroup.getRefId());
 		bean.setName(productGroup.getName());
 		bean.setStatus(productGroup.getStatus());
 		bean.setCreate_by(productGroup.getCreateBy());
@@ -56,6 +57,7 @@ public class BeanUtil {
 		
 		productGroup.setMerchantId(bean.getMerchant_id());
 		productGroup.setId(bean.getRemote_id());
+		productGroup.setRefId(bean.getRef_id());
 		productGroup.setName(bean.getName());
 		productGroup.setStatus(bean.getStatus());
 		productGroup.setUploadStatus(Constant.STATUS_NO);
@@ -71,6 +73,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(discount.getMerchantId());
 		bean.setRemote_id(discount.getId());
+		bean.setRef_id(discount.getRefId());
 		bean.setName(discount.getName());
 		bean.setPercentage(discount.getPercentage());
 		bean.setStatus(discount.getStatus());
@@ -86,6 +89,7 @@ public class BeanUtil {
 		
 		discount.setMerchantId(bean.getMerchant_id());
 		discount.setId(bean.getRemote_id());
+		discount.setRefId(bean.getRef_id());
 		discount.setName(bean.getName());
 		discount.setPercentage(bean.getPercentage());
 		discount.setStatus(bean.getStatus());
@@ -101,6 +105,7 @@ public class BeanUtil {
 		MerchantBean bean = new MerchantBean();
 		
 		bean.setRemote_id(merchant.getId());
+		bean.setRef_id(merchant.getRefId());
 		bean.setName(merchant.getName());
 		bean.setType(merchant.getType());
 		bean.setAddress(merchant.getAddress());
@@ -134,6 +139,7 @@ public class BeanUtil {
 	public static void updateBean(Merchant merchant, MerchantBean bean) {
 		
 		merchant.setId(bean.getRemote_id());
+		merchant.setRefId(bean.getRef_id());
 		merchant.setName(bean.getName());
 		merchant.setType(bean.getType());
 		merchant.setAddress(bean.getAddress());
@@ -169,6 +175,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(employee.getMerchantId());
 		bean.setRemote_id(employee.getId());
+		bean.setRef_id(employee.getRefId());
 		bean.setName(employee.getName());
 		bean.setTelephone(employee.getTelephone());
 		bean.setAddress(employee.getAddress());
@@ -185,6 +192,7 @@ public class BeanUtil {
 		
 		employee.setMerchantId(bean.getMerchant_id());
 		employee.setId(bean.getRemote_id());
+		employee.setRefId(bean.getRef_id());
 		employee.setName(bean.getName());
 		employee.setTelephone(bean.getTelephone());
 		employee.setAddress(bean.getAddress());
@@ -202,6 +210,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(customer.getMerchantId());
 		bean.setRemote_id(customer.getId());
+		bean.setRef_id(customer.getRefId());
 		bean.setName(customer.getName());
 		bean.setTelephone(customer.getTelephone());
 		bean.setEmail(customer.getEmail());
@@ -220,6 +229,7 @@ public class BeanUtil {
 		
 		customer.setMerchantId(bean.getMerchant_id());
 		customer.setId(bean.getRemote_id());
+		customer.setRefId(bean.getRef_id());
 		customer.setName(bean.getName());
 		customer.setTelephone(bean.getTelephone());
 		customer.setEmail(bean.getEmail());
@@ -239,6 +249,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(product.getMerchantId());
 		bean.setRemote_id(product.getId());
+		bean.setRef_id(product.getRefId());
 		bean.setProduct_group_id(product.getProductGroupId());
 		bean.setCode(product.getCode());
 		bean.setName(product.getName());
@@ -252,6 +263,7 @@ public class BeanUtil {
 		bean.setPromo_price(product.getPromoPrice());
 		bean.setPromo_start(product.getPromoStart());
 		bean.setPromo_end(product.getPromoEnd());
+		bean.setQuantity_type(product.getQuantityType());
 		bean.setStock(product.getStock());
 		bean.setMin_stock(product.getMinStock());
 		bean.setStatus(product.getStatus());
@@ -267,6 +279,7 @@ public class BeanUtil {
 		
 		product.setMerchantId(bean.getMerchant_id());
 		product.setId(bean.getRemote_id());
+		product.setRefId(bean.getRef_id());
 		product.setProductGroupId(bean.getProduct_group_id());
 		product.setCode(bean.getCode());
 		product.setName(bean.getName());
@@ -280,6 +293,7 @@ public class BeanUtil {
 		product.setPromoPrice(bean.getPromo_price());
 		product.setPromoStart(bean.getPromo_start());
 		product.setPromoEnd(bean.getPromo_end());
+		product.setQuantityType(bean.getQuantity_type());
 		product.setStock(bean.getStock());
 		product.setMinStock(bean.getMin_stock());
 		product.setStatus(bean.getStatus());
@@ -296,6 +310,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(user.getMerchantId());
 		bean.setRemote_id(user.getId());
+		bean.setRef_id(user.getRefId());
 		bean.setName(user.getName());
 		bean.setUser_id(user.getUserId());
 		bean.setPassword(user.getPassword());
@@ -313,6 +328,7 @@ public class BeanUtil {
 		
 		user.setMerchantId(bean.getMerchant_id());
 		user.setId(bean.getRemote_id());
+		user.setRefId(bean.getRef_id());
 		user.setName(bean.getName());
 		user.setUserId(bean.getUser_id());
 		user.setPassword(bean.getPassword());
@@ -331,6 +347,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(transactions.getMerchantId());
 		bean.setRemote_id(transactions.getId());
+		bean.setRef_id(transactions.getRefId());
 		bean.setTransaction_no(transactions.getTransactionNo());
 		bean.setTransaction_date(transactions.getTransactionDate());
 		bean.setOrder_type(transactions.getOrderType());
@@ -360,6 +377,7 @@ public class BeanUtil {
 		
 		transactions.setMerchantId(bean.getMerchant_id());
 		transactions.setId(bean.getRemote_id());
+		transactions.setRefId(bean.getRef_id());
 		transactions.setTransactionNo(bean.getTransaction_no());
 		transactions.setTransactionDate(bean.getTransaction_date());
 		transactions.setOrderType(bean.getOrder_type());
@@ -390,6 +408,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(transactionItem.getMerchantId());
 		bean.setRemote_id(transactionItem.getId());
+		bean.setRef_id(transactionItem.getRefId());
 		bean.setTransaction_id(transactionItem.getTransactionId());
 		bean.setProduct_id(transactionItem.getProductId());
 		bean.setProduct_name(transactionItem.getProductName());
@@ -408,6 +427,7 @@ public class BeanUtil {
 		
 		transactionItem.setMerchantId(bean.getMerchant_id());
 		transactionItem.setId(bean.getRemote_id());
+		transactionItem.setRefId(bean.getRef_id());
 		transactionItem.setTransactionId(bean.getTransaction_id());
 		transactionItem.setProductId(bean.getProduct_id());
 		transactionItem.setProductName(bean.getProduct_name());
@@ -427,6 +447,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(supplier.getMerchantId());
 		bean.setRemote_id(supplier.getId());
+		bean.setRef_id(supplier.getRefId());
 		bean.setName(supplier.getName());
 		bean.setTelephone(supplier.getTelephone());
 		bean.setAddress(supplier.getAddress());
@@ -446,6 +467,7 @@ public class BeanUtil {
 		
 		supplier.setMerchantId(bean.getMerchant_id());
 		supplier.setId(bean.getRemote_id());
+		supplier.setRefId(bean.getRef_id());
 		supplier.setName(bean.getName());
 		supplier.setTelephone(bean.getTelephone());
 		supplier.setAddress(bean.getAddress());
@@ -466,10 +488,10 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(inventory.getMerchantId());
 		bean.setRemote_id(inventory.getId());
+		bean.setRef_id(inventory.getRefId());
 		bean.setProduct_id(inventory.getProductId());
 		bean.setProduct_name(inventory.getProductName());
 		bean.setProduct_cost_price(inventory.getProductCostPrice());
-		bean.setQuantity_str(inventory.getQuantityStr());
 		bean.setQuantity(inventory.getQuantity());
 		bean.setBill_id(inventory.getBillId());
 		bean.setBill_reference_no(inventory.getBillReferenceNo());
@@ -490,10 +512,10 @@ public class BeanUtil {
 		
 		inventory.setMerchantId(bean.getMerchant_id());
 		inventory.setId(bean.getRemote_id());
+		inventory.setRefId(bean.getRef_id());
 		inventory.setProductId(bean.getProduct_id());
 		inventory.setProductName(bean.getProduct_name());
 		inventory.setProductCostPrice(bean.getProduct_cost_price());
-		inventory.setQuantityStr(bean.getQuantity_str());
 		inventory.setQuantity(bean.getQuantity());
 		inventory.setBillId(bean.getBill_id());
 		inventory.setBillReferenceNo(bean.getBill_reference_no());
@@ -515,7 +537,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(bills.getMerchantId());
 		bean.setRemote_id(bills.getId());
-		
+		bean.setRef_id(bills.getRefId());
 		bean.setSupplier_id(bills.getSupplierId());
 		bean.setSupplier_name(bills.getSupplierName());
 		bean.setBill_type(bills.getBillType());
@@ -543,7 +565,7 @@ public class BeanUtil {
 		
 		bills.setMerchantId(bean.getMerchant_id());
 		bills.setId(bean.getRemote_id());
-		
+		bills.setRefId(bean.getRef_id());
 		bills.setSupplierId(bean.getSupplier_id());
 		bills.setSupplierName(bean.getSupplier_name());
 		bills.setBillType(bean.getBill_type());
@@ -572,6 +594,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(merchantAccess.getMerchantId());
 		bean.setRemote_id(merchantAccess.getId());
+		bean.setRef_id(merchantAccess.getRefId());
 		bean.setName(merchantAccess.getName());
 		bean.setCode(merchantAccess.getCode());
 		bean.setStatus(merchantAccess.getStatus());
@@ -587,6 +610,7 @@ public class BeanUtil {
 		
 		merchantAccess.setMerchantId(bean.getMerchant_id());
 		merchantAccess.setId(bean.getRemote_id());
+		merchantAccess.setRefId(bean.getRef_id());
 		merchantAccess.setName(bean.getName());
 		merchantAccess.setCode(bean.getCode());
 		merchantAccess.setStatus(bean.getStatus());
@@ -603,6 +627,7 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(userAccess.getMerchantId());
 		bean.setRemote_id(userAccess.getId());
+		bean.setRef_id(userAccess.getRefId());
 		bean.setUser_id(userAccess.getUserId());
 		bean.setName(userAccess.getName());
 		bean.setCode(userAccess.getCode());
@@ -619,6 +644,7 @@ public class BeanUtil {
 		
 		userAccess.setMerchantId(bean.getMerchant_id());
 		userAccess.setId(bean.getRemote_id());
+		userAccess.setRefId(bean.getRef_id());
 		userAccess.setUserId(bean.getUser_id());
 		userAccess.setName(bean.getName());
 		userAccess.setCode(bean.getCode());

@@ -7,8 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.Bills;
 import com.android.pos.dao.Inventory;
 import com.android.pos.dao.InventoryDao;
+import com.android.pos.dao.Product;
+import com.android.pos.dao.Supplier;
 import com.android.pos.model.InventoryBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
@@ -23,6 +26,10 @@ public class InventoryDaoService {
 	private InventoryDao inventoryDao = DbUtil.getSession().getInventoryDao();
 	
 	public void addInventory(Inventory inventory) {
+		
+		if (CommonUtil.isEmpty(inventory.getRefId())) {
+			inventory.setRefId(CommonUtil.generateRefId());
+		}
 		
 		inventoryDao.insert(inventory);
 	}
@@ -101,6 +108,32 @@ public class InventoryDaoService {
 		return list;
 	}
 	
+	public List<Inventory> getInventories(String billReferenceNo) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM inventory "
+				+ " WHERE bill_reference_no like ? AND status <> ? "
+				+ " ORDER BY delivery_date DESC ",
+				new String[] { billReferenceNo, status});
+		
+		List<Inventory> list = new ArrayList<Inventory>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Inventory item = getInventory(id);
+			list.add(item);
+		}
+		
+		cursor.close();
+		
+		return list;
+	}
+	
 	public List<Inventory> getInventories(Product product, int lastIndex) {
 
 		SQLiteDatabase db = DbUtil.getDb();
@@ -130,9 +163,9 @@ public class InventoryDaoService {
 		return list;
 	}
 	
-	public Integer getProductQuantity(Product product) {
+	public Float getProductQuantity(Product product) {
 
-		Integer quantity = Integer.valueOf(0);
+		Float quantity = Float.valueOf(0);
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -146,7 +179,7 @@ public class InventoryDaoService {
 		
 		while(cursor.moveToNext()) {
 			
-			quantity = cursor.getInt(0);
+			quantity = cursor.getFloat(0);
 		}
 		
 		cursor.close();
@@ -171,9 +204,13 @@ public class InventoryDaoService {
 		return inventoryBeans;
 	}
 	
-	public void updateInventories(List<InventoryBean> inventorys) {
+	public void updateInventories(List<InventoryBean> inventories) {
 		
-		for (InventoryBean bean : inventorys) {
+		DbUtil.getDb().beginTransaction();
+		
+		List<InventoryBean> shiftedBeans = new ArrayList<InventoryBean>();
+		
+		for (InventoryBean bean : inventories) {
 			
 			boolean isAdd = false;
 			
@@ -182,6 +219,10 @@ public class InventoryDaoService {
 			if (inventory == null) {
 				inventory = new Inventory();
 				isAdd = true;
+
+			} else if (!CommonUtil.compareString(inventory.getRefId(), bean.getRef_id())) {
+				InventoryBean shiftedBean = BeanUtil.getBean(inventory);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(inventory, bean);
@@ -191,7 +232,21 @@ public class InventoryDaoService {
 			} else {
 				inventoryDao.update(inventory);
 			}
-		} 
+		}
+		
+		for (InventoryBean bean : shiftedBeans) {
+			
+			Inventory inventory = new Inventory();
+			BeanUtil.updateBean(inventory, bean);
+			
+			inventory.setId(null);
+			inventory.setUploadStatus(Constant.STATUS_YES);
+			
+			inventoryDao.insert(inventory);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
 	}
 	
 	public void updateInventoryStatus(List<SyncStatusBean> syncStatusBeans) {

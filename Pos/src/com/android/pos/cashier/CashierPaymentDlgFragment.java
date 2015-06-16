@@ -8,6 +8,7 @@ import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.dao.Customer;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.NotificationUtil;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -44,10 +45,10 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 	Button okBtn;
 	Button cancelBtn;
 	
-	int mTotalBill;
+	Float mTotalBill;
 	String mPaymentType;
 	Customer mCustomer;
-	int mPayment;
+	Float mPayment;
 	
 	CashierActionListener mActionListener;
 	
@@ -66,12 +67,14 @@ public class CashierPaymentDlgFragment extends DialogFragment {
         
         setCancelable(false);
         
+        mPayment = Float.valueOf(0);
+        		
         if (savedInstanceState != null) {
         	
-			mTotalBill = (Integer) savedInstanceState.getSerializable(TOTAL_BILL);
+			mTotalBill = (Float) savedInstanceState.getSerializable(TOTAL_BILL);
 			mPaymentType = (String) savedInstanceState.getSerializable(PAYMENT_TYPE);
 			mCustomer = (Customer) savedInstanceState.getSerializable(CUSTOMER);
-			mPayment = (Integer) savedInstanceState.getSerializable(PAYMENT);
+			mPayment = (Float) savedInstanceState.getSerializable(PAYMENT);
 		}
 	}
 	
@@ -121,7 +124,6 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 		number8Btn.setOnClickListener(getNumberBtnOnClickListener("8"));
 		number9Btn.setOnClickListener(getNumberBtnOnClickListener("9"));
 		
-		actionCBtn.setOnClickListener(getClearBtnOnClickListener());
 		actionXBtn.setOnClickListener(getDeleteBtnOnClickListener());
 		
 		mCustomerText.setOnClickListener(getCustomerTextOnClickListener());
@@ -135,6 +137,13 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 											R.layout.cashier_spinner_selected_item);
 		
 		mPaymentTypeSp.setAdapter(paymentTypeArrayAdapter);
+		
+		if (CommonUtil.isDecimalCurrency()) {
+			actionCBtn.setText(CommonUtil.getCurrencyDecimalSeparator());
+			actionCBtn.setOnClickListener(getCommaBtnOnClickListener());
+		} else {
+			actionCBtn.setOnClickListener(getClearBtnOnClickListener());
+		}
 		
 		refreshDisplay();
 	}
@@ -166,9 +175,9 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 	
 	private void saveDataFromView() {
 		
-		mTotalBill = CommonUtil.parseCurrency(mTotalBillText.getText().toString());
+		mTotalBill = CommonUtil.parseFloatCurrency(mTotalBillText.getText().toString());
     	mPaymentType = CodeBean.getNvlCode((CodeBean) mPaymentTypeSp.getSelectedItem());
-    	mPayment = CommonUtil.parseCurrency(mPaymentText.getText().toString());
+    	mPayment = CommonUtil.parseFloatCurrency(mPaymentText.getText().toString());
 	}
 	
 	public void setCustomer(Customer customer) {
@@ -204,14 +213,19 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				int payment = CommonUtil.parseCurrency(mPaymentText.getText().toString());
-				String number = String.valueOf(payment);
+				String paymentText = mPaymentText.getText().toString();
+				String decimalSeparator = CommonUtil.getCurrencyDecimalSeparator(); 
 				
-				if (number.equals("0")) {
-					mPaymentText.setText(numberText);
+				if (decimalSeparator != null && paymentText.contains(decimalSeparator)) {
+					mPaymentText.setText(mPaymentText.getText() + numberText);
+					
 				} else {
-					number = CommonUtil.formatNumber(number + numberText);
-					mPaymentText.setText(number);
+					float payment = CommonUtil.parseFloatNumber(mPaymentText.getText().toString());
+					float number = CommonUtil.parseFloatNumber(numberText);
+					
+					float total = payment * 10 + number;
+					
+					mPaymentText.setText(CommonUtil.formatNumber(total));
 				}
 			}
 		};
@@ -229,6 +243,23 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 		};
 	}
 	
+	private View.OnClickListener getCommaBtnOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				String paymentText = mPaymentText.getText().toString();
+				String decimalSeparator = CommonUtil.getCurrencyDecimalSeparator(); 
+				
+				if (!paymentText.contains(decimalSeparator)) {
+					mPaymentText.setText(mPaymentText.getText() + decimalSeparator);
+				}
+			}
+		};
+	}
+	
 	private View.OnClickListener getDeleteBtnOnClickListener() {
 		
 		return new View.OnClickListener() {
@@ -236,8 +267,8 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				int payment = CommonUtil.parseCurrency(mPaymentText.getText().toString());
-				String number = String.valueOf(payment);
+				float payment = CommonUtil.parseFloatNumber(mPaymentText.getText().toString());
+				String number = CommonUtil.isRound(payment) ? String.valueOf((int) payment) : String.valueOf(payment);
 				
 				if (number.length() == 1) {
 					mPaymentText.setText("0");
@@ -256,6 +287,7 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
+				saveDataFromView();
 				mActionListener.onSelectCustomer();
 			}
 		};
@@ -268,14 +300,21 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mPayment = CommonUtil.parseCurrency(mPaymentText.getText().toString()); 
+				mPayment = CommonUtil.parseFloatCurrency(mPaymentText.getText().toString()); 
 				mPaymentType = CodeBean.getNvlCode((CodeBean) mPaymentTypeSp.getSelectedItem());
-						
-				mActionListener.onPaymentInfoProvided(mCustomer, mPaymentType, mTotalBill, mPayment);
 				
-				mPayment = 0;
+				if (mPayment >= mTotalBill) {
 				
-				dismiss();
+					mActionListener.onPaymentInfoProvided(mCustomer, mPaymentType, mTotalBill, mPayment);
+					
+					mPayment = Float.valueOf(0);
+					
+					dismiss();
+					
+				} else {
+					
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.payment_insufficient));
+				}
 			}
 		};
 	}
@@ -287,14 +326,14 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mPayment = 0;
+				mPayment = Float.valueOf(0);
 				
 				dismiss();
 			}
 		};
 	}
 	
-	public void setTotalBill(int amount) {
+	public void setTotalBill(Float amount) {
 		
 		mTotalBill = amount;
 		

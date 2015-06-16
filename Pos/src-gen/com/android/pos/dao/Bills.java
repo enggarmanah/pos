@@ -1,6 +1,7 @@
 package com.android.pos.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.android.pos.dao.DaoSession;
 
@@ -14,14 +15,15 @@ import de.greenrobot.dao.DaoException;
 public class Bills implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private String billReferenceNo;
     private String billType;
     private java.util.Date billDate;
     private java.util.Date billDueDate;
-    private Integer billAmount;
+    private Float billAmount;
     private java.util.Date paymentDate;
-    private Integer payment;
+    private Float payment;
     private Long supplierId;
     private String supplierName;
     private java.util.Date deliveryDate;
@@ -45,6 +47,7 @@ public class Bills implements Serializable {
     private Supplier supplier;
     private Long supplier__resolvedKey;
 
+    private List<Inventory> inventoryList;
 
     public Bills() {
     }
@@ -53,8 +56,9 @@ public class Bills implements Serializable {
         this.id = id;
     }
 
-    public Bills(Long id, long merchantId, String billReferenceNo, String billType, java.util.Date billDate, java.util.Date billDueDate, Integer billAmount, java.util.Date paymentDate, Integer payment, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Bills(Long id, String refId, long merchantId, String billReferenceNo, String billType, java.util.Date billDate, java.util.Date billDueDate, Float billAmount, java.util.Date paymentDate, Float payment, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.billReferenceNo = billReferenceNo;
         this.billType = billType;
@@ -87,6 +91,14 @@ public class Bills implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {
@@ -129,11 +141,11 @@ public class Bills implements Serializable {
         this.billDueDate = billDueDate;
     }
 
-    public Integer getBillAmount() {
+    public Float getBillAmount() {
         return billAmount;
     }
 
-    public void setBillAmount(Integer billAmount) {
+    public void setBillAmount(Float billAmount) {
         this.billAmount = billAmount;
     }
 
@@ -145,11 +157,11 @@ public class Bills implements Serializable {
         this.paymentDate = paymentDate;
     }
 
-    public Integer getPayment() {
+    public Float getPayment() {
         return payment;
     }
 
-    public void setPayment(Integer payment) {
+    public void setPayment(Float payment) {
         this.payment = payment;
     }
 
@@ -284,6 +296,28 @@ public class Bills implements Serializable {
             supplierId = supplier == null ? null : supplier.getId();
             supplier__resolvedKey = supplierId;
         }
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Inventory> getInventoryList() {
+        if (inventoryList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            InventoryDao targetDao = daoSession.getInventoryDao();
+            List<Inventory> inventoryListNew = targetDao._queryBills_InventoryList(id);
+            synchronized (this) {
+                if(inventoryList == null) {
+                    inventoryList = inventoryListNew;
+                }
+            }
+        }
+        return inventoryList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetInventoryList() {
+        inventoryList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

@@ -15,5 +15,7 @@ public interface TransactionActionListener {
 	
 	public void onTransactionSelected(Transactions transaction);
 	
+	public void onTransactionDeleted(Transactions transaction);
+	
 	public void onBackPressed();
 }

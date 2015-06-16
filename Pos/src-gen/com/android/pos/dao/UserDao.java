@@ -29,17 +29,18 @@ public class UserDao extends AbstractDao<User, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
-        public final static Property UserId = new Property(3, String.class, "userId", false, "USER_ID");
-        public final static Property Password = new Property(4, String.class, "password", false, "PASSWORD");
-        public final static Property Role = new Property(5, String.class, "role", false, "ROLE");
-        public final static Property Status = new Property(6, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(7, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(8, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(9, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(10, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(11, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property MerchantId = new Property(2, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property Name = new Property(3, String.class, "name", false, "NAME");
+        public final static Property UserId = new Property(4, String.class, "userId", false, "USER_ID");
+        public final static Property Password = new Property(5, String.class, "password", false, "PASSWORD");
+        public final static Property Role = new Property(6, String.class, "role", false, "ROLE");
+        public final static Property Status = new Property(7, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(8, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(9, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(10, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(11, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(12, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
 
     private DaoSession daoSession;
@@ -60,17 +61,18 @@ public class UserDao extends AbstractDao<User, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'USER' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'NAME' TEXT," + // 2: name
-                "'USER_ID' TEXT," + // 3: userId
-                "'PASSWORD' TEXT," + // 4: password
-                "'ROLE' TEXT," + // 5: role
-                "'STATUS' TEXT," + // 6: status
-                "'UPLOAD_STATUS' TEXT," + // 7: uploadStatus
-                "'CREATE_BY' TEXT," + // 8: createBy
-                "'CREATE_DATE' INTEGER," + // 9: createDate
-                "'UPDATE_BY' TEXT," + // 10: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 11: updateDate
+                "'REF_ID' TEXT," + // 1: refId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 2: merchantId
+                "'NAME' TEXT," + // 3: name
+                "'USER_ID' TEXT," + // 4: userId
+                "'PASSWORD' TEXT," + // 5: password
+                "'ROLE' TEXT," + // 6: role
+                "'STATUS' TEXT," + // 7: status
+                "'UPLOAD_STATUS' TEXT," + // 8: uploadStatus
+                "'CREATE_BY' TEXT," + // 9: createBy
+                "'CREATE_DATE' INTEGER," + // 10: createDate
+                "'UPDATE_BY' TEXT," + // 11: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 12: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -88,56 +90,61 @@ public class UserDao extends AbstractDao<User, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMerchantId());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindLong(3, entity.getMerchantId());
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(3, name);
+            stmt.bindString(4, name);
         }
  
         String userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindString(4, userId);
+            stmt.bindString(5, userId);
         }
  
         String password = entity.getPassword();
         if (password != null) {
-            stmt.bindString(5, password);
+            stmt.bindString(6, password);
         }
  
         String role = entity.getRole();
         if (role != null) {
-            stmt.bindString(6, role);
+            stmt.bindString(7, role);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(7, status);
+            stmt.bindString(8, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(8, uploadStatus);
+            stmt.bindString(9, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(9, createBy);
+            stmt.bindString(10, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(10, createDate.getTime());
+            stmt.bindLong(11, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(11, updateBy);
+            stmt.bindString(12, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(12, updateDate.getTime());
+            stmt.bindLong(13, updateDate.getTime());
         }
     }
 
@@ -158,17 +165,18 @@ public class UserDao extends AbstractDao<User, Long> {
     public User readEntity(Cursor cursor, int offset) {
         User entity = new User( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // merchantId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userId
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // password
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // role
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // status
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // uploadStatus
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // createBy
-            cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)), // createDate
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // updateBy
-            cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)) // updateDate
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getLong(offset + 2), // merchantId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // userId
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // password
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // role
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // status
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // uploadStatus
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // createBy
+            cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)), // createDate
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // updateBy
+            cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)) // updateDate
         );
         return entity;
     }
@@ -177,17 +185,18 @@ public class UserDao extends AbstractDao<User, Long> {
     @Override
     public void readEntity(Cursor cursor, User entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setUserId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setPassword(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setRole(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setStatus(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setUploadStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setCreateBy(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setCreateDate(cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)));
-        entity.setUpdateBy(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setUpdateDate(cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMerchantId(cursor.getLong(offset + 2));
+        entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setUserId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setPassword(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setRole(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setUploadStatus(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setCreateBy(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setCreateDate(cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)));
+        entity.setUpdateBy(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setUpdateDate(cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)));
      }
     
     /** @inheritdoc */

@@ -39,11 +39,6 @@ public class MerchantUtil {
 		return getMerchant() != null ? getMerchant().getId() : null;
 	}
 	
-	public static String getCurrency() {
-		
-		return "Rp";
-	}
-	
 	public static String getMerchantType() {
 		
 		return getMerchant() != null ? getMerchant().getType() : null;

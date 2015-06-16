@@ -15,6 +15,7 @@ import com.android.pos.model.MerchantAccessBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CodeUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
@@ -25,6 +26,10 @@ public class MerchantAccessDaoService {
 	private MerchantAccessDao merchantAccessDao = DbUtil.getSession().getMerchantAccessDao();
 	
 	public void addMerchantAccess(MerchantAccess merchantAccess) {
+		
+		if (CommonUtil.isEmpty(merchantAccess.getRefId())) {
+			merchantAccess.setRefId(CommonUtil.generateRefId());
+		}
 		
 		merchantAccessDao.insert(merchantAccess);
 	}
@@ -87,7 +92,7 @@ public class MerchantAccessDaoService {
 				merchantAccess = new MerchantAccess();
 				merchantAccess.setMerchantId(merchantId);
 				merchantAccess.setCode(codeBean.getCode());
-				merchantAccess.setName(codeBean.getLabel());
+				merchantAccess.setName(codeBean.getOrder() + " " + codeBean.getLabel());
 				merchantAccess.setStatus(Constant.STATUS_NO);
 			}
 			
@@ -116,6 +121,10 @@ public class MerchantAccessDaoService {
 	
 	public void updateMerchantAccesses(List<MerchantAccessBean> merchantAccesss) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<MerchantAccessBean> shiftedBeans = new ArrayList<MerchantAccessBean>();
+		
 		for (MerchantAccessBean bean : merchantAccesss) {
 			
 			boolean isAdd = false;
@@ -125,16 +134,39 @@ public class MerchantAccessDaoService {
 			if (merchantAccess == null) {
 				merchantAccess = new MerchantAccess();
 				isAdd = true;
+				
+			} else if (!CommonUtil.compareString(merchantAccess.getRefId(), bean.getRef_id())) {
+				MerchantAccessBean shiftedBean = BeanUtil.getBean(merchantAccess);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(merchantAccess, bean);
 			
+			Long oldId = merchantAccess.getId();
+			Long newId = null;
+			
 			if (isAdd) {
-				merchantAccessDao.insert(merchantAccess);
+				newId = merchantAccessDao.insert(merchantAccess);
 			} else {
 				merchantAccessDao.update(merchantAccess);
 			}
-		} 
+			
+			System.out.println(oldId + " -> " + newId);
+		}
+		
+		for (MerchantAccessBean bean : shiftedBeans) {
+			
+			MerchantAccess merchantAccess = new MerchantAccess();
+			BeanUtil.updateBean(merchantAccess, bean);
+			
+			merchantAccess.setId(null);
+			merchantAccess.setUploadStatus(Constant.STATUS_YES);
+			
+			merchantAccessDao.insert(merchantAccess);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
 	}
 	
 	public void updateMerchantAccessStatus(List<SyncStatusBean> syncStatusBeans) {

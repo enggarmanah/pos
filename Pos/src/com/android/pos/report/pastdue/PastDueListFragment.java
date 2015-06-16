@@ -139,7 +139,7 @@ public class PastDueListFragment extends BaseFragment
 		
 		setBackButtonVisible(false);
 		
-		Integer totalBills = 0;
+		Float totalBills = Float.valueOf(0);
 		
 		for (Bills bill : bills) {
 			totalBills += (bill.getBillAmount() - bill.getPayment());

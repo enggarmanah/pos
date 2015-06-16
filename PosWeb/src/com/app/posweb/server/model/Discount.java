@@ -8,7 +8,7 @@ import javax.persistence.Table;
 public class Discount extends Base {
 
 	private String name;
-	private Integer percentage;
+	private Float percentage;
 	private String status;
 
 	public String getName() {
@@ -19,11 +19,11 @@ public class Discount extends Base {
 		this.name = name;
 	}
 
-	public Integer getPercentage() {
+	public Float getPercentage() {
 		return percentage;
 	}
 
-	public void setPercentage(Integer percentage) {
+	public void setPercentage(Float percentage) {
 		this.percentage = percentage;
 	}
 

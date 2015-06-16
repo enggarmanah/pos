@@ -12,7 +12,7 @@ import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.common.ConfirmDeleteDlgFragment;
 import com.android.pos.dao.Merchant;
-import com.android.pos.util.DbUtil;
+import com.android.pos.data.merchant.MerchantMgtActivity;
 import com.android.pos.util.UserUtil;
 
 import android.app.ActionBar;
@@ -68,8 +68,6 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.ref_item_mgt_layout);
-
-		DbUtil.initDb(this);
 
 		initDrawerMenu();
 
@@ -238,30 +236,29 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
-		if (mSelectedItem instanceof Merchant) {
-			if (UserUtil.isRoot()) {
-				mDeleteMenu.setVisible(!isDrawerOpen);
-			}
-		} else {
-			if (mSelectedItem != null) {
-				mDeleteMenu.setVisible(false);
-			}
-		}
-		
-		mSearchMenu.setVisible(!isDrawerOpen);
-		
 		if (mSelectedItem != null) {
 			
 			mEditMenu.setVisible(!isDrawerOpen);
+			mDeleteMenu.setVisible(!isDrawerOpen);
 			
 			if (mIsMultiplesPane) {
+				mSearchMenu.setVisible(!isDrawerOpen);
+			} else {
 				mListMenu.setVisible(!isDrawerOpen);
 			}
+		} else {
+			mSearchMenu.setVisible(!isDrawerOpen);
 		}
 		
 		if (mIsOnEdit) {
 			mSaveMenu.setVisible(!isDrawerOpen);
 			mDiscardMenu.setVisible(!isDrawerOpen);
+		}
+		
+		if (this instanceof MerchantMgtActivity && !UserUtil.isRoot()) {
+			
+			mSearchMenu.setVisible(false);
+			mDeleteMenu.setVisible(false);
 		}
 		
 		return super.onPrepareOptionsMenu(menu);
@@ -355,6 +352,10 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	
 	private void confirmDelete(final T item) {
 		
+		if (mConfirmDeleteFragment.isAdded()) {
+			return;
+		}
+		
 		mConfirmDeleteFragment.show(getFragmentManager(), mConfirmDeleteFragmentTag);
 		mConfirmDeleteFragment.setItemToBeDeleted(item, getItemName(item));
 	}
@@ -431,6 +432,11 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		}
 		
 		mSearchMenu.setVisible(true);
+		
+		if (this instanceof MerchantMgtActivity && !UserUtil.isRoot()) {
+			mSearchMenu.setVisible(false);
+		}
+		
 		mListMenu.setVisible(false);
 		
 		mEditMenu.setVisible(false);
@@ -449,6 +455,11 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		if (mIsMultiplesPane) {
 			mSearchMenu.setVisible(true);
 			mListMenu.setVisible(false);
+			
+			if (this instanceof MerchantMgtActivity && !UserUtil.isRoot()) {
+				mSearchMenu.setVisible(false);
+			}
+		
 		} else {
 			mSearchMenu.setVisible(false);
 			mListMenu.setVisible(true);

@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.android.pos.Constant;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.CustomerDao;
+import com.android.pos.dao.Transactions;
+import com.android.pos.dao.TransactionsDao;
 import com.android.pos.model.CustomerBean;
 import com.android.pos.model.CustomerStatisticBean;
 import com.android.pos.model.SyncStatusBean;
@@ -23,8 +25,13 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class CustomerDaoService {
 	
 	private CustomerDao customerDao = DbUtil.getSession().getCustomerDao();
+	private TransactionsDao transactionDao = DbUtil.getSession().getTransactionsDao();
 	
 	public void addCustomer(Customer customer) {
+		
+		if (CommonUtil.isEmpty(customer.getRefId())) {
+			customer.setRefId(CommonUtil.generateRefId());
+		}
 		
 		customerDao.insert(customer);
 	}
@@ -95,6 +102,10 @@ public class CustomerDaoService {
 	
 	public void updateCustomers(List<CustomerBean> customers) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<CustomerBean> shiftedBeans = new ArrayList<CustomerBean>();
+		
 		for (CustomerBean bean : customers) {
 			
 			boolean isAdd = false;
@@ -104,6 +115,10 @@ public class CustomerDaoService {
 			if (customer == null) {
 				customer = new Customer();
 				isAdd = true;
+				
+			} else if (!CommonUtil.compareString(customer.getRefId(), bean.getRef_id())) {
+				CustomerBean shiftedBean = BeanUtil.getBean(customer);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(customer, bean);
@@ -114,6 +129,36 @@ public class CustomerDaoService {
 				customerDao.update(customer);
 			}
 		} 
+		
+		for (CustomerBean bean : shiftedBeans) {
+			
+			Customer customer = new Customer();
+			BeanUtil.updateBean(customer, bean);
+			
+			Long oldId = customer.getId();
+			
+			customer.setId(null);
+			customer.setUploadStatus(Constant.STATUS_YES);
+			
+			Long newId = customerDao.insert(customer);
+			
+			updateTransactionsFk(oldId, newId);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
+	}
+	
+	private void updateTransactionsFk(Long oldId, Long newId) {
+		
+		Customer customer = customerDao.load(oldId);
+		
+		for (Transactions transactions : customer.getTransactionsList()) {
+			
+			transactions.setCustomerId(newId);
+			transactions.setUploadStatus(Constant.STATUS_YES);
+			transactionDao.update(transactions);
+		}
 	}
 	
 	public void updateCustomerStatus(List<SyncStatusBean> syncStatusBeans) {

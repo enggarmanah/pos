@@ -2,7 +2,6 @@ package com.android.pos.order;
 
 import java.util.List;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.Orders;
@@ -124,14 +123,14 @@ public class OrderItemArrayAdapter extends ArrayAdapter<OrderItem> {
 					Orders order = new OrdersDaoService().getOrders(orderItem.getOrderId());
 					
 					if (!PrintUtil.isPrinterConnected()) {
-						mCallback.onSetMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+						mCallback.onSetMessage(context.getString(R.string.printer_cant_print));
 						return;
 					}
 					
 					try {
 						PrintUtil.printOrder(order);
 					} catch (Exception e) {
-						mCallback.onSetMessage(Constant.MESSAGE_PRINTER_CANT_PRINT);
+						mCallback.onSetMessage(context.getString(R.string.printer_cant_print));
 					}
 				}
 			});

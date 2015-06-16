@@ -130,7 +130,7 @@ public class MerchantDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE sync_date > :lastSyncDate");
 		
 		sql.append(" ORDER BY m.name");
 		
@@ -176,7 +176,7 @@ public class MerchantDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM Merchant m WHERE remote_id = :merchantId AND sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM Merchant m WHERE remote_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		
@@ -194,7 +194,7 @@ public class MerchantDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM Merchant m WHERE sync_date >= :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM Merchant m WHERE sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		

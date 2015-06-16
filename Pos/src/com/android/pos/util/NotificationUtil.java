@@ -6,9 +6,9 @@ import com.android.pos.common.AlertDlgFragment;
 
 public class NotificationUtil {
 	
-	public static String ALERT_DIALOG_FRAGMENT_TAG = "alertDialogFragment";
+	private static String ALERT_DIALOG_FRAGMENT_TAG = "alertDialogFragment";
 	
-	public static AlertDlgFragment mAlertDialog = new AlertDlgFragment();
+	private static AlertDlgFragment mAlertDialog = new AlertDlgFragment();
 	
 	private static AlertDlgFragment getAlertDialogInstance() {
 		
@@ -18,6 +18,11 @@ public class NotificationUtil {
 	public static void setAlertMessage(FragmentManager fragmentManager, String message) {
 		
 		AlertDlgFragment mAlertDialog = getAlertDialogInstance();
+		
+		if (mAlertDialog.isAdded()) {
+			return;
+		}
+		
 		mAlertDialog.show(fragmentManager, ALERT_DIALOG_FRAGMENT_TAG);
 		mAlertDialog.setAlertMessage(message);
 	}

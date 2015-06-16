@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.android.pos.Constant;
+import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Customer;
 import com.android.pos.util.MerchantUtil;
@@ -28,12 +29,12 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 		
 		if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
 			
-			setTitle(Constant.MENU_PATIENT);
-			setSelectedMenu(Constant.MENU_PATIENT);
+			setTitle(getString(R.string.menu_patient));
+			setSelectedMenu(getString(R.string.menu_patient));
 			
 		} else {
-			setTitle(Constant.MENU_CUSTOMER);
-			setSelectedMenu(Constant.MENU_CUSTOMER);
+			setTitle(getString(R.string.menu_customer));
+			setSelectedMenu(getString(R.string.menu_customer));
 		}
 	}
 	

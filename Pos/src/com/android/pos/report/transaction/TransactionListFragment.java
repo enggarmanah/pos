@@ -117,6 +117,10 @@ public class TransactionListFragment extends BaseFragment
 			onTransactionDaySelected(mSelectedTransactionDay);
 			mSelectedTransaction = transaction;
 			
+			if (mSelectedTransaction != null) {
+				onTransactionSelected(mSelectedTransaction);
+			}
+				
 		} else if (mSelectedTransactionMonth != null) {
 			onTransactionMonthSelected(mSelectedTransactionMonth);
 			
@@ -260,7 +264,7 @@ public class TransactionListFragment extends BaseFragment
 		
 		setBackButtonVisible(true);
 		
-		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
+		mNavigationTitle.setText(getString(R.string.report_year, CommonUtil.formatYear(transactionYear.getYear())));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
 		
 		mTransactionList.setAdapter(mTransactionMonthAdapter);
@@ -324,7 +328,7 @@ public class TransactionListFragment extends BaseFragment
 		mTransactionMonths.clear();
 		mTransactionMonths.addAll(mTransactionDaoService.getTransactionMonths(transactionYear));
 		
-		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
+		mNavigationTitle.setText(getString(R.string.report_year, CommonUtil.formatYear(transactionYear.getYear())));
 		mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
 		
 		mTransactionList.setAdapter(mTransactionMonthAdapter);

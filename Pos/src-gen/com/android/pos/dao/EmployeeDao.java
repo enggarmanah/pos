@@ -29,16 +29,17 @@ public class EmployeeDao extends AbstractDao<Employee, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
-        public final static Property Telephone = new Property(3, String.class, "telephone", false, "TELEPHONE");
-        public final static Property Address = new Property(4, String.class, "address", false, "ADDRESS");
-        public final static Property Status = new Property(5, String.class, "status", false, "STATUS");
-        public final static Property UploadStatus = new Property(6, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property CreateBy = new Property(7, String.class, "createBy", false, "CREATE_BY");
-        public final static Property CreateDate = new Property(8, java.util.Date.class, "createDate", false, "CREATE_DATE");
-        public final static Property UpdateBy = new Property(9, String.class, "updateBy", false, "UPDATE_BY");
-        public final static Property UpdateDate = new Property(10, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property MerchantId = new Property(2, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property Name = new Property(3, String.class, "name", false, "NAME");
+        public final static Property Telephone = new Property(4, String.class, "telephone", false, "TELEPHONE");
+        public final static Property Address = new Property(5, String.class, "address", false, "ADDRESS");
+        public final static Property Status = new Property(6, String.class, "status", false, "STATUS");
+        public final static Property UploadStatus = new Property(7, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property CreateBy = new Property(8, String.class, "createBy", false, "CREATE_BY");
+        public final static Property CreateDate = new Property(9, java.util.Date.class, "createDate", false, "CREATE_DATE");
+        public final static Property UpdateBy = new Property(10, String.class, "updateBy", false, "UPDATE_BY");
+        public final static Property UpdateDate = new Property(11, java.util.Date.class, "updateDate", false, "UPDATE_DATE");
     };
 
     private DaoSession daoSession;
@@ -59,16 +60,17 @@ public class EmployeeDao extends AbstractDao<Employee, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'EMPLOYEE' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'NAME' TEXT," + // 2: name
-                "'TELEPHONE' TEXT," + // 3: telephone
-                "'ADDRESS' TEXT," + // 4: address
-                "'STATUS' TEXT," + // 5: status
-                "'UPLOAD_STATUS' TEXT," + // 6: uploadStatus
-                "'CREATE_BY' TEXT," + // 7: createBy
-                "'CREATE_DATE' INTEGER," + // 8: createDate
-                "'UPDATE_BY' TEXT," + // 9: updateBy
-                "'UPDATE_DATE' INTEGER);"); // 10: updateDate
+                "'REF_ID' TEXT," + // 1: refId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 2: merchantId
+                "'NAME' TEXT," + // 3: name
+                "'TELEPHONE' TEXT," + // 4: telephone
+                "'ADDRESS' TEXT," + // 5: address
+                "'STATUS' TEXT," + // 6: status
+                "'UPLOAD_STATUS' TEXT," + // 7: uploadStatus
+                "'CREATE_BY' TEXT," + // 8: createBy
+                "'CREATE_DATE' INTEGER," + // 9: createDate
+                "'UPDATE_BY' TEXT," + // 10: updateBy
+                "'UPDATE_DATE' INTEGER);"); // 11: updateDate
     }
 
     /** Drops the underlying database table. */
@@ -86,51 +88,56 @@ public class EmployeeDao extends AbstractDao<Employee, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMerchantId());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindLong(3, entity.getMerchantId());
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(3, name);
+            stmt.bindString(4, name);
         }
  
         String telephone = entity.getTelephone();
         if (telephone != null) {
-            stmt.bindString(4, telephone);
+            stmt.bindString(5, telephone);
         }
  
         String address = entity.getAddress();
         if (address != null) {
-            stmt.bindString(5, address);
+            stmt.bindString(6, address);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(6, status);
+            stmt.bindString(7, status);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(7, uploadStatus);
+            stmt.bindString(8, uploadStatus);
         }
  
         String createBy = entity.getCreateBy();
         if (createBy != null) {
-            stmt.bindString(8, createBy);
+            stmt.bindString(9, createBy);
         }
  
         java.util.Date createDate = entity.getCreateDate();
         if (createDate != null) {
-            stmt.bindLong(9, createDate.getTime());
+            stmt.bindLong(10, createDate.getTime());
         }
  
         String updateBy = entity.getUpdateBy();
         if (updateBy != null) {
-            stmt.bindString(10, updateBy);
+            stmt.bindString(11, updateBy);
         }
  
         java.util.Date updateDate = entity.getUpdateDate();
         if (updateDate != null) {
-            stmt.bindLong(11, updateDate.getTime());
+            stmt.bindLong(12, updateDate.getTime());
         }
     }
 
@@ -151,16 +158,17 @@ public class EmployeeDao extends AbstractDao<Employee, Long> {
     public Employee readEntity(Cursor cursor, int offset) {
         Employee entity = new Employee( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // merchantId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // telephone
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // address
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // status
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // uploadStatus
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // createBy
-            cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)), // createDate
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // updateBy
-            cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)) // updateDate
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getLong(offset + 2), // merchantId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // telephone
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // address
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // status
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // uploadStatus
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // createBy
+            cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)), // createDate
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // updateBy
+            cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)) // updateDate
         );
         return entity;
     }
@@ -169,16 +177,17 @@ public class EmployeeDao extends AbstractDao<Employee, Long> {
     @Override
     public void readEntity(Cursor cursor, Employee entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setTelephone(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setAddress(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setStatus(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setUploadStatus(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setCreateBy(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setCreateDate(cursor.isNull(offset + 8) ? null : new java.util.Date(cursor.getLong(offset + 8)));
-        entity.setUpdateBy(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setUpdateDate(cursor.isNull(offset + 10) ? null : new java.util.Date(cursor.getLong(offset + 10)));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMerchantId(cursor.getLong(offset + 2));
+        entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setTelephone(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setAddress(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setStatus(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setUploadStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setCreateBy(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setCreateDate(cursor.isNull(offset + 9) ? null : new java.util.Date(cursor.getLong(offset + 9)));
+        entity.setUpdateBy(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setUpdateDate(cursor.isNull(offset + 11) ? null : new java.util.Date(cursor.getLong(offset + 11)));
      }
     
     /** @inheritdoc */

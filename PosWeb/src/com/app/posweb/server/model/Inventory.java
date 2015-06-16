@@ -6,12 +6,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "inventory")
 public class Inventory extends Base {
-
+	
 	private long product_id;
     private String product_name;
-    private Integer product_cost_price;
-    private String quantity_str;
-    private Integer quantity;
+    private Float product_cost_price;
+    private Float quantity;
     private Long bill_id;
     private String bill_reference_no;
     private Long supplier_id;
@@ -27,7 +26,6 @@ public class Inventory extends Base {
 		this.product_id = bean.getProduct_id();
 		this.product_name = bean.getProduct_name();
 		this.product_cost_price = bean.getProduct_cost_price();
-		this.quantity_str = bean.getQuantity_str();
 		this.quantity = bean.getQuantity();
 		this.bill_id = bean.getBill_id();
 		this.bill_reference_no = bean.getBill_reference_no();
@@ -38,7 +36,7 @@ public class Inventory extends Base {
 		this.status = bean.getStatus();
 	}
 
-	public long getProduct_id() {
+    public long getProduct_id() {
 		return product_id;
 	}
 
@@ -54,27 +52,19 @@ public class Inventory extends Base {
 		this.product_name = product_name;
 	}
 
-	public Integer getProduct_cost_price() {
+	public Float getProduct_cost_price() {
 		return product_cost_price;
 	}
 
-	public void setProduct_cost_price(Integer product_cost_price) {
+	public void setProduct_cost_price(Float product_cost_price) {
 		this.product_cost_price = product_cost_price;
 	}
 
-	public String getQuantity_str() {
-		return quantity_str;
-	}
-
-	public void setQuantity_str(String quantity_str) {
-		this.quantity_str = quantity_str;
-	}
-
-	public Integer getQuantity() {
+	public Float getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(Float quantity) {
 		this.quantity = quantity;
 	}
 

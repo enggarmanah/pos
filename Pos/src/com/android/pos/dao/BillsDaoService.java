@@ -10,10 +10,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.android.pos.Constant;
 import com.android.pos.dao.Bills;
 import com.android.pos.dao.BillsDao;
+import com.android.pos.dao.Inventory;
+import com.android.pos.dao.InventoryDao;
 import com.android.pos.model.BillsBean;
-import com.android.pos.model.SyncStatusBean;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashFlowYearBean;
+import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
@@ -24,8 +26,13 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class BillsDaoService {
 	
 	private BillsDao billsDao = DbUtil.getSession().getBillsDao();
+	private InventoryDao inventoryDao = DbUtil.getSession().getInventoryDao();
 	
 	public void addBills(Bills bills) {
+		
+		if (CommonUtil.isEmpty(bills.getRefId())) {
+			bills.setRefId(CommonUtil.generateRefId());
+		}
 		
 		billsDao.insert(bills);
 	}
@@ -33,6 +40,12 @@ public class BillsDaoService {
 	public void updateBills(Bills bills) {
 		
 		billsDao.update(bills);
+		
+		for (Inventory i : bills.getInventoryList()) {
+			i.setBillReferenceNo(bills.getBillReferenceNo());
+			i.setUploadStatus(Constant.STATUS_YES);
+			inventoryDao.update(i);
+		}
 	}
 	
 	public void deleteBills(Bills bills) {
@@ -60,7 +73,7 @@ public class BillsDaoService {
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM bills "
 				+ " WHERE (bill_reference_no like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? "
-				+ " ORDER BY bill_date DESC LIMIT ? OFFSET ? ",
+				+ " ORDER BY bill_date DESC, bill_reference_no ASC LIMIT ? OFFSET ? ",
 				new String[] { queryStr, queryStr, queryStr, status, limit, lastIdx});
 		
 		List<Bills> list = new ArrayList<Bills>();
@@ -257,27 +270,64 @@ public class BillsDaoService {
 		return billsBeans;
 	}
 	
-	public void updateBills(List<BillsBean> billss) {
+	public void updateBills(List<BillsBean> bills) {
 		
-		for (BillsBean bean : billss) {
+		DbUtil.getDb().beginTransaction();
+		
+		List<BillsBean> shiftedBeans = new ArrayList<BillsBean>();
+		
+		for (BillsBean bean : bills) {
 			
 			boolean isAdd = false;
 			
-			Bills bills = billsDao.load(bean.getRemote_id());
+			Bills bill = billsDao.load(bean.getRemote_id());
 			
-			if (bills == null) {
-				bills = new Bills();
+			if (bill == null) {
+				bill = new Bills();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(bill.getRefId(), bean.getRef_id())) {
+				BillsBean shiftedBean = BeanUtil.getBean(bill);
+				shiftedBeans.add(shiftedBean);
 			}
 			
-			BeanUtil.updateBean(bills, bean);
+			BeanUtil.updateBean(bill, bean);
 			
 			if (isAdd) {
-				billsDao.insert(bills);
+				billsDao.insert(bill);
 			} else {
-				billsDao.update(bills);
+				billsDao.update(bill);
 			}
-		} 
+		}
+		
+		for (BillsBean bean : shiftedBeans) {
+			
+			Bills bill = new Bills();
+			BeanUtil.updateBean(bill, bean);
+			
+			Long oldId = bill.getId();
+			
+			bill.setId(null);
+			bill.setUploadStatus(Constant.STATUS_YES);
+			
+			Long newId = billsDao.insert(bill);
+			
+			updateInventoryFk(oldId, newId);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
+	}
+	
+	private void updateInventoryFk(Long oldId, Long newId) {
+		
+		Bills oldBill = billsDao.load(oldId);
+		
+		for (Inventory i : oldBill.getInventoryList()) {
+			i.setBillId(newId);
+			i.setUploadStatus(Constant.STATUS_YES);
+			inventoryDao.update(i);
+		}
 	}
 	
 	public void updateBillsStatus(List<SyncStatusBean> syncStatusBeans) {

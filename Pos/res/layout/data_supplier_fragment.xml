@@ -8,7 +8,7 @@
 			
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_N" />
+                android:text="@string/field_name_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -23,7 +23,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_T" />
+                android:text="@string/field_telephone_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -38,7 +38,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_A" />
+                android:text="@string/field_address_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -53,7 +53,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_N" />
+                android:text="@string/field_pic_name_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -68,7 +68,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_T" />
+                android:text="@string/field_pic_telephone_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -83,7 +83,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_K" />
+                android:text="@string/field_remarks_fl" />
             
             <TextView
                 style="@style/FormTextStyle"

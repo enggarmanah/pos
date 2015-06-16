@@ -263,10 +263,10 @@ public class ProductStatisticListFragment extends BaseFragment
 		
 		setBackButtonVisible(true);
 		
-		mNavigationTitle.setText("Tahun " + CommonUtil.formatYear(transactionYear.getYear()));
+		mNavigationTitle.setText(getString(R.string.report_year, CommonUtil.formatYear(transactionYear.getYear())));
 		
 		if (Constant.PRODUCT_QUANTITY.equals(mSelectedProductInfo)) {
-			mNavText.setText("Total   " + CommonUtil.formatNumber(getTransactionMonthsTotalAmount(mTransactionMonths)));
+			mNavText.setText(getString(R.string.report_total, CommonUtil.formatNumber(getTransactionMonthsTotalAmount(mTransactionMonths))));
 		} else {
 			mNavText.setText(CommonUtil.formatCurrency(getTransactionMonthsTotalAmount(mTransactionMonths)));
 		}

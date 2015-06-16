@@ -10,7 +10,6 @@ import com.android.pos.model.CashFlowYearBean;
 import com.android.pos.report.outstanding.OutstandingBillActivity;
 import com.android.pos.report.pastdue.PastDueActivity;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 
 import android.content.Intent;
@@ -71,8 +70,6 @@ public class CashFlowActivity extends BaseActivity
 		initInstanceState(savedInstanceState);
 		
 		setContentView(R.layout.report_transaction_activity);
-
-		DbUtil.initDb(this);
 
 		initDrawerMenu();
 		

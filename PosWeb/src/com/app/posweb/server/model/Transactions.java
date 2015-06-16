@@ -17,22 +17,23 @@ public class Transactions {
 	protected Long id;
 	
 	private Long remote_id;
+	private String ref_id;
 	private long merchant_id;
 	private String transaction_no;
 	private String order_type;
 	private String order_reference;
 	private java.util.Date transaction_date;
-	private Integer bill_amount;
+	private Float bill_amount;
 	private String discount_name;
-	private Integer discount_percentage;
-	private Integer discount_amount;
-	private Integer tax_percentage;
-	private Integer tax_amount;
-	private Integer service_charge_percentage;
-	private Integer service_charge_amount;
-	private Integer total_amount;
-	private Integer payment_amount;
-	private Integer return_amount;
+	private Float discount_percentage;
+	private Float discount_amount;
+	private Float tax_percentage;
+	private Float tax_amount;
+	private Float service_charge_percentage;
+	private Float service_charge_amount;
+	private Float total_amount;
+	private Float payment_amount;
+	private Float return_amount;
 	private String payment_type;
 	private long cashier_id;
 	private String cashier_name;
@@ -46,6 +47,7 @@ public class Transactions {
 		this.id = bean.getId();
 		this.merchant_id = bean.getMerchant_id();
 		this.remote_id = bean.getRemote_id();
+		this.ref_id = bean.getRef_id();
 		this.transaction_no = bean.getTransaction_no();
 		this.order_type = bean.getOrder_type();
 		this.order_reference = bean.getOrder_reference();
@@ -84,6 +86,14 @@ public class Transactions {
 
 	public void setRemote_id(Long remote_id) {
 		this.remote_id = remote_id;
+	}
+	
+	public String getRef_id() {
+		return ref_id;
+	}
+
+	public void setRef_id(String ref_id) {
+		this.ref_id = ref_id;
 	}
 
 	public long getMerchant_id() {
@@ -126,11 +136,11 @@ public class Transactions {
 		this.transaction_date = transaction_date;
 	}
 
-	public Integer getBill_amount() {
+	public Float getBill_amount() {
 		return bill_amount;
 	}
 
-	public void setBill_amount(Integer bill_amount) {
+	public void setBill_amount(Float bill_amount) {
 		this.bill_amount = bill_amount;
 	}
 
@@ -142,75 +152,75 @@ public class Transactions {
 		this.discount_name = discount_name;
 	}
 
-	public Integer getDiscount_percentage() {
+	public Float getDiscount_percentage() {
 		return discount_percentage;
 	}
 
-	public void setDiscount_percentage(Integer discount_percentage) {
+	public void setDiscount_percentage(Float discount_percentage) {
 		this.discount_percentage = discount_percentage;
 	}
 
-	public Integer getDiscount_amount() {
+	public Float getDiscount_amount() {
 		return discount_amount;
 	}
 
-	public void setDiscount_amount(Integer discount_amount) {
+	public void setDiscount_amount(Float discount_amount) {
 		this.discount_amount = discount_amount;
 	}
 
-	public Integer getTax_percentage() {
+	public Float getTax_percentage() {
 		return tax_percentage;
 	}
 
-	public void setTax_percentage(Integer tax_percentage) {
+	public void setTax_percentage(Float tax_percentage) {
 		this.tax_percentage = tax_percentage;
 	}
 
-	public Integer getTax_amount() {
+	public Float getTax_amount() {
 		return tax_amount;
 	}
 
-	public void setTax_amount(Integer tax_amount) {
+	public void setTax_amount(Float tax_amount) {
 		this.tax_amount = tax_amount;
 	}
 
-	public Integer getService_charge_percentage() {
+	public Float getService_charge_percentage() {
 		return service_charge_percentage;
 	}
 
-	public void setService_charge_percentage(Integer service_charge_percentage) {
+	public void setService_charge_percentage(Float service_charge_percentage) {
 		this.service_charge_percentage = service_charge_percentage;
 	}
 
-	public Integer getService_charge_amount() {
+	public Float getService_charge_amount() {
 		return service_charge_amount;
 	}
 
-	public void setService_charge_amount(Integer service_charge_amount) {
+	public void setService_charge_amount(Float service_charge_amount) {
 		this.service_charge_amount = service_charge_amount;
 	}
 
-	public Integer getTotal_amount() {
+	public Float getTotal_amount() {
 		return total_amount;
 	}
 
-	public void setTotal_amount(Integer total_amount) {
+	public void setTotal_amount(Float total_amount) {
 		this.total_amount = total_amount;
 	}
 
-	public Integer getPayment_amount() {
+	public Float getPayment_amount() {
 		return payment_amount;
 	}
 
-	public void setPayment_amount(Integer payment_amount) {
+	public void setPayment_amount(Float payment_amount) {
 		this.payment_amount = payment_amount;
 	}
 
-	public Integer getReturn_amount() {
+	public Float getReturn_amount() {
 		return return_amount;
 	}
 
-	public void setReturn_amount(Integer return_amount) {
+	public void setReturn_amount(Float return_amount) {
 		this.return_amount = return_amount;
 	}
 

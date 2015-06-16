@@ -8,15 +8,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.pos.Constant;
+import com.android.pos.dao.TransactionItem;
+import com.android.pos.dao.TransactionItemDao;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDao;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashFlowYearBean;
+import com.android.pos.model.SyncStatusBean;
 import com.android.pos.model.TransactionDayBean;
 import com.android.pos.model.TransactionMonthBean;
 import com.android.pos.model.TransactionYearBean;
 import com.android.pos.model.TransactionsBean;
-import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
@@ -27,8 +29,13 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class TransactionsDaoService {
 	
 	private TransactionsDao mTransactionsDao = DbUtil.getSession().getTransactionsDao();
+	private TransactionItemDao transactionItemDao = DbUtil.getSession().getTransactionItemDao();
 	
 	public void addTransactions(Transactions transactions) {
+		
+		if (CommonUtil.isEmpty(transactions.getRefId())) {
+			transactions.setRefId(CommonUtil.generateRefId());
+		}
 		
 		mTransactionsDao.insert(transactions);
 	}
@@ -68,27 +75,64 @@ public class TransactionsDaoService {
 		return transactionsBeans;
 	}
 	
-	public void updateTransactions(List<TransactionsBean> transactionss) {
+	public void updateTransactions(List<TransactionsBean> transactions) {
 		
-		for (TransactionsBean bean : transactionss) {
+		DbUtil.getDb().beginTransaction();
+		
+		List<TransactionsBean> shiftedBeans = new ArrayList<TransactionsBean>();
+		
+		for (TransactionsBean bean : transactions) {
 			
 			boolean isAdd = false;
 			
-			Transactions transactions = mTransactionsDao.load(bean.getRemote_id());
+			Transactions transaction = mTransactionsDao.load(bean.getRemote_id());
 			
-			if (transactions == null) {
-				transactions = new Transactions();
+			if (transaction == null) {
+				transaction = new Transactions();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(transaction.getRefId(), bean.getRef_id())) {
+				TransactionsBean shiftedBean = BeanUtil.getBean(transaction);
+				shiftedBeans.add(shiftedBean);
 			}
 			
-			BeanUtil.updateBean(transactions, bean);
+			BeanUtil.updateBean(transaction, bean);
 			
 			if (isAdd) {
-				mTransactionsDao.insert(transactions);
+				mTransactionsDao.insert(transaction);
 			} else {
-				mTransactionsDao.update(transactions);
+				mTransactionsDao.update(transaction);
 			}
-		} 
+		}
+				
+		for (TransactionsBean bean : shiftedBeans) {
+			
+			Transactions transaction = new Transactions();
+			BeanUtil.updateBean(transaction, bean);
+			
+			Long oldId = transaction.getId();
+			
+			transaction.setId(null);
+			transaction.setUploadStatus(Constant.STATUS_YES);
+			
+			Long newId = mTransactionsDao.insert(transaction);
+			
+			updateTransactionItemFk(oldId, newId);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
+	}
+	
+	private void updateTransactionItemFk(Long oldId, Long newId) {
+		
+		Transactions t = mTransactionsDao.load(oldId);
+		
+		for (TransactionItem ti : t.getTransactionItemList()) {
+			ti.setTransactionId(newId);
+			ti.setUploadStatus(Constant.STATUS_YES);
+			transactionItemDao.update(ti);
+		}
 	}
 	
 	public void updateTransactionsStatus(List<SyncStatusBean> syncStatusBeans) {
@@ -283,7 +327,8 @@ public class TransactionsDaoService {
 		Date endDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000 - 1);
 		
 		QueryBuilder<Transactions> qb = mTransactionsDao.queryBuilder();
-		qb.where(TransactionsDao.Properties.TransactionDate.between(startDate, endDate))
+		qb.where(TransactionsDao.Properties.Status.eq(Constant.STATUS_ACTIVE),
+				TransactionsDao.Properties.TransactionDate.between(startDate, endDate))
 		  .orderAsc(TransactionsDao.Properties.TransactionDate);
 
 		Query<Transactions> q = qb.build();

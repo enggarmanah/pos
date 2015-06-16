@@ -29,25 +29,27 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property TransactionId = new Property(2, long.class, "transactionId", false, "TRANSACTION_ID");
-        public final static Property ProductId = new Property(3, long.class, "productId", false, "PRODUCT_ID");
-        public final static Property ProductName = new Property(4, String.class, "productName", false, "PRODUCT_NAME");
-        public final static Property ProductType = new Property(5, String.class, "productType", false, "PRODUCT_TYPE");
-        public final static Property Price = new Property(6, Integer.class, "price", false, "PRICE");
-        public final static Property CostPrice = new Property(7, Integer.class, "costPrice", false, "COST_PRICE");
-        public final static Property Discount = new Property(8, Integer.class, "discount", false, "DISCOUNT");
-        public final static Property Quantity = new Property(9, Integer.class, "quantity", false, "QUANTITY");
-        public final static Property Commision = new Property(10, Integer.class, "commision", false, "COMMISION");
-        public final static Property Remarks = new Property(11, String.class, "remarks", false, "REMARKS");
-        public final static Property EmployeeId = new Property(12, Long.class, "employeeId", false, "EMPLOYEE_ID");
-        public final static Property UploadStatus = new Property(13, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property MerchantId = new Property(2, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property TransactionId = new Property(3, long.class, "transactionId", false, "TRANSACTION_ID");
+        public final static Property ProductId = new Property(4, long.class, "productId", false, "PRODUCT_ID");
+        public final static Property ProductName = new Property(5, String.class, "productName", false, "PRODUCT_NAME");
+        public final static Property ProductType = new Property(6, String.class, "productType", false, "PRODUCT_TYPE");
+        public final static Property Price = new Property(7, Float.class, "price", false, "PRICE");
+        public final static Property CostPrice = new Property(8, Float.class, "costPrice", false, "COST_PRICE");
+        public final static Property Discount = new Property(9, Float.class, "discount", false, "DISCOUNT");
+        public final static Property Quantity = new Property(10, Float.class, "quantity", false, "QUANTITY");
+        public final static Property Commision = new Property(11, Float.class, "commision", false, "COMMISION");
+        public final static Property Remarks = new Property(12, String.class, "remarks", false, "REMARKS");
+        public final static Property EmployeeId = new Property(13, Long.class, "employeeId", false, "EMPLOYEE_ID");
+        public final static Property UploadStatus = new Property(14, String.class, "uploadStatus", false, "UPLOAD_STATUS");
     };
 
     private DaoSession daoSession;
 
     private Query<TransactionItem> transactions_TransactionItemListQuery;
     private Query<TransactionItem> employee_TransactionItemListQuery;
+    private Query<TransactionItem> product_TransactionItemListQuery;
 
     public TransactionItemDao(DaoConfig config) {
         super(config);
@@ -63,19 +65,20 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'TRANSACTION_ITEM' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'TRANSACTION_ID' INTEGER NOT NULL ," + // 2: transactionId
-                "'PRODUCT_ID' INTEGER NOT NULL ," + // 3: productId
-                "'PRODUCT_NAME' TEXT," + // 4: productName
-                "'PRODUCT_TYPE' TEXT," + // 5: productType
-                "'PRICE' INTEGER," + // 6: price
-                "'COST_PRICE' INTEGER," + // 7: costPrice
-                "'DISCOUNT' INTEGER," + // 8: discount
-                "'QUANTITY' INTEGER," + // 9: quantity
-                "'COMMISION' INTEGER," + // 10: commision
-                "'REMARKS' TEXT," + // 11: remarks
-                "'EMPLOYEE_ID' INTEGER," + // 12: employeeId
-                "'UPLOAD_STATUS' TEXT);"); // 13: uploadStatus
+                "'REF_ID' TEXT," + // 1: refId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 2: merchantId
+                "'TRANSACTION_ID' INTEGER NOT NULL ," + // 3: transactionId
+                "'PRODUCT_ID' INTEGER NOT NULL ," + // 4: productId
+                "'PRODUCT_NAME' TEXT," + // 5: productName
+                "'PRODUCT_TYPE' TEXT," + // 6: productType
+                "'PRICE' DECIMAL(10,2)," + // 7: price
+                "'COST_PRICE' DECIMAL(10,2)," + // 8: costPrice
+                "'DISCOUNT' DECIMAL(10,2)," + // 9: discount
+                "'QUANTITY' DECIMAL(10,2)," + // 10: quantity
+                "'COMMISION' DECIMAL(10,2)," + // 11: commision
+                "'REMARKS' TEXT," + // 12: remarks
+                "'EMPLOYEE_ID' INTEGER," + // 13: employeeId
+                "'UPLOAD_STATUS' TEXT);"); // 14: uploadStatus
     }
 
     /** Drops the underlying database table. */
@@ -93,58 +96,63 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMerchantId());
-        stmt.bindLong(3, entity.getTransactionId());
-        stmt.bindLong(4, entity.getProductId());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindLong(3, entity.getMerchantId());
+        stmt.bindLong(4, entity.getTransactionId());
+        stmt.bindLong(5, entity.getProductId());
  
         String productName = entity.getProductName();
         if (productName != null) {
-            stmt.bindString(5, productName);
+            stmt.bindString(6, productName);
         }
  
         String productType = entity.getProductType();
         if (productType != null) {
-            stmt.bindString(6, productType);
+            stmt.bindString(7, productType);
         }
  
-        Integer price = entity.getPrice();
+        Float price = entity.getPrice();
         if (price != null) {
-            stmt.bindLong(7, price);
+            stmt.bindDouble(8, price);
         }
  
-        Integer costPrice = entity.getCostPrice();
+        Float costPrice = entity.getCostPrice();
         if (costPrice != null) {
-            stmt.bindLong(8, costPrice);
+            stmt.bindDouble(9, costPrice);
         }
  
-        Integer discount = entity.getDiscount();
+        Float discount = entity.getDiscount();
         if (discount != null) {
-            stmt.bindLong(9, discount);
+            stmt.bindDouble(10, discount);
         }
  
-        Integer quantity = entity.getQuantity();
+        Float quantity = entity.getQuantity();
         if (quantity != null) {
-            stmt.bindLong(10, quantity);
+            stmt.bindDouble(11, quantity);
         }
  
-        Integer commision = entity.getCommision();
+        Float commision = entity.getCommision();
         if (commision != null) {
-            stmt.bindLong(11, commision);
+            stmt.bindDouble(12, commision);
         }
  
         String remarks = entity.getRemarks();
         if (remarks != null) {
-            stmt.bindString(12, remarks);
+            stmt.bindString(13, remarks);
         }
  
         Long employeeId = entity.getEmployeeId();
         if (employeeId != null) {
-            stmt.bindLong(13, employeeId);
+            stmt.bindLong(14, employeeId);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(14, uploadStatus);
+            stmt.bindString(15, uploadStatus);
         }
     }
 
@@ -165,19 +173,20 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
     public TransactionItem readEntity(Cursor cursor, int offset) {
         TransactionItem entity = new TransactionItem( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // merchantId
-            cursor.getLong(offset + 2), // transactionId
-            cursor.getLong(offset + 3), // productId
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // productName
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // productType
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // price
-            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // costPrice
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // discount
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // quantity
-            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // commision
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // remarks
-            cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12), // employeeId
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // uploadStatus
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getLong(offset + 2), // merchantId
+            cursor.getLong(offset + 3), // transactionId
+            cursor.getLong(offset + 4), // productId
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // productName
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // productType
+            cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7), // price
+            cursor.isNull(offset + 8) ? null : cursor.getFloat(offset + 8), // costPrice
+            cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9), // discount
+            cursor.isNull(offset + 10) ? null : cursor.getFloat(offset + 10), // quantity
+            cursor.isNull(offset + 11) ? null : cursor.getFloat(offset + 11), // commision
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // remarks
+            cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13), // employeeId
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // uploadStatus
         );
         return entity;
     }
@@ -186,19 +195,20 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
     @Override
     public void readEntity(Cursor cursor, TransactionItem entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setTransactionId(cursor.getLong(offset + 2));
-        entity.setProductId(cursor.getLong(offset + 3));
-        entity.setProductName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setProductType(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setPrice(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setCostPrice(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setDiscount(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setQuantity(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setCommision(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
-        entity.setRemarks(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setEmployeeId(cursor.isNull(offset + 12) ? null : cursor.getLong(offset + 12));
-        entity.setUploadStatus(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMerchantId(cursor.getLong(offset + 2));
+        entity.setTransactionId(cursor.getLong(offset + 3));
+        entity.setProductId(cursor.getLong(offset + 4));
+        entity.setProductName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setProductType(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setPrice(cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7));
+        entity.setCostPrice(cursor.isNull(offset + 8) ? null : cursor.getFloat(offset + 8));
+        entity.setDiscount(cursor.isNull(offset + 9) ? null : cursor.getFloat(offset + 9));
+        entity.setQuantity(cursor.isNull(offset + 10) ? null : cursor.getFloat(offset + 10));
+        entity.setCommision(cursor.isNull(offset + 11) ? null : cursor.getFloat(offset + 11));
+        entity.setRemarks(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setEmployeeId(cursor.isNull(offset + 13) ? null : cursor.getLong(offset + 13));
+        entity.setUploadStatus(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
      }
     
     /** @inheritdoc */
@@ -240,17 +250,32 @@ public class TransactionItemDao extends AbstractDao<TransactionItem, Long> {
     }
 
     /** Internal query to resolve the "transactionItemList" to-many relationship of Employee. */
-    public List<TransactionItem> _queryEmployee_TransactionItemList(long transactionId) {
+    public List<TransactionItem> _queryEmployee_TransactionItemList(Long employeeId) {
         synchronized (this) {
             if (employee_TransactionItemListQuery == null) {
                 QueryBuilder<TransactionItem> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.TransactionId.eq(null));
+                queryBuilder.where(Properties.EmployeeId.eq(null));
                 queryBuilder.orderRaw("_id ASC");
                 employee_TransactionItemListQuery = queryBuilder.build();
             }
         }
         Query<TransactionItem> query = employee_TransactionItemListQuery.forCurrentThread();
-        query.setParameter(0, transactionId);
+        query.setParameter(0, employeeId);
+        return query.list();
+    }
+
+    /** Internal query to resolve the "transactionItemList" to-many relationship of Product. */
+    public List<TransactionItem> _queryProduct_TransactionItemList(long productId) {
+        synchronized (this) {
+            if (product_TransactionItemListQuery == null) {
+                QueryBuilder<TransactionItem> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.ProductId.eq(null));
+                queryBuilder.orderRaw("_id ASC");
+                product_TransactionItemListQuery = queryBuilder.build();
+            }
+        }
+        Query<TransactionItem> query = product_TransactionItemListQuery.forCurrentThread();
+        query.setParameter(0, productId);
         return query.list();
     }
 

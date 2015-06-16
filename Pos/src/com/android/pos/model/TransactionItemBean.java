@@ -4,16 +4,17 @@ public class TransactionItemBean {
 
 	private Long id;
 	private Long remote_id;
+	private String ref_id;
 	private Long merchant_id;
 	private Long transaction_id;
 	private Long product_id;
 	private String product_name;
 	private String product_type;
-	private Integer price;
-	private Integer cost_price;
-	private Integer discount;
-	private Integer quantity;
-	private Integer commision;
+	private Float price;
+	private Float cost_price;
+	private Float discount;
+	private Float quantity;
+	private Float commision;
 	private Long employee_id;
 
 	public Long getId() {
@@ -30,6 +31,14 @@ public class TransactionItemBean {
 
 	public void setRemote_id(Long remote_id) {
 		this.remote_id = remote_id;
+	}
+	
+	public String getRef_id() {
+		return ref_id;
+	}
+
+	public void setRef_id(String ref_id) {
+		this.ref_id = ref_id;
 	}
 
 	public Long getMerchant_id() {
@@ -72,43 +81,43 @@ public class TransactionItemBean {
 		this.product_type = product_type;
 	}
 
-	public Integer getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 
-	public Integer getCost_price() {
+	public Float getCost_price() {
 		return cost_price;
 	}
 
-	public void setCost_price(Integer cost_price) {
+	public void setCost_price(Float cost_price) {
 		this.cost_price = cost_price;
 	}
 
-	public Integer getDiscount() {
+	public Float getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(Integer discount) {
+	public void setDiscount(Float discount) {
 		this.discount = discount;
 	}
 
-	public Integer getQuantity() {
+	public Float getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(Float quantity) {
 		this.quantity = quantity;
 	}
 
-	public Integer getCommision() {
+	public Float getCommision() {
 		return commision;
 	}
 
-	public void setCommision(Integer commision) {
+	public void setCommision(Float commision) {
 		this.commision = commision;
 	}
 

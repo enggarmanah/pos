@@ -8,7 +8,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_N" />
+                android:text="@string/field_name_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -23,7 +23,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_T" />
+                android:text="@string/field_telephone_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -38,7 +38,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_E" />
+                android:text="@string/field_email_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -54,11 +54,11 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_S" />
+                android:text="@string/field_email_status_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
-                android:text="@string/field_emailStatus" />
+                android:text="@string/field_email_status" />
 
             <Spinner
                 android:id="@+id/emailStatusSp"
@@ -69,7 +69,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_A" />
+                android:text="@string/field_address_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -85,7 +85,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_S" />
+                android:text="@string/field_status_fl" />
             
             <TextView
                 style="@style/FormTextStyle"

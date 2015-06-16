@@ -24,6 +24,10 @@ public class MerchantDaoService {
 	
 	public void addMerchant(Merchant merchant) {
 		
+		if (CommonUtil.isEmpty(merchant.getRefId())) {
+			merchant.setRefId(CommonUtil.generateRefId());
+		}
+		
 		Long id = merchantDao.insert(merchant);
 		merchant.setId(id);
 	}
@@ -167,6 +171,10 @@ public class MerchantDaoService {
 	
 	public void updateMerchants(List<MerchantBean> merchants) {
 		
+		DbUtil.getDb().beginTransaction();
+		
+		List<MerchantBean> shiftedBeans = new ArrayList<MerchantBean>();
+		
 		for (MerchantBean bean : merchants) {
 			
 			boolean isAdd = false;
@@ -176,6 +184,10 @@ public class MerchantDaoService {
 			if (merchant == null) {
 				merchant = new Merchant();
 				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(merchant.getRefId(), bean.getRef_id())) {
+				MerchantBean shiftedBean = BeanUtil.getBean(merchant);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(merchant, bean);
@@ -185,7 +197,21 @@ public class MerchantDaoService {
 			} else {
 				updateMerchant(merchant);
 			}
-		} 
+		}
+		
+		for (MerchantBean bean : shiftedBeans) {
+			
+			Merchant merchant = new Merchant();
+			BeanUtil.updateBean(merchant, bean);
+			
+			merchant.setId(null);
+			merchant.setUploadStatus(Constant.STATUS_YES);
+			
+			merchantDao.insert(merchant);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
 	}
 	
 	public void updateMerchantStatus(List<SyncStatusBean> syncStatusBeans) {

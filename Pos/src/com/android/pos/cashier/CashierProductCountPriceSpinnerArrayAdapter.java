@@ -44,6 +44,6 @@ public class CashierProductCountPriceSpinnerArrayAdapter extends BaseSpinnerArra
 	@Override
 	protected String getValue(PriceBean price) {
 
-		return String.valueOf(price.getValue());
+		return CommonUtil.formatCurrency(price.getValue());
 	}
 }

@@ -8,7 +8,6 @@ import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.dao.Customer;
 import com.android.pos.model.CustomerStatisticBean;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 
 import android.app.ActionBar;
@@ -53,8 +52,6 @@ public class CustomerActivity extends BaseActivity
 		
 		setContentView(R.layout.report_inventory_activity);
 
-		DbUtil.initDb(this);
-		
 		initDrawerMenu();
 		
 		initFragments();
@@ -229,6 +226,10 @@ public class CustomerActivity extends BaseActivity
 	
 	@Override
 	public void showCustomerTransactions(Customer customer) {
+		
+		if (mCustomerTransactionDlgFragment.isAdded()) {
+			return;
+		}
 		
 		mCustomerTransactionDlgFragment.show(getFragmentManager(), mCustomerTransactionDlgFragmentTag);
 		mCustomerTransactionDlgFragment.setCustomer(customer);

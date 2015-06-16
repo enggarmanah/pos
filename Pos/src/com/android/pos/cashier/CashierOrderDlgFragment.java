@@ -51,7 +51,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 	Button okBtn;
 	Button cancelBtn;
 	
-	int mTotalItem;
+	float mTotalItem;
 	String mOrderType;
 	String mCustomerName;
 	int mReservationNo;
@@ -75,7 +75,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
         
         if (savedInstanceState != null) {
         	
-			mTotalItem = (Integer) savedInstanceState.getSerializable(TOTAL_ITEM);
+			mTotalItem = (Float) savedInstanceState.getSerializable(TOTAL_ITEM);
 			mOrderType = (String) savedInstanceState.getSerializable(ORDER_TYPE);
 			mCustomerName = (String) savedInstanceState.getSerializable(CUSTOMER);
 			mReservationNo = (Integer) savedInstanceState.getSerializable(RESERVATION_NO);
@@ -187,9 +187,9 @@ public class CashierOrderDlgFragment extends DialogFragment {
 	
 	private void saveDataFromView() {
 		
-		mTotalItem = CommonUtil.parseCurrency(mTotalItemText.getText().toString());
+		mTotalItem = CommonUtil.parseIntNumber(mTotalItemText.getText().toString());
     	mOrderType = CodeBean.getNvlCode((CodeBean) mOrderTypeSp.getSelectedItem());
-    	mReservationNo = CommonUtil.parseCurrency(mReservationNoText.getText().toString());
+    	mReservationNo = CommonUtil.parseIntCurrency(mReservationNoText.getText().toString());
     	mCustomerName = mCustomerText.getText().toString();
 	}
 	
@@ -233,7 +233,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				int payment = CommonUtil.parseCurrency(mReservationNoText.getText().toString());
+				int payment = CommonUtil.parseIntCurrency(mReservationNoText.getText().toString());
 				String number = String.valueOf(payment);
 				
 				if (number.equals("0")) {
@@ -265,7 +265,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				int payment = CommonUtil.parseCurrency(mReservationNoText.getText().toString());
+				int payment = CommonUtil.parseIntCurrency(mReservationNoText.getText().toString());
 				String number = String.valueOf(payment);
 				
 				if (number.length() == 1) {
@@ -297,13 +297,13 @@ public class CashierOrderDlgFragment extends DialogFragment {
 				
 				if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType) && "0".equals(orderReference)) {
 				
-					NotificationUtil.setAlertMessage(getFragmentManager(), "Silahkan pilih No. Meja!");
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_please_choose_table_no));
 	    			
 	    			return;
 	    			
 				} else if (Constant.ORDER_TYPE_TAKEWAY.equals(mOrderType) && CommonUtil.isEmpty(orderReference)) {
 				
-					NotificationUtil.setAlertMessage(getFragmentManager(), "Nama pelanggan tidak boleh kosong!");
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_customer_name_empty));
 	    			
 	    			return;
 				}

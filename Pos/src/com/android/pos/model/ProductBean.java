@@ -6,17 +6,18 @@ public class ProductBean extends BaseBean {
 	private String code;
 	private String name;
 	private String type;
-	private Integer price_1;
-	private Integer price_2;
-	private Integer price_3;
-	private Integer cost_price;
+	private Float price_1;
+	private Float price_2;
+	private Float price_3;
+	private Float cost_price;
 	private String pic_required;
-	private Integer commision;
-	private Integer promo_price;
+	private Float commision;
+	private Float promo_price;
 	private java.util.Date promo_start;
 	private java.util.Date promo_end;
-	private Integer stock;
-	private Integer min_stock;
+	private String quantity_type;
+	private Float stock;
+	private Float min_stock;
 	private String status;
 
 	public Long getProduct_group_id() {
@@ -51,35 +52,35 @@ public class ProductBean extends BaseBean {
 		this.type = type;
 	}
 
-	public Integer getPrice_1() {
+	public Float getPrice_1() {
 		return price_1;
 	}
 
-	public void setPrice_1(Integer price_1) {
+	public void setPrice_1(Float price_1) {
 		this.price_1 = price_1;
 	}
 
-	public Integer getPrice_2() {
+	public Float getPrice_2() {
 		return price_2;
 	}
 
-	public void setPrice_2(Integer price_2) {
+	public void setPrice_2(Float price_2) {
 		this.price_2 = price_2;
 	}
 
-	public Integer getPrice_3() {
+	public Float getPrice_3() {
 		return price_3;
 	}
 
-	public void setPrice_3(Integer price_3) {
+	public void setPrice_3(Float price_3) {
 		this.price_3 = price_3;
 	}
 
-	public Integer getCost_price() {
+	public Float getCost_price() {
 		return cost_price;
 	}
 
-	public void setCost_price(Integer cost_price) {
+	public void setCost_price(Float cost_price) {
 		this.cost_price = cost_price;
 	}
 
@@ -91,19 +92,19 @@ public class ProductBean extends BaseBean {
 		this.pic_required = pic_required;
 	}
 
-	public Integer getCommision() {
+	public Float getCommision() {
 		return commision;
 	}
 
-	public void setCommision(Integer commision) {
+	public void setCommision(Float commision) {
 		this.commision = commision;
 	}
 
-	public Integer getPromo_price() {
+	public Float getPromo_price() {
 		return promo_price;
 	}
 
-	public void setPromo_price(Integer promo_price) {
+	public void setPromo_price(Float promo_price) {
 		this.promo_price = promo_price;
 	}
 
@@ -123,19 +124,27 @@ public class ProductBean extends BaseBean {
 		this.promo_end = promo_end;
 	}
 	
-	public Integer getStock() {
+	public String getQuantity_type() {
+		return quantity_type;
+	}
+
+	public void setQuantity_type(String quantity_type) {
+		this.quantity_type = quantity_type;
+	}
+
+	public Float getStock() {
 		return stock;
 	}
 
-	public void setStock(Integer stock) {
+	public void setStock(Float stock) {
 		this.stock = stock;
 	}
 
-	public Integer getMin_stock() {
+	public Float getMin_stock() {
 		return min_stock;
 	}
 
-	public void setMin_stock(Integer min_stock) {
+	public void setMin_stock(Float min_stock) {
 		this.min_stock = min_stock;
 	}
 

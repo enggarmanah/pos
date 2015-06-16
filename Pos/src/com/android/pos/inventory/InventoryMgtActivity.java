@@ -61,7 +61,7 @@ public class InventoryMgtActivity extends BaseItemMgtActivity<InventorySearchFra
 		
 		super.onStart();
 
-		setTitle(getString(R.string.module_inventory));
+		setTitle(getString(R.string.menu_inventory));
 		setSelectedMenu(getString(R.string.menu_inventory));
 	}
 	
@@ -205,6 +205,10 @@ public class InventoryMgtActivity extends BaseItemMgtActivity<InventorySearchFra
 	
 	public void onSelectProduct(boolean isMandatory) {
 		
+		if (mProductDlgFragment.isAdded()) {
+			return;
+		}
+		
 		mProductDlgFragment.setMandatory(isMandatory);
 		mProductDlgFragment.show(getFragmentManager(), mProductDlgFragmentTag);
 	}
@@ -216,6 +220,10 @@ public class InventoryMgtActivity extends BaseItemMgtActivity<InventorySearchFra
 	
 	public void onSelectSupplier(boolean isMandatory) {
 		
+		if (mSupplierDlgFragment.isAdded()) {
+			return;
+		}
+		
 		mSupplierDlgFragment.setMandatory(isMandatory);
 		mSupplierDlgFragment.show(getFragmentManager(), mSupplierDlgFragmentTag);
 	}
@@ -226,6 +234,10 @@ public class InventoryMgtActivity extends BaseItemMgtActivity<InventorySearchFra
 	}
 	
 	public void onSelectBill(boolean isMandatory) {
+		
+		if (mBillDlgFragment.isAdded()) {
+			return;
+		}
 		
 		mBillDlgFragment.setMandatory(isMandatory);
 		mBillDlgFragment.show(getFragmentManager(), mBillDlgFragmentTag);

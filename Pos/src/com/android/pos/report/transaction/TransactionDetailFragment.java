@@ -42,7 +42,9 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	private TextView mDiscountLabelText;
 	private TextView mDiscountText;
 	private TextView mTaxText;
+	private TextView mTaxLabelText;
 	private TextView mServiceChargeText;
+	private TextView mServiceChargeLabelText;
 	private TextView mTotalOrderText;
 	private TextView mPaymentTypeText;
 	
@@ -73,7 +75,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	
 	private void initViewVariables() {
 		
-		mTransactionItemList = (ListView) getView().findViewById(R.id.transactionItemList);
+		mTransactionItemList = (ListView) getView().findViewById(R.id.newDeviceList);
 
 		mTransactionItemList.setAdapter(mAdapter);
 		mTransactionItemList.setItemsCanFocus(true);
@@ -93,19 +95,21 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		}
 		
 		mDateText = (TextView) getView().findViewById(R.id.dateText);
-		mTransactionNoText = (TextView) getView().findViewById(R.id.transactionNoText);	
+		mTransactionNoText = (TextView) getView().findViewById(R.id.transactionNoText);
 		mCashierText = (TextView) getView().findViewById(R.id.cashierText);
 		mCustomerText = (TextView) getView().findViewById(R.id.customerText);	
 		
 		mDiscountLabelText = (TextView) getView().findViewById(R.id.discountLabelText);
-		mDiscountLabelText.setText("Tanpa Diskon");
+		mDiscountLabelText.setText(getString(R.string.no_discount));
 		
 		mDiscountText = (TextView) getView().findViewById(R.id.discountText);
 		mDiscountText.setText(Constant.EMPTY_STRING);
 		
+		mTaxLabelText = (TextView) getView().findViewById(R.id.taxLabel);
 		mTaxText = (TextView) getView().findViewById(R.id.taxText);
 		mTaxText.setText(CommonUtil.formatNumber(0));
 		
+		mServiceChargeLabelText = (TextView) getView().findViewById(R.id.serviceChargeLabel);
 		mServiceChargeText = (TextView) getView().findViewById(R.id.serviceChargeText);
 		mServiceChargeText.setText(CommonUtil.formatNumber(0));
 		
@@ -184,21 +188,39 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 			mCustomerPanel.setVisibility(View.GONE);
 		}
 		
-		if (!CommonUtil.isEmpty(mTransaction.getDiscountName())) {
+		if (!CommonUtil.isEmpty(mTransaction.getDiscountName()) &&
+			mTransaction.getDiscountAmount() != 0) {
+			
 			String label = mTransaction.getDiscountName();
 			if (mTransaction.getDiscountPercentage() != 0) {
-				label += " " + CommonUtil.intToStr(mTransaction.getDiscountPercentage()) + "%";
+				label += " " + CommonUtil.formatPercentage(mTransaction.getDiscountPercentage());
 			}
 			mDiscountLabelText.setText(label);
 			mDiscountText.setText(CommonUtil.formatCurrency(mTransaction.getDiscountAmount()));
 			
 		} else {
-			mDiscountLabelText.setText("Tanpa Diskon");
+			mDiscountLabelText.setText(getString(R.string.no_discount));
 			mDiscountText.setText(Constant.EMPTY_STRING);
 		}
 		
-		int tax = mTransaction.getTaxAmount();
-		int serviceCharge = mTransaction.getServiceChargeAmount();
+		float tax = mTransaction.getTaxAmount();
+		float serviceCharge = mTransaction.getServiceChargeAmount();
+		
+		if (mTransaction.getTaxAmount() != 0) {
+			
+			String label = getString(R.string.field_tax_percentage) + " " + CommonUtil.formatPercentage(mTransaction.getTaxPercentage());
+			
+			mTaxLabelText.setText(label);
+			mTaxText.setText(CommonUtil.formatCurrency(mTransaction.getTaxAmount()));
+		}
+		
+		if (mTransaction.getServiceChargeAmount() != 0) {
+			
+			String label = getString(R.string.field_service_charge_percentage) + " " + CommonUtil.formatPercentage(mTransaction.getServiceChargePercentage());
+			
+			mServiceChargeLabelText.setText(label);
+			mServiceChargeText.setText(CommonUtil.formatCurrency(mTransaction.getServiceChargeAmount()));
+		}
 		
 		mTaxText.setText(CommonUtil.formatCurrency(tax));
 		mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));

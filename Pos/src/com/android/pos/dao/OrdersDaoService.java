@@ -20,19 +20,19 @@ public class OrdersDaoService {
 	
 	private OrdersDao mOrdersDao = DbUtil.getSession().getOrdersDao();
 	
-	public void addOrders(Orders Orders) {
+	public void addOrders(Orders orders) {
 		
-		mOrdersDao.insert(Orders);
+		mOrdersDao.insert(orders);
 	}
 	
-	public void updateOrders(Orders Orders) {
+	public void updateOrders(Orders orders) {
 		
-		mOrdersDao.update(Orders);
+		mOrdersDao.update(orders);
 	}
 	
-	public void deleteOrders(Orders Orders) {
+	public void deleteOrders(Orders orders) {
 
-		Orders entity = mOrdersDao.load(Orders.getId());
+		Orders entity = mOrdersDao.load(orders.getId());
 		entity.delete();
 	}
 	

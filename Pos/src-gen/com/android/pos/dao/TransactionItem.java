@@ -14,16 +14,17 @@ import de.greenrobot.dao.DaoException;
 public class TransactionItem implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private long transactionId;
     private long productId;
     private String productName;
     private String productType;
-    private Integer price;
-    private Integer costPrice;
-    private Integer discount;
-    private Integer quantity;
-    private Integer commision;
+    private Float price;
+    private Float costPrice;
+    private Float discount;
+    private Float quantity;
+    private Float commision;
     private String remarks;
     private Long employeeId;
     private String uploadStatus;
@@ -54,8 +55,9 @@ public class TransactionItem implements Serializable {
         this.id = id;
     }
 
-    public TransactionItem(Long id, long merchantId, long transactionId, long productId, String productName, String productType, Integer price, Integer costPrice, Integer discount, Integer quantity, Integer commision, String remarks, Long employeeId, String uploadStatus) {
+    public TransactionItem(Long id, String refId, long merchantId, long transactionId, long productId, String productName, String productType, Float price, Float costPrice, Float discount, Float quantity, Float commision, String remarks, Long employeeId, String uploadStatus) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.transactionId = transactionId;
         this.productId = productId;
@@ -83,6 +85,14 @@ public class TransactionItem implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {
@@ -125,43 +135,43 @@ public class TransactionItem implements Serializable {
         this.productType = productType;
     }
 
-    public Integer getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
-    public Integer getCostPrice() {
+    public Float getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(Integer costPrice) {
+    public void setCostPrice(Float costPrice) {
         this.costPrice = costPrice;
     }
 
-    public Integer getDiscount() {
+    public Float getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Integer discount) {
+    public void setDiscount(Float discount) {
         this.discount = discount;
     }
 
-    public Integer getQuantity() {
+    public Float getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Float quantity) {
         this.quantity = quantity;
     }
 
-    public Integer getCommision() {
+    public Float getCommision() {
         return commision;
     }
 
-    public void setCommision(Integer commision) {
+    public void setCommision(Float commision) {
         this.commision = commision;
     }
 

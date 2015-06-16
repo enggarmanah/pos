@@ -127,15 +127,15 @@ public class ProductStatisticDetailFragment extends BaseFragment implements Prod
 			
 			if (Constant.PRODUCT_QUANTITY.equals(mProductInfo)) {
 				mProductStatistics.addAll(mProductDaoService.getProductStatisticsQuantity(mTransactionMonth));
-				mProductInfoText.setText("Jumlah Penjualan");
+				mProductInfoText.setText(getString(R.string.report_sale_count));
 				
 			} else if (Constant.PRODUCT_REVENUE.equals(mProductInfo)) {
 				mProductStatistics.addAll(mProductDaoService.getProductStatisticsRevenue(mTransactionMonth));
-				mProductInfoText.setText("Hasil Penjualan");
+				mProductInfoText.setText(getString(R.string.report_sale_income));
 			
 			} else if (Constant.PRODUCT_PROFIT.equals(mProductInfo)) {
 				mProductStatistics.addAll(mProductDaoService.getProductStatisticsProfit(mTransactionMonth));
-				mProductInfoText.setText("Laba Penjualan");
+				mProductInfoText.setText(getString(R.string.report_sale_profit));
 			}
 			
 			mAdapter.notifyDataSetChanged();

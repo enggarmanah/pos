@@ -10,6 +10,7 @@ import com.android.pos.dao.Orders;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
+import com.android.pos.util.PrintUtil;
 import com.android.pos.util.UserUtil;
 
 import android.app.Activity;
@@ -135,7 +136,9 @@ public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 				
 				if (!UserUtil.isWaitress()) {
 					
-					mActionListener.onPrintOrder(order);
+					if (PrintUtil.isPrinterActive()) {
+						mActionListener.onPrintOrder(order);
+					}
 					mActionListener.onClearTransaction();
 				}
 					

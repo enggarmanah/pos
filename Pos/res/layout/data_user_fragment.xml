@@ -8,7 +8,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_N" />
+                android:text="@string/field_name_fl"/>
             
             <TextView
                 style="@style/FormTextStyle"
@@ -23,7 +23,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_L" />
+                android:text="@string/field_login_id_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -34,11 +34,12 @@
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
+        
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_P" />
+                android:text="@string/field_password_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -53,7 +54,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_T" />
+                android:text="@string/field_type_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -68,7 +69,7 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/letter_S" />
+                android:text="@string/field_status_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
@@ -85,7 +86,7 @@
             <TextView
                 style="@style/FormTextFirstLetterStyle"
                 android:layout_gravity="top"
-                android:text="@string/letter_H"
+                android:text="@string/field_access_right_fl"
                 android:layout_marginTop="2dp"/>
             
             <TextView

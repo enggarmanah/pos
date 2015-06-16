@@ -98,7 +98,7 @@ public class InventorySearchArrayAdapter extends BaseSearchArrayAdapter<Inventor
 	    String remarks = CommonUtil.isEmpty(item.getRemarks()) ? CodeUtil.getInvetoriStatusLabel(item.getStatus()) : CodeUtil.getInvetoriStatusLabel(item.getStatus()) + ". " + item.getRemarks(); 
 	    
 	    nameText.setText(getItemName(item));
-	    quantityText.setText(item.getQuantityStr());
+	    quantityText.setText(CommonUtil.formatNumber(Math.abs(item.getQuantity())));
 		deliveryDateText.setText(CommonUtil.formatDate(item.getDeliveryDate()));
 		remarksText.setText(remarks);
 		

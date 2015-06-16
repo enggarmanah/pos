@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(37, "com.android.pos.dao");
+        Schema schema = new Schema(39, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -43,6 +43,7 @@ public class PosDaoGenerator {
     	Entity merchant = schema.addEntity("Merchant");
         
     	merchant.addIdProperty();
+    	merchant.addStringProperty("refId");
         merchant.addStringProperty("name").notNull();
         merchant.addStringProperty("type");
         merchant.addStringProperty("address");
@@ -64,8 +65,8 @@ public class PosDaoGenerator {
         merchant.addStringProperty("priceLabel2");
         merchant.addStringProperty("priceLabel3");
         merchant.addStringProperty("discountType");
-        merchant.addIntProperty("taxPercentage");
-        merchant.addIntProperty("serviceChargePercentage");
+        merchant.addFloatProperty("taxPercentage");
+        merchant.addFloatProperty("serviceChargePercentage");
         merchant.addBooleanProperty("isLogin");
         merchant.addStringProperty("status");
         merchant.addStringProperty("uploadStatus");
@@ -77,6 +78,7 @@ public class PosDaoGenerator {
         Entity productGroup = schema.addEntity("ProductGroup");
         
         productGroup.addIdProperty();
+        productGroup.addStringProperty("refId");
         
         Property merchantId = productGroup.addLongProperty("merchantId").notNull().getProperty();
         productGroup.addToOne(merchant, merchantId);
@@ -92,6 +94,7 @@ public class PosDaoGenerator {
         Entity product = schema.addEntity("Product");
     	
     	product.addIdProperty();
+    	product.addStringProperty("refId");
     	
     	merchantId = product.addLongProperty("merchantId").notNull().getProperty();
     	product.addToOne(merchant, merchantId);
@@ -102,17 +105,18 @@ public class PosDaoGenerator {
     	product.addStringProperty("code");
     	Property productName = product.addStringProperty("name").getProperty();
     	product.addStringProperty("type");
-    	product.addIntProperty("price1");
-    	product.addIntProperty("price2");
-    	product.addIntProperty("price3");
-    	product.addIntProperty("costPrice");
+    	product.addFloatProperty("price1");
+    	product.addFloatProperty("price2");
+    	product.addFloatProperty("price3");
+    	product.addFloatProperty("costPrice");
     	product.addStringProperty("picRequired");
-    	product.addIntProperty("commision");
-    	product.addIntProperty("promoPrice");
+    	product.addFloatProperty("commision");
+    	product.addFloatProperty("promoPrice");
     	product.addDateProperty("promoStart");
         product.addDateProperty("promoEnd");
-    	product.addIntProperty("stock");
-    	product.addIntProperty("minStock");
+        product.addStringProperty("quantityType");
+    	product.addFloatProperty("stock");
+    	product.addFloatProperty("minStock");
         product.addStringProperty("status");
         product.addStringProperty("uploadStatus");
         product.addStringProperty("createBy");
@@ -129,6 +133,7 @@ public class PosDaoGenerator {
         Entity customer = schema.addEntity("Customer");
     	
     	customer.addIdProperty();
+    	customer.addStringProperty("refId");
     	
     	merchantId = customer.addLongProperty("merchantId").notNull().getProperty();
     	customer.addToOne(merchant, merchantId);
@@ -151,6 +156,7 @@ public class PosDaoGenerator {
         Entity employee = schema.addEntity("Employee");
     	
         employee.addIdProperty();
+        employee.addStringProperty("refId");
     	
     	merchantId = employee.addLongProperty("merchantId").notNull().getProperty();
     	employee.addToOne(merchant, merchantId);
@@ -171,6 +177,7 @@ public class PosDaoGenerator {
         Entity user = schema.addEntity("User");
     	
         user.addIdProperty();
+        user.addStringProperty("refId");
     	
     	merchantId = user.addLongProperty("merchantId").notNull().getProperty();
     	user.addToOne(merchant, merchantId);
@@ -192,6 +199,7 @@ public class PosDaoGenerator {
         Entity transactions = schema.addEntity("Transactions");
     	
         transactions.addIdProperty();
+        transactions.addStringProperty("refId");
     	
     	merchantId = transactions.addLongProperty("merchantId").notNull().getProperty();
     	transactions.addToOne(merchant, merchantId);
@@ -200,17 +208,17 @@ public class PosDaoGenerator {
     	transactions.addStringProperty("orderType");
     	transactions.addStringProperty("orderReference");
     	Property trxDate = transactions.addDateProperty("transactionDate").notNull().getProperty();
-        transactions.addIntProperty("billAmount");
+        transactions.addFloatProperty("billAmount");
         transactions.addStringProperty("discountName");
-        transactions.addIntProperty("discountPercentage");
-        transactions.addIntProperty("discountAmount");
-        transactions.addIntProperty("taxPercentage");
-        transactions.addIntProperty("taxAmount");
-        transactions.addIntProperty("serviceChargePercentage");
-        transactions.addIntProperty("serviceChargeAmount");
-        transactions.addIntProperty("totalAmount");
-        transactions.addIntProperty("paymentAmount");
-        transactions.addIntProperty("returnAmount");
+        transactions.addFloatProperty("discountPercentage");
+        transactions.addFloatProperty("discountAmount");
+        transactions.addFloatProperty("taxPercentage");
+        transactions.addFloatProperty("taxAmount");
+        transactions.addFloatProperty("serviceChargePercentage");
+        transactions.addFloatProperty("serviceChargeAmount");
+        transactions.addFloatProperty("totalAmount");
+        transactions.addFloatProperty("paymentAmount");
+        transactions.addFloatProperty("returnAmount");
         transactions.addStringProperty("paymentType");
         
         Property cashierId = transactions.addLongProperty("cashierId").notNull().getProperty();
@@ -234,6 +242,7 @@ public class PosDaoGenerator {
         Entity transactionItem = schema.addEntity("TransactionItem");
     	
         Property transactionItemId = transactionItem.addIdProperty().getProperty();
+        transactionItem.addStringProperty("refId");
     	
         merchantId = transactionItem.addLongProperty("merchantId").notNull().getProperty();
         transactionItem.addToOne(merchant, merchantId);
@@ -246,34 +255,38 @@ public class PosDaoGenerator {
     	
     	productName = transactionItem.addStringProperty("productName").getProperty();
     	transactionItem.addStringProperty("productType");
-    	transactionItem.addIntProperty("price");
-    	transactionItem.addIntProperty("costPrice");
-    	transactionItem.addIntProperty("discount");
-    	transactionItem.addIntProperty("quantity");
-    	transactionItem.addIntProperty("commision");
+    	transactionItem.addFloatProperty("price");
+    	transactionItem.addFloatProperty("costPrice");
+    	transactionItem.addFloatProperty("discount");
+    	transactionItem.addFloatProperty("quantity");
+    	transactionItem.addFloatProperty("commision");
         transactionItem.addStringProperty("remarks");
     	
     	Property employeeId = transactionItem.addLongProperty("employeeId").getProperty();
     	transactionItem.addToOne(employee, employeeId);
         
-        ToMany transactionToItem = transactions.addToMany(transactionItem, transactionId);
-        transactionToItem.orderAsc(productName);
+        ToMany transactionToTransItem = transactions.addToMany(transactionItem, transactionId);
+        transactionToTransItem.orderAsc(productName);
         
         transactionItem.addStringProperty("uploadStatus");
         
-        ToMany employeeToItem = employee.addToMany(transactionItem, transactionId);
-        employeeToItem.orderAsc(transactionItemId);
+        ToMany employeeToTransItem = employee.addToMany(transactionItem, employeeId);
+        employeeToTransItem.orderAsc(transactionItemId);
+        
+        ToMany productToTransItem = product.addToMany(transactionItem, productId);
+        productToTransItem.orderAsc(transactionItemId);
         
         Entity discount = schema.addEntity("Discount");
         
         discount.addIdProperty();
+        discount.addStringProperty("refId");
         
         merchantId = discount.addLongProperty("merchantId").notNull().getProperty();
         discount.addToOne(merchant, merchantId);
         
         discount.addStringProperty("name").notNull();
-        discount.addIntProperty("percentage");
-        discount.addIntProperty("amount");
+        discount.addFloatProperty("percentage");
+        discount.addFloatProperty("amount");
         discount.addStringProperty("status");
         discount.addStringProperty("uploadStatus");
         discount.addStringProperty("createBy");
@@ -311,7 +324,7 @@ public class PosDaoGenerator {
     	orderItem.addToOne(product, productId);
     	
     	productName = orderItem.addStringProperty("productName").getProperty();
-    	orderItem.addIntProperty("quantity");
+    	orderItem.addFloatProperty("quantity");
     	
     	orderItem.addStringProperty("remarks");
     	
@@ -321,6 +334,7 @@ public class PosDaoGenerator {
         Entity supplier = schema.addEntity("Supplier");
     	
         supplier.addIdProperty();
+        supplier.addStringProperty("refId");
     	
     	merchantId = supplier.addLongProperty("merchantId").notNull().getProperty();
     	supplier.addToOne(merchant, merchantId);
@@ -341,7 +355,8 @@ public class PosDaoGenerator {
     	
     	Entity bills = schema.addEntity("Bills");
     	
-    	bills.addIdProperty();
+    	Property billsId = bills.addIdProperty().getProperty();
+    	bills.addStringProperty("refId");
     	
     	merchantId = bills.addLongProperty("merchantId").notNull().getProperty();
     	bills.addToOne(merchant, merchantId);
@@ -350,9 +365,9 @@ public class PosDaoGenerator {
     	bills.addStringProperty("billType");
     	bills.addDateProperty("billDate");
     	bills.addDateProperty("billDueDate");
-    	bills.addIntProperty("billAmount");
+    	bills.addFloatProperty("billAmount");
     	bills.addDateProperty("paymentDate");
-    	bills.addIntProperty("payment");
+    	bills.addFloatProperty("payment");
     	
     	Property supplierId = bills.addLongProperty("supplierId").getProperty();
     	bills.addToOne(supplier, supplierId);
@@ -369,9 +384,13 @@ public class PosDaoGenerator {
     	bills.addStringProperty("updateBy");
     	bills.addDateProperty("updateDate");
     	
+    	ToMany supplierToBills = supplier.addToMany(bills, supplierId);
+    	supplierToBills.orderAsc(billsId);
+    	
     	Entity inventory = schema.addEntity("Inventory");
     	
-    	inventory.addIdProperty();
+    	Property inventoryId = inventory.addIdProperty().getProperty();
+    	inventory.addStringProperty("refId");
     	
     	merchantId = inventory.addLongProperty("merchantId").notNull().getProperty();
     	inventory.addToOne(merchant, merchantId);
@@ -379,12 +398,11 @@ public class PosDaoGenerator {
     	productId = inventory.addLongProperty("productId").notNull().getProperty();
     	inventory.addToOne(product, productId);
     	
-    	inventory.addStringProperty("productName");
-    	inventory.addIntProperty("productCostPrice");
-    	inventory.addStringProperty("quantityStr");
-    	inventory.addIntProperty("quantity");
+    	productName = inventory.addStringProperty("productName").getProperty();
+    	inventory.addFloatProperty("productCostPrice");
+    	inventory.addFloatProperty("quantity");
     	
-    	Property billsId = inventory.addLongProperty("billId").getProperty();
+    	billsId = inventory.addLongProperty("billId").getProperty();
     	inventory.addToOne(bills, billsId);
     	
     	inventory.addStringProperty("billReferenceNo");
@@ -404,9 +422,19 @@ public class PosDaoGenerator {
     	inventory.addStringProperty("updateBy");
     	inventory.addDateProperty("updateDate");
     	
+    	ToMany billToInventories = bills.addToMany(inventory, billsId);
+    	billToInventories.orderAsc(productName);
+    	
+    	ToMany productToInventories = product.addToMany(inventory, productId);
+    	productToInventories.orderAsc(inventoryId);
+    	
+    	ToMany supplierToInventories = supplier.addToMany(inventory, supplierId);
+    	supplierToInventories.orderAsc(inventoryId);
+        
     	Entity merchantAccess = schema.addEntity("MerchantAccess");
     	
     	Property merchantAccessId = merchantAccess.addIdProperty().getProperty();
+    	merchantAccess.addStringProperty("refId");
     	
     	merchantId = merchantAccess.addLongProperty("merchantId").notNull().getProperty();
     	merchantAccess.addToOne(merchant, merchantId);
@@ -427,6 +455,7 @@ public class PosDaoGenerator {
     	Entity userAccess = schema.addEntity("UserAccess");
     	
     	Property userAccessId = userAccess.addIdProperty().getProperty();
+    	userAccess.addStringProperty("refId");
     	
     	merchantId = userAccess.addLongProperty("merchantId").notNull().getProperty();
     	userAccess.addToOne(merchant, merchantId);

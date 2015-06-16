@@ -3,7 +3,6 @@ package com.android.pos.data.merchant;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.ProgressDlgFragment;
@@ -38,12 +37,12 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		
 		super.onStart();
 		
-		setTitle(Constant.MENU_REFERENCE_MERCHANT);
+		setTitle(getString(R.string.menu_reference_merchant));
 		
 		if (UserUtil.isRoot()) {
-			setSelectedMenu(Constant.MENU_MERCHANT);
+			setSelectedMenu(getString(R.string.menu_merchant));
 		} else {
-			setSelectedMenu(Constant.MENU_REFERENCE_MERCHANT);
+			setSelectedMenu(getString(R.string.menu_reference_merchant));
 		}
 		
 		if (mProgress == 100 && mProgressDialog.isVisible()) {
@@ -57,6 +56,10 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		switch (item.getItemId()) {
 
 		case R.id.menu_item_sync:
+			
+			if (mProgressDialog.isAdded()) {
+				return true;
+			}
 			
 			mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 			
