@@ -20,10 +20,9 @@ import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.data.merchant.MerchantMgtActivity;
+import com.android.pos.data.user.UserMgtActivity;
 import com.android.pos.report.transaction.TransactionActivity;
-import com.android.pos.user.UserMgtActivity;
 import com.android.pos.util.CodeUtil;
-import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
@@ -49,8 +48,6 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
     	
-		CommonUtil.initTracker(this);
-		
 		setContentView(R.layout.auth_merchant_login_activity);
 		
 		DbUtil.initDb(this);
@@ -98,7 +95,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		
 			DbUtil.initDb(this);
 			
-			if (!Config.isDevelopment() && UserUtil.getUser() != null) {
+			if (!Config.isDebug() && UserUtil.getUser() != null) {
 				
 				if (UserUtil.isRoot()) {
 					Intent newIntent = new Intent(context, MerchantMgtActivity.class);
@@ -121,7 +118,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 					startActivity(newIntent);
 				}
 				
-			} else if (!Config.isDevelopment() && MerchantUtil.getMerchant() != null) {
+			} else if (!Config.isDebug() && MerchantUtil.getMerchant() != null) {
 				
 				Intent newIntent = new Intent(context, UserLoginActivity.class);
 				startActivity(newIntent);

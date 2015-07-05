@@ -13,7 +13,9 @@ import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.TypedValue;
 
+import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
@@ -30,7 +32,15 @@ public class CommonUtil {
 	public static GoogleAnalytics analytics;
 	public static Tracker tracker;
 	
+	private static Context mContext;
+	
 	public static void initTracker(Context context) {
+		
+		mContext = context;
+		
+		if (Config.isDevelopment()) {
+			return;
+		}
 		
 		analytics = GoogleAnalytics.getInstance(context);
 	    analytics.setLocalDispatchPeriod(1800);
@@ -72,6 +82,11 @@ public class CommonUtil {
 		Date date = new Date(now);
 		
 		return formatDateTimeMiliSeconds(date); 
+	}
+	
+	public static int convertDpToPix(int dp) {
+		
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, mContext.getResources().getDisplayMetrics());
 	}
 	
 	public static boolean compareString(String str1, String str2) {
@@ -232,6 +247,11 @@ public class CommonUtil {
 		
 		return new SimpleDateFormat("dd MMM yyyy, HH:mm", getLocale());
 	}
+	
+	public static DateFormat getDateMonthTimeFormat() {
+		
+		return new SimpleDateFormat("dd MMM, HH:mm", getLocale());
+	}
 		
 	public static DateFormat getDateTimeMiliSecondsFormat() {
 		
@@ -354,6 +374,11 @@ public class CommonUtil {
 		return date;
 	}
 	
+	public static String formatReservationNo(String str) {
+		
+		return str != null && str.length() == 1 ? "0" + str : str;
+	}
+	
 	public static String formatDate(Date inputDate) {
 		
 		String dateStr = Constant.EMPTY_STRING;
@@ -412,6 +437,19 @@ public class CommonUtil {
 		
 		try {
 			dateStr = getDateTimeFormat().format(inputDate);
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+		return dateStr;
+	}
+	
+	public static String formatDateMonthTime(Date inputDate) {
+		
+		String dateStr = Constant.EMPTY_STRING;
+		
+		try {
+			dateStr = getDateMonthTimeFormat().format(inputDate);
 		} catch (Exception e) {
 			// do nothing
 		}

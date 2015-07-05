@@ -97,6 +97,8 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_outline_black));
 		} else if (context.getString(R.string.menu_bills).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_local_atm_black));
+		} else if (context.getString(R.string.menu_cashflow).equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_arrow_forward_back_black));
 		} else if (context.getString(R.string.menu_inventory).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_view_list_black));
 		} else if (UserUtil.isRoot() && context.getString(R.string.menu_merchant).equals(menu)) {

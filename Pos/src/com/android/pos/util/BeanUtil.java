@@ -2,6 +2,7 @@ package com.android.pos.util;
 
 import com.android.pos.Constant;
 import com.android.pos.dao.Bills;
+import com.android.pos.dao.Cashflow;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.Employee;
@@ -18,6 +19,7 @@ import com.android.pos.dao.Transactions;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserAccess;
 import com.android.pos.model.BillsBean;
+import com.android.pos.model.CashflowBean;
 import com.android.pos.model.CustomerBean;
 import com.android.pos.model.DiscountBean;
 import com.android.pos.model.EmployeeBean;
@@ -158,9 +160,19 @@ public class BeanUtil {
 		merchant.setDiscountType(bean.getDiscount_type());
 		merchant.setTaxPercentage(bean.getTax_percentage());
 		merchant.setServiceChargePercentage(bean.getService_charge_percentage());
-		merchant.setPrinterRequired(bean.getPrinter_required());
-		merchant.setPrinterMiniFont(bean.getPrinter_mini_font());
-		merchant.setPrinterLineSize(bean.getPrinter_line_size());
+		
+		if (merchant.getPrinterRequired() == null) {
+			merchant.setPrinterRequired(bean.getPrinter_required());
+		}
+		
+		if (merchant.getPrinterMiniFont() == null) {
+			merchant.setPrinterMiniFont(bean.getPrinter_mini_font());
+		}
+		
+		if (merchant.getPrinterLineSize() == null) {
+			merchant.setPrinterLineSize(bean.getPrinter_line_size());
+		}
+		
 		merchant.setStatus(bean.getStatus());
 		merchant.setUploadStatus(Constant.STATUS_NO);
 		merchant.setCreateBy(bean.getCreate_by());
@@ -366,6 +378,8 @@ public class BeanUtil {
 		bean.setPayment_type(transactions.getPaymentType());
 		bean.setCashier_id(transactions.getCashierId());
 		bean.setCashier_name(transactions.getCashierName());
+		bean.setWaitress_id(transactions.getWaitressId());
+		bean.setWaitress_name(transactions.getWaitressName());
 		bean.setCustomer_id(transactions.getCustomerId());
 		bean.setCustomer_name(transactions.getCustomerName());
 		bean.setStatus(transactions.getStatus());
@@ -396,6 +410,8 @@ public class BeanUtil {
 		transactions.setPaymentType(bean.getPayment_type());
 		transactions.setCashierId(bean.getCashier_id());
 		transactions.setCashierName(bean.getCashier_name());
+		transactions.setWaitressId(bean.getWaitress_id());
+		transactions.setWaitressName(bean.getWaitress_name());
 		transactions.setCustomerId(bean.getCustomer_id());
 		transactions.setCustomerName(bean.getCustomer_name());
 		transactions.setUploadStatus(Constant.STATUS_NO);
@@ -588,6 +604,51 @@ public class BeanUtil {
 		bills.setUpdateDate(bean.getUpdate_date());
 	}
 	
+	public static CashflowBean getBean(Cashflow cashflow) {
+		
+		CashflowBean bean = new CashflowBean();
+		
+		bean.setMerchant_id(cashflow.getMerchantId());
+		bean.setRemote_id(cashflow.getId());
+		bean.setRef_id(cashflow.getRefId());
+		bean.setType(cashflow.getType());
+		bean.setBill_id(cashflow.getBillId());
+		bean.setTransaction_id(cashflow.getTransactionId());
+		bean.setCash_amount(cashflow.getCashAmount());
+		bean.setCash_date(cashflow.getCashDate());
+		bean.setRemarks(cashflow.getRemarks());
+		bean.setStatus(cashflow.getStatus());
+		
+		bean.setCreate_by(cashflow.getCreateBy());
+		bean.setCreate_date(cashflow.getCreateDate());
+		bean.setUpdate_by(cashflow.getUpdateBy());
+		bean.setUpdate_date(cashflow.getUpdateDate());
+		
+		return bean;
+	}
+	
+	public static void updateBean(Cashflow cashflow, CashflowBean bean) {
+		
+		cashflow.setMerchantId(bean.getMerchant_id());
+		cashflow.setId(bean.getRemote_id());
+		cashflow.setRefId(bean.getRef_id());
+		
+		cashflow.setType(bean.getType());
+		cashflow.setBillId(bean.getBill_id());
+		cashflow.setTransactionId(bean.getTransaction_id());
+		
+		cashflow.setCashAmount(bean.getCash_amount());
+		cashflow.setCashDate(bean.getCash_date());
+		cashflow.setRemarks(bean.getRemarks());
+		cashflow.setStatus(bean.getStatus());
+		
+		cashflow.setUploadStatus(Constant.STATUS_NO);
+		cashflow.setCreateBy(bean.getCreate_by());
+		cashflow.setCreateDate(bean.getCreate_date());
+		cashflow.setUpdateBy(bean.getUpdate_by());
+		cashflow.setUpdateDate(bean.getUpdate_date());
+	}
+	
 	public static MerchantAccessBean getBean(MerchantAccess merchantAccess) {
 		
 		MerchantAccessBean bean = new MerchantAccessBean();
@@ -662,10 +723,14 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(orders.getMerchantId());
 		bean.setRemote_id(orders.getId());
+		bean.setRef_id(orders.getRefId());
 		bean.setOrder_no(orders.getOrderNo());
 		bean.setOrder_date(orders.getOrderDate());
 		bean.setOrder_type(orders.getOrderType());
 		bean.setOrder_reference(orders.getOrderReference());
+		bean.setWaitress_id(orders.getWaitressId());
+		bean.setWaitress_name(orders.getWaitressName());
+		bean.setCustomer_id(orders.getCustomerId());
 		bean.setCustomer_name(orders.getCustomerName());
 		bean.setStatus(orders.getStatus());
 		
@@ -676,12 +741,17 @@ public class BeanUtil {
 		
 		orders.setMerchantId(bean.getMerchant_id());
 		orders.setId(bean.getRemote_id());
+		orders.setRefId(bean.getRef_id());
 		orders.setOrderNo(bean.getOrder_no());
 		orders.setOrderDate(bean.getOrder_date());
 		orders.setOrderType(bean.getOrder_type());
 		orders.setOrderReference(bean.getOrder_reference());
+		orders.setWaitressId(bean.getWaitress_id());
+		orders.setWaitressName(bean.getWaitress_name());
+		orders.setCustomerId(bean.getCustomer_id());
 		orders.setCustomerName(bean.getCustomer_name());
 		orders.setStatus(bean.getStatus());
+		orders.setUploadStatus(Constant.STATUS_NO);
 	}
     
     public static OrderItemBean getBean(OrderItem orderItem) {
@@ -690,11 +760,14 @@ public class BeanUtil {
 		
 		bean.setMerchant_id(orderItem.getMerchantId());
 		bean.setRemote_id(orderItem.getId());
+		bean.setRef_id(orderItem.getRefId());
+		bean.setOrder_id(orderItem.getOrderId());
 		bean.setOrder_no(orderItem.getOrderNo());
 		bean.setProduct_id(orderItem.getProductId());
 		bean.setProduct_name(orderItem.getProductName());
 		bean.setQuantity(orderItem.getQuantity());
 		bean.setRemarks(orderItem.getRemarks());
+		bean.setEmployee_id(orderItem.getEmployeeId());
 		
 		return bean;
 	}
@@ -703,10 +776,14 @@ public class BeanUtil {
 		
 		orderItem.setMerchantId(bean.getMerchant_id());
 		orderItem.setId(bean.getRemote_id());
+		orderItem.setRefId(bean.getRef_id());
+		orderItem.setOrderId(bean.getOrder_id());
 		orderItem.setOrderNo(bean.getOrder_no());
 		orderItem.setProductId(bean.getProduct_id());
 		orderItem.setProductName(bean.getProduct_name());
 		orderItem.setQuantity(bean.getQuantity());
 		orderItem.setRemarks(bean.getRemarks());
-	}
+		orderItem.setEmployeeId(bean.getEmployee_id());
+		orderItem.setUploadStatus(Constant.STATUS_NO);
+    }
 }

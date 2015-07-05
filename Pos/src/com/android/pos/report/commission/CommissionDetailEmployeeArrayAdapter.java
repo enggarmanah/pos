@@ -71,7 +71,7 @@ public class CommissionDetailEmployeeArrayAdapter extends ArrayAdapter<EmployeeC
 			commisionText = viewHolder.commisionText;
 		}
 		
-		dateText.setText(CommonUtil.formatDateTime(employeeCommision.getTransaction_date()));
+		dateText.setText(CommonUtil.formatDateMonthTime(employeeCommision.getTransaction_date()));
 		productNameText.setText(employeeCommision.getProduct_name());
 		commisionText.setText(CommonUtil.formatCurrency(employeeCommision.getCommision()));
 		

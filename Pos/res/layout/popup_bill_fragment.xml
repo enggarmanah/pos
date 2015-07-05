@@ -36,21 +36,12 @@
 
         <EditText
             android:id="@+id/billSearchText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/background_blue_light"
-            android:gravity="center_vertical|start"
             android:hint="@string/search_bill"
-            android:textColorHint="#9397a4"
-            android:textColor="@color/text_dark"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            style="@style/PopupSearchTextStyle">
         </EditText>
     </LinearLayout>
+    
+    <LinearLayout style="@style/SectionDividerStyle"></LinearLayout>
 
     <ListView
         android:id="@+id/billListView"

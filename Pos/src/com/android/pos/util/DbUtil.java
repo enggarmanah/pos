@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.util.Log;
 
 import com.android.pos.dao.BillsDao;
+import com.android.pos.dao.CashflowDao;
 import com.android.pos.dao.DaoMaster;
 import com.android.pos.dao.DaoSession;
 import com.android.pos.dao.DiscountDao;
@@ -303,7 +304,7 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'PRODUCT' ADD 'QUANTITY_TYPE' DECIMAL(10,2)");
             }
             
-            // handle version 38 changes
+            // handle version 39 changes
             if (oldVersion < 39) {
             	
             	db.execSQL("ALTER TABLE 'BILLS' ADD 'REF_ID' TEXT");
@@ -320,6 +321,37 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'REF_ID' TEXT");
             	db.execSQL("ALTER TABLE 'USER' ADD 'REF_ID' TEXT");
             	db.execSQL("ALTER TABLE 'USER_ACCESS' ADD 'REF_ID' TEXT");
+            }
+            
+            // handle version 40 changes
+            if (oldVersion < 40) {
+            	
+            	db.execSQL("ALTER TABLE 'ORDERS' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'ORDERS' ADD 'CUSTOMER_ID' INTEGER");
+            	db.execSQL("ALTER TABLE 'ORDER_ITEM' ADD 'REF_ID' TEXT");
+            	db.execSQL("ALTER TABLE 'ORDER_ITEM' ADD 'EMPLOYEE_ID' INTEGER");
+            }
+            
+            // handle version 41 changes
+            if (oldVersion < 41) {
+            	
+            	db.execSQL("ALTER TABLE 'ORDERS' ADD 'WAITRESS_ID' INTEGER");
+            	db.execSQL("ALTER TABLE 'ORDERS' ADD 'WAITRESS_NAME' TEXT");
+            	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'WAITRESS_ID' INTEGER");
+            	db.execSQL("ALTER TABLE 'TRANSACTIONS' ADD 'WAITRESS_NAME' TEXT");
+            }
+            
+            // handle version 42 changes 
+            if (oldVersion < 42) {
+            	
+            	db.execSQL("ALTER TABLE 'ORDERS' ADD 'UPLOAD_STATUS' TEXT");
+            	db.execSQL("ALTER TABLE 'ORDER_ITEMS' ADD 'UPLOAD_STATUS' TEXT");
+            }
+            
+            // handle version 43 changes
+            if (oldVersion < 43) {
+            	
+            	CashflowDao.createTable(db, true);
             }
             
             //DaoMaster.dropAllTables(db, true);

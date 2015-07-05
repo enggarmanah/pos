@@ -55,7 +55,7 @@
     <string name="status_no">No</string>
     
     <string name="email_status_yes">Send promotional email</string>
-    <string name="email_status_no">"Don\'t send promotional email"s</string>
+    <string name="email_status_no">"Don\'t send promotional email"</string>
     
     <string name="product_status_active">Available</string>
     <string name="product_status_inactive">Not Available</string>
@@ -197,6 +197,12 @@
     <string name="field_printer_line_size_fl">T</string>
     <string name="field_discount_type">Discount Type</string>
     <string name="field_discount_type_fl">D</string>
+    <string name="field_invoice_fl">I</string>
+    <string name="field_invoice">Invoice No.</string>
+    <string name="field_customer_fl">C</string>
+    <string name="field_customer">Customer</string>
+    <string name="field_amount_fl">A</string>
+    <string name="field_amount">Amount</string>
     
     <string name="favorite_customer_title">Customer</string>
     <string name="favorite_customer_quantity">Total</string>
@@ -275,6 +281,7 @@
     
     <string name="reservation_no">Table No.</string>
     
+    <string name="order_waitress">Waitress</string>
     <string name="order_info">Customer</string>
     <string name="order_type">Order Type</string>
     <string name="order_total">Total</string>
@@ -293,8 +300,8 @@
     <string name="tax">Tax</string>
     <string name="service_charge">Service Charge</string>
     
-    <string name="order_table_no_add_on">"Table No Add On : "</string>
-    <string name="order_customer_add_on">"Customer Add On : "</string>
+    <string name="order_table_no_add_on">"Table Add On : %1$s"</string>
+    <string name="order_customer_add_on">"Customer Add On : %1$s"</string>
   	<string name="order_transaction_list">"Transaction Items"</string>
   	<string name="order_order_list">"Order List"</string>
     
@@ -306,6 +313,10 @@
     <string name="select_customer">Select Customer</string>
     <string name="track_customer">Select Customer</string>
     <string name="no_customer">No Customer</string>
+    <string name="search_employee">Search Employee</string>
+    <string name="select_employee">Select Employee</string>
+    <string name="track_employee">Select Employee</string>
+    <string name="no_employee">No Employee</string>
     <string name="customer_name">Customer Name</string>
     <string name="search_product">Product Search</string>
     <string name="select_product">Select Product</string>
@@ -316,9 +327,14 @@
     <string name="search_bill">Search Bills</string>
     <string name="select_bill">Select Bill</string>
     <string name="no_bill">No Receipt</string>
+	<string name="search_transaction">Search Credit</string>
+    <string name="select_transaction">Select Credit</string>
+    <string name="no_transaction">No Credit</string>
+    <string name="waitress">Waitress</string>
     
     <string name="transaction">Transaction</string>
     <string name="transaction_no">Transaction No.</string>
+    <string name="transaction_date">Date</string>
     <string name="transaction_cashier">Cashier</string>
     <string name="transaction_list">Transaction List</string>
     <string name="transaction_recap">Transaction Summary</string>
@@ -333,6 +349,7 @@
     
     <string name="print_telephone">" Tel. "</string>
     <string name="print_cashier">"Cashier : "</string>
+    <string name="print_waitress">"Waitress : "</string>
     <string name="print_order_type">"Order Type : "</string>
     <string name="print_table_no">"Table No : "</string>
     <string name="print_customer">"Customer : "</string>
@@ -343,7 +360,7 @@
 	<string name="print_total">Total</string>
 	<string name="print_return">Return</string>
 	<string name="print_remarks">"* "</string>
-	<string name="print_thank_you">Thank You</string>
+	<string name="print_thank_you">Thank You, Please Come Again!</string>
 	
 	<string name="sign_negative">"- "</string>
 	
@@ -357,8 +374,8 @@
 	<string name="server_cant_connect">"Could not connect to Server!"</string>
 	<string name="server_sync_error">"Could not sync to Server!"</string>
 	
-	<string name="order_submit_ok">"Order has been submitted to Server!"</string>
-	<string name="order_download_ok">"Order has been downloaded from Server!"</string>
+	<string name="order_submit_ok">"Order has been submitted!"</string>
+	<string name="order_download_ok">"Order has been downloaded!"</string>
 	
 	<string name="printer_cant_connect">"Could not connect to Printer"</string>
 	<string name="printer_connection_lost">"Printer is disconnected"</string>
@@ -367,6 +384,7 @@
 	<string name="printer_please_check_printer">"Could not connect to Printer. Please check printer is active"</string>
 	<string name="printer_cant_print">"Could not connect to Printer.\nReceipt could not be printed"</string>
 	<string name="printer_bluetooth_inactive">"Bluetooth is not active, Please activate device bluetooth"</string>
+	<string name="printer_bluetooth_adapter_error">"Bluetooth adapter error. Please restart bluetooth adapter"</string>
 	
 	<string name="payment_insufficient">Payment is not sufficient</string>
     
@@ -385,7 +403,7 @@
     
     <string name="alert_empty_mandatory_field">"%1$s should not be empty"</string>
     <string name="alert_server_not_connected">"Could not connect to Server!"</string>
-    <string name="alert_server_sync_error">"Error sync up data to Server!"</string>
+    <string name="alert_server_sync_error">"Error sync up &#8230;!"</string>
     <string name="alert_merchant_authentication_error">"ID Merchant or password is incorrect!"</string>
     <string name="alert_user_authentication_error">"ID user or password is incorrect!"</string>
     <string name="alert_data_no_more">"There is no more data to show!"</string>
@@ -393,6 +411,7 @@
     <string name="alert_please_choose_table_no">"Please choose table no!"</string>
     <string name="alert_customer_name_empty">"Customer\'s name could not be empty!"</string>
     <string name="alert_transaction_list_empty">"Transaction list is still empty"</string>
+    <string name="alert_pic_required">"%1$s\nPIC is required!"</string>
     <string name="alert_order_list_empty">"Order list is still empty"</string>
     <string name="alert_bluetooth_not_available">"Bluetooth is not available. Receipt could not be printed"</string>
     <string name="alert_bluetooth_not_active">"Bluetooth is not active. Please active your bluetooth"</string>
@@ -445,7 +464,7 @@
 	<string name="menu_data_management">Master Data</string>
 	<string name="menu_inventory">Inventory</string>
 	<string name="menu_user_access">User Access</string>
-	<string name="menu_bills">Expense</string>
+	<string name="menu_bills">Bills</string>
 	<string name="menu_report">Reports</string>					
 	
 	<string name="menu_cashier_order">A01</string>
@@ -483,44 +502,54 @@
 	<string name="menu_exit">Exit</string>
 	<string name="menu_sync">Sync</string>
 	
-	<string name="task_validate_merchant">"Authenticate Merchant to Server &#8230;"</string>
-	<string name="task_validate_user">"Authenticate User to Server &#8230;"</string>
-	<string name="task_root_get_merchant">"Download merchant data from Server &#8230;"</string>
-	<string name="task_root_get_merchant_access">"Download merchant access data from Server"</string>
-	<string name="task_submit_orders">"Submit order to Server &#8230;"</string>
-	<string name="task_submit_order_items">"Submit order detail to Server"</string>
-	<string name="task_get_orders">"Download order from Server &#8230;"</string>
-	<string name="task_get_order_item">"Download order detail from Server &#8230;"</string>
-	<string name="task_delete_orders">"Download order detail from Server &#8230;"</string>
-	<string name="task_get_product_group">"Download product group data from server"</string>
-	<string name="task_update_product_group">"Upload product group data to server"</string>
-	<string name="task_get_discount">"Download discount data from server"</string>
-	<string name="task_update_discount">"Upload discount data to server"</string>
-	<string name="task_get_employee">"Download employee data from server"</string>
-	<string name="task_update_employee">"Upload employee data to server"</string>
-	<string name="task_get_customer">"Download customer data from server"</string>
-	<string name="task_update_customer">"Upload pelanggan data to server"</string>
-	<string name="task_get_product">"Download product data from server"</string>
-	<string name="task_update_product">"Upload product data to server"</string>
-	<string name="task_get_user">"Download user data from server"</string>
-	<string name="task_update_user">"Upload user data to server"</string>
-	<string name="task_get_user_access">"Download user access data from server"</string>
-	<string name="task_update_user_access">"Upload user access data to server"</string>
-	<string name="task_get_transactions">"Download transaction data from server"</string>
-	<string name="task_update_transactions">"Upload transaction data to server"</string>
-	<string name="task_get_transaction_item">"Download transaction item data from server"</string>
-	<string name="task_update_transaction_item">"Upload transaction item data to server"</string>
-	<string name="task_get_supplier">"Download supplier data from server"</string>
-	<string name="task_update_supplier">"Upload supplier data to server"</string>
-	<string name="task_get_bill">"Download expense data from server"</string>
-	<string name="task_update_bill">"Upload expense data to server"</string>
-	<string name="task_get_inventory">"Download inventory data from server"</string>
-	<string name="task_update_inventory">"Upload inventory data to server"</string>
-	<string name="task_get_merchant">"Download merchant data from server"</string>
-	<string name="task_update_merchant">"Upload merchant data to server"</string>
-	<string name="task_get_merchant_access">"Download merchant access data from server"</string>
-	<string name="task_update_merchant_access">"Upload merchant access data to server"</string>
-	<string name="task_get_last_sync">"Check last sync up data to server"</string>
-	<string name="task_update_last_sync">"Update last sync up data to server"</string>	
+	<string name="task_validate_merchant">"Authenticate merchant &#8230;"</string>
+	<string name="task_validate_user">"Authenticate user &#8230;"</string>
+	<string name="task_root_get_merchant">"Download merchant &#8230;"</string>
+	<string name="task_root_get_merchant_access">"Download merchant access &#8230;"</string>
+	<string name="task_submit_orders">"Submit order &#8230;"</string>
+	<string name="task_submit_order_items">"Submit order detail &#8230;"</string>
+	<string name="task_get_orders">"Download order &#8230;"</string>
+	<string name="task_get_order_item">"Download order detail &#8230;"</string>
+	<string name="task_delete_orders">"Download order detail &#8230;"</string>
+	<string name="task_get_product_group">"Download product group &#8230;"</string>
+	<string name="task_update_product_group">"Upload product group &#8230;"</string>
+	<string name="task_get_discount">"Download discount &#8230;"</string>
+	<string name="task_update_discount">"Upload discount &#8230;"</string>
+	<string name="task_get_employee">"Download employee &#8230;"</string>
+	<string name="task_update_employee">"Upload employee &#8230;"</string>
+	<string name="task_get_customer">"Download customer &#8230;"</string>
+	<string name="task_update_customer">"Upload pelanggan &#8230;"</string>
+	<string name="task_get_product">"Download product &#8230;"</string>
+	<string name="task_update_product">"Upload product &#8230;"</string>
+	<string name="task_get_user">"Download user &#8230;"</string>
+	<string name="task_update_user">"Upload user &#8230;"</string>
+	<string name="task_get_user_access">"Download user access &#8230;"</string>
+	<string name="task_update_user_access">"Upload user access &#8230;"</string>
+	<string name="task_get_transactions">"Download transaction &#8230;"</string>
+	<string name="task_update_transactions">"Upload transaction &#8230;"</string>
+	<string name="task_get_transaction_item">"Download transaction item &#8230;"</string>
+	<string name="task_update_transaction_item">"Upload transaction item &#8230;"</string>
+	<string name="task_get_supplier">"Download supplier &#8230;"</string>
+	<string name="task_update_supplier">"Upload supplier &#8230;"</string>
+	<string name="task_get_bill">"Download bill &#8230;"</string>
+	<string name="task_update_bill">"Upload bill &#8230;"</string>
+	<string name="task_get_cashflow">"Download cashflow &#8230;"</string>
+	<string name="task_update_cashflow">"Upload cashflow &#8230;"</string>
+	<string name="task_get_inventory">"Download inventory &#8230;"</string>
+	<string name="task_update_inventory">"Upload inventory &#8230;"</string>
+	<string name="task_get_merchant">"Download merchant &#8230;"</string>
+	<string name="task_update_merchant">"Upload merchant &#8230;"</string>
+	<string name="task_get_merchant_access">"Download merchant access &#8230;"</string>
+	<string name="task_update_merchant_access">"Upload merchant access &#8230;"</string>
+	<string name="task_get_last_sync">"Check last sync up &#8230;"</string>
+	<string name="task_update_last_sync">"Update last sync up &#8230;"</string>
+	
+	<string name="cashflow_type_capital_in">Capital Investment</string>
+	<string name="cashflow_type_capital_out">Capital Withdrawal</string>
+	<string name="cashflow_type_bank_deposit">Funds Transfer to Bank</string>
+	<string name="cashflow_type_bank_withdrawal">Funds Withdrawal from Bank</string>
+	<string name="cashflow_type_bill_payment">Bill Payment to Supplier</string>
+	<string name="cashflow_type_invc_payment">Invoice Payment from Customer</string>
+	<string name="cashflow_type_expense">General Expense</string>
 		
 </resources>

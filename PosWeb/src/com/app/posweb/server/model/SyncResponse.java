@@ -16,12 +16,13 @@ public class SyncResponse {
 	
 	protected List<String> taskHasUpdates;
 	
-	protected Device device;
+	protected Sync sync;
 	protected Merchant merchant;
 	protected User user;
 	
 	protected List<Bills> bills;
 	protected List<Customer> customers;
+	protected List<Cashflow> cashflows;
 	protected List<Discount> discounts;
 	protected List<Employee> employees;
 	protected List<Inventory> inventories;
@@ -77,12 +78,12 @@ public class SyncResponse {
 		this.status = status;
 	}
 
-	public Device getDevice() {
-		return device;
+	public Sync getSync() {
+		return sync;
 	}
 
-	public void setDevice(Device device) {
-		this.device = device;
+	public void setSync(Sync sync) {
+		this.sync = sync;
 	}
 
 	public Merchant getMerchant() {
@@ -115,6 +116,14 @@ public class SyncResponse {
 
 	public void setCustomers(List<Customer> customers) {
 		this.customers = customers;
+	}
+
+	public List<Cashflow> getCashflows() {
+		return cashflows;
+	}
+
+	public void setCashflows(List<Cashflow> cashflows) {
+		this.cashflows = cashflows;
 	}
 
 	public List<Discount> getDiscounts() {

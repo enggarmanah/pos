@@ -29,13 +29,16 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property MerchantId = new Property(1, long.class, "merchantId", false, "MERCHANT_ID");
-        public final static Property OrderId = new Property(2, long.class, "orderId", false, "ORDER_ID");
-        public final static Property OrderNo = new Property(3, String.class, "orderNo", false, "ORDER_NO");
-        public final static Property ProductId = new Property(4, long.class, "productId", false, "PRODUCT_ID");
-        public final static Property ProductName = new Property(5, String.class, "productName", false, "PRODUCT_NAME");
-        public final static Property Quantity = new Property(6, Float.class, "quantity", false, "QUANTITY");
-        public final static Property Remarks = new Property(7, String.class, "remarks", false, "REMARKS");
+        public final static Property RefId = new Property(1, String.class, "refId", false, "REF_ID");
+        public final static Property MerchantId = new Property(2, long.class, "merchantId", false, "MERCHANT_ID");
+        public final static Property OrderId = new Property(3, long.class, "orderId", false, "ORDER_ID");
+        public final static Property OrderNo = new Property(4, String.class, "orderNo", false, "ORDER_NO");
+        public final static Property ProductId = new Property(5, long.class, "productId", false, "PRODUCT_ID");
+        public final static Property ProductName = new Property(6, String.class, "productName", false, "PRODUCT_NAME");
+        public final static Property Quantity = new Property(7, Float.class, "quantity", false, "QUANTITY");
+        public final static Property Remarks = new Property(8, String.class, "remarks", false, "REMARKS");
+        public final static Property EmployeeId = new Property(9, Long.class, "employeeId", false, "EMPLOYEE_ID");
+        public final static Property UploadStatus = new Property(10, String.class, "uploadStatus", false, "UPLOAD_STATUS");
     };
 
     private DaoSession daoSession;
@@ -56,13 +59,16 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'ORDER_ITEM' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'MERCHANT_ID' INTEGER NOT NULL ," + // 1: merchantId
-                "'ORDER_ID' INTEGER NOT NULL ," + // 2: orderId
-                "'ORDER_NO' TEXT," + // 3: orderNo
-                "'PRODUCT_ID' INTEGER NOT NULL ," + // 4: productId
-                "'PRODUCT_NAME' TEXT," + // 5: productName
-                "'QUANTITY' DECIMAL(10,2)," + // 6: quantity
-                "'REMARKS' TEXT);"); // 7: remarks
+                "'REF_ID' TEXT," + // 1: refId
+                "'MERCHANT_ID' INTEGER NOT NULL ," + // 2: merchantId
+                "'ORDER_ID' INTEGER NOT NULL ," + // 3: orderId
+                "'ORDER_NO' TEXT," + // 4: orderNo
+                "'PRODUCT_ID' INTEGER NOT NULL ," + // 5: productId
+                "'PRODUCT_NAME' TEXT," + // 6: productName
+                "'QUANTITY' REAL," + // 7: quantity
+                "'REMARKS' TEXT," + // 8: remarks
+                "'EMPLOYEE_ID' INTEGER," + // 9: employeeId
+                "'UPLOAD_STATUS' TEXT);"); // 10: uploadStatus
     }
 
     /** Drops the underlying database table. */
@@ -80,28 +86,43 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getMerchantId());
-        stmt.bindLong(3, entity.getOrderId());
+ 
+        String refId = entity.getRefId();
+        if (refId != null) {
+            stmt.bindString(2, refId);
+        }
+        stmt.bindLong(3, entity.getMerchantId());
+        stmt.bindLong(4, entity.getOrderId());
  
         String orderNo = entity.getOrderNo();
         if (orderNo != null) {
-            stmt.bindString(4, orderNo);
+            stmt.bindString(5, orderNo);
         }
-        stmt.bindLong(5, entity.getProductId());
+        stmt.bindLong(6, entity.getProductId());
  
         String productName = entity.getProductName();
         if (productName != null) {
-            stmt.bindString(6, productName);
+            stmt.bindString(7, productName);
         }
  
         Float quantity = entity.getQuantity();
         if (quantity != null) {
-            stmt.bindDouble(7, quantity);
+            stmt.bindDouble(8, quantity);
         }
  
         String remarks = entity.getRemarks();
         if (remarks != null) {
-            stmt.bindString(8, remarks);
+            stmt.bindString(9, remarks);
+        }
+ 
+        Long employeeId = entity.getEmployeeId();
+        if (employeeId != null) {
+            stmt.bindLong(10, employeeId);
+        }
+ 
+        String uploadStatus = entity.getUploadStatus();
+        if (uploadStatus != null) {
+            stmt.bindString(11, uploadStatus);
         }
     }
 
@@ -122,13 +143,16 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
     public OrderItem readEntity(Cursor cursor, int offset) {
         OrderItem entity = new OrderItem( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // merchantId
-            cursor.getLong(offset + 2), // orderId
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // orderNo
-            cursor.getLong(offset + 4), // productId
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // productName
-            cursor.isNull(offset + 6) ? null : cursor.getFloat(offset + 6), // quantity
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // remarks
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // refId
+            cursor.getLong(offset + 2), // merchantId
+            cursor.getLong(offset + 3), // orderId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // orderNo
+            cursor.getLong(offset + 5), // productId
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // productName
+            cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7), // quantity
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // remarks
+            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // employeeId
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // uploadStatus
         );
         return entity;
     }
@@ -137,13 +161,16 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
     @Override
     public void readEntity(Cursor cursor, OrderItem entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setMerchantId(cursor.getLong(offset + 1));
-        entity.setOrderId(cursor.getLong(offset + 2));
-        entity.setOrderNo(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setProductId(cursor.getLong(offset + 4));
-        entity.setProductName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setQuantity(cursor.isNull(offset + 6) ? null : cursor.getFloat(offset + 6));
-        entity.setRemarks(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setRefId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setMerchantId(cursor.getLong(offset + 2));
+        entity.setOrderId(cursor.getLong(offset + 3));
+        entity.setOrderNo(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setProductId(cursor.getLong(offset + 5));
+        entity.setProductName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setQuantity(cursor.isNull(offset + 7) ? null : cursor.getFloat(offset + 7));
+        entity.setRemarks(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setEmployeeId(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
+        entity.setUploadStatus(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     /** @inheritdoc */
@@ -196,10 +223,13 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
             SqlUtils.appendColumns(builder, "T1", daoSession.getOrdersDao().getAllColumns());
             builder.append(',');
             SqlUtils.appendColumns(builder, "T2", daoSession.getProductDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T3", daoSession.getEmployeeDao().getAllColumns());
             builder.append(" FROM ORDER_ITEM T");
             builder.append(" LEFT JOIN MERCHANT T0 ON T.'MERCHANT_ID'=T0.'_id'");
             builder.append(" LEFT JOIN ORDERS T1 ON T.'ORDER_ID'=T1.'_id'");
             builder.append(" LEFT JOIN PRODUCT T2 ON T.'PRODUCT_ID'=T2.'_id'");
+            builder.append(" LEFT JOIN EMPLOYEE T3 ON T.'EMPLOYEE_ID'=T3.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -226,6 +256,10 @@ public class OrderItemDao extends AbstractDao<OrderItem, Long> {
          if(product != null) {
             entity.setProduct(product);
         }
+        offset += daoSession.getProductDao().getAllColumns().length;
+
+        Employee employee = loadCurrentOther(daoSession.getEmployeeDao(), cursor, offset);
+        entity.setEmployee(employee);
 
         return entity;    
     }

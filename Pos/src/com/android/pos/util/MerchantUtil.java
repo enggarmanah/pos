@@ -21,7 +21,7 @@ public class MerchantUtil {
 	
 	public static Merchant getMerchant() {
 		
-		if (mMerchant == null && Config.isDevelopment() && !UserUtil.isRoot()) {
+		if (mMerchant == null && Config.isDebug() && !UserUtil.isRoot()) {
 			
 			Long merchantId = Long.valueOf(2);
 			

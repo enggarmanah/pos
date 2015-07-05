@@ -125,9 +125,10 @@
     <style name="GridViewValueTextStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">fill_parent</item>
+        <item name="android:minHeight">35dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/list_row_normal_text</item>
         <item name="android:background">@android:color/transparent</item>
@@ -138,7 +139,7 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">2dp</item>
-        <item name="android:divider">@color/border_gray_light</item>
+        <item name="android:divider">@color/border_grey_light</item>
         <item name="android:dividerHeight">0.5dp</item>
         <item name="android:background">#FFF</item>
     </style>
@@ -150,6 +151,18 @@
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:background">@color/list_row_background</item>
+    </style>
+    
+    <style name="ListViewOrderHeaderRowStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:background">@color/list_row_background</item>
@@ -245,6 +258,20 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_medium</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="ListViewRowCashflowAmountTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center|end</item>
+        <item name="android:minWidth">35dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_default</item>
     </style>
     
     <style name="ListViewRowPastDueRemarksTextStyle">
@@ -412,7 +439,7 @@
 
     <style name="ListViewRowTransItemCountTextStyle" parent="ListViewRowTransItemBaseTextStyle">
         <item name="android:layout_weight">0</item>
-        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_width">32dp</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:layout_gravity">top</item>
     </style>
@@ -704,7 +731,10 @@
         <item name="android:textSize">21sp</item>
         <item name="android:textColor">@color/text_default</item>
         <item name="android:singleLine">true</item>
-        <item name="android:padding">7dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingLeft">7dp</item>
+        <item name="android:paddingRight">7dp</item>
         <item name="android:background">@color/section_header_background</item>
     </style>
 	
@@ -796,7 +826,7 @@
     <style name="CashierNumberRowStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:background">@color/border_gray</item>
+        <item name="android:background">@color/border_grey</item>
     </style>
 
     <style name="CashierNumberButtonStyle">
@@ -876,7 +906,7 @@
     <style name="SectionDividerStyle">
         <item name="android:layout_height">0.5dp</item>
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:background">@color/border_gray_light</item>
+        <item name="android:background">@color/border_grey_light</item>
     </style>
     
     <style name="SectionDividerWhiteStyle">
@@ -945,11 +975,19 @@
         <item name="android:layout_marginRight">20dp</item>
         <item name="android:background">@drawable/selector_btn</item>
     </style>
+    
+    <style name="RemarksBtnStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">right|center_vertical</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:background">@drawable/selector_btn</item>
+    </style>
 
     <style name="PaymentSummaryRowStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/border_gray_light</item>
+        <item name="android:background">@color/border_grey_light</item>
         <item name="android:paddingTop">0.5dp</item>
     </style>
 
@@ -958,8 +996,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_weight">2</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:textColor">@color/text_dark</item>
@@ -1093,12 +1131,23 @@
         <item name="android:src">@drawable/ic_check_black</item>
     </style>
     
+    <style name="CheckedUserAccessButtonStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical|left</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:background">@drawable/selector_square</item>
+        <item name="android:src">@drawable/ic_check_black</item>
+    </style>
+    
     <style name="PrintButtonStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center_vertical|left</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">5dp</item>
         <item name="android:layout_marginRight">0dp</item>
         <item name="android:background">@drawable/selector_back_btn</item>
         <item name="android:src">@drawable/ic_receipt_black</item>
@@ -1162,9 +1211,9 @@
     </style>
 
     <style name="ConfirmTextStyle">
-        <item name="android:layout_width">320dp</item>
+        <item name="android:layout_width">300dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
         <item name="android:paddingTop">35dp</item>
         <item name="android:paddingBottom">35dp</item>
         <item name="android:paddingLeft">30dp</item>
@@ -1177,6 +1226,22 @@
     
     <style name="AlertTextStyle" parent="ConfirmTextStyle">
         <item name="android:background">@color/background_red_light</item>
+    </style>
+    
+    <style name="PopupSearchTextStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/background_blue_light</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textColorHint">#9397a4</item>
+        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:singleLine">true</item>
     </style>
 
 </resources>

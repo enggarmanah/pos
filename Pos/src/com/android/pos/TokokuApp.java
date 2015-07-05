@@ -8,6 +8,7 @@ public class TokokuApp extends Application {
 
 	@Override
 	public void onCreate() {
+		
 		CommonUtil.initTracker(this);
 	}
 }

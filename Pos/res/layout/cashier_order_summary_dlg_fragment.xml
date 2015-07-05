@@ -9,22 +9,22 @@
         style="@style/PopUpDialogHeaderStyle"
         android:text="@string/order_summary" />
 	
-    <FrameLayout
-        android:layout_height="40dp"
-        android:layout_width="fill_parent"
-        android:background="@color/background">
-    </FrameLayout>
-    
-	<LinearLayout style="@style/PaymentSummaryRowStyle" >
-
+    <LinearLayout 
+	    android:id="@+id/orderTypePanel"
+	    style="@style/PaymentSummaryRowStyle" >
+		
+	    <TextView
+            style="@style/PaymentSummaryRowLabelStyle"
+            android:text="@string/order_type" />
+	    
         <TextView
             android:id="@+id/orderTypeText"
             style="@style/PaymentSummaryRowValueStyle"
-            android:gravity="start"/>
+            android:gravity="end"/>
         
     </LinearLayout>
     
-    <LinearLayout
+	<LinearLayout
         android:id="@+id/customerPanel"
         style="@style/PaymentSummaryRowStyle" >
 
@@ -37,15 +37,21 @@
             android:id="@+id/orderReferenceText"
             style="@style/PaymentSummaryRowValueStyle" />
     </LinearLayout>
+	
+	<LinearLayout
+        android:id="@+id/waitressPanel"
+        style="@style/PaymentSummaryRowStyle" >
 
-    <TextView style="@style/SectionDividerStyle"/>
+        <TextView
+            android:id="@+id/waitressLabel"
+            style="@style/PaymentSummaryRowLabelStyle"
+            android:text="@string/order_waitress" />
+
+        <TextView
+            android:id="@+id/waitressText"
+            style="@style/PaymentSummaryRowValueStyle" />
+    </LinearLayout>
     
-    <FrameLayout
-        android:layout_height="40dp"
-        android:layout_width="fill_parent"
-        android:background="@color/background">
-    </FrameLayout>
-
     <LinearLayout style="@style/CashierNumberRowStyle" >
 
         <Button

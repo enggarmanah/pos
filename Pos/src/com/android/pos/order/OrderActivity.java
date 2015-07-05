@@ -14,8 +14,9 @@ import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.OrderItemDaoService;
 import com.android.pos.dao.Orders;
 import com.android.pos.dao.Product;
+import com.android.pos.popup.search.EmployeeDlgFragment;
+import com.android.pos.popup.search.EmployeeSelectionListener;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.NotificationUtil;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -25,15 +26,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class OrderActivity extends BaseActivity 
-	implements OrderActionListener, CashierProductCountDlgFragment.ProductActionListener {
+	implements OrderActionListener, CashierProductCountDlgFragment.ProductActionListener, EmployeeSelectionListener {
 	
 	protected OrderListFragment mOrderListFragment;
 	protected OrderDetailFragment mOrderDetailFragment;
-	private CashierProductCountDlgFragment mProductCountDlgFragment;
+	protected CashierProductCountDlgFragment mProductCountDlgFragment;
+	protected EmployeeDlgFragment mEmployeeDlgFragment;
 	
 	private String mOrderListFragmentTag = "OrderListFragmentTag";
 	private String mOrderDetailFragmentTag = "OrderDetailFragmentTag";
 	private String mProductCountDlgFragmentTag = "productCountDlgFragmentTag";
+	private static final  String mEmployeeDlgFragmentTag = "employeeDlgFragmentTag";
 	
 	private static final String SELECTED_ORDER_REFERENCE = "SELECTED_ORDER_REFERENCE";
 	private static final String SELECTED_ORDER_ITEM = "SELECTED_ORDER_ITEM";
@@ -117,6 +120,10 @@ public class OrderActivity extends BaseActivity
 		}
 		
 		mOrderDetailFragment.setSelectedOrders(mSelectedOrders);
+		
+		if (mEmployeeDlgFragment == null) {
+			mEmployeeDlgFragment = new EmployeeDlgFragment();
+		}
 	}
 
 	@Override
@@ -206,6 +213,8 @@ public class OrderActivity extends BaseActivity
 				
 				mIsOrderSelected = true;
 				
+				refreshOrders();
+				
 				Intent intent = new Intent(getApplicationContext(), CashierActivity.class);
 				intent.putExtra(Constant.SELECTED_ORDERS_FOR_PAYMENT, mSelectedOrders);
 				startActivity(intent);
@@ -224,7 +233,7 @@ public class OrderActivity extends BaseActivity
 					mHttpAsyncManager = new HttpAsyncManager(this);
 				}
 				
-				mHttpAsyncManager.getOrders();
+				mHttpAsyncManager.syncOrders();
 				
 				return true;
 					
@@ -279,23 +288,29 @@ public class OrderActivity extends BaseActivity
 	@Override
 	public void onOrderItemSelected(OrderItem orderItem) {
 		
-		mSelectedOrderItem = orderItem;
-		
-		Employee personInCharge = null;
-		
 		if (mProductCountDlgFragment.isAdded()) {
 			return;
 		}
 		
+		mSelectedOrderItem = orderItem;
+		
+		Product product = orderItem.getProduct();
+		Float price = CommonUtil.getCurrentPrice(orderItem.getProduct());
+		Employee personInCharge = orderItem.getEmployee();
+		Float quantity = orderItem.getQuantity();
+		String remarks = orderItem.getRemarks();
+		
 		mProductCountDlgFragment.show(getFragmentManager(), mProductCountDlgFragmentTag);
-		mProductCountDlgFragment.setProduct(orderItem.getProduct(), CommonUtil.getCurrentPrice(orderItem.getProduct()), personInCharge, orderItem.getQuantity(), orderItem.getRemarks());
+		mProductCountDlgFragment.setProduct(product, price, personInCharge, quantity, remarks);
 	}
 	
 	@Override
 	public void onProductQuantitySelected(Product product, Float price, Employee personInCharge, Float quantity, String remarks) {
 		
+		mSelectedOrderItem.setEmployee(personInCharge);
 		mSelectedOrderItem.setQuantity(quantity);
 		mSelectedOrderItem.setRemarks(remarks);
+		mSelectedOrderItem.setUploadStatus(Constant.STATUS_YES);
 		mOrderItemDaoService.updateOrderItem(mSelectedOrderItem);
 		mOrderDetailFragment.displayOrders(mSelectedOrderReference);
 	}
@@ -308,6 +323,20 @@ public class OrderActivity extends BaseActivity
 		startActivity(intent);
 	}
 	
+	public void onSelectEmployee() {
+		
+		if (mEmployeeDlgFragment.isAdded()) {
+			return;
+		}
+		
+		mEmployeeDlgFragment.show(getFragmentManager(), mEmployeeDlgFragmentTag);
+	}
+	
+	public void onEmployeeSelected(Employee employee) {
+		
+		mProductCountDlgFragment.setEmployee(employee);
+	}
+	
 	@Override
 	protected void onAsyncTaskCompleted() {
 		
@@ -315,6 +344,6 @@ public class OrderActivity extends BaseActivity
 		
 		refreshOrders();
 		
-		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.order_download_ok));
+		//NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.order_download_ok));
 	}
 }

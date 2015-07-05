@@ -9,7 +9,6 @@ import com.android.pos.dao.Customer;
 import com.android.pos.dao.CustomerDaoService;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CustomerDlgFragment extends DialogFragment implements CustomerArrayAdapter.ItemActionListener {
+public class CustomerDlgFragment extends BaseSearchDlgFragment<Customer> implements CustomerArrayAdapter.ItemActionListener {
 	
 	TextView mCancelBtn;
 	EditText mCustomerSearchText;
@@ -30,8 +29,6 @@ public class CustomerDlgFragment extends DialogFragment implements CustomerArray
 	CustomerSelectionListener mActionListener;
 	
 	CustomerArrayAdapter customerArrayAdapter;
-	
-	List<Customer> mCustomers;
 	
 	private CustomerDaoService mCustomerDaoService = new CustomerDaoService();
 	
@@ -43,9 +40,9 @@ public class CustomerDlgFragment extends DialogFragment implements CustomerArray
         
         setCancelable(false);
         
-        mCustomers = new ArrayList<Customer>();
+        mItems = new ArrayList<Customer>();
         
-        customerArrayAdapter = new CustomerArrayAdapter(getActivity(), mCustomers, this);
+        customerArrayAdapter = new CustomerArrayAdapter(getActivity(), mItems, this);
 	}
 	
 	@Override
@@ -63,14 +60,17 @@ public class CustomerDlgFragment extends DialogFragment implements CustomerArray
 		
 		mCustomerSearchText = (EditText) getView().findViewById(R.id.customerSearchText);
 		mCustomerSearchText.setText(Constant.EMPTY_STRING);
+		mCustomerSearchText.requestFocus();
 		
 		mCustomerSearchText.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				
-				mCustomers.clear();
-				mCustomers.addAll(mCustomerDaoService.getCustomers(s.toString(), 0));
+				mQuery = s.toString();
+				
+				mItems.clear();
+				mItems.addAll(mCustomerDaoService.getCustomers(mQuery, 0));
 				customerArrayAdapter.notifyDataSetChanged();
 			}
 			
@@ -89,6 +89,10 @@ public class CustomerDlgFragment extends DialogFragment implements CustomerArray
 		
 		mCancelBtn = (TextView) getView().findViewById(R.id.cancelBtn);
 		mCancelBtn.setOnClickListener(getCancelBtnOnClickListener());
+		
+		mItems.clear();
+		mItems.addAll(mCustomerDaoService.getCustomers(mQuery, 0));
+		customerArrayAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -139,5 +143,23 @@ public class CustomerDlgFragment extends DialogFragment implements CustomerArray
 				dismiss();
 			}
 		};
+	}
+	
+	@Override
+	protected List<Customer> getItems(String query) {
+		
+		return mCustomerDaoService.getCustomers(mQuery, 0);
+	}
+	
+	@Override
+	protected List<Customer> getNextItems(String query, int lastIndex) {
+		
+		return mCustomerDaoService.getCustomers(mQuery, lastIndex);
+	}
+	
+	@Override
+	protected void refreshList() {
+		
+		customerArrayAdapter.notifyDataSetChanged();
 	}
 }

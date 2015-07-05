@@ -9,7 +9,6 @@ import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDaoService;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ProductDlgFragment extends DialogFragment implements ProductArrayAdapter.ItemActionListener {
+public class ProductDlgFragment extends BaseSearchDlgFragment<Product> implements ProductArrayAdapter.ItemActionListener {
 	
 	TextView mCancelBtn;
 	EditText mProductSearchText;
@@ -31,8 +30,6 @@ public class ProductDlgFragment extends DialogFragment implements ProductArrayAd
 	
 	ProductArrayAdapter productArrayAdapter;
 	
-	List<Product> mProducts;
-
 	boolean mIsMandatory = false;
 	
 	private ProductDaoService mProductDaoService = new ProductDaoService();
@@ -45,9 +42,9 @@ public class ProductDlgFragment extends DialogFragment implements ProductArrayAd
         
         setCancelable(false);
         
-        mProducts = new ArrayList<Product>();
+        mItems = new ArrayList<Product>();
         
-        productArrayAdapter = new ProductArrayAdapter(getActivity(), mProducts, this);
+        productArrayAdapter = new ProductArrayAdapter(getActivity(), mItems, this);
 	}
 	
 	@Override
@@ -65,14 +62,17 @@ public class ProductDlgFragment extends DialogFragment implements ProductArrayAd
 		
 		mProductSearchText = (EditText) getView().findViewById(R.id.productSearchText);
 		mProductSearchText.setText(Constant.EMPTY_STRING);
+		mProductSearchText.requestFocus();
 		
 		mProductSearchText.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				
-				mProducts.clear();
-				mProducts.addAll(mProductDaoService.getProducts(s.toString(), 0));
+				mQuery = s.toString();
+				
+				mItems.clear();
+				mItems.addAll(mProductDaoService.getGoodsProducts(mQuery, 0));
 				productArrayAdapter.notifyDataSetChanged();
 			}
 			
@@ -85,6 +85,7 @@ public class ProductDlgFragment extends DialogFragment implements ProductArrayAd
 		
 		mProductListView = (ListView) getView().findViewById(R.id.productListView);
 		mProductListView.setAdapter(productArrayAdapter);
+		mProductListView.setOnScrollListener(getListOnScrollListener());
 		
 		mNoProductText = (TextView) getView().findViewById(R.id.noProductText);
 		mNoProductText.setOnClickListener(getNoProductTextOnClickListener());
@@ -97,6 +98,10 @@ public class ProductDlgFragment extends DialogFragment implements ProductArrayAd
 		} else {
 			mNoProductText.setVisibility(View.VISIBLE);
 		}
+		
+		mItems.clear();
+		mItems.addAll(mProductDaoService.getGoodsProducts(mQuery, 0));
+		productArrayAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -152,5 +157,23 @@ public class ProductDlgFragment extends DialogFragment implements ProductArrayAd
 				dismiss();
 			}
 		};
+	}
+	
+	@Override
+	protected List<Product> getItems(String query) {
+		
+		return mProductDaoService.getGoodsProducts(mQuery, 0);
+	}
+	
+	@Override
+	protected List<Product> getNextItems(String query, int lastIndex) {
+		
+		return mProductDaoService.getGoodsProducts(mQuery, lastIndex);
+	}
+	
+	@Override
+	protected void refreshList() {
+		
+		productArrayAdapter.notifyDataSetChanged();
 	}
 }

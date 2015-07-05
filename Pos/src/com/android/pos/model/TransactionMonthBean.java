@@ -7,7 +7,7 @@ import java.util.Date;
 public class TransactionMonthBean implements Serializable {
 
 	private Date month;
-	private Long amount;
+	private Float amount;
 
 	public Date getMonth() {
 		return month;
@@ -17,11 +17,11 @@ public class TransactionMonthBean implements Serializable {
 		this.month = month;
 	}
 
-	public Long getAmount() {
+	public Float getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Long amount) {
+	public void setAmount(Float amount) {
 		this.amount = amount;
 	}
 }

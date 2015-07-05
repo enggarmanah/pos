@@ -15,7 +15,17 @@ public class OrderItemDao {
 	
 	public OrderItem syncOrderItem(OrderItem orderItem) {
 		
-		orderItem = addOrderItem(orderItem);
+		OrderItem obj = getOrderItem(orderItem);
+		
+		if (obj != null) {
+			
+			orderItem.setId(obj.getId());
+			orderItem = updateOrderItem(orderItem);
+			
+		} else {
+			
+			orderItem = addOrderItem(orderItem);
+		}
 		
 		return orderItem;
 	}
@@ -96,13 +106,14 @@ public class OrderItemDao {
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT oi FROM Orders AS o, OrderItem AS oi WHERE  "
-				+ "	oi.merchant_id = :merchantId AND oi.order_no = o.order_no AND oi.merchant_id = o.merchant_id");
+				+ "	oi.merchant_id = :merchantId AND oi.order_id = o.remote_id AND oi.merchant_id = o.merchant_id AND o.sync_date > :lastSyncDate");
 		
 		sql.append(" ORDER BY oi.id");
 		
 		TypedQuery<OrderItem> query = em.createQuery(sql.toString(), OrderItem.class);
 
 		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
 		
 		List<OrderItem> result = query.getResultList();
 		
@@ -136,7 +147,8 @@ public class OrderItemDao {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT COUNT(o.id) FROM OrderItem o WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
+		StringBuffer sql = new StringBuffer("SELECT COUNT(oi.id) FROM Orders AS o, OrderItem AS oi WHERE  "
+				+ "	oi.merchant_id = :merchantId AND oi.merchant_id = o.merchant_id AND oi.order_id = o.remote_id AND o.sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		

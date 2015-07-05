@@ -8,7 +8,7 @@
     
     <ImageButton
         android:id="@+id/checkedButton"
-        style="@style/CheckedButtonStyle"
+        style="@style/CheckedUserAccessButtonStyle"
         android:contentDescription="@string/none" />
 
 </LinearLayout>

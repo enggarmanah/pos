@@ -163,11 +163,16 @@ public class OrderItemArrayAdapter extends ArrayAdapter<OrderItem> {
 			checkedButton.setVisibility(View.GONE);
 			
 			productNameText.setText(orderItem.getProductName());
-			productQuantityText.setText(String.valueOf(orderItem.getQuantity()));
+			productQuantityText.setText(CommonUtil.formatNumber(orderItem.getQuantity()));
 			
 			if (!CommonUtil.isEmpty(orderItem.getRemarks())) {
 				
 				productInfoText.setText(orderItem.getRemarks());
+				productInfoText.setVisibility(View.VISIBLE);
+				
+			} else if (orderItem.getEmployee() != null) {
+				
+				productInfoText.setText(orderItem.getEmployee().getName());
 				productInfoText.setVisibility(View.VISIBLE);
 				
 			} else {

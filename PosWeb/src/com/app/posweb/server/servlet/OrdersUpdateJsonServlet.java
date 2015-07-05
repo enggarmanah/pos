@@ -21,6 +21,8 @@ public class OrdersUpdateJsonServlet extends BaseJsonServlet {
         
         for (Orders order : request.getOrders()) {
         	
+        	order.setSync_date(request.getSync_date());
+        	
         	String status = SyncStatus.FAIL;
         	
         	try {

@@ -16,10 +16,12 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.common.ConfirmListener;
+import com.android.pos.dao.Customer;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Orders;
+import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.util.CommonUtil;
@@ -72,6 +74,7 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 	
 	private String mCashierState = Constant.CASHIER_STATE_CASHIER;
 	
+	private boolean mIsAddOn = false;
 	private Orders mSelectedOrder;
 	
 	@Override
@@ -364,15 +367,20 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		
 		if (mSelectedOrder != null) {
 			
-			if (Constant.ORDER_TYPE_DINE_IN.equals(mSelectedOrder.getOrderType())) {
-				
-				header = getString(R.string.order_table_no_add_on) + mSelectedOrder.getOrderReference();
+			if (mIsAddOn) {
 			
+				if (Constant.ORDER_TYPE_DINE_IN.equals(mSelectedOrder.getOrderType())) {
+					header = getString(R.string.order_table_no_add_on, mSelectedOrder.getOrderReference());
+				} else {
+					header = getString(R.string.order_customer_add_on, mSelectedOrder.getOrderReference());
+				}
 			} else {
-				
-				header = getString(R.string.order_customer_add_on) + mSelectedOrder.getOrderReference();
+				if (Constant.ORDER_TYPE_DINE_IN.equals(mSelectedOrder.getOrderType())) {
+					header = getString(R.string.order_table_no, mSelectedOrder.getOrderReference());
+				} else {
+					header = getString(R.string.order_customer, mSelectedOrder.getOrderReference());
+				}
 			}
-			
 		} else {
 			
 			header = getString(R.string.order_transaction_list);
@@ -465,9 +473,10 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 		}
 	}
 	
-	public void setSelectedOrders(Orders order) {
+	public void setSelectedOrders(Orders order, boolean isAddOn) {
 		
 		mSelectedOrder = order;
+		mIsAddOn = isAddOn;
 		
 		if (isViewInitialized()) {
 			initHeader();
@@ -507,6 +516,19 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 				if (mTransactionItems != null && getTotalQuantity(mTransactionItems) == 0) {
 					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_transaction_list_empty));
 				} else {
+					
+					for (TransactionItem tranItem : mTransactionItems) {
+						
+						Product product = tranItem.getProduct();
+						
+						if (Constant.STATUS_YES.equals(product.getPicRequired()) &&
+							tranItem.getEmployeeId() == null) {
+							
+							NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_pic_required, product.getName()));
+							return;
+						}
+					}
+					
 					mActionListener.onPaymentRequested(CommonUtil.parseFloatCurrency(mTotalBillText.getText().toString()));
 				}
 			}
@@ -523,7 +545,16 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 				if (mTransactionItems != null && mTransactionItems.size() == 0) {
 					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_order_list_empty));
 				} else {
-					mActionListener.onOrderInfoProvided(mSelectedOrder.getOrderReference(), mSelectedOrder.getOrderType());
+					
+					String orderReference = mSelectedOrder.getOrderReference();
+					String orderType = mSelectedOrder.getOrderType();
+					
+					Employee employee = mSelectedOrder.getWaitressId() != null ? mSelectedOrder.getEmployee() : null;
+					Customer customer = mSelectedOrder.getCustomerId() != null ? mSelectedOrder.getCustomer() : new Customer();
+					
+					customer.setName(mSelectedOrder.getCustomerName());
+					
+					mActionListener.onOrderInfoProvided(orderReference, orderType, employee, customer);
 				}
 			}
 		};

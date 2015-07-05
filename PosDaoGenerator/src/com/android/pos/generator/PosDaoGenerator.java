@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(39, "com.android.pos.dao");
+        Schema schema = new Schema(43, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -226,6 +226,11 @@ public class PosDaoGenerator {
         
         transactions.addStringProperty("cashierName");
         
+        Property waitressId = transactions.addLongProperty("waitressId").getProperty();
+        transactions.addToOne(employee, waitressId);
+        
+        transactions.addStringProperty("waitressName");
+        
         Property customerId = transactions.addLongProperty("customerId").getProperty();
         transactions.addToOne(customer, customerId);
         
@@ -297,6 +302,7 @@ public class PosDaoGenerator {
         Entity orders = schema.addEntity("Orders");
     	
         orders.addIdProperty();
+        orders.addStringProperty("refId");
     	
     	merchantId = orders.addLongProperty("merchantId").notNull().getProperty();
     	orders.addToOne(merchant, merchantId);
@@ -305,12 +311,23 @@ public class PosDaoGenerator {
     	trxDate = orders.addDateProperty("orderDate").notNull().getProperty();
     	orders.addStringProperty("orderType");
     	orders.addStringProperty("orderReference");
+    	
+    	waitressId = orders.addLongProperty("waitressId").getProperty();
+    	orders.addToOne(employee, waitressId);
+    	
+    	orders.addStringProperty("waitressName");
+    	
+    	customerId = orders.addLongProperty("customerId").getProperty();
+    	orders.addToOne(customer, customerId);
+    	
     	orders.addStringProperty("customerName");
         orders.addStringProperty("status");
+        orders.addStringProperty("uploadStatus");
     	
     	Entity orderItem = schema.addEntity("OrderItem");
     	
         orderItem.addIdProperty();
+        orderItem.addStringProperty("refId");
     	
         merchantId = orderItem.addLongProperty("merchantId").notNull().getProperty();
         orderItem.addToOne(merchant, merchantId);
@@ -327,6 +344,11 @@ public class PosDaoGenerator {
     	orderItem.addFloatProperty("quantity");
     	
     	orderItem.addStringProperty("remarks");
+    	
+    	employeeId = orderItem.addLongProperty("employeeId").getProperty();
+    	orderItem.addToOne(employee, employeeId);
+    	
+    	orderItem.addStringProperty("uploadStatus");
     	
     	ToMany orderToItem = orders.addToMany(orderItem, orderId);
         orderToItem.orderAsc(productName);
@@ -386,6 +408,33 @@ public class PosDaoGenerator {
     	
     	ToMany supplierToBills = supplier.addToMany(bills, supplierId);
     	supplierToBills.orderAsc(billsId);
+    	
+    	Entity cashflow = schema.addEntity("Cashflow");
+    	
+    	cashflow.addIdProperty().getProperty();
+    	cashflow.addStringProperty("refId");
+    	
+    	merchantId = cashflow.addLongProperty("merchantId").notNull().getProperty();
+    	cashflow.addToOne(merchant, merchantId);
+    	
+    	cashflow.addStringProperty("type");
+    	
+    	billsId = cashflow.addLongProperty("billId").getProperty();
+    	cashflow.addToOne(bills, billsId);
+    	
+    	transactionId = cashflow.addLongProperty("transactionId").getProperty();
+    	cashflow.addToOne(transactions, transactionId);
+    	
+    	cashflow.addFloatProperty("cashAmount");
+    	cashflow.addDateProperty("cashDate");
+    	cashflow.addStringProperty("remarks");
+    	
+    	cashflow.addStringProperty("status");
+    	cashflow.addStringProperty("uploadStatus");
+    	cashflow.addStringProperty("createBy");
+    	cashflow.addDateProperty("createDate");
+    	cashflow.addStringProperty("updateBy");
+    	cashflow.addDateProperty("updateDate");
     	
     	Entity inventory = schema.addEntity("Inventory");
     	

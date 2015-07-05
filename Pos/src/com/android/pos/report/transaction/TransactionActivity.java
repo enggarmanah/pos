@@ -223,7 +223,7 @@ public class TransactionActivity extends BaseActivity
 				
 				if (PrintUtil.isPrinterConnected()) {
 					try {
-						PrintUtil.print(mSelectedTransaction);
+						PrintUtil.printTransaction(mSelectedTransaction);
 					} catch (Exception e) {
 						showMessage(getString(R.string.printer_cant_print));
 					}

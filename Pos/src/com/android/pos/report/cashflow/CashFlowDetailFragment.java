@@ -9,68 +9,55 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
-import com.android.pos.dao.Bills;
-import com.android.pos.dao.BillsDaoService;
-import com.android.pos.dao.TransactionsDaoService;
+import com.android.pos.dao.CashflowDaoService;
 import com.android.pos.model.CashFlowMonthBean;
+import com.android.pos.model.CashflowBean;
 import com.android.pos.util.CommonUtil;
 
-public class CashFlowDetailFragment extends BaseFragment 
-	implements CashFlowDetailArrayAdapter.ItemActionListener {
+public class CashFlowDetailFragment extends BaseFragment {
 	
 	private ImageButton mBackButton;
 	
 	private TextView mDateText;
-	
-	private TextView mTotalAmountText;
-	private TextView mTaxAmountText;
-	private TextView mServiceChargeAmountText;
-	
-	private TextView mTotalBillsText;
 	private TextView mTotalText;
 	
-	private LinearLayout mTaxPanel;
-	private LinearLayout mServiceChargePanel;
-	
-	private ListView mBillsList;
+	private ListView mCashflowList;
 
 	private CashFlowMonthBean mCashFlowMonth;
-	private List<Bills> mBills;
+	private List<CashflowBean> mCashflows;
 	
 	private CashFlowActionListener mActionListener;
 	
 	private CashFlowDetailArrayAdapter mAdapter;
 	
-	private BillsDaoService mBillsDaoService = new BillsDaoService();
-	private TransactionsDaoService mTransactionsDaoService = new TransactionsDaoService();
+	private CashflowDaoService mCashflowDaoService = new CashflowDaoService();
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		View view = inflater.inflate(R.layout.report_cashflow_detail_fragment, container, false);
 		
-		if (mBills == null) {
-			mBills = new ArrayList<Bills>();
+		if (mCashflows == null) {
+			mCashflows = new ArrayList<CashflowBean>();
 		} 
 		
-		mAdapter = new CashFlowDetailArrayAdapter(getActivity(), mBills, this);
+		mAdapter = new CashFlowDetailArrayAdapter(getActivity(), mCashflows);
 		
 		return view;
 	}
 	
 	private void initViewVariables() {
 		
-		mBillsList = (ListView) getView().findViewById(R.id.billsList);
+		mCashflowList = (ListView) getView().findViewById(R.id.billsList);
 
-		mBillsList.setAdapter(mAdapter);
-		mBillsList.setItemsCanFocus(true);
-		mBillsList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);	
+		mCashflowList.setAdapter(mAdapter);
+		mCashflowList.setItemsCanFocus(true);
+		mCashflowList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);	
 		
 		mBackButton = (ImageButton) getView().findViewById(R.id.backButton);
 		mBackButton.setOnClickListener(getBackButtonOnClickListener());
@@ -84,15 +71,6 @@ public class CashFlowDetailFragment extends BaseFragment
 		}
 		
 		mDateText = (TextView) getView().findViewById(R.id.dateText);
-		
-		mTotalAmountText = (TextView) getView().findViewById(R.id.totalAmountText);
-		mTaxAmountText = (TextView) getView().findViewById(R.id.taxAmountText);
-		mServiceChargeAmountText = (TextView) getView().findViewById(R.id.serviceChargeAmountText);
-		
-		mTaxPanel = (LinearLayout) getView().findViewById(R.id.taxPanel);
-		mServiceChargePanel = (LinearLayout) getView().findViewById(R.id.serviceChargePanel);
-		
-		mTotalBillsText = (TextView) getView().findViewById(R.id.totalBillsText);
 		mTotalText = (TextView) getView().findViewById(R.id.totalText);
 	}
 	
@@ -124,12 +102,12 @@ public class CashFlowDetailFragment extends BaseFragment
 		}
 	}
 	
-	private int getBillsTotalAmount(List<Bills> bills) {
+	private int getCashflowsTotalAmount(List<CashflowBean> cashflows) {
 		
 		int totalAmount = 0;
 		
-		for (Bills bill : bills) {
-			totalAmount += bill.getPayment();
+		for (CashflowBean cashflow : cashflows) {
+			totalAmount += cashflow.getCash_amount();
 		}
 		
 		return totalAmount;
@@ -149,48 +127,22 @@ public class CashFlowDetailFragment extends BaseFragment
 
 		mDateText.setText(CommonUtil.formatMonth(mCashFlowMonth.getMonth()));
 
-		List<Long> income = mTransactionsDaoService.getMonthIncome(mCashFlowMonth.getMonth());
+		mCashflows.clear();
 
-		Long totalAmount = income.get(0);
-		Long taxAmount = income.get(1);
-		Long serviceChargeAmount = income.get(2);
+		List<CashflowBean> cashflows = mCashflowDaoService.getCashFlowDays(mCashFlowMonth);
 
-		mTotalAmountText.setText(CommonUtil.formatCurrency(totalAmount));
-		mTaxAmountText.setText(CommonUtil.formatCurrency(taxAmount));
-		mServiceChargeAmountText.setText(CommonUtil.formatCurrency(serviceChargeAmount));
-		
-		if (taxAmount == 0) {
-			mTaxPanel.setVisibility(View.GONE);
-		} else {
-			mTaxPanel.setVisibility(View.VISIBLE);
-		}
-		
-		if (serviceChargeAmount == 0) {
-			mServiceChargePanel.setVisibility(View.GONE);
-		} else {
-			mServiceChargePanel.setVisibility(View.VISIBLE);
-		}
-
-		mBills.clear();
-
-		List<Bills> bills = mBillsDaoService.getBills(mCashFlowMonth.getMonth(), 0);
-
-		mBills.addAll(bills);
+		mCashflows.addAll(cashflows);
 
 		mAdapter.notifyDataSetChanged();
 
-		Integer billsTotalAmount = getBillsTotalAmount(bills);
+		Integer cashflowsTotalAmount = getCashflowsTotalAmount(cashflows);
 
-		mTotalBillsText.setText(CommonUtil.formatCurrency(billsTotalAmount));
+		mTotalText.setText(CommonUtil.formatCurrency(cashflowsTotalAmount));
 
-		Long grandTotal = totalAmount - taxAmount - serviceChargeAmount - billsTotalAmount;
-
-		mTotalText.setText(CommonUtil.formatCurrency(grandTotal));
-
-		if (grandTotal < 0) {
+		if (cashflowsTotalAmount < 0) {
 			mTotalText.setTextColor(getActivity().getResources().getColor(R.color.text_red));
 		} else {
-			mTotalText.setTextColor(getActivity().getResources().getColor(R.color.text_blue));
+			mTotalText.setTextColor(getActivity().getResources().getColor(R.color.section_header_text));
 		}
 
 		getView().setVisibility(View.VISIBLE);
@@ -208,11 +160,5 @@ public class CashFlowDetailFragment extends BaseFragment
 				mActionListener.onBackPressed();
 			}
 		};
-	}
-	
-	@Override
-	public void onBillSelected(Bills bill) {
-		
-		mActionListener.onBillSelected(bill);
 	}
 }

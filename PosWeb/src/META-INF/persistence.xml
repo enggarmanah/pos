@@ -6,13 +6,14 @@
 		
 		<provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
 		
-		<class>com.app.posweb.server.model.Device</class>
+		<class>com.app.posweb.server.model.Sync</class>
 		<class>com.app.posweb.server.model.Merchant</class>
 		<class>com.app.posweb.server.model.ProductGroup</class>
 		<class>com.app.posweb.server.model.Product</class>
 		<class>com.app.posweb.server.model.Discount</class>
 		<class>com.app.posweb.server.model.Employee</class>
 		<class>com.app.posweb.server.model.Customer</class>
+		<class>com.app.posweb.server.model.Cashflow</class>
 		<class>com.app.posweb.server.model.User</class>
 		<class>com.app.posweb.server.model.Transactions</class>
 		<class>com.app.posweb.server.model.TransactionItem</class>

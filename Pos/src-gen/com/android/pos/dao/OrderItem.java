@@ -14,6 +14,7 @@ import de.greenrobot.dao.DaoException;
 public class OrderItem implements Serializable {
 
     private Long id;
+    private String refId;
     private long merchantId;
     private long orderId;
     private String orderNo;
@@ -21,6 +22,8 @@ public class OrderItem implements Serializable {
     private String productName;
     private Float quantity;
     private String remarks;
+    private Long employeeId;
+    private String uploadStatus;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -37,6 +40,9 @@ public class OrderItem implements Serializable {
     private Product product;
     private Long product__resolvedKey;
 
+    private Employee employee;
+    private Long employee__resolvedKey;
+
 
     public OrderItem() {
     }
@@ -45,8 +51,9 @@ public class OrderItem implements Serializable {
         this.id = id;
     }
 
-    public OrderItem(Long id, long merchantId, long orderId, String orderNo, long productId, String productName, Float quantity, String remarks) {
+    public OrderItem(Long id, String refId, long merchantId, long orderId, String orderNo, long productId, String productName, Float quantity, String remarks, Long employeeId, String uploadStatus) {
         this.id = id;
+        this.refId = refId;
         this.merchantId = merchantId;
         this.orderId = orderId;
         this.orderNo = orderNo;
@@ -54,6 +61,8 @@ public class OrderItem implements Serializable {
         this.productName = productName;
         this.quantity = quantity;
         this.remarks = remarks;
+        this.employeeId = employeeId;
+        this.uploadStatus = uploadStatus;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -68,6 +77,14 @@ public class OrderItem implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public long getMerchantId() {
@@ -124,6 +141,22 @@ public class OrderItem implements Serializable {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
     /** To-one relationship, resolved on first access. */
@@ -207,6 +240,31 @@ public class OrderItem implements Serializable {
             this.product = product;
             productId = product.getId();
             product__resolvedKey = productId;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Employee getEmployee() {
+        Long __key = this.employeeId;
+        if (employee__resolvedKey == null || !employee__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            EmployeeDao targetDao = daoSession.getEmployeeDao();
+            Employee employeeNew = targetDao.load(__key);
+            synchronized (this) {
+                employee = employeeNew;
+            	employee__resolvedKey = __key;
+            }
+        }
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        synchronized (this) {
+            this.employee = employee;
+            employeeId = employee == null ? null : employee.getId();
+            employee__resolvedKey = employeeId;
         }
     }
 

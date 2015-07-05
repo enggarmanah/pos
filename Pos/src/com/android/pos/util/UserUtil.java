@@ -20,7 +20,7 @@ public class UserUtil {
 	
 	public static User getUser() {
 		
-		if (mUser == null && Config.isDevelopment()) {
+		if (mUser == null && Config.isDebug()) {
 			
 			DbUtil.switchDb(MerchantUtil.getMerchantId());
 			

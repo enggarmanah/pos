@@ -49,10 +49,12 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         public final static Property PaymentType = new Property(18, String.class, "paymentType", false, "PAYMENT_TYPE");
         public final static Property CashierId = new Property(19, long.class, "cashierId", false, "CASHIER_ID");
         public final static Property CashierName = new Property(20, String.class, "cashierName", false, "CASHIER_NAME");
-        public final static Property CustomerId = new Property(21, Long.class, "customerId", false, "CUSTOMER_ID");
-        public final static Property CustomerName = new Property(22, String.class, "customerName", false, "CUSTOMER_NAME");
-        public final static Property UploadStatus = new Property(23, String.class, "uploadStatus", false, "UPLOAD_STATUS");
-        public final static Property Status = new Property(24, String.class, "status", false, "STATUS");
+        public final static Property WaitressId = new Property(21, Long.class, "waitressId", false, "WAITRESS_ID");
+        public final static Property WaitressName = new Property(22, String.class, "waitressName", false, "WAITRESS_NAME");
+        public final static Property CustomerId = new Property(23, Long.class, "customerId", false, "CUSTOMER_ID");
+        public final static Property CustomerName = new Property(24, String.class, "customerName", false, "CUSTOMER_NAME");
+        public final static Property UploadStatus = new Property(25, String.class, "uploadStatus", false, "UPLOAD_STATUS");
+        public final static Property Status = new Property(26, String.class, "status", false, "STATUS");
     };
 
     private DaoSession daoSession;
@@ -94,10 +96,12 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
                 "'PAYMENT_TYPE' TEXT," + // 18: paymentType
                 "'CASHIER_ID' INTEGER NOT NULL ," + // 19: cashierId
                 "'CASHIER_NAME' TEXT," + // 20: cashierName
-                "'CUSTOMER_ID' INTEGER," + // 21: customerId
-                "'CUSTOMER_NAME' TEXT," + // 22: customerName
-                "'UPLOAD_STATUS' TEXT," + // 23: uploadStatus
-                "'STATUS' TEXT);"); // 24: status
+                "'WAITRESS_ID' INTEGER," + // 21: waitressId
+                "'WAITRESS_NAME' TEXT," + // 22: waitressName
+                "'CUSTOMER_ID' INTEGER," + // 23: customerId
+                "'CUSTOMER_NAME' TEXT," + // 24: customerName
+                "'UPLOAD_STATUS' TEXT," + // 25: uploadStatus
+                "'STATUS' TEXT);"); // 26: status
     }
 
     /** Drops the underlying database table. */
@@ -204,24 +208,34 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
             stmt.bindString(21, cashierName);
         }
  
+        Long waitressId = entity.getWaitressId();
+        if (waitressId != null) {
+            stmt.bindLong(22, waitressId);
+        }
+ 
+        String waitressName = entity.getWaitressName();
+        if (waitressName != null) {
+            stmt.bindString(23, waitressName);
+        }
+ 
         Long customerId = entity.getCustomerId();
         if (customerId != null) {
-            stmt.bindLong(22, customerId);
+            stmt.bindLong(24, customerId);
         }
  
         String customerName = entity.getCustomerName();
         if (customerName != null) {
-            stmt.bindString(23, customerName);
+            stmt.bindString(25, customerName);
         }
  
         String uploadStatus = entity.getUploadStatus();
         if (uploadStatus != null) {
-            stmt.bindString(24, uploadStatus);
+            stmt.bindString(26, uploadStatus);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(25, status);
+            stmt.bindString(27, status);
         }
     }
 
@@ -262,10 +276,12 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
             cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // paymentType
             cursor.getLong(offset + 19), // cashierId
             cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // cashierName
-            cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21), // customerId
-            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // customerName
-            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // uploadStatus
-            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24) // status
+            cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21), // waitressId
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // waitressName
+            cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23), // customerId
+            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // customerName
+            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // uploadStatus
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26) // status
         );
         return entity;
     }
@@ -294,10 +310,12 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
         entity.setPaymentType(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
         entity.setCashierId(cursor.getLong(offset + 19));
         entity.setCashierName(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
-        entity.setCustomerId(cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21));
-        entity.setCustomerName(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
-        entity.setUploadStatus(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
-        entity.setStatus(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
+        entity.setWaitressId(cursor.isNull(offset + 21) ? null : cursor.getLong(offset + 21));
+        entity.setWaitressName(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setCustomerId(cursor.isNull(offset + 23) ? null : cursor.getLong(offset + 23));
+        entity.setCustomerName(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
+        entity.setUploadStatus(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
+        entity.setStatus(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
      }
     
     /** @inheritdoc */
@@ -364,11 +382,14 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
             builder.append(',');
             SqlUtils.appendColumns(builder, "T1", daoSession.getUserDao().getAllColumns());
             builder.append(',');
-            SqlUtils.appendColumns(builder, "T2", daoSession.getCustomerDao().getAllColumns());
+            SqlUtils.appendColumns(builder, "T2", daoSession.getEmployeeDao().getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T3", daoSession.getCustomerDao().getAllColumns());
             builder.append(" FROM TRANSACTIONS T");
             builder.append(" LEFT JOIN MERCHANT T0 ON T.'MERCHANT_ID'=T0.'_id'");
             builder.append(" LEFT JOIN USER T1 ON T.'CASHIER_ID'=T1.'_id'");
-            builder.append(" LEFT JOIN CUSTOMER T2 ON T.'CUSTOMER_ID'=T2.'_id'");
+            builder.append(" LEFT JOIN EMPLOYEE T2 ON T.'WAITRESS_ID'=T2.'_id'");
+            builder.append(" LEFT JOIN CUSTOMER T3 ON T.'CUSTOMER_ID'=T3.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }
@@ -390,6 +411,10 @@ public class TransactionsDao extends AbstractDao<Transactions, Long> {
             entity.setUser(user);
         }
         offset += daoSession.getUserDao().getAllColumns().length;
+
+        Employee employee = loadCurrentOther(daoSession.getEmployeeDao(), cursor, offset);
+        entity.setEmployee(employee);
+        offset += daoSession.getEmployeeDao().getAllColumns().length;
 
         Customer customer = loadCurrentOther(daoSession.getCustomerDao(), cursor, offset);
         entity.setCustomer(customer);

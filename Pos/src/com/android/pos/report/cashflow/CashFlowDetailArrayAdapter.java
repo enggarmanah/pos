@@ -2,8 +2,16 @@ package com.android.pos.report.cashflow;
 
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Bills;
+import com.android.pos.dao.BillsDaoService;
+import com.android.pos.dao.CustomerDaoService;
+import com.android.pos.dao.SupplierDaoService;
+import com.android.pos.dao.Transactions;
+import com.android.pos.dao.TransactionsDaoService;
+import com.android.pos.model.CashflowBean;
+import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -11,69 +19,73 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CashFlowDetailArrayAdapter extends ArrayAdapter<Bills> {
-
-	private Context context;
-	private List<Bills> bills;
-	private ItemActionListener mCallback;
+public class CashFlowDetailArrayAdapter extends ArrayAdapter<CashflowBean> {
 	
-	public interface ItemActionListener {
-
-		public void onBillSelected(Bills bill);
-	}
+	private Context mContext;
+	
+	BillsDaoService billDaoService = new BillsDaoService();
+	TransactionsDaoService transactionDaoService = new TransactionsDaoService();
+	SupplierDaoService supplierDaoService = new SupplierDaoService();
+	CustomerDaoService customerDaoService = new CustomerDaoService();
+	
+	List<CashflowBean> mCashflows;
 	
 	class ViewHolder {
 		
-		TextView itemText;
+		ImageView flowImage;
+		TextView typeText;
 		TextView remarksText;
-		TextView billDateText;
-		TextView billAmountText;
-		TextView supplierText;
+		TextView cashDateText;
+		TextView cashAmountText;
+		TextView entityText;
 	}
-
-	public CashFlowDetailArrayAdapter(Context context, List<Bills> productStatistics, ItemActionListener listener) {
-
-		super(context, R.layout.bills_list_item, productStatistics);
+	
+	public CashFlowDetailArrayAdapter(Context context, List<CashflowBean> cashflows) {
 		
-		this.context = context;
-		this.bills = productStatistics;
-		this.mCallback = listener;
+		super(context, R.layout.bills_list_item, cashflows);
+
+		mContext = context;
+		mCashflows = cashflows;
 	}
 	
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final Bills bill = bills.get(position);
+		final CashflowBean cashflow = mCashflows.get(position);
 		
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView = convertView;
 		
-		TextView nameText = null;
+		ImageView flowImage = null;
+		TextView typeText = null;
 		TextView remarksText = null;
-		TextView billAmountText = null;
-		TextView billDateText = null;
-		TextView supplierText = null;
+		TextView cashAmountText = null;
+		TextView cashDateText = null;
+		TextView entityText = null;
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.bills_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.cashflow_list_item, parent, false);
 			
-			nameText = (TextView) rowView.findViewById(R.id.nameText);
+			flowImage = (ImageView) rowView.findViewById(R.id.flowImage);
+			typeText = (TextView) rowView.findViewById(R.id.typeText);
 			remarksText = (TextView) rowView.findViewById(R.id.remarksText);
-			billAmountText = (TextView) rowView.findViewById(R.id.billAmountText);
-			billDateText = (TextView) rowView.findViewById(R.id.billDate);
-			supplierText = (TextView) rowView.findViewById(R.id.supplierText);
+			cashAmountText = (TextView) rowView.findViewById(R.id.cashAmountText);
+			cashDateText = (TextView) rowView.findViewById(R.id.cashDateText);
+			entityText = (TextView) rowView.findViewById(R.id.entityText);
 			
 			ViewHolder viewHolder = new ViewHolder();
 			
-			viewHolder.itemText = nameText;
+			viewHolder.flowImage = flowImage;
+			viewHolder.typeText = typeText;
 			viewHolder.remarksText = remarksText;
-			viewHolder.billAmountText = billAmountText;
-			viewHolder.billDateText = billDateText;
-			viewHolder.supplierText = supplierText;
+			viewHolder.cashAmountText = cashAmountText;
+			viewHolder.cashDateText = cashDateText;
+			viewHolder.entityText = entityText;
 
 			rowView.setTag(viewHolder);
 
@@ -81,51 +93,96 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<Bills> {
 
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
 			
-			nameText = viewHolder.itemText;
+			flowImage = viewHolder.flowImage;
+			typeText = viewHolder.typeText;
 			remarksText = viewHolder.remarksText;
-			billAmountText = viewHolder.billAmountText;
-			billDateText = viewHolder.billDateText;
-			supplierText = viewHolder.supplierText;
+			cashAmountText = viewHolder.cashAmountText;
+			cashDateText = viewHolder.cashDateText;
+			entityText = viewHolder.entityText;
 		}
 			
-		String remarks = bill.getRemarks();
-	    String billReferenceNo = bill.getBillReferenceNo();
+		int padding = flowImage.getPaddingLeft();
 		
+		flowImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_arrow_back_black));
+		flowImage.setBackground(mContext.getResources().getDrawable(R.drawable.bg_flow_out));
 		
-		if (CommonUtil.isEmpty(billReferenceNo)) {
-	    	billReferenceNo = context.getString(R.string.bill_no_receipt);
-		}
-		
-	    nameText.setText(billReferenceNo);
-	    billDateText.setText(CommonUtil.formatDate(bill.getBillDate()));
-		remarksText.setText(remarks);
-		
-		float payment = CommonUtil.getNvlFloat(bill.getPayment());
-		float billAmount = CommonUtil.getNvlFloat(bill.getBillAmount());
-		
-		if (payment < billAmount) {
-			billAmountText.setText(CommonUtil.formatCurrency(billAmount - payment));
-			billAmountText.setTextColor(context.getResources().getColor(R.color.text_red));
-		} else {
-			billAmountText.setText(CommonUtil.formatCurrency(payment));
-			billAmountText.setTextColor(context.getResources().getColor(R.color.text_medium));
-		}
-		
-		if (!CommonUtil.isEmpty(bill.getSupplierName())) {
-			supplierText.setText(CommonUtil.formatNumber(bill.getSupplierName()));
-			supplierText.setVisibility(View.VISIBLE);
-		} else {
-			supplierText.setVisibility(View.GONE);
-		}
-		
-		rowView.setOnClickListener(new View.OnClickListener() {
+		if (Constant.CASHFLOW_TYPE_CAPITAL_IN.equals(cashflow.getType()) ||
+			Constant.CASHFLOW_TYPE_BANK_WITHDRAWAL.equals(cashflow.getType()) ||
+			Constant.CASHFLOW_TYPE_INVC_PAYMENT.equals(cashflow.getType()) ||
+			cashflow.getType() == null) {
 			
-			@Override
-			public void onClick(View v) {
-				
-				mCallback.onBillSelected(bill);
+			flowImage.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_arrow_forward_black));
+			flowImage.setBackground(mContext.getResources().getDrawable(R.drawable.bg_flow_in));
+		}
+		
+	    flowImage.setPadding(padding, padding, padding, padding);
+		
+	    if (cashflow.getType() != null) {
+	    	typeText.setText(CodeUtil.getCashflowTypeLabel(cashflow.getType()));
+	    } else {
+	    	typeText.setText(mContext.getString(R.string.transaction));
+	    }
+	    
+	    cashAmountText.setText(CommonUtil.formatCurrency(Math.abs(cashflow.getCash_amount())));
+		cashDateText.setText(CommonUtil.formatDate(cashflow.getCash_date()));
+		
+		String billReferenceNo = null;
+		String supplierName = null;
+		
+		if (cashflow.getBill_id() != null) {
+			
+			Bills bill = billDaoService.getBills(cashflow.getBill_id());
+			
+			billReferenceNo = bill.getBillReferenceNo();
+			supplierName = supplierDaoService.getSupplier(bill.getSupplierId()).getName();
+		}
+		
+		String transactionNo = null;
+		String customerName = null;
+		
+		if (cashflow.getTransaction_id() != null) {
+			
+			Transactions transaction = transactionDaoService.getTransactions(cashflow.getTransaction_id());
+			
+			transactionNo = transaction.getTransactionNo();
+			customerName = customerDaoService.getCustomer(transaction.getCustomerId()).getName();
+		}
+		
+		String remarks = Constant.EMPTY_STRING;
+		
+		if (!CommonUtil.isEmpty(billReferenceNo)) {
+			remarks = billReferenceNo;
+			
+		} else if (!CommonUtil.isEmpty(transactionNo)) {
+			remarks = transactionNo;
+		}
+		
+		if (!CommonUtil.isEmpty(cashflow.getRemarks())) {
+			
+			if (!CommonUtil.isEmpty(remarks)) {
+				remarks += ". ";
 			}
-		});
+			remarks += cashflow.getRemarks();
+		}
+		
+		if (!CommonUtil.isEmpty(remarks)) {
+			remarksText.setText(remarks);
+			remarksText.setVisibility(View.VISIBLE);
+		} else {
+			remarksText.setVisibility(View.GONE);
+		}
+		
+		if (!CommonUtil.isEmpty(supplierName)) {
+			entityText.setText(supplierName);
+			entityText.setVisibility(View.VISIBLE);
+		
+		} else if (!CommonUtil.isEmpty(supplierName)){
+			entityText.setText(customerName);
+			entityText.setVisibility(View.VISIBLE);
+		
+		} else {
+			entityText.setVisibility(View.GONE);
+		}
 		
 		return rowView;
 	}

@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.app.posweb.server.dao.BillDao;
+import com.app.posweb.server.dao.CashflowDao;
 import com.app.posweb.server.dao.CustomerDao;
-import com.app.posweb.server.dao.DeviceDao;
+import com.app.posweb.server.dao.OrderItemDao;
+import com.app.posweb.server.dao.OrdersDao;
+import com.app.posweb.server.dao.SyncDao;
 import com.app.posweb.server.dao.DiscountDao;
 import com.app.posweb.server.dao.EmployeeDao;
 import com.app.posweb.server.dao.InventoryDao;
@@ -19,7 +22,7 @@ import com.app.posweb.server.dao.TransactionItemDao;
 import com.app.posweb.server.dao.TransactionsDao;
 import com.app.posweb.server.dao.UserAccessDao;
 import com.app.posweb.server.dao.UserDao;
-import com.app.posweb.server.model.Device;
+import com.app.posweb.server.model.Sync;
 import com.app.posweb.server.model.SyncRequest;
 import com.app.posweb.server.model.SyncResponse;
 import com.app.posweb.shared.Constant;
@@ -29,26 +32,26 @@ public class GetLastSyncJsonServlet extends BaseJsonServlet {
 	
 	protected SyncResponse processRequest(SyncRequest request) throws IOException {
 		
-		Device device = request.getDevice();
+		Sync sync = request.getSync();
     	
-		DeviceDao deviceDao = new DeviceDao();
+		SyncDao syncDao = new SyncDao();
         
-        Device bean = deviceDao.getDevice(device);
+        Sync bean = syncDao.getSync(sync);
         
         if (bean == null) {
-        	device = deviceDao.addDevice(device);
+        	sync = syncDao.addSync(sync);
         } else {
-        	device = bean;
+        	sync = bean;
         }
         
         if (request.getLast_sync_date() == null) {
-        	request.setLast_sync_date(device.getLast_sync_date());
+        	request.setLast_sync_date(sync.getLast_sync_date());
         }
         
         SyncResponse response = new SyncResponse();         
         
         response.setRespCode(SyncResponse.SUCCESS);
-        response.setDevice(device);
+        response.setSync(sync);
         
         List<String> taskHasUpdates = new ArrayList<String>();
         
@@ -110,7 +113,7 @@ public class GetLastSyncJsonServlet extends BaseJsonServlet {
         			
         			taskHasUpdates.add(task);
         		}
-        	} else if (Constant.TASK_GET_TRANSACTIONS.equals(task)) {
+        	} else if (Constant.TASK_GET_TRANSACTION.equals(task)) {
         		
         		TransactionsDao transactionDao = new TransactionsDao();
         		
@@ -123,6 +126,22 @@ public class GetLastSyncJsonServlet extends BaseJsonServlet {
         		TransactionItemDao transactionItemDao = new TransactionItemDao();
         		
         		if (transactionItemDao.hasUpdate(request)) {
+        			
+        			taskHasUpdates.add(task);
+        		}
+        	} else if (Constant.TASK_GET_ORDER.equals(task)) {
+        		
+        		OrdersDao orderDao = new OrdersDao();
+        		
+        		if (orderDao.hasUpdate(request)) {
+        			
+        			taskHasUpdates.add(task);
+        		}
+        	} else if (Constant.TASK_GET_ORDER_ITEM.equals(task)) {
+        		
+        		OrderItemDao orderItemDao = new OrderItemDao();
+        		
+        		if (orderItemDao.hasUpdate(request)) {
         			
         			taskHasUpdates.add(task);
         		}
@@ -139,6 +158,14 @@ public class GetLastSyncJsonServlet extends BaseJsonServlet {
         		BillDao billDao = new BillDao();
         		
         		if (billDao.hasUpdate(request)) {
+        			
+        			taskHasUpdates.add(task);
+        		}
+        	} else if (Constant.TASK_GET_CASHFLOW.equals(task)) {
+        		
+        		CashflowDao cashflowDao = new CashflowDao();
+        		
+        		if (cashflowDao.hasUpdate(request)) {
         			
         			taskHasUpdates.add(task);
         		}

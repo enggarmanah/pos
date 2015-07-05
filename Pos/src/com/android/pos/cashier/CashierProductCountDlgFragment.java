@@ -6,7 +6,6 @@ import java.util.List;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Employee;
-import com.android.pos.dao.EmployeeDaoService;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
 import com.android.pos.model.PriceBean;
@@ -33,19 +32,20 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	public interface ProductActionListener {
 		
 		public void onProductQuantitySelected(Product product, Float price, Employee personInCharge, Float quantity, String remarks);
+		
+		public void onSelectEmployee();
 	}
 	
 	Spinner mPriceSp;
-	Spinner mPersonInChargeSp;
 	
 	TextView mProductText;
+	TextView mPersonInChargeText;
 	TextView mQuantityText;
 	
 	LinearLayout mProductCountPanel;
 	LinearLayout mNumberBtnPanel;
 	
 	TextView mRemarksBtn;
-	TextView mRemarksDivider;
 	EditText mRemarksText;
 	
 	Button number0Btn;
@@ -74,15 +74,12 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	ProductActionListener mActionListener;
 	
 	CashierProductCountPriceSpinnerArrayAdapter mPriceArrayAdapter;
-	CashierProductCountPicSpinnerArrayAdapter mPicArrayAdapter;
 	
 	private static String PRODUCT = "PRODUCT";
 	private static String PRICE = "PRICE";
 	private static String PERSON_IN_CHARGE = "PERSON_IN_CHARGE";
 	private static String REMARKS = "REMARKS";
 	private static String QUANTITY = "QUANTITY";
-	
-	private EmployeeDaoService mEmployeeDaoService = new EmployeeDaoService();
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,13 +102,25 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		
-		mQuantity = Float.valueOf(mQuantityText.getText().toString());
+		saveDataFromView();
 		
 		outState.putSerializable(PRODUCT, mProduct);
 		outState.putSerializable(PRICE, mPrice);
 		outState.putSerializable(PERSON_IN_CHARGE, mPersonInCharge);
 		outState.putSerializable(REMARKS, mRemarks);
 		outState.putSerializable(QUANTITY, mQuantity);
+	}
+	
+	private void saveDataFromView() {
+		
+		mQuantity = Float.valueOf(mQuantityText.getText().toString());
+	}
+	
+	public void setEmployee(Employee employee) {
+		
+		mPersonInCharge = employee;
+		
+		refreshDisplay();
 	}
 	
 	@Override
@@ -128,12 +137,11 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		super.onStart();
 		
 		mProductText = (TextView) getView().findViewById(R.id.productText);
+		mPersonInChargeText = (TextView) getView().findViewById(R.id.personInChargeText);
 		mPriceSp = (Spinner) getView().findViewById(R.id.priceSp);
-		mPersonInChargeSp = (Spinner) getView().findViewById(R.id.personInChargeSp);
 		mQuantityText = (TextView) getView().findViewById(R.id.countText);
 		
 		mRemarksBtn = (TextView) getView().findViewById(R.id.remarksBtn);
-		mRemarksDivider = (TextView) getView().findViewById(R.id.remarksDivider);
 		mRemarksText = (EditText) getView().findViewById(R.id.remarksText);
 		
 		mNumberBtnPanel = (LinearLayout) getView().findViewById(R.id.numberBtnPanel);
@@ -156,6 +164,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		mOkBtn = (Button) getView().findViewById(R.id.okBtn);
 		mCancelBtn = (Button) getView().findViewById(R.id.cancelBtn);
 		
+		mPersonInChargeText.setOnClickListener(getPersonInChargeTextOnClickListener());
 		mRemarksBtn.setOnClickListener(getRemarksBtnOnClickListener());
 		
 		number0Btn.setOnClickListener(getNumberBtnOnClickListener("0"));
@@ -218,10 +227,15 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		mRemarksText.setText(mRemarks);
 		mQuantityText.setText(CommonUtil.formatNumber(mQuantity));
 		
+		if (mPersonInCharge != null) {
+			mPersonInChargeText.setText(mPersonInCharge.getName());
+		} else {
+			mPersonInChargeText.setText(getString(R.string.track_employee));
+		}
+		
 		displayRemarks(!CommonUtil.isEmpty(mRemarks));
 		
 		PriceBean[] prices = getPrices();
-		Employee[] employees = getEmployees();
 		
 		mPriceArrayAdapter = new CashierProductCountPriceSpinnerArrayAdapter(mPriceSp, getActivity(), prices);
 		mPriceSp.setAdapter(mPriceArrayAdapter);
@@ -233,18 +247,10 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			mPriceSp.setSelection(getPriceSelectedIndex(prices, mPrice));
 		}
 			
-		mPicArrayAdapter = new CashierProductCountPicSpinnerArrayAdapter(mPersonInChargeSp, getActivity(), getEmployees());
-		mPersonInChargeSp.setAdapter(mPicArrayAdapter);
-		
 		if (Constant.STATUS_YES.equals(mProduct.getPicRequired())) {
-			
-			if (employees != null && employees.length > 0) {
-				mPersonInChargeSp.setVisibility(View.VISIBLE);
-			} else {
-				mPersonInChargeSp.setVisibility(View.GONE);
-			}
+			mPersonInChargeText.setVisibility(View.VISIBLE);
 		} else {
-			mPersonInChargeSp.setVisibility(View.GONE);
+			mPersonInChargeText.setVisibility(View.GONE);
 		}
 		
 		if (Constant.QUANTITY_TYPE_METER.equals(mProduct.getQuantityType()) ||
@@ -255,9 +261,6 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		} else {
 			mActionCBtn.setOnClickListener(getClearBtnOnClickListener());
 		}
-		
-		
-		mPersonInChargeSp.setSelection(getPicSelectedIndex(employees, mPersonInCharge));
 	}
 	
 	private int getPriceSelectedIndex(PriceBean[] prices, Float selectedPrice) {
@@ -277,30 +280,6 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		return index;
 	}
 		
-	private int getPicSelectedIndex(Employee[] employees, Employee selectedEmployee) {
-		
-		int index = 0;
-		
-		if (employees != null && selectedEmployee != null) {
-			
-			for (Employee employee : employees) {
-				if (employee.getId() == selectedEmployee.getId()) {
-					break;
-				}
-				index++;
-			}
-		}
-		
-		return index;
-	}
-	
-	private Employee[] getEmployees() {
-
-		List<Employee> list = mEmployeeDaoService.getEmployees(Constant.EMPTY_STRING, 0);
-		
-		return list.toArray(new Employee[list.size()]);
-	}
-	
 	private PriceBean[] getPrices() {
 		
 		List<PriceBean> list = new ArrayList<PriceBean>();
@@ -410,6 +389,19 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		};
 	}
 	
+	private View.OnClickListener getPersonInChargeTextOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				saveDataFromView();
+				mActionListener.onSelectEmployee();
+			}
+		};
+	}
+	
 	private View.OnClickListener getOkBtnOnClickListener() {
 		
 		return new View.OnClickListener() {
@@ -417,16 +409,10 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				Employee personInCharge = null;
-				
-				if (Constant.STATUS_YES.equals(mProduct.getPicRequired())) {
-					personInCharge = (Employee) mPersonInChargeSp.getSelectedItem();
-				}
-				
 				Float price = ((PriceBean) mPriceSp.getSelectedItem()).getValue();
 				
 				mQuantity = CommonUtil.parseFloatNumber(mQuantityText.getText().toString());
-				mActionListener.onProductQuantitySelected(mProduct, price, personInCharge, mQuantity, mRemarksText.getText().toString());
+				mActionListener.onProductQuantitySelected(mProduct, price, mPersonInCharge, mQuantity, mRemarksText.getText().toString());
 				dismiss();
 			}
 		};
@@ -479,7 +465,6 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 		
 		if (isDisplayed) {
 			
-			mRemarksDivider.setVisibility(View.VISIBLE);
 			mRemarksText.setVisibility(View.VISIBLE);
 			mRemarksText.requestFocus();
 			
@@ -488,7 +473,6 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			
 		} else {
 			
-			mRemarksDivider.setVisibility(View.GONE);
 			mRemarksText.setVisibility(View.GONE);
 		}
 	}

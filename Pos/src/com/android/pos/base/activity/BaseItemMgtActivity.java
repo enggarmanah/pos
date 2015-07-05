@@ -652,6 +652,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	
 	public void onSelectBill(boolean isMandatory) {}
 	
+	public void onSelectTransaction(boolean isMandatory) {}
+	
 	@Override
 	protected void onAsyncTaskCompleted() {
 		

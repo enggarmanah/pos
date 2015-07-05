@@ -134,6 +134,12 @@ public class OrderDetailFragment extends BaseFragment implements OrderItemArrayA
 				mSelectedOrder = new Orders();
 				mSelectedOrder.setOrderType(orderType);
 				mSelectedOrder.setOrderReference(orderReference);
+				mSelectedOrder.setWaitressId(order.getWaitressId());
+				mSelectedOrder.setWaitressName(order.getWaitressName());
+				mSelectedOrder.setEmployee(order.getEmployee());
+				mSelectedOrder.setCustomerId(order.getCustomerId());
+				mSelectedOrder.setCustomerName(order.getCustomerName());
+				mSelectedOrder.setCustomer(order.getCustomer());
 			}
 			
 			mSelectedOrders.put(order.getId(), true);

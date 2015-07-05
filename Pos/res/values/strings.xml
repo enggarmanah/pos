@@ -197,6 +197,12 @@
     <string name="field_printer_line_size_fl">T</string>
     <string name="field_discount_type">Tipe Diskon</string>
     <string name="field_discount_type_fl">T</string>
+    <string name="field_invoice_fl">N</string>
+    <string name="field_invoice">No. Invoice</string>
+    <string name="field_customer_fl">P</string>
+    <string name="field_customer">Pelanggan</string>
+    <string name="field_amount_fl">J</string>
+    <string name="field_amount">Jumlah</string>
     
     <string name="favorite_customer_title">Pelanggan</string>
     <string name="favorite_customer_quantity">Jumlah</string>
@@ -275,6 +281,7 @@
     
     <string name="reservation_no">No. Meja</string>
     
+    <string name="order_waitress">Pramusaji</string>
     <string name="order_info">Pemesan</string>
     <string name="order_type">Tipe Order</string>
     <string name="order_total">Jumlah</string>
@@ -306,6 +313,10 @@
     <string name="select_customer">Pilih Pelanggan</string>
     <string name="track_customer">Catat Pelanggan</string>
     <string name="no_customer">Tanpa Pelanggan</string>
+    <string name="search_employee">Cari Pegawai</string>
+    <string name="select_employee">Pilih Pegawai</string>
+    <string name="track_employee">Catat Pegawai</string>
+    <string name="no_employee">Tanpa Pegawai</string>
     <string name="customer_name">Nama Pelanggan</string>
     <string name="search_product">Cari Produk</string>
     <string name="select_product">Pilih Produk</string>
@@ -316,9 +327,14 @@
     <string name="search_bill">Cari Nota</string>
     <string name="select_bill">Pilih Nota</string>
     <string name="no_bill">Tanpa Nota</string>
+    <string name="search_transaction">Cari Piutang</string>
+    <string name="select_transaction">Pilih Piutang</string>
+    <string name="no_transaction">Tanpa Piutang</string>
+    <string name="waitress">Pramusaji</string>
     
     <string name="transaction">Transaksi</string>
     <string name="transaction_no">No. Transaksi</string>
+    <string name="transaction_date">Tgl. Transaksi</string>
     <string name="transaction_cashier">Kasir</string>
     <string name="transaction_list">Daftar Transaksi</string>
     <string name="transaction_recap">Rekap Transaksi</string>
@@ -333,6 +349,7 @@
     
     <string name="print_telephone">" Tlp. "</string>
     <string name="print_cashier">"Kasir : "</string>
+    <string name="print_waitress">"Pramusaji : "</string>
     <string name="print_order_type">"Tipe Order : "</string>
     <string name="print_table_no">"No. Meja : "</string>
     <string name="print_customer">"Pelanggan : "</string>
@@ -354,11 +371,11 @@
 	
 	<string name="favorite_average_transaction">"%1$d,%2$s Bulan"</string>
 	
-	<string name="server_cant_connect">"Tidak dapat terhubung ke Server!"</string>
-	<string name="server_sync_error">"Error dalam sync data ke Server!"</string>
+	<string name="server_cant_connect">"Tidak dapat terhubung &#8230;!"</string>
+	<string name="server_sync_error">"Error dalam sync data &#8230;!"</string>
 	
-	<string name="order_submit_ok">"Pesanan telah berhasil disubmit ke Server!"</string>
-	<string name="order_download_ok">"Pesanan telah berhasil didownload dari Server!"</string>
+	<string name="order_submit_ok">"Pesanan telah berhasil disubmit &#8230;!"</string>
+	<string name="order_download_ok">"Pesanan telah berhasil didownload &#8230;!"</string>
 	
 	<string name="printer_cant_connect">"Tidak dapat terhubung ke Printer"</string>
 	<string name="printer_connection_lost">"Koneksi ke Printer telah terputus"</string>
@@ -367,6 +384,7 @@
 	<string name="printer_please_check_printer">"Tidak dapat terhubung ke Printer. Pastikan Printer anda aktif"</string>
 	<string name="printer_cant_print">"Tidak dapat terhubung ke printer.\nStruk tidak dapat dicetak"</string>
 	<string name="printer_bluetooth_inactive">"Bluetooth tidak aktif, aktifkan bluetooth terlebih dahulu"</string>
+	<string name="printer_bluetooth_adapter_error">"Bluetooth servis error. Mohon restart servis bluetooth"</string>
 	
 	<string name="payment_insufficient">Pembayaran tidak mencukupi</string>
     
@@ -384,8 +402,8 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
     <string name="alert_empty_mandatory_field">"%1$s tidak boleh kosong"</string>
-    <string name="alert_server_not_connected">"Tidak dapat terhubung ke Server!"</string>
-    <string name="alert_server_sync_error">"Error dalam sync data ke Server!"</string>
+    <string name="alert_server_not_connected">"Tidak dapat terhubung &#8230;!"</string>
+    <string name="alert_server_sync_error">"Error dalam sync data &#8230;!"</string>
     <string name="alert_merchant_authentication_error">"ID Merchant atau password anda salah!"</string>
     <string name="alert_user_authentication_error">"ID Pengguna atau password anda salah!"</string>
     <string name="alert_data_no_more">"Tidak lagi terdapat data untuk ditampilkan!"</string>
@@ -393,6 +411,7 @@
     <string name="alert_please_choose_table_no">"Silahkan pilih No. Meja!"</string>
     <string name="alert_customer_name_empty">"Nama pelanggan tidak boleh kosong!"</string>
     <string name="alert_transaction_list_empty">"Daftar item penjualan masih kosong"</string>
+    <string name="alert_pic_required">"%1$s\nPIC dibutuhkan!"</string>
     <string name="alert_order_list_empty">"Daftar item pesanan masih kosong"</string>
     <string name="alert_bluetooth_not_available">"Bluetooth tidak tersedia. Anda tidak dapat melakukan print nota"</string>
     <string name="alert_bluetooth_not_active">"Bluetooth tidak aktif. Mohon aktifkan bluetooth anda"</string>
@@ -444,8 +463,9 @@
 	<string name="menu_merchant">Merchant</string>
 	<string name="menu_data_management">Data Referensi</string>
 	<string name="menu_inventory">Inventori</string>
+	<string name="menu_cashflow">Cashflow</string>
 	<string name="menu_user_access">Hak Akses</string>
-	<string name="menu_bills">Pengeluaran</string>
+	<string name="menu_bills">Tagihan</string>
 	<string name="menu_report">Laporan</string>					
 	
 	<string name="menu_report_transaction">Laporan Transaksi</string>
@@ -474,53 +494,64 @@
 	<string name="menu_customer_order">E01</string>
 	<string name="menu_inventory_order">F01</string>
 	<string name="menu_bills_order">G01</string>
-	<string name="menu_user_access_order">H01</string>
-	<string name="menu_report_transaction_order">I01</string>
-	<string name="menu_report_product_statistic_order">I02</string>
-	<string name="menu_report_inventory_order">I03</string>
-	<string name="menu_report_cashflow_order">I04</string>
-	<string name="menu_report_commision_order">I05</string>
-	<string name="menu_favorite_customer_order">J01</string>
-	<string name="menu_favorite_supplier_order">J02</string>
+	<string name="menu_cashflow_order">H01</string>
+	<string name="menu_user_access_order">I01</string>
+	<string name="menu_report_transaction_order">J01</string>
+	<string name="menu_report_product_statistic_order">J02</string>
+	<string name="menu_report_inventory_order">J03</string>
+	<string name="menu_report_cashflow_order">J04</string>
+	<string name="menu_report_commision_order">J05</string>
+	<string name="menu_favorite_customer_order">K01</string>
+	<string name="menu_favorite_supplier_order">K02</string>
 	
-	<string name="task_validate_merchant">"Melaksanakan validasi ke Server &#8230;"</string>
-	<string name="task_validate_user">"Melaksanakan validasi ke Server &#8230;"</string>
-	<string name="task_root_get_merchant">"Download data merchant dari Server &#8230;"</string>
-	<string name="task_root_get_merchant_access">"Download data akses merchant ke Server"</string>
-	<string name="task_submit_orders">"Submit order ke Server &#8230;"</string>
-	<string name="task_submit_order_items">"Submit detil order ke Server"</string>
-	<string name="task_get_orders">"Download pesanan dari Server &#8230;"</string>
-	<string name="task_get_order_item">"Download detil pesanan dari Server &#8230;"</string>
-	<string name="task_delete_orders">"Download detil pesanan dari Server"</string>
-	<string name="task_get_product_group">"Download data group produk dari server"</string>
-	<string name="task_update_product_group">"Upload data group produk ke server"</string>
-	<string name="task_get_discount">"Download data diskon dari server"</string>
-	<string name="task_update_discount">"Upload data diskon ke server"</string>
-	<string name="task_get_employee">"Download data pegawai dari server"</string>
-	<string name="task_update_employee">"Upload data pegawai ke server"</string>
-	<string name="task_get_customer">"Download data pelanggan dari server"</string>
-	<string name="task_update_customer">"Upload data pelanggan ke server"</string>
-	<string name="task_get_product">"Download data produk dari server"</string>
-	<string name="task_update_product">"Upload data produk ke server"</string>
-	<string name="task_get_user">"Download data pengguna dari server"</string>
-	<string name="task_update_user">"Upload data pengguna ke server"</string>
-	<string name="task_get_user_access">"Download data akses pengguna dari server"</string>
-	<string name="task_update_user_access">"Upload data akses pengguna ke server"</string>
-	<string name="task_get_transactions">"Download data transaksi dari server"</string>
-	<string name="task_update_transactions">"Upload data transaksi ke server"</string>
-	<string name="task_get_transaction_item">"Download data item transaksi dari server"</string>
-	<string name="task_update_transaction_item">"Upload data item transaksi ke server"</string>
-	<string name="task_get_supplier">"Download data supplier dari server"</string>
-	<string name="task_update_supplier">"Upload data supplier ke server"</string>
-	<string name="task_get_bill">"Download data pengeluaran dari server"</string>
-	<string name="task_update_bill">"Upload data pengeluaran ke server"</string>
-	<string name="task_get_inventory">"Download data inventori dari server"</string>
-	<string name="task_update_inventory">"Upload data inventori ke server"</string>
-	<string name="task_get_merchant">"Download data merchant dari server"</string>
-	<string name="task_update_merchant">"Upload data merchant ke server"</string>
-	<string name="task_get_merchant_access">"Download data akses merchant dari server"</string>
-	<string name="task_update_merchant_access">"Upload data akses merchant ke server"</string>
-	<string name="task_get_last_sync">"Cek waktu terakhir sync up ke server"</string>
-	<string name="task_update_last_sync">"Update waktu terakhir sync up ke server"</string>	
+	<string name="task_validate_merchant">"Melaksanakan validasi &#8230;"</string>
+	<string name="task_validate_user">"Melaksanakan validasi &#8230;"</string>
+	<string name="task_root_get_merchant">"Download data merchant &#8230;"</string>
+	<string name="task_root_get_merchant_access">"Download data akses merchant &#8230;"</string>
+	<string name="task_submit_orders">"Submit order &#8230;"</string>
+	<string name="task_submit_order_items">"Submit detil order &#8230;"</string>
+	<string name="task_get_orders">"Download pesanan &#8230;"</string>
+	<string name="task_get_order_item">"Download detil pesanan &#8230;"</string>
+	<string name="task_delete_orders">"Download detil pesanan &#8230;"</string>
+	<string name="task_get_product_group">"Download data group produk &#8230;"</string>
+	<string name="task_update_product_group">"Upload data group produk &#8230;"</string>
+	<string name="task_get_discount">"Download data diskon &#8230;"</string>
+	<string name="task_update_discount">"Upload data diskon &#8230;"</string>
+	<string name="task_get_employee">"Download data pegawai &#8230;"</string>
+	<string name="task_update_employee">"Upload data pegawai &#8230;"</string>
+	<string name="task_get_customer">"Download data pelanggan &#8230;"</string>
+	<string name="task_update_customer">"Upload data pelanggan &#8230;"</string>
+	<string name="task_get_product">"Download data produk &#8230;"</string>
+	<string name="task_update_product">"Upload data produk &#8230;"</string>
+	<string name="task_get_user">"Download data pengguna &#8230;"</string>
+	<string name="task_update_user">"Upload data pengguna &#8230;"</string>
+	<string name="task_get_user_access">"Download data akses pengguna &#8230;"</string>
+	<string name="task_update_user_access">"Upload data akses pengguna &#8230;"</string>
+	<string name="task_get_transactions">"Download data transaksi &#8230;"</string>
+	<string name="task_update_transactions">"Upload data transaksi &#8230;"</string>
+	<string name="task_get_transaction_item">"Download data item transaksi &#8230;"</string>
+	<string name="task_update_transaction_item">"Upload data item transaksi &#8230;"</string>
+	<string name="task_get_supplier">"Download data supplier &#8230;"</string>
+	<string name="task_update_supplier">"Upload data supplier &#8230;"</string>
+	<string name="task_get_bill">"Download data tagihan &#8230;"</string>
+	<string name="task_update_bill">"Upload data tagihan &#8230;"</string>
+	<string name="task_get_cashflow">"Download data cashflow &#8230;"</string>
+	<string name="task_update_cashflow">"Upload data cashflow &#8230;"</string>
+	<string name="task_get_inventory">"Download data inventori &#8230;"</string>
+	<string name="task_update_inventory">"Upload data inventori &#8230;"</string>
+	<string name="task_get_merchant">"Download data merchant &#8230;"</string>
+	<string name="task_update_merchant">"Upload data merchant &#8230;"</string>
+	<string name="task_get_merchant_access">"Download data akses merchant &#8230;"</string>
+	<string name="task_update_merchant_access">"Upload data akses merchant &#8230;"</string>
+	<string name="task_get_last_sync">"Cek waktu terakhir sync up &#8230;"</string>
+	<string name="task_update_last_sync">"Update waktu terakhir sync up &#8230;"</string>
+	
+	<string name="cashflow_type_capital_in">Penanaman Modal</string>
+	<string name="cashflow_type_capital_out">Penarikan Modal</string>
+	<string name="cashflow_type_bank_deposit">Transfer Dana ke Bank</string>
+	<string name="cashflow_type_bank_withdrawal">Penarikan Dana dari Bank</string>
+	<string name="cashflow_type_bill_payment">Pembayaran Tagihan ke Supplier</string>
+	<string name="cashflow_type_invc_payment">Penerimaan Tagihan dari Customer</string>
+	<string name="cashflow_type_expense">Pengeluaran Lain-lain</string>
 		
 </resources>

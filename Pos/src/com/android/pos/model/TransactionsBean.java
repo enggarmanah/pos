@@ -26,6 +26,8 @@ public class TransactionsBean {
 	private String payment_type;
 	private Long cashier_id;
 	private String cashier_name;
+	private Long waitress_id;
+	private String waitress_name;
 	private Long customer_id;
 	private String customer_name;	
 	private String status;
@@ -205,6 +207,22 @@ public class TransactionsBean {
 
 	public void setCashier_name(String cashier_name) {
 		this.cashier_name = cashier_name;
+	}
+	
+	public Long getWaitress_id() {
+		return waitress_id;
+	}
+
+	public void setWaitress_id(Long waitress_id) {
+		this.waitress_id = waitress_id;
+	}
+
+	public String getWaitress_name() {
+		return waitress_name;
+	}
+
+	public void setWaitress_name(String waitress_name) {
+		this.waitress_name = waitress_name;
 	}
 
 	public Long getCustomer_id() {

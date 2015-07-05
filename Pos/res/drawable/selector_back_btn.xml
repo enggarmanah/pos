@@ -10,8 +10,8 @@
                 android:angle="270" />
             <stroke
                 android:width="0.5dp"
-                android:color="@color/border_gray_dark" />
-            <corners android:radius="18dp" />
+                android:color="@color/border_grey_dark" />
+            <corners android:radius="20dp" />
         </shape>
     </item>
 

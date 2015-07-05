@@ -1,16 +1,11 @@
 package com.android.pos.report.cashflow;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
-import com.android.pos.dao.BillsDaoService;
-import com.android.pos.dao.TransactionsDaoService;
+import com.android.pos.dao.CashflowDaoService;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashFlowYearBean;
 import com.android.pos.util.CommonUtil;
@@ -46,8 +41,7 @@ public class CashFlowListFragment extends BaseFragment
 	
 	private CashFlowActionListener mActionListener;
 	
-	private BillsDaoService mBillsDaoService = new BillsDaoService();
-	private TransactionsDaoService mTransactionsDaoService = new TransactionsDaoService();
+	private CashflowDaoService mCashflowDaoService = new CashflowDaoService();
 	
 	private String mStatus;
 	
@@ -198,99 +192,13 @@ public class CashFlowListFragment extends BaseFragment
 		return totalAmount;
 	}
 	
-	public List<CashFlowYearBean> combineYearIncomeAndExpense(List<CashFlowYearBean> incomeYears, List<CashFlowYearBean> expenseYears) {
-		
-		HashMap<Date, Long> cashFlowMap = new HashMap<Date, Long>(); 
-		
-		for (CashFlowYearBean incomeYear : incomeYears) {
-			
-			cashFlowMap.put(incomeYear.getYear(), incomeYear.getAmount());
-		}
-		
-		for (CashFlowYearBean expenseYear : expenseYears) {
-			
-			Long amount = cashFlowMap.get(expenseYear.getYear());
-			
-			if (amount != null) {
-				amount = amount - expenseYear.getAmount();
-			} else {
-				amount = - expenseYear.getAmount();
-			}
-			
-			cashFlowMap.put(expenseYear.getYear(), amount);
-		}
-		
-		Set<Date> incomeYear = cashFlowMap.keySet();
-		Date[] cashFlowYears = incomeYear.toArray(new Date[incomeYear.size()]);
-		
-		Arrays.sort(cashFlowYears);
-		
-		List<CashFlowYearBean> cashFlowYearList = new ArrayList<CashFlowYearBean>();
-		
-		for (Date year : cashFlowYears) {
-			
-			Long amount = cashFlowMap.get(year);
-			
-			CashFlowYearBean cashFlowYear = new CashFlowYearBean();
-			cashFlowYear.setYear(year);
-			cashFlowYear.setAmount(amount);
-			
-			cashFlowYearList.add(cashFlowYear);
-		}
-		
-		return cashFlowYearList;
-	}
-	
-	public List<CashFlowMonthBean> combineMonthIncomeAndExpense(List<CashFlowMonthBean> incomeMonths, List<CashFlowMonthBean> expenseMonths) {
-		
-		HashMap<Date, Long> cashFlowMap = new HashMap<Date, Long>(); 
-		
-		for (CashFlowMonthBean incomeMonth : incomeMonths) {
-			
-			cashFlowMap.put(incomeMonth.getMonth(), incomeMonth.getAmount());
-		}
-		
-		for (CashFlowMonthBean expenseMonth : expenseMonths) {
-			
-			Long amount = cashFlowMap.get(expenseMonth.getMonth());
-			
-			if (amount != null) {
-				amount = amount - expenseMonth.getAmount();
-			} else {
-				amount = - expenseMonth.getAmount();
-			}
-			
-			cashFlowMap.put(expenseMonth.getMonth(), amount);
-		}
-		
-		Set<Date> incomeYear = cashFlowMap.keySet();
-		Date[] cashFlowYears = incomeYear.toArray(new Date[incomeYear.size()]);
-		
-		Arrays.sort(cashFlowYears);
-		
-		List<CashFlowMonthBean> cashFlowMonthList = new ArrayList<CashFlowMonthBean>();
-		
-		for (Date month : cashFlowYears) {
-			
-			Long amount = cashFlowMap.get(month);
-			
-			CashFlowMonthBean cashFlowMonth = new CashFlowMonthBean();
-			cashFlowMonth.setMonth(month);
-			cashFlowMonth.setAmount(amount);
-			
-			cashFlowMonthList.add(cashFlowMonth);
-		}
-		
-		return cashFlowMonthList;
-	}
-	
 	public void displayCashFlowAllYears() {
 		
 		mStatus = CashFlowActivity.DISPLAY_TRANSACTION_ALL_YEARS;
 		
 		mCashFlowYears.clear();
 		
-		List<CashFlowYearBean> cashFlowYears = combineYearIncomeAndExpense(mTransactionsDaoService.getCashFlowYears(), mBillsDaoService.getBillYears());
+		List<CashFlowYearBean> cashFlowYears = mCashflowDaoService.getCashFlowYears();
 		
 		mCashFlowYears.addAll(cashFlowYears);
 		
@@ -313,7 +221,7 @@ public class CashFlowListFragment extends BaseFragment
 		
 		mCashFlowMonths.clear();
 		
-		List<CashFlowMonthBean> cashFlowMonths = combineMonthIncomeAndExpense(mTransactionsDaoService.getCashFlowMonths(cashFlowYear), mBillsDaoService.getBillMonths(cashFlowYear));
+		List<CashFlowMonthBean> cashFlowMonths = mCashflowDaoService.getCashFlowMonths(cashFlowYear);
 		
 		mCashFlowMonths.addAll(cashFlowMonths);
 		

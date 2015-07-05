@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
-import com.android.pos.dao.Bills;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashFlowYearBean;
 import com.android.pos.report.outstanding.OutstandingBillActivity;
@@ -26,7 +25,6 @@ public class CashFlowActivity extends BaseActivity
 	
 	protected CashFlowListFragment mCashFlowListFragment;
 	protected CashFlowDetailFragment mCashFlowDetailFragment;
-	protected CashFlowBillDetailFragment mCashFlowBillDetailFragment;
 	
 	boolean mIsMultiplesPane = false;
 	
@@ -42,11 +40,8 @@ public class CashFlowActivity extends BaseActivity
 	private CashFlowYearBean mSelectedCashFlowYear;
 	private CashFlowMonthBean mSelectedCashFlowMonth;
 	
-	private Bills mSelectedBill;
-	
 	private static String SELECTED_TRANSACTION_YEAR = "SELECTED_TRANSACTION_YEAR";
 	private static String SELECTED_TRANSACTION_MONTH = "SELECTED_TRANSACTION_MONTH";
-	private static String SELECTED_BILL = "SELECTED_BILL";
 	
 	public static final String DISPLAY_TRANSACTION_ALL_YEARS = "DISPLAY_TRANSACTION_ALL_YEARS";
 	public static final String DISPLAY_TRANSACTION_ON_YEAR = "DISPLAY_TRANSACTION_ON_YEAR";
@@ -54,7 +49,6 @@ public class CashFlowActivity extends BaseActivity
 	
 	private String mCashFlowListFragmentTag = "cashFlowListFragmentTag";
 	private String mCashFlowDetailFragmentTag = "cashFlowDetailFragmentTag";
-	private String mCashFlowBillDetailFragmentTag = "cashFlowBillDetailFragmentTag";
 	
 	private Integer mPastDueBillsCount = 0;
 	private Integer mOutstandingBillsCount = 0;
@@ -75,7 +69,7 @@ public class CashFlowActivity extends BaseActivity
 		
 		initFragments();
 		
-		initWaitAfterFragmentRemovedTask(mCashFlowListFragmentTag, mCashFlowDetailFragmentTag, mCashFlowBillDetailFragmentTag);
+		initWaitAfterFragmentRemovedTask(mCashFlowListFragmentTag, mCashFlowDetailFragmentTag);
 	}
 	
 	@Override
@@ -96,8 +90,6 @@ public class CashFlowActivity extends BaseActivity
 			
 			mSelectedCashFlowYear = (CashFlowYearBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_YEAR);
 			mSelectedCashFlowMonth = (CashFlowMonthBean) savedInstanceState.getSerializable(SELECTED_TRANSACTION_MONTH);
-			
-			mSelectedBill = (Bills) savedInstanceState.getSerializable(SELECTED_BILL);
 			
 			mIsDisplayCashFlowAllYears = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ALL_YEARS);
 			mIsDisplayCashFlowYear = (Boolean) savedInstanceState.getSerializable(DISPLAY_TRANSACTION_ON_YEAR);
@@ -136,15 +128,6 @@ public class CashFlowActivity extends BaseActivity
 		} else {
 			removeFragment(mCashFlowDetailFragment);
 		}
-		
-		mCashFlowBillDetailFragment = (CashFlowBillDetailFragment) getFragmentManager().findFragmentByTag(mCashFlowBillDetailFragmentTag);
-		
-		if (mCashFlowBillDetailFragment == null) {
-			mCashFlowBillDetailFragment = new CashFlowBillDetailFragment();
-
-		} else {
-			removeFragment(mCashFlowBillDetailFragment);
-		}
 	}
 
 	@Override
@@ -154,8 +137,6 @@ public class CashFlowActivity extends BaseActivity
 		
 		outState.putSerializable(SELECTED_TRANSACTION_YEAR, (Serializable) mSelectedCashFlowYear);
 		outState.putSerializable(SELECTED_TRANSACTION_MONTH, (Serializable) mSelectedCashFlowMonth);
-		
-		outState.putSerializable(SELECTED_BILL, (Serializable) mSelectedBill);
 		
 		outState.putSerializable(DISPLAY_TRANSACTION_ALL_YEARS, (Serializable) mIsDisplayCashFlowAllYears);
 		outState.putSerializable(DISPLAY_TRANSACTION_ON_YEAR, (Serializable) mIsDisplayCashFlowYear);
@@ -175,27 +156,14 @@ public class CashFlowActivity extends BaseActivity
 		
 		mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
 		
-		mCashFlowBillDetailFragment.setBill(mSelectedBill);
-		
 		if (mIsMultiplesPane) {
 
 			addFragment(mCashFlowListFragment, mCashFlowListFragmentTag);
+			addFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
 			
-			if (mSelectedBill != null) {
-				
-				addFragment(mCashFlowBillDetailFragment, mCashFlowBillDetailFragmentTag);
-				
-			} else {
-				
-				addFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
-			}			
 		} else {
 
-			if (mSelectedBill != null) {
-				
-				addFragment(mCashFlowBillDetailFragment, mCashFlowBillDetailFragmentTag);
-				
-			} else if (mSelectedCashFlowMonth != null) {
+			if (mSelectedCashFlowMonth != null) {
 				
 				addFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
 				
@@ -389,30 +357,6 @@ public class CashFlowActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onBillSelected(Bills bill) {
-		
-		mSelectedBill = bill;
-		
-		resetDisplayStatus();
-		mIsDisplayCashFlowMonth = true;
-		
-		if (mIsMultiplesPane) {
-			
-			mCashFlowBillDetailFragment.setBill(mSelectedBill);
-			
-			removeFragment(mCashFlowListFragment);
-			removeFragment(mCashFlowDetailFragment);
-			
-			initWaitAfterFragmentRemovedTask(mCashFlowListFragmentTag, mCashFlowDetailFragmentTag);
-			
-		} else {
-			
-			replaceFragment(mCashFlowBillDetailFragment, mCashFlowBillDetailFragmentTag);
-			mCashFlowBillDetailFragment.setBill(mSelectedBill);
-		}
-	}
-	
-	@Override
 	public void onBackPressed() {
 		
 		synchronized (CommonUtil.LOCK) {
@@ -424,49 +368,27 @@ public class CashFlowActivity extends BaseActivity
 		
 		if (mIsMultiplesPane) {
 			
-			if (mSelectedBill != null) {
+			setDisplayStatusToParent();
 				
-				mSelectedBill = null;
+			mCashFlowListFragment.setSelectedCashFlowYear(mSelectedCashFlowYear);
+			mCashFlowListFragment.setSelectedCashFlowMonth(mSelectedCashFlowMonth);
 				
-				mCashFlowBillDetailFragment.setBill(mSelectedBill);
-				
-				removeFragment(mCashFlowListFragment);
-				removeFragment(mCashFlowBillDetailFragment);
-				
-				initWaitAfterFragmentRemovedTask(mCashFlowListFragmentTag, mCashFlowBillDetailFragmentTag);
-			
-			} else {
-				
-				setDisplayStatusToParent();
-				
-				mCashFlowListFragment.setSelectedCashFlowYear(mSelectedCashFlowYear);
-				mCashFlowListFragment.setSelectedCashFlowMonth(mSelectedCashFlowMonth);
-				
-				mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
-			}
+			mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
 			
 			initFragment();
 			
 		} else {
 			
-			if (mSelectedBill != null) {
+			setDisplayStatusToParent();
 				
-				mSelectedBill = null;
-				replaceFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
-			
-			} else {
+			mCashFlowListFragment.setSelectedCashFlowYear(mSelectedCashFlowYear);
+			mCashFlowListFragment.setSelectedCashFlowMonth(mSelectedCashFlowMonth);
 				
-				setDisplayStatusToParent();
+			mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
 				
-				mCashFlowListFragment.setSelectedCashFlowYear(mSelectedCashFlowYear);
-				mCashFlowListFragment.setSelectedCashFlowMonth(mSelectedCashFlowMonth);
+			replaceFragment(mCashFlowListFragment, mCashFlowListFragmentTag);
 				
-				mCashFlowDetailFragment.setCashFlowMonth(mSelectedCashFlowMonth);
-				
-				replaceFragment(mCashFlowListFragment, mCashFlowListFragmentTag);
-				
-				initFragment();
-			}
+			initFragment();
 		}
 	}
 	

@@ -16,115 +16,24 @@
                 android:contentDescription="@string/none" />
 
             <TextView
+                android:id="@+id/dateText"
                 style="@style/SectionTopTextStyle"
                 android:layout_weight="1"
                 android:gravity="start|center_vertical"
                 android:text="@string/report_cashflow_month" />
 
             <TextView
-                android:id="@+id/dateText"
+                android:id="@+id/totalText"
                 style="@style/SectionTopTextStyle"
                 android:layout_weight="2"
                 android:gravity="end|center_vertical" />
         </LinearLayout>
-
-        <LinearLayout
-            style="@style/SectionContentPanelStyle"
-            android:baselineAligned="false" >
-
-            <LinearLayout
-                style="@style/SectionSubContentPanelStyle"
-                android:layout_weight="1" >
-
-                <TextView
-                    style="@style/SectionSubCashFlowContentLabelTextStyle"
-                    android:text="@string/report_cashflow_total_amount" />
-
-                <TextView
-                    android:id="@+id/totalAmountText"
-                    style="@style/SectionSubCashFlowContentInfoTextStyle" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/taxPanel"
-                style="@style/SectionSubContentPanelStyle"
-                android:layout_weight="1" >
-
-                <TextView
-                    style="@style/SectionSubCashFlowContentLabelTextStyle"
-                    android:text="@string/report_cashflow_tax_amount" />
-
-                <TextView
-                    android:id="@+id/taxAmountText"
-                    style="@style/SectionSubCashFlowContentInfoTextStyle" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/serviceChargePanel"
-                style="@style/SectionSubContentPanelStyle"
-                android:layout_weight="1" >
-
-                <TextView
-                    style="@style/SectionSubCashFlowContentLabelTextStyle"
-                    android:text="@string/report_cashflow_service_charge_amount" />
-
-                <TextView
-                    android:id="@+id/serviceChargeAmountText"
-                    style="@style/SectionSubCashFlowContentInfoTextStyle" />
-            </LinearLayout>
-        </LinearLayout>
-		
-        <TextView style="@style/SectionDividerStyle" />
         
-        <TextView
-	         style="@style/SectionSubCashFlowContentLabelTextStyle"
-	         android:layout_marginTop="10dp"
-	         android:layout_marginStart="15dp"
-	         android:layout_marginLeft="15dp"
-	         android:text="@string/report_cashflow_expense" />
-        
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/belowPanel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-		
-        <TextView 
-            android:id="@+id/discountBorder"
-            style="@style/SectionDividerStyle" />
-            
-        <LinearLayout
-            android:id="@+id/totalBillsPanel"
-            style="@style/PaymentRowStyle" >
-
-            <TextView
-                style="@style/PaymentRowContentLeftStyle"
-                android:text="@string/report_cashflow_total_bills" />
-
-            <TextView
-                android:id="@+id/totalBillsText"
-                style="@style/PaymentRowContentRightStyle" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/PaymentRowTotalStyle" >
-
-            <TextView
-                style="@style/PaymentRowTotalContentLeftStyle"
-                android:text="@string/total"/>
-
-            <TextView
-                android:id="@+id/totalText"
-                style="@style/PaymentRowTotalContentRightStyle" />
-        </LinearLayout>
     </LinearLayout>
 
     <ListView
         android:id="@+id/billsList"
         style="@style/ListViewStyle"
-        android:layout_above="@id/belowPanel"
         android:layout_below="@id/topPanel" />
 
 </RelativeLayout>

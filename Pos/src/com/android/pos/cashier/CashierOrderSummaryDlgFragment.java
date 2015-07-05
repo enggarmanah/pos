@@ -6,6 +6,8 @@ import java.util.Date;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseDialogFragment;
+import com.android.pos.dao.Customer;
+import com.android.pos.dao.Employee;
 import com.android.pos.dao.Orders;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
@@ -24,18 +26,23 @@ import android.widget.TextView;
 
 public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 
+	LinearLayout mOrderTypePanel;
+	LinearLayout mWaitressPanel;
 	LinearLayout mCustomerPanel;
 	
 	TextView mOrderReferenceLabel;
 
 	TextView mOrderTypeText;
 	TextView mOrderReferenceText;
+	TextView mWaitressText;
 
 	Button mOkBtn;
 	Button mCancelBtn;
 	
 	String mOrderReference;
 	String mOrderType;
+	Employee mWaitress;
+	Customer mCustomer;
 	int mTotalItem;
 
 	CashierActionListener mActionListener;
@@ -72,11 +79,14 @@ public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 
 		super.onStart();
 
+		mOrderTypePanel = (LinearLayout) getView().findViewById(R.id.orderTypePanel);
+		mWaitressPanel = (LinearLayout) getView().findViewById(R.id.waitressPanel);
 		mCustomerPanel = (LinearLayout) getView().findViewById(R.id.customerPanel);
 		
 		mOrderReferenceLabel = (TextView) getView().findViewById(R.id.orderReferenceLabel);
 		mOrderReferenceText = (TextView) getView().findViewById(R.id.orderReferenceText);
 		mOrderTypeText = (TextView) getView().findViewById(R.id.orderTypeText);
+		mWaitressText = (TextView) getView().findViewById(R.id.waitressText);
 		mOkBtn = (Button) getView().findViewById(R.id.okBtn);
 		mCancelBtn = (Button) getView().findViewById(R.id.cancelBtn);
 
@@ -114,13 +124,30 @@ public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 		}
 		
 		if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType)) {
+			mOrderTypePanel.setVisibility(View.VISIBLE);
 			mOrderReferenceLabel.setText(getString(R.string.reservation_no));
-		} else {
+		
+		} else if (Constant.ORDER_TYPE_TAKEWAY.equals(mOrderType)) {
+			mOrderTypePanel.setVisibility(View.VISIBLE);
 			mOrderReferenceLabel.setText(getString(R.string.customer));
+		
+		} else if (Constant.ORDER_TYPE_SERVICE.equals(mOrderType)) {
+			mOrderTypePanel.setVisibility(View.GONE);
+			mOrderReferenceLabel.setText(getString(R.string.customer));
+			mOrderReferenceLabel.setMinHeight(CommonUtil.convertDpToPix(60));
+			mOrderReferenceText.setMinHeight(CommonUtil.convertDpToPix(60));
 		}
 
 		mOrderReferenceText.setText(mOrderReference);
 		mOrderTypeText.setText(CodeUtil.getOrderTypeLabel(mOrderType));
+		
+		if (mWaitress != null) {
+			mWaitressPanel.setVisibility(View.VISIBLE);
+			mWaitressText.setText(mWaitress.getName());
+			
+		} else {
+			mWaitressPanel.setVisibility(View.GONE);
+		}
 	}
 
 	private View.OnClickListener getOkBtnOnClickListener() {
@@ -159,10 +186,12 @@ public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 		};
 	}
 
-	public void setOrderInfo(String orderReference, String orderType) {
+	public void setOrderInfo(String orderReference, String orderType, Employee waitress, Customer customer) {
 
 		mOrderReference = orderReference;
 		mOrderType = orderType;
+		mWaitress = waitress;
+		mCustomer = customer;
 		
 		refreshDisplay();
 	}
@@ -176,12 +205,16 @@ public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 		order.setOrderNo(CommonUtil.getTransactionNo());
 		order.setOrderDate(new Date());
 		order.setOrderType(mOrderType);
+		order.setOrderReference(mOrderReference);
 		
-		if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType)) {
-			order.setOrderReference(mOrderReference);
-		} else {
-			order.setOrderReference(mOrderReference);
+		if (mCustomer != null) {
+			order.setCustomer(mCustomer);
 			order.setCustomerName(mOrderReference);
+		}
+		
+		if (mWaitress != null) {
+			order.setEmployee(mWaitress);
+			order.setWaitressName(mWaitress.getName());
 		}
 		
 		order.setStatus(Constant.STATUS_ACTIVE);

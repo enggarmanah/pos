@@ -12,8 +12,6 @@ import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.TransactionItemDao;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDao;
-import com.android.pos.model.CashFlowMonthBean;
-import com.android.pos.model.CashFlowYearBean;
 import com.android.pos.model.SyncStatusBean;
 import com.android.pos.model.TransactionDayBean;
 import com.android.pos.model.TransactionMonthBean;
@@ -29,7 +27,7 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class TransactionsDaoService {
 	
 	private TransactionsDao mTransactionsDao = DbUtil.getSession().getTransactionsDao();
-	private TransactionItemDao transactionItemDao = DbUtil.getSession().getTransactionItemDao();
+	private TransactionItemDao mTransactionItemDao = DbUtil.getSession().getTransactionItemDao();
 	
 	public void addTransactions(Transactions transactions) {
 		
@@ -58,6 +56,35 @@ public class TransactionsDaoService {
 		return mTransactionsDao.load(id);
 	}
 	
+	public List<Transactions> getTransactions(String query, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = CommonUtil.getSqlLikeString(query);
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM transactions "
+				+ " WHERE (transaction_no like ? OR customer_name like ? ) AND status <> ? "
+				+ " ORDER BY transaction_date DESC, transaction_no ASC LIMIT ? OFFSET ? ",
+				new String[] { queryStr, queryStr, status, limit, lastIdx});
+		
+		List<Transactions> list = new ArrayList<Transactions>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Transactions item = getTransactions(id);
+			list.add(item);
+		}
+		
+		cursor.close();
+
+		return list;
+	}
+	
 	public List<TransactionsBean> getTransactionsForUpload() {
 
 		QueryBuilder<Transactions> qb = mTransactionsDao.queryBuilder();
@@ -67,9 +94,9 @@ public class TransactionsDaoService {
 		
 		ArrayList<TransactionsBean> transactionsBeans = new ArrayList<TransactionsBean>();
 		
-		for (Transactions prdGroup : q.list()) {
+		for (Transactions transaction : q.list()) {
 			
-			transactionsBeans.add(BeanUtil.getBean(prdGroup));
+			transactionsBeans.add(BeanUtil.getBean(transaction));
 		}
 		
 		return transactionsBeans;
@@ -129,9 +156,10 @@ public class TransactionsDaoService {
 		Transactions t = mTransactionsDao.load(oldId);
 		
 		for (TransactionItem ti : t.getTransactionItemList()) {
+			
 			ti.setTransactionId(newId);
 			ti.setUploadStatus(Constant.STATUS_YES);
-			transactionItemDao.update(ti);
+			mTransactionItemDao.update(ti);
 		}
 	}
 	
@@ -162,7 +190,7 @@ public class TransactionsDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
-			Long amount = cursor.getLong(1);
+			Float amount = cursor.getFloat(1);
 			TransactionYearBean transactionYear = new TransactionYearBean();
 			transactionYear.setYear(date);
 			transactionYear.setAmount(amount);
@@ -172,32 +200,6 @@ public class TransactionsDaoService {
 		cursor.close();
 		
 		return transactionYears;
-	}
-	
-	public List<CashFlowYearBean> getCashFlowYears() {
-		
-		ArrayList<CashFlowYearBean> cashFlowYears = new ArrayList<CashFlowYearBean>();
-		
-		SQLiteDatabase db = DbUtil.getDb();
-		
-		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount - tax_amount - service_charge_amount) income "
-				+ " FROM transactions "
-				+ " WHERE status = 'A' "
-				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
-			
-		while(cursor.moveToNext()) {
-			
-			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
-			Long amount = cursor.getLong(1);
-			CashFlowYearBean transactionYear = new CashFlowYearBean();
-			transactionYear.setYear(date);
-			transactionYear.setAmount(amount);
-			cashFlowYears.add(transactionYear);
-		}
-		
-		cursor.close();
-		
-		return cashFlowYears;
 	}
 	
 	public List<TransactionMonthBean> getTransactionMonths(TransactionYearBean transactionYear) {
@@ -217,7 +219,7 @@ public class TransactionsDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
-			Long amount = cursor.getLong(1);
+			Float amount = cursor.getFloat(1);
 			TransactionMonthBean transactionMonth = new TransactionMonthBean();
 			transactionMonth.setMonth(date);
 			transactionMonth.setAmount(amount);
@@ -227,69 +229,6 @@ public class TransactionsDaoService {
 		cursor.close();
 		
 		return transactionMonths;
-	}
-	
-	public List<CashFlowMonthBean> getCashFlowMonths(CashFlowYearBean cashFlowYear) {
-		
-		ArrayList<CashFlowMonthBean> cashFlowMonths = new ArrayList<CashFlowMonthBean>();
-		
-		String startDate = String.valueOf(CommonUtil.getFirstDayOfYear(cashFlowYear.getYear()).getTime());
-		String endDate = String.valueOf(CommonUtil.getLastDayOfYear(cashFlowYear.getYear()).getTime());
-		
-		SQLiteDatabase db = DbUtil.getDb();
-		
-		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(total_amount - tax_amount - service_charge_amount) income "
-				+ " FROM transactions "
-				+ " WHERE status = 'A' AND transaction_date BETWEEN ? AND ? "
-				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime')", new String[] { startDate, endDate });
-			
-		while(cursor.moveToNext()) {
-			
-			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
-			Long amount = cursor.getLong(1);
-			CashFlowMonthBean cashFlowMonth = new CashFlowMonthBean();
-			cashFlowMonth.setMonth(date);
-			cashFlowMonth.setAmount(amount);
-			cashFlowMonths.add(cashFlowMonth);
-		}
-		
-		cursor.close();
-		
-		return cashFlowMonths;
-	}
-	
-	public List<Long> getMonthIncome(Date month) {
-		
-		List<Long> income = new ArrayList<Long>();
-		
-		String startDate = String.valueOf(CommonUtil.getFirstDayOfMonth(month).getTime());
-		String endDate = String.valueOf(CommonUtil.getLastDayOfMonth(month).getTime());
-		
-		SQLiteDatabase db = DbUtil.getDb();
-		
-		Cursor cursor = db.rawQuery("SELECT SUM(total_amount), SUM(tax_amount), SUM(service_charge_amount) "
-				+ " FROM transactions "
-				+ " WHERE status = 'A' AND transaction_date BETWEEN ? AND ? "
-				, new String[] { startDate, endDate });
-		
-		if (cursor.moveToFirst()) {
-			
-			income.add(cursor.getLong(0));
-			income.add(cursor.getLong(1));
-			income.add(cursor.getLong(2));
-			
-		} else {
-			
-			long zero = 0;
-			
-			income.add(zero);
-			income.add(zero);
-			income.add(zero);
-		}
-		
-		cursor.close();
-		
-		return income;
 	}
 	
 	public List<TransactionDayBean> getTransactionDays(TransactionMonthBean transactionMonth) {
@@ -309,7 +248,7 @@ public class TransactionsDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "dd-MM-yyyy");
-			Long amount = cursor.getLong(1);
+			Float amount = cursor.getFloat(1);
 			TransactionDayBean summary = new TransactionDayBean();
 			summary.setDate(date);
 			summary.setAmount(amount);

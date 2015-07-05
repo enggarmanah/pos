@@ -24,5 +24,7 @@ public interface BaseItemListener<T> {
 	
 	public void onSelectBill(boolean isMandatory);
 	
+	public void onSelectTransaction(boolean isMandatory);
+	
 	public void disableEditMenu();
 }

@@ -9,7 +9,6 @@ import com.android.pos.dao.Supplier;
 import com.android.pos.dao.SupplierDaoService;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SupplierDlgFragment extends DialogFragment implements SupplierArrayAdapter.ItemActionListener {
+public class SupplierDlgFragment extends BaseSearchDlgFragment<Supplier> implements SupplierArrayAdapter.ItemActionListener {
 	
 	TextView mCancelBtn;
 	EditText mSupplierSearchText;
@@ -31,8 +30,6 @@ public class SupplierDlgFragment extends DialogFragment implements SupplierArray
 	
 	SupplierArrayAdapter supplierArrayAdapter;
 	
-	List<Supplier> mSuppliers;
-
 	boolean mIsMandatory = false;
 	
 	private SupplierDaoService mSupplierDaoService = new SupplierDaoService();
@@ -45,9 +42,9 @@ public class SupplierDlgFragment extends DialogFragment implements SupplierArray
         
         setCancelable(false);
         
-        mSuppliers = new ArrayList<Supplier>();
+        mItems = new ArrayList<Supplier>();
         
-        supplierArrayAdapter = new SupplierArrayAdapter(getActivity(), mSuppliers, this);
+        supplierArrayAdapter = new SupplierArrayAdapter(getActivity(), mItems, this);
 	}
 	
 	@Override
@@ -65,14 +62,17 @@ public class SupplierDlgFragment extends DialogFragment implements SupplierArray
 		
 		mSupplierSearchText = (EditText) getView().findViewById(R.id.supplierSearchText);
 		mSupplierSearchText.setText(Constant.EMPTY_STRING);
+		mSupplierSearchText.requestFocus();
 		
 		mSupplierSearchText.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				
-				mSuppliers.clear();
-				mSuppliers.addAll(mSupplierDaoService.getSuppliers(s.toString(), 0));
+				mQuery = s.toString();
+				
+				mItems.clear();
+				mItems.addAll(mSupplierDaoService.getSuppliers(mQuery, 0));
 				supplierArrayAdapter.notifyDataSetChanged();
 			}
 			
@@ -97,6 +97,10 @@ public class SupplierDlgFragment extends DialogFragment implements SupplierArray
 		} else {
 			mNoSupplierText.setVisibility(View.VISIBLE);
 		}
+		
+		mItems.clear();
+		mItems.addAll(mSupplierDaoService.getSuppliers(mQuery, 0));
+		supplierArrayAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -152,5 +156,23 @@ public class SupplierDlgFragment extends DialogFragment implements SupplierArray
 				dismiss();
 			}
 		};
+	}
+	
+	@Override
+	protected List<Supplier> getItems(String query) {
+		
+		return mSupplierDaoService.getSuppliers(mQuery, 0);
+	}
+	
+	@Override
+	protected List<Supplier> getNextItems(String query, int lastIndex) {
+		
+		return mSupplierDaoService.getSuppliers(mQuery, lastIndex);
+	}
+	
+	@Override
+	protected void refreshList() {
+		
+		supplierArrayAdapter.notifyDataSetChanged();
 	}
 }

@@ -16,25 +16,27 @@
                 android:contentDescription="@string/none" />
 
             <TextView
+                android:id="@+id/dateText"
                 style="@style/SectionTopTextStyle"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:gravity="start|center_vertical"
                 android:text="@string/transaction" />
 
             <TextView
-                android:id="@+id/dateText"
+                android:id="@+id/titleText"
                 style="@style/SectionTopTextStyle"
                 android:layout_weight="2"
                 android:gravity="end|center_vertical" />
-        </LinearLayout>
-
-        <LinearLayout
+       </LinearLayout>
+       
+       <LinearLayout
             style="@style/SectionContentPanelStyle"
             android:baselineAligned="false" >
-
-            <LinearLayout
+			
+          	<LinearLayout
                 style="@style/SectionSubContentPanelStyle"
-                android:layout_weight="5" >
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
                     style="@style/SectionSubContentLabelTextStyle"
@@ -44,10 +46,18 @@
                     android:id="@+id/transactionNoText"
                     style="@style/SectionSubContentInfoTextStyle" />
             </LinearLayout>
-
-            <LinearLayout
+       
+       </LinearLayout>
+		
+       <TextView style="@style/SectionDividerStyle" />
+       
+       <LinearLayout
+            style="@style/SectionContentPanelStyle"
+            android:baselineAligned="false" >
+			
+          	<LinearLayout
                 style="@style/SectionSubContentPanelStyle"
-                android:layout_weight="4" >
+                android:layout_weight="1" >
 
                 <TextView
                     style="@style/SectionSubContentLabelTextStyle"
@@ -57,11 +67,25 @@
                     android:id="@+id/cashierText"
                     style="@style/SectionSubContentInfoTextStyle" />
             </LinearLayout>
+          	
+            <LinearLayout
+         	    android:id="@+id/waitressPanel"
+                style="@style/SectionSubContentPanelStyle"
+                android:layout_weight="1" >
 
+                <TextView
+                    style="@style/SectionSubContentLabelTextStyle"
+                    android:text="@string/waitress" />
+
+                <TextView
+                    android:id="@+id/waitressText"
+                    style="@style/SectionSubContentInfoTextStyle" />
+            </LinearLayout>
+            
             <LinearLayout
                 android:id="@+id/customerPanel"
                 style="@style/SectionSubContentPanelStyle"
-                android:layout_weight="4" >
+                android:layout_weight="1" >
 
                 <TextView
                     style="@style/SectionSubContentLabelTextStyle"
@@ -71,6 +95,7 @@
                     android:id="@+id/customerText"
                     style="@style/SectionSubContentInfoTextStyle" />
             </LinearLayout>
+            
         </LinearLayout>
 		
         <TextView style="@style/SectionDividerStyle" />

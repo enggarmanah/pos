@@ -412,7 +412,7 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
-			Long value = cursor.getLong(1);
+			Float value = cursor.getFloat(1);
 			TransactionYearBean transactionYear = new TransactionYearBean();
 			transactionYear.setYear(date);
 			transactionYear.setAmount(value);
@@ -438,7 +438,7 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
-			Long value = cursor.getLong(1);
+			Float value = cursor.getFloat(1);
 			TransactionYearBean transactionYear = new TransactionYearBean();
 			transactionYear.setYear(date);
 			transactionYear.setAmount(value);
@@ -464,7 +464,7 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
-			Long value = cursor.getLong(1);
+			Float value = cursor.getFloat(1);
 			TransactionYearBean transactionYear = new TransactionYearBean();
 			transactionYear.setYear(date);
 			transactionYear.setAmount(value);
@@ -494,7 +494,7 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
-			Long value = cursor.getLong(1);
+			Float value = cursor.getFloat(1);
 			TransactionMonthBean transactionMonth = new TransactionMonthBean();
 			transactionMonth.setMonth(date);
 			transactionMonth.setAmount(value);
@@ -524,7 +524,7 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
-			Long value = cursor.getLong(1);
+			Float value = cursor.getFloat(1);
 			TransactionMonthBean transactionMonth = new TransactionMonthBean();
 			transactionMonth.setMonth(date);
 			transactionMonth.setAmount(value);
@@ -554,7 +554,7 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
-			Long value = cursor.getLong(1);
+			Float value = cursor.getFloat(1);
 			TransactionMonthBean transactionMonth = new TransactionMonthBean();
 			transactionMonth.setMonth(date);
 			transactionMonth.setAmount(value);

@@ -17,11 +17,12 @@ public class SyncResponseBean {
 	protected List<String> taskHasUpdates;
 	
 	protected MerchantBean merchant;
-	protected DeviceBean device;
+	protected SyncBean sync;
 	protected UserBean user;
 	
 	protected List<BillsBean> bills;
 	protected List<CustomerBean> customers;
+	protected List<CashflowBean> cashflows;
 	protected List<DiscountBean> discounts;
 	protected List<EmployeeBean> employees;
 	protected List<InventoryBean> inventories;
@@ -69,12 +70,12 @@ public class SyncResponseBean {
 		this.merchant = merchant;
 	}
 
-	public DeviceBean getDevice() {
-		return device;
+	public SyncBean getSync() {
+		return sync;
 	}
 
-	public void setDevice(DeviceBean device) {
-		this.device = device;
+	public void setSync(SyncBean sync) {
+		this.sync = sync;
 	}
 	
 	public UserBean getUser() {
@@ -115,6 +116,14 @@ public class SyncResponseBean {
 
 	public void setCustomers(List<CustomerBean> customers) {
 		this.customers = customers;
+	}
+	
+	public List<CashflowBean> getCashflows() {
+		return cashflows;
+	}
+
+	public void setCashflows(List<CashflowBean> cashflows) {
+		this.cashflows = cashflows;
 	}
 
 	public List<DiscountBean> getDiscounts() {

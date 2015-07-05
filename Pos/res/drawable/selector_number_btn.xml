@@ -10,7 +10,7 @@
                 android:angle="270" />
             <stroke
                 android:width="0dp"
-                android:color="@color/border_gray" />
+                android:color="@color/border_grey" />
             <corners android:radius="0dp" />
         </shape>
     </item>
@@ -23,7 +23,7 @@
                 android:angle="270" />
             <stroke
                 android:width="0dp"
-                android:color="@color/border_gray" />
+                android:color="@color/border_grey" />
             <corners android:radius="0dp" />
         </shape>
     </item>
@@ -36,7 +36,7 @@
                 android:angle="270" />
             <stroke
                 android:width="0dp"
-                android:color="@color/border_gray" />
+                android:color="@color/border_grey" />
             <corners android:radius="0dp" />
         </shape>
     </item>

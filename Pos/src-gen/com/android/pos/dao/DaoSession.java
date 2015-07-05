@@ -22,6 +22,7 @@ import com.android.pos.dao.Orders;
 import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.Supplier;
 import com.android.pos.dao.Bills;
+import com.android.pos.dao.Cashflow;
 import com.android.pos.dao.Inventory;
 import com.android.pos.dao.MerchantAccess;
 import com.android.pos.dao.UserAccess;
@@ -39,6 +40,7 @@ import com.android.pos.dao.OrdersDao;
 import com.android.pos.dao.OrderItemDao;
 import com.android.pos.dao.SupplierDao;
 import com.android.pos.dao.BillsDao;
+import com.android.pos.dao.CashflowDao;
 import com.android.pos.dao.InventoryDao;
 import com.android.pos.dao.MerchantAccessDao;
 import com.android.pos.dao.UserAccessDao;
@@ -65,6 +67,7 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig orderItemDaoConfig;
     private final DaoConfig supplierDaoConfig;
     private final DaoConfig billsDaoConfig;
+    private final DaoConfig cashflowDaoConfig;
     private final DaoConfig inventoryDaoConfig;
     private final DaoConfig merchantAccessDaoConfig;
     private final DaoConfig userAccessDaoConfig;
@@ -82,6 +85,7 @@ public class DaoSession extends AbstractDaoSession {
     private final OrderItemDao orderItemDao;
     private final SupplierDao supplierDao;
     private final BillsDao billsDao;
+    private final CashflowDao cashflowDao;
     private final InventoryDao inventoryDao;
     private final MerchantAccessDao merchantAccessDao;
     private final UserAccessDao userAccessDao;
@@ -129,6 +133,9 @@ public class DaoSession extends AbstractDaoSession {
         billsDaoConfig = daoConfigMap.get(BillsDao.class).clone();
         billsDaoConfig.initIdentityScope(type);
 
+        cashflowDaoConfig = daoConfigMap.get(CashflowDao.class).clone();
+        cashflowDaoConfig.initIdentityScope(type);
+
         inventoryDaoConfig = daoConfigMap.get(InventoryDao.class).clone();
         inventoryDaoConfig.initIdentityScope(type);
 
@@ -151,6 +158,7 @@ public class DaoSession extends AbstractDaoSession {
         orderItemDao = new OrderItemDao(orderItemDaoConfig, this);
         supplierDao = new SupplierDao(supplierDaoConfig, this);
         billsDao = new BillsDao(billsDaoConfig, this);
+        cashflowDao = new CashflowDao(cashflowDaoConfig, this);
         inventoryDao = new InventoryDao(inventoryDaoConfig, this);
         merchantAccessDao = new MerchantAccessDao(merchantAccessDaoConfig, this);
         userAccessDao = new UserAccessDao(userAccessDaoConfig, this);
@@ -168,6 +176,7 @@ public class DaoSession extends AbstractDaoSession {
         registerDao(OrderItem.class, orderItemDao);
         registerDao(Supplier.class, supplierDao);
         registerDao(Bills.class, billsDao);
+        registerDao(Cashflow.class, cashflowDao);
         registerDao(Inventory.class, inventoryDao);
         registerDao(MerchantAccess.class, merchantAccessDao);
         registerDao(UserAccess.class, userAccessDao);
@@ -187,6 +196,7 @@ public class DaoSession extends AbstractDaoSession {
         orderItemDaoConfig.getIdentityScope().clear();
         supplierDaoConfig.getIdentityScope().clear();
         billsDaoConfig.getIdentityScope().clear();
+        cashflowDaoConfig.getIdentityScope().clear();
         inventoryDaoConfig.getIdentityScope().clear();
         merchantAccessDaoConfig.getIdentityScope().clear();
         userAccessDaoConfig.getIdentityScope().clear();
@@ -242,6 +252,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public BillsDao getBillsDao() {
         return billsDao;
+    }
+
+    public CashflowDao getCashflowDao() {
+        return cashflowDao;
     }
 
     public InventoryDao getInventoryDao() {

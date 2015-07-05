@@ -19,15 +19,13 @@ import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserDaoService;
+import com.android.pos.data.user.UserMgtActivity;
 import com.android.pos.report.transaction.TransactionActivity;
-import com.android.pos.user.UserMgtActivity;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 import com.android.pos.waitress.WaitressActivity;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 public class UserLoginActivity extends Activity {
 
@@ -121,8 +119,8 @@ public class UserLoginActivity extends Activity {
 					
 				} else {
 					
-					Tracker t = CommonUtil.getTracker();
-					t.send(new HitBuilders.EventBuilder().setCategory("CAT1").setAction("ACTION1").setLabel("LABEL1").build());
+					//Tracker t = CommonUtil.getTracker();
+					//t.send(new HitBuilders.EventBuilder().setCategory("CAT1").setAction("ACTION1").setLabel("LABEL1").build());
 					
 					User user = mUserDaoService.validateUser(mMerchant.getId(), loginId, password);
 					

@@ -37,6 +37,8 @@ public class Transactions {
 	private String payment_type;
 	private long cashier_id;
 	private String cashier_name;
+	private Long waitress_id;
+	private String waitress_name;
 	private Long customer_id;
 	private String customer_name;
 	private String status;
@@ -66,6 +68,8 @@ public class Transactions {
 		this.payment_type = bean.getPayment_type();
 		this.cashier_id = bean.getCashier_id();
 		this.cashier_name = bean.getCashier_name();
+		this.waitress_id = bean.getWaitress_id();
+		this.waitress_name = bean.getWaitress_name();
 		this.customer_id = bean.getCustomer_id();
 		this.customer_name = bean.getCustomer_name();
 		this.status = bean.getStatus();
@@ -246,6 +250,22 @@ public class Transactions {
 
 	public void setCashier_name(String cashier_name) {
 		this.cashier_name = cashier_name;
+	}
+	
+	public Long getWaitress_id() {
+		return waitress_id;
+	}
+
+	public void setWaitress_id(Long waitress_id) {
+		this.waitress_id = waitress_id;
+	}
+
+	public String getWaitress_name() {
+		return waitress_name;
+	}
+
+	public void setWaitress_name(String waitress_name) {
+		this.waitress_name = waitress_name;
 	}
 
 	public Long getCustomer_id() {

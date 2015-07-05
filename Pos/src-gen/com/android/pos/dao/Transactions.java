@@ -36,6 +36,8 @@ public class Transactions implements Serializable {
     private String paymentType;
     private long cashierId;
     private String cashierName;
+    private Long waitressId;
+    private String waitressName;
     private Long customerId;
     private String customerName;
     private String uploadStatus;
@@ -53,6 +55,9 @@ public class Transactions implements Serializable {
     private User user;
     private Long user__resolvedKey;
 
+    private Employee employee;
+    private Long employee__resolvedKey;
+
     private Customer customer;
     private Long customer__resolvedKey;
 
@@ -65,7 +70,7 @@ public class Transactions implements Serializable {
         this.id = id;
     }
 
-    public Transactions(Long id, String refId, long merchantId, String transactionNo, String orderType, String orderReference, java.util.Date transactionDate, Float billAmount, String discountName, Float discountPercentage, Float discountAmount, Float taxPercentage, Float taxAmount, Float serviceChargePercentage, Float serviceChargeAmount, Float totalAmount, Float paymentAmount, Float returnAmount, String paymentType, long cashierId, String cashierName, Long customerId, String customerName, String uploadStatus, String status) {
+    public Transactions(Long id, String refId, long merchantId, String transactionNo, String orderType, String orderReference, java.util.Date transactionDate, Float billAmount, String discountName, Float discountPercentage, Float discountAmount, Float taxPercentage, Float taxAmount, Float serviceChargePercentage, Float serviceChargeAmount, Float totalAmount, Float paymentAmount, Float returnAmount, String paymentType, long cashierId, String cashierName, Long waitressId, String waitressName, Long customerId, String customerName, String uploadStatus, String status) {
         this.id = id;
         this.refId = refId;
         this.merchantId = merchantId;
@@ -87,6 +92,8 @@ public class Transactions implements Serializable {
         this.paymentType = paymentType;
         this.cashierId = cashierId;
         this.cashierName = cashierName;
+        this.waitressId = waitressId;
+        this.waitressName = waitressName;
         this.customerId = customerId;
         this.customerName = customerName;
         this.uploadStatus = uploadStatus;
@@ -269,6 +276,22 @@ public class Transactions implements Serializable {
         this.cashierName = cashierName;
     }
 
+    public Long getWaitressId() {
+        return waitressId;
+    }
+
+    public void setWaitressId(Long waitressId) {
+        this.waitressId = waitressId;
+    }
+
+    public String getWaitressName() {
+        return waitressName;
+    }
+
+    public void setWaitressName(String waitressName) {
+        this.waitressName = waitressName;
+    }
+
     public Long getCustomerId() {
         return customerId;
     }
@@ -354,6 +377,31 @@ public class Transactions implements Serializable {
             this.user = user;
             cashierId = user.getId();
             user__resolvedKey = cashierId;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Employee getEmployee() {
+        Long __key = this.waitressId;
+        if (employee__resolvedKey == null || !employee__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            EmployeeDao targetDao = daoSession.getEmployeeDao();
+            Employee employeeNew = targetDao.load(__key);
+            synchronized (this) {
+                employee = employeeNew;
+            	employee__resolvedKey = __key;
+            }
+        }
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        synchronized (this) {
+            this.employee = employee;
+            waitressId = employee == null ? null : employee.getId();
+            employee__resolvedKey = waitressId;
         }
     }
 

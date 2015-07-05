@@ -30,6 +30,8 @@ import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDaoService;
 import com.android.pos.popup.search.CustomerDlgFragment;
 import com.android.pos.popup.search.CustomerSelectionListener;
+import com.android.pos.popup.search.EmployeeDlgFragment;
+import com.android.pos.popup.search.EmployeeSelectionListener;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.ConfirmationUtil;
 import com.android.pos.util.MerchantUtil;
@@ -56,7 +58,7 @@ import android.widget.TextView;
 
 public class CashierActivity extends BaseActivity 
 	implements CashierActionListener, SearchView.OnQueryTextListener, ConfirmListener,
-		CashierProductCountDlgFragment.ProductActionListener, CustomerSelectionListener {
+		CashierProductCountDlgFragment.ProductActionListener, CustomerSelectionListener, EmployeeSelectionListener {
 	
 	LinearLayout messagePanel;
 	TextView messageText;
@@ -71,6 +73,7 @@ public class CashierActivity extends BaseActivity
 	private CashierDiscountPercentageDlgFragment mDiscountPercentageDlgFragment;
 	private CashierDiscountNominalDlgFragment mDiscountNominalDlgFragment;
 	private CustomerDlgFragment mCustomerDlgFragment;
+	private EmployeeDlgFragment mEmployeeDlgFragment;
 	
 	boolean mIsMultiplesPane = false;
 	boolean mIsEnableSearch = true;
@@ -105,6 +108,7 @@ public class CashierActivity extends BaseActivity
 	private static final String mDiscountPercentageDlgFragmentTag = "discountPercentageDlgFragmentTag";
 	private static final String mDiscountNominalDlgFragmentTag = "discountNominalDlgFragmentTag";
 	private static final  String mCustomerDlgFragmentTag = "customerDlgFragmentTag";
+	private static final  String mEmployeeDlgFragmentTag = "employeeDlgFragmentTag";
 	
 	private String prevQuery = Constant.EMPTY_STRING;
 	
@@ -120,8 +124,11 @@ public class CashierActivity extends BaseActivity
 	private boolean mIsSubmitOrder = false;
 	
 	private Orders mOrder;
+	private Customer mCustomer;
+	
 	private List<OrderItem> mOrderItems;
 	
+	private Employee mWaitress;
 	private String mOrderType;
 	private String mOrderReference;
 	
@@ -164,7 +171,9 @@ public class CashierActivity extends BaseActivity
 		} else {
 			
 			PrintUtil.initBluetooth(this);
-		} 
+		}
+		
+		processExtras(getIntent().getExtras());
 	}
 	
 	@Override
@@ -189,18 +198,23 @@ public class CashierActivity extends BaseActivity
 		String printerType = merchant.getPrinterType();
 		String printerAddress = merchant.getPrinterAddress();
 		
-		if (PrintUtil.initBluetooth(this)) {
-			
-			if (!CommonUtil.isEmpty(printerAddress)) {
+		try {
+			if (PrintUtil.initBluetooth(this)) {
 				
-				setMessage(getString(R.string.printer_connected_to, printerAddress));
-				connectToPrinter(printerType, printerAddress);
-			
-			} else {
+				if (!CommonUtil.isEmpty(printerAddress)) {
+					
+					setMessage(getString(R.string.printer_connected_to, printerAddress));
+					connectToPrinter(printerType, printerAddress);
 				
-				setMessage(getString(R.string.printer_please_check_printer));
-				PrintUtil.selectBluetoothPrinter();
+				} else {
+					
+					setMessage(getString(R.string.printer_please_check_printer));
+					PrintUtil.selectBluetoothPrinter();
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			setMessage(getString(R.string.printer_bluetooth_adapter_error));
 		}
 	}
 	
@@ -293,6 +307,10 @@ public class CashierActivity extends BaseActivity
 		
 		if (mCustomerDlgFragment == null) {
 			mCustomerDlgFragment = new CustomerDlgFragment();
+		}
+		
+		if (mEmployeeDlgFragment == null) {
+			mEmployeeDlgFragment = new EmployeeDlgFragment();
 		}
 	}
 
@@ -412,6 +430,12 @@ public class CashierActivity extends BaseActivity
 				
 			case R.id.menu_item_select_printer:
 				
+				if (!PrintUtil.isBluetoothEnabled()) {
+					
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.printer_bluetooth_inactive));
+	    			return true;
+				}
+				
 				PrintUtil.initBluetooth(this);
 				PrintUtil.selectBluetoothPrinter();
 	
@@ -493,6 +517,10 @@ public class CashierActivity extends BaseActivity
 		
 		mState = Constant.CASHIER_STATE_CASHIER;
 		
+		mOrder = null;
+		mCustomer = null;
+		
+		mWaitress = null;
 		mOrderType = null;
 		mOrderReference = null;
 		
@@ -501,7 +529,7 @@ public class CashierActivity extends BaseActivity
 		mOrderFragment.setTransactionItems(mTransactionItems);
 		mOrderFragment.setDiscount(mDiscount);
 		mOrderFragment.setCashierState(mState);
-		mOrderFragment.setSelectedOrders(mSelectedOrder);
+		mOrderFragment.setSelectedOrders(mSelectedOrder, false);
 	}
 	
 	@Override
@@ -621,7 +649,7 @@ public class CashierActivity extends BaseActivity
 		}
 		
 		mPaymentDlgFragment.show(getFragmentManager(), mPaymentDlgFragmentTag);
-		mPaymentDlgFragment.setTotalBill(totalBill);
+		mPaymentDlgFragment.setBillInfo(totalBill, mCustomer);
 	}
 	
 	@Override
@@ -647,19 +675,20 @@ public class CashierActivity extends BaseActivity
 	}
 	
 	@Override
-	public void onOrderInfoProvided(String orderReference, String orderType) {
+	public void onOrderInfoProvided(String orderReference, String orderType, Employee waitress, Customer customer) {
 		
 		if (mOrderSummaryDlgFragment.isAdded()) {
 			return;
 		}
 		
 		mOrderSummaryDlgFragment.show(getFragmentManager(), mOrderSummaryDlgFragmentTag);
-		mOrderSummaryDlgFragment.setOrderInfo(orderReference, orderType);
+		mOrderSummaryDlgFragment.setOrderInfo(orderReference, orderType, waitress, customer);
 	}
 	
 	@Override
 	public void onPaymentCompleted(Transactions transaction) {
 		
+		transaction.setEmployee(mWaitress);
 		transaction.setOrderType(mOrderType);
 		transaction.setOrderReference(mOrderReference);
 		
@@ -702,6 +731,11 @@ public class CashierActivity extends BaseActivity
 		
 		transaction.setMerchant(MerchantUtil.getMerchant());
 		transaction.setUploadStatus(Constant.STATUS_YES);
+		
+		if (mWaitress != null) {
+			transaction.setWaitressId(mWaitress.getId());
+			transaction.setWaitressName(mWaitress.getName());
+		}
 		
 		mTransactionDaoService.addTransactions(transaction);
 		
@@ -750,11 +784,6 @@ public class CashierActivity extends BaseActivity
 				
 				Orders order = mOrderDaoService.getOrders(orderId);
 				
-				for (OrderItem orderItem : order.getOrderItemList()) {
-					
-					mOrderItemDaoService.deleteOrderItem(orderItem);
-				}
-				
 				mOrderDaoService.deleteOrders(order);
 			}
 			
@@ -785,17 +814,17 @@ public class CashierActivity extends BaseActivity
 		mOrder = order;
 		mOrderItems = orderItems;
 		
-		if (!UserUtil.isWaitress()) {
+		order.setUploadStatus(Constant.STATUS_YES);
+		mOrderDaoService.addOrders(order);
 		
-			mOrderDaoService.addOrders(order);
+		for (OrderItem orderItem : mOrderItems) {
 			
-			for (OrderItem orderItem : mOrderItems) {
-				
-				orderItem.setOrderId(order.getId());
-				mOrderItemDaoService.addOrderItem(orderItem);
-			}
-			
-		} else {
+			orderItem.setOrderId(order.getId());
+			orderItem.setUploadStatus(Constant.STATUS_YES);
+			mOrderItemDaoService.addOrderItem(orderItem);
+		}
+		
+		if (UserUtil.isWaitress()) {
 			
 			mIsSubmitOrder = true;
 			
@@ -809,7 +838,7 @@ public class CashierActivity extends BaseActivity
 				mHttpAsyncManager = new HttpAsyncManager(this);
 			}
 			
-			mHttpAsyncManager.submitOrders(mOrder, mOrderItems);
+			mHttpAsyncManager.syncOrders();
 		}
 	}
 
@@ -819,7 +848,7 @@ public class CashierActivity extends BaseActivity
 		transaction = mTransactionDaoService.getTransactions(transaction.getId());
 		
 		try {
-			PrintUtil.print(transaction);
+			PrintUtil.printTransaction(transaction);
 		} catch (Exception e) {
 			showMessage(getString(R.string.printer_cant_print));
 		}
@@ -836,9 +865,11 @@ public class CashierActivity extends BaseActivity
 			showMessage(getString(R.string.printer_cant_print));
 		}
 		
-		String message = getString(R.string.confirm_print_customer_copy);
+		if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchantType())) {
 		
-		ConfirmationUtil.confirmTask(getFragmentManager(), this, ConfirmationUtil.PRINT_ORDER, message);
+			String message = getString(R.string.confirm_print_customer_copy);
+			ConfirmationUtil.confirmTask(getFragmentManager(), this, ConfirmationUtil.PRINT_ORDER, message);
+		}
 	}
 	
 	@Override
@@ -908,6 +939,25 @@ public class CashierActivity extends BaseActivity
 		}
 	}
 	
+	public void onSelectEmployee() {
+		
+		if (mEmployeeDlgFragment.isAdded()) {
+			return;
+		}
+		
+		mEmployeeDlgFragment.show(getFragmentManager(), mEmployeeDlgFragmentTag);
+	}
+	
+	public void onEmployeeSelected(Employee employee) {
+		
+		if (mProductCountDlgFragment.isAdded()) {
+			mProductCountDlgFragment.setEmployee(employee);
+		
+		} else if (mOrderDlgFragment.isAdded()) {
+			mOrderDlgFragment.setWaitress(employee);
+		}
+	}
+	
 	public void onSelectCustomer() {
 		
 		if (mCustomerDlgFragment.isAdded()) {
@@ -919,7 +969,12 @@ public class CashierActivity extends BaseActivity
 	
 	public void onCustomerSelected(Customer customer) {
 		
-		mPaymentDlgFragment.setCustomer(customer);
+		if (mPaymentDlgFragment.isAdded()) {
+			mPaymentDlgFragment.setCustomer(customer);
+		
+		} else if (mOrderDlgFragment.isAdded()) {
+			mOrderDlgFragment.setCustomer(customer);
+		}
 	}
 	
 	@Override
@@ -940,13 +995,18 @@ public class CashierActivity extends BaseActivity
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void onNewIntent(Intent intent) {
 		
 		super.onNewIntent(intent);
 		
 		Bundle extras = intent.getExtras();
+		
+		processExtras(extras);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void processExtras(Bundle extras) {
 		
 		if (extras != null) {
 			
@@ -967,8 +1027,15 @@ public class CashierActivity extends BaseActivity
 						
 						Orders order = mOrderDaoService.getOrders(orderId);
 						
+						mOrderFragment.setSelectedOrders(order, false);
+						
+						mWaitress = order.getWaitressId() != null ? order.getEmployee() : null;
+						
 						mOrderType = order.getOrderType();
 						mOrderReference = order.getOrderReference();
+						
+						mCustomer = order.getCustomerId() == null ? new Customer() : order.getCustomer();
+						mCustomer.setName(order.getCustomerName());
 						
 						List<OrderItem> orderItems = mOrderItemDaoService.getOrderItemsByOrderId(orderId);
 						
@@ -986,7 +1053,10 @@ public class CashierActivity extends BaseActivity
 				
 				mState = Constant.CASHIER_STATE_ORDER_NEW_ITEM;
 				
-				mOrderFragment.setSelectedOrders(mSelectedOrder);
+				mCustomer = mSelectedOrder.getCustomerId() == null ? new Customer() : mSelectedOrder.getCustomer();
+				mCustomer.setName(mSelectedOrder.getCustomerName());
+				
+				mOrderFragment.setSelectedOrders(mSelectedOrder, true);
 			}
 		}
 	}
@@ -1012,11 +1082,7 @@ public class CashierActivity extends BaseActivity
 		
 		PrintUtil.setPrinterLineSize(MerchantUtil.getMerchant().getPrinterLineSize());
 		
-		try {
-			PrintUtil.connectToBluetoothPrinter(address);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		PrintUtil.connectToBluetoothPrinter(address);
 	}
 
 	@Override

@@ -26,6 +26,7 @@ public class CodeUtil {
 	public static CodeBean[] inventoryStatus;
 	public static CodeBean[] moduleAccess;
 	public static CodeBean[] fontSizes;
+	public static CodeBean[] cashflowTypes;
 	
 	private static Context mContext;
 	private static Boolean isInitialized = false;
@@ -101,7 +102,7 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.quantity_type_liter));
 		quantityType[2] = code;
 		
-		moduleAccess = new CodeBean[15];
+		moduleAccess = new CodeBean[16];
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_CASHIER);
@@ -146,52 +147,58 @@ public class CodeUtil {
 		moduleAccess[6] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.ACCESS_CASHFLOW);
+		code.setLabel(mContext.getString(R.string.menu_cashflow));
+		code.setOrder(mContext.getString(R.string.menu_cashflow_order));
+		moduleAccess[7] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.ACCESS_USER_ACCESS);
 		code.setLabel(mContext.getString(R.string.menu_user_access));
 		code.setOrder(mContext.getString(R.string.menu_user_access_order));
-		moduleAccess[7] = code;
+		moduleAccess[8] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_REPORT_TRANSACTION);
 		code.setLabel(mContext.getString(R.string.menu_report_transaction));
 		code.setOrder(mContext.getString(R.string.menu_report_transaction_order));
-		moduleAccess[8] = code;
+		moduleAccess[9] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_REPORT_PRODUCT_STATISTIC);
 		code.setLabel(mContext.getString(R.string.menu_report_product_statistic));
 		code.setOrder(mContext.getString(R.string.menu_report_product_statistic_order));
-		moduleAccess[9] = code;
+		moduleAccess[10] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_REPORT_COMMISION);
 		code.setLabel(mContext.getString(R.string.menu_report_commision));
 		code.setOrder(mContext.getString(R.string.menu_report_commision_order));
-		moduleAccess[10] = code;
+		moduleAccess[11] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_REPORT_INVENTORY);
 		code.setLabel(mContext.getString(R.string.menu_report_inventory));
 		code.setOrder(mContext.getString(R.string.menu_report_inventory_order));
-		moduleAccess[11] = code;
+		moduleAccess[12] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_REPORT_CASHFLOW);
 		code.setLabel(mContext.getString(R.string.menu_report_cashflow));
 		code.setOrder(mContext.getString(R.string.menu_report_cashflow_order));
-		moduleAccess[12] = code;
+		moduleAccess[13] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_FAVORITE_CUSTOMER);
 		code.setLabel(mContext.getString(R.string.menu_favorite_customer));
 		code.setOrder(mContext.getString(R.string.menu_favorite_customer_order));
-		moduleAccess[13] = code;
+		moduleAccess[14] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_FAVORITE_SUPPLIER);
 		code.setLabel(mContext.getString(R.string.menu_favorite_supplier));
 		code.setOrder(mContext.getString(R.string.menu_favorite_supplier_order));
-		moduleAccess[14] = code;
+		moduleAccess[15] = code;
 				
 		status = new CodeBean[2];
 		
@@ -274,6 +281,43 @@ public class CodeUtil {
 		code.setCode(Constant.MERCHANT_TYPE_CLINIC);
 		code.setLabel(mContext.getString(R.string.merchant_type_clinic));
 		merchantTypes[3] = code;
+			
+		cashflowTypes = new CodeBean[7];
+		
+		code = new CodeBean();
+		code.setCode(Constant.CASHFLOW_TYPE_CAPITAL_IN);
+		code.setLabel(mContext.getString(R.string.cashflow_type_capital_in));
+		cashflowTypes[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.CASHFLOW_TYPE_CAPITAL_OUT);
+		code.setLabel(mContext.getString(R.string.cashflow_type_capital_out));
+		cashflowTypes[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.CASHFLOW_TYPE_BANK_DEPOSIT);
+		code.setLabel(mContext.getString(R.string.cashflow_type_bank_deposit));
+		cashflowTypes[2] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.CASHFLOW_TYPE_BANK_WITHDRAWAL);
+		code.setLabel(mContext.getString(R.string.cashflow_type_bank_withdrawal));
+		cashflowTypes[3] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.CASHFLOW_TYPE_BILL_PAYMENT);
+		code.setLabel(mContext.getString(R.string.cashflow_type_bill_payment));
+		cashflowTypes[4] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.CASHFLOW_TYPE_INVC_PAYMENT);
+		code.setLabel(mContext.getString(R.string.cashflow_type_invc_payment));
+		cashflowTypes[5] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.CASHFLOW_TYPE_EXPENSE);
+		code.setLabel(mContext.getString(R.string.cashflow_type_expense));
+		cashflowTypes[6] = code;
 	
 		emailStatus = new CodeBean[2];
 		
@@ -302,29 +346,29 @@ public class CodeUtil {
 		paymentTypes = new CodeBean[3];
 		
 		code = new CodeBean();
-		code.setCode("CASH");
+		code.setCode(Constant.PAYMENT_TYPE_CASH);
 		code.setLabel(mContext.getString(R.string.payment_type_cash));
 		paymentTypes[0] = code;
 		
 		code = new CodeBean();
-		code.setCode("DEBIT");
+		code.setCode(Constant.PAYMENT_TYPE_DEBIT_CARD);
 		code.setLabel(mContext.getString(R.string.payment_type_debit));
 		paymentTypes[1] = code;
 		
 		code = new CodeBean();
-		code.setCode("CREDIT");
+		code.setCode(Constant.PAYMENT_TYPE_CREDIT_CARD);
 		code.setLabel(mContext.getString(R.string.payment_type_credit));
 		paymentTypes[2] = code;
 		
 		orderTypes = new CodeBean[2];
 		
 		code = new CodeBean();
-		code.setCode("DINE_IN");
+		code.setCode(Constant.ORDER_TYPE_DINE_IN);
 		code.setLabel(mContext.getString(R.string.order_type_dine_in));
 		orderTypes[0] = code;
 		
 		code = new CodeBean();
-		code.setCode("TAKE_AWAY");
+		code.setCode(Constant.ORDER_TYPE_TAKEWAY);
 		code.setLabel(mContext.getString(R.string.order_type_take_away));
 		orderTypes[1] = code;
 				
@@ -409,6 +453,10 @@ public class CodeUtil {
 	
 	public static CodeBean[] getMerchantTypes() {
 		return merchantTypes;
+	}
+	
+	public static CodeBean[] getCashflowTypes() {
+		return cashflowTypes;
 	}
 	
 	public static CodeBean[] getStatus() {
@@ -554,6 +602,20 @@ public class CodeUtil {
 		String label = Constant.EMPTY_STRING;
 		
 		for (CodeBean codeBean : billStatus) {
+			if (codeBean.getCode().equals(code)) {
+				label = codeBean.getLabel();
+				break;
+			}
+		}
+		
+		return label;
+	}
+	
+	public static String getCashflowTypeLabel(String code) {
+		
+		String label = Constant.EMPTY_STRING;
+		
+		for (CodeBean codeBean : cashflowTypes) {
 			if (codeBean.getCode().equals(code)) {
 				label = codeBean.getLabel();
 				break;

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
-import com.app.posweb.server.dao.DeviceDao;
+import com.app.posweb.server.dao.SyncDao;
 import com.app.posweb.server.dao.MerchantDao;
 import com.app.posweb.server.model.SyncRequest;
 import com.app.posweb.server.model.SyncResponse;
@@ -109,7 +109,7 @@ public abstract class BaseJsonServlet extends HttpServlet {
 	
 	private boolean isValidToken(SyncRequest syncRequest) {
 		
-		DeviceDao deviceDao = new DeviceDao();
+		SyncDao deviceDao = new SyncDao();
 		
 		return deviceDao.isValidToken(syncRequest.getMerchant_id(), syncRequest.getUuid());
 	}

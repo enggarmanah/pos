@@ -9,7 +9,6 @@ import com.android.pos.dao.Bills;
 import com.android.pos.dao.BillsDaoService;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class BillDlgFragment extends DialogFragment implements BillArrayAdapter.ItemActionListener {
+public class BillDlgFragment extends BaseSearchDlgFragment<Bills> implements BillArrayAdapter.ItemActionListener {
 	
 	TextView mCancelBtn;
 	EditText mBillsSearchText;
@@ -31,8 +30,6 @@ public class BillDlgFragment extends DialogFragment implements BillArrayAdapter.
 	
 	BillArrayAdapter billArrayAdapter;
 	
-	List<Bills> mBills;
-
 	boolean mIsMandatory = false;
 	
 	private BillsDaoService mBillsDaoService = new BillsDaoService();
@@ -45,9 +42,9 @@ public class BillDlgFragment extends DialogFragment implements BillArrayAdapter.
         
         setCancelable(false);
         
-        mBills = new ArrayList<Bills>();
+        mItems = new ArrayList<Bills>();
         
-        billArrayAdapter = new BillArrayAdapter(getActivity(), mBills, this);
+        billArrayAdapter = new BillArrayAdapter(getActivity(), mItems, this);
 	}
 	
 	@Override
@@ -65,14 +62,17 @@ public class BillDlgFragment extends DialogFragment implements BillArrayAdapter.
 		
 		mBillsSearchText = (EditText) getView().findViewById(R.id.billSearchText);
 		mBillsSearchText.setText(Constant.EMPTY_STRING);
+		mBillsSearchText.requestFocus();
 		
 		mBillsSearchText.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				
-				mBills.clear();
-				mBills.addAll(mBillsDaoService.getProductPurchaseBills(s.toString(), 0));
+				mQuery = s.toString();
+				
+				mItems.clear();
+				mItems.addAll(mBillsDaoService.getBills(mQuery, 0));
 				billArrayAdapter.notifyDataSetChanged();
 			}
 			
@@ -97,6 +97,10 @@ public class BillDlgFragment extends DialogFragment implements BillArrayAdapter.
 		} else {
 			mNoBillsText.setVisibility(View.VISIBLE);
 		}
+		
+		mItems.clear();
+		mItems.addAll(mBillsDaoService.getBills(mQuery, 0));
+		billArrayAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
@@ -152,5 +156,23 @@ public class BillDlgFragment extends DialogFragment implements BillArrayAdapter.
 				dismiss();
 			}
 		};
+	}
+	
+	@Override
+	protected List<Bills> getItems(String query) {
+		
+		return mBillsDaoService.getBills(mQuery, 0);
+	}
+	
+	@Override
+	protected List<Bills> getNextItems(String query, int lastIndex) {
+		
+		return mBillsDaoService.getBills(mQuery, lastIndex);
+	}
+	
+	@Override
+	protected void refreshList() {
+		
+		billArrayAdapter.notifyDataSetChanged();
 	}
 }

@@ -25,11 +25,14 @@ import com.android.pos.util.CommonUtil;
 public class TransactionDetailFragment extends BaseFragment implements TransactionDetailArrayAdapter.ItemActionListener {
 	
 	private LinearLayout mCustomerPanel;
+	private LinearLayout mWaitressPanel;
 	
 	private ImageButton mBackButton;
+	private TextView mTitleText;
 	
+	private TextView mTransactionNoText;
 	private TextView mDateText;
-	private TextView mTransactionNoText;	
+	private TextView mWaitressText;	
 	private TextView mCashierText;
 	private TextView mCustomerText;
 	
@@ -82,6 +85,7 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		mTransactionItemList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);	
 		
 		mCustomerPanel = (LinearLayout) getView().findViewById(R.id.customerPanel);
+		mWaitressPanel = (LinearLayout) getView().findViewById(R.id.waitressPanel);
 		
 		mBackButton = (ImageButton) getView().findViewById(R.id.backButton);
 		mBackButton.setOnClickListener(getBackButtonOnClickListener());
@@ -94,8 +98,11 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 			mBackButton.setVisibility(View.VISIBLE);
 		}
 		
-		mDateText = (TextView) getView().findViewById(R.id.dateText);
+		mTitleText = (TextView) getView().findViewById(R.id.titleText);
+		
 		mTransactionNoText = (TextView) getView().findViewById(R.id.transactionNoText);
+		mDateText = (TextView) getView().findViewById(R.id.dateText);
+		mWaitressText = (TextView) getView().findViewById(R.id.waitressText);
 		mCashierText = (TextView) getView().findViewById(R.id.cashierText);
 		mCustomerText = (TextView) getView().findViewById(R.id.customerText);	
 		
@@ -178,8 +185,18 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		}
 		
 		mDateText.setText(CommonUtil.formatDayDateTime(mTransaction.getTransactionDate()));
+		mTitleText.setText(CommonUtil.formatCurrency(mTransaction.getTotalAmount()));
+		
 		mTransactionNoText.setText(mTransaction.getTransactionNo());
+		
 		mCashierText.setText(mTransaction.getCashierName());
+		
+		if (!CommonUtil.isEmpty(mTransaction.getWaitressName())) {
+			mWaitressText.setText(mTransaction.getWaitressName());
+			mWaitressPanel.setVisibility(View.VISIBLE);
+		} else {
+			mWaitressPanel.setVisibility(View.GONE);
+		} 
 		
 		if (!CommonUtil.isEmpty(mTransaction.getCustomerName())) {
 			mCustomerText.setText(mTransaction.getCustomerName());

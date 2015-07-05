@@ -6,18 +6,20 @@ import java.util.List;
 public class SyncRequestBean {
 
 	protected Long merchant_id;
+	protected String sync_type;
 	protected Date last_sync_date;
 	protected Date sync_date;
 	protected String uuid;
 	
 	protected List<String> getRequests;
 	
-	protected DeviceBean device;
+	protected SyncBean sync;
 	protected MerchantBean merchant;
 	protected UserBean user;
 	
 	protected List<BillsBean> bills;
 	protected List<CustomerBean> customers;
+	protected List<CashflowBean> cashflows;
 	protected List<DiscountBean> discounts;
 	protected List<EmployeeBean> employees;
 	protected List<InventoryBean> inventories;
@@ -39,6 +41,14 @@ public class SyncRequestBean {
 
 	public void setMerchant_id(Long merchant_id) {
 		this.merchant_id = merchant_id;
+	}
+	
+	public String getSync_type() {
+		return sync_type;
+	}
+
+	public void setSync_type(String sync_type) {
+		this.sync_type = sync_type;
 	}
 
 	public Date getLast_sync_date() {
@@ -89,12 +99,12 @@ public class SyncRequestBean {
 		this.user = user;
 	}
 
-	public DeviceBean getDevice() {
-		return device;
+	public SyncBean getSync() {
+		return sync;
 	}
 
-	public void setDevice(DeviceBean device) {
-		this.device = device;
+	public void setSync(SyncBean sync) {
+		this.sync = sync;
 	}
 
 	public List<BillsBean> getBills() {
@@ -111,6 +121,14 @@ public class SyncRequestBean {
 
 	public void setCustomers(List<CustomerBean> customers) {
 		this.customers = customers;
+	}
+	
+	public List<CashflowBean> getCashflows() {
+		return cashflows;
+	}
+
+	public void setCashflows(List<CashflowBean> cashflows) {
+		this.cashflows = cashflows;
 	}
 
 	public List<DiscountBean> getDiscounts() {

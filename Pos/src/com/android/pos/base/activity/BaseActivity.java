@@ -11,21 +11,23 @@ import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.auth.MerchantLoginActivity;
 import com.android.pos.base.adapter.AppMenuArrayAdapter;
-import com.android.pos.bills.BillsMgtActivity;
 import com.android.pos.cashier.CashierActivity;
 import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDaoService;
+import com.android.pos.data.bills.BillsMgtActivity;
+import com.android.pos.data.cashflow.CashflowMgtActivity;
 import com.android.pos.data.customer.CustomerMgtActivity;
 import com.android.pos.data.discount.DiscountMgtActivity;
 import com.android.pos.data.employee.EmployeeMgtActivity;
+import com.android.pos.data.inventory.InventoryMgtActivity;
 import com.android.pos.data.merchant.MerchantMgtActivity;
 import com.android.pos.data.product.ProductMgtActivity;
 import com.android.pos.data.productGrp.ProductGrpMgtActivity;
 import com.android.pos.data.supplier.SupplierMgtActivity;
+import com.android.pos.data.user.UserMgtActivity;
 import com.android.pos.favorite.customer.CustomerActivity;
 import com.android.pos.favorite.supplier.SupplierActivity;
-import com.android.pos.inventory.InventoryMgtActivity;
 import com.android.pos.order.OrderActivity;
 import com.android.pos.printer.PrinterSelectActivity;
 import com.android.pos.report.cashflow.CashFlowActivity;
@@ -33,7 +35,6 @@ import com.android.pos.report.commission.CommissionActivity;
 import com.android.pos.report.inventory.InventoryReportActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
 import com.android.pos.report.transaction.TransactionActivity;
-import com.android.pos.user.UserMgtActivity;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.DbUtil;
 import com.android.pos.util.MerchantUtil;
@@ -90,7 +91,7 @@ public abstract class BaseActivity extends Activity
 		
 		CodeUtil.initCodes(this);
 		
-		if (Config.isDevelopment()) {
+		if (Config.isDebug()) {
 
 			DbUtil.initDb(this);
 			MerchantUtil.getMerchant();
@@ -323,6 +324,10 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(getString(R.string.menu_bills));
 		}
 		
+		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW)) {
+			mMenus.add(getString(R.string.menu_cashflow));
+		}
+		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
 			mMenus.add(getString(R.string.menu_inventory));
 		}
@@ -509,6 +514,11 @@ public abstract class BaseActivity extends Activity
 		} else if (getString(R.string.menu_bills).equals(menu)) {
 
 			Intent intent = new Intent(this, BillsMgtActivity.class);
+			startActivity(intent);
+
+		} else if (getString(R.string.menu_cashflow).equals(menu)) {
+
+			Intent intent = new Intent(this, CashflowMgtActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_inventory).equals(menu)) {

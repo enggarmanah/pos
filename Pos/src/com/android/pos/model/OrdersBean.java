@@ -4,11 +4,15 @@ public class OrdersBean {
 
 	private Long id;
 	private Long remote_id;
+	private String ref_id;
 	private Long merchant_id;
 	private String order_no;
 	private java.util.Date order_date;
 	private String order_type;
 	private String order_reference;
+	private Long waitress_id;
+	private String waitress_name;
+	private Long customer_id;
 	private String customer_name;
 	private String status;
 
@@ -34,6 +38,14 @@ public class OrdersBean {
 
 	public void setMerchant_id(Long merchant_id) {
 		this.merchant_id = merchant_id;
+	}
+	
+	public String getRef_id() {
+		return ref_id;
+	}
+
+	public void setRef_id(String ref_id) {
+		this.ref_id = ref_id;
 	}
 
 	public String getOrder_no() {
@@ -66,6 +78,30 @@ public class OrdersBean {
 
 	public void setOrder_reference(String order_reference) {
 		this.order_reference = order_reference;
+	}
+	
+	public Long getWaitress_id() {
+		return waitress_id;
+	}
+
+	public void setWaitress_id(Long waitress_id) {
+		this.waitress_id = waitress_id;
+	}
+
+	public String getWaitress_name() {
+		return waitress_name;
+	}
+
+	public void setWaitress_name(String waitress_name) {
+		this.waitress_name = waitress_name;
+	}
+
+	public Long getCustomer_id() {
+		return customer_id;
+	}
+
+	public void setCustomer_id(Long customer_id) {
+		this.customer_id = customer_id;
 	}
 
 	public String getCustomer_name() {

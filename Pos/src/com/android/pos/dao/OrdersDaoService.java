@@ -10,7 +10,9 @@ import com.android.pos.Constant;
 import com.android.pos.dao.Orders;
 import com.android.pos.dao.OrdersDao;
 import com.android.pos.model.OrdersBean;
+import com.android.pos.model.SyncStatusBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
 
 import de.greenrobot.dao.query.Query;
@@ -19,8 +21,13 @@ import de.greenrobot.dao.query.QueryBuilder;
 public class OrdersDaoService {
 	
 	private OrdersDao mOrdersDao = DbUtil.getSession().getOrdersDao();
+	private OrderItemDao mOrderItemDao = DbUtil.getSession().getOrderItemDao();
 	
 	public void addOrders(Orders orders) {
+		
+		if (CommonUtil.isEmpty(orders.getRefId())) {
+			orders.setRefId(CommonUtil.generateRefId());
+		}
 		
 		mOrdersDao.insert(orders);
 	}
@@ -33,12 +40,43 @@ public class OrdersDaoService {
 	public void deleteOrders(Orders orders) {
 
 		Orders entity = mOrdersDao.load(orders.getId());
-		entity.delete();
+		entity.setStatus(Constant.STATUS_DELETED);
+		entity.setUploadStatus(Constant.STATUS_YES);
+		mOrdersDao.update(entity);
+	}
+	
+	public void deletePhysicalOrders(Orders orders) {
+		
+		Orders order = mOrdersDao.load(orders.getId());
+		
+		for (OrderItem orderItem : order.getOrderItemList()) {
+			
+			mOrderItemDao.delete(orderItem);
+		}
+		
+		order.delete();
 	}
 	
 	public Orders getOrders(Long id) {
 		
 		return mOrdersDao.load(id);
+	}
+	
+	public List<OrdersBean> getOrdersForUpload() {
+
+		QueryBuilder<Orders> qb = mOrdersDao.queryBuilder();
+		qb.where(OrdersDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(OrdersDao.Properties.Id);
+		
+		Query<Orders> q = qb.build();
+		
+		ArrayList<OrdersBean> orderBeans = new ArrayList<OrdersBean>();
+		
+		for (Orders order : q.list()) {
+			
+			orderBeans.add(BeanUtil.getBean(order));
+		}
+		
+		return orderBeans;
 	}
 	
 	public Orders getOrders(String orderNo) {
@@ -83,6 +121,7 @@ public class OrdersDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT DISTINCT order_reference "
 				+ " FROM orders "
+				+ " WHERE status='A' "
 				+ " ORDER BY order_reference ASC ", null);
 			
 		while(cursor.moveToNext()) {
@@ -96,30 +135,76 @@ public class OrdersDaoService {
 		return orderReferences;
 	}
 	
-	public void addOrders(List<OrdersBean> orders) {
+	public void updateOrders(List<OrdersBean> orders) {
+		
+		DbUtil.getDb().beginTransaction();
+		
+		List<OrdersBean> shiftedBeans = new ArrayList<OrdersBean>();
 		
 		for (OrdersBean bean : orders) {
 			
-			Orders order = getOrders(bean.getOrder_no());
+			boolean isAdd = false;
 			
-			boolean isNew = false;
-			Long orderId = null;
+			Orders order = mOrdersDao.load(bean.getRemote_id());
 			
-			if (order != null) {
-				orderId = order.getId();
-			} else {
-				isNew = true;
+			if (order == null) {
 				order = new Orders();
+				isAdd = true;
+			
+			} else if (!CommonUtil.compareString(order.getRefId(), bean.getRef_id())) {
+				OrdersBean shiftedBean = BeanUtil.getBean(order);
+				shiftedBeans.add(shiftedBean);
 			}
 			
 			BeanUtil.updateBean(order, bean);
 			
-			order.setId(orderId);
-			
-			if (isNew) {
+			if (isAdd) {
 				mOrdersDao.insert(order);
 			} else {
 				mOrdersDao.update(order);
+			}
+		}
+				
+		for (OrdersBean bean : shiftedBeans) {
+			
+			Orders order = new Orders();
+			BeanUtil.updateBean(order, bean);
+			
+			Long oldId = order.getId();
+			
+			order.setId(null);
+			order.setUploadStatus(Constant.STATUS_YES);
+			
+			Long newId = mOrdersDao.insert(order);
+			
+			updateOrderItemFk(oldId, newId);
+		}
+		
+		DbUtil.getDb().setTransactionSuccessful();
+		DbUtil.getDb().endTransaction();
+	}
+	
+	private void updateOrderItemFk(Long oldId, Long newId) {
+		
+		Orders t = mOrdersDao.load(oldId);
+		
+		for (OrderItem ti : t.getOrderItemList()) {
+			
+			ti.setOrderId(newId);
+			ti.setUploadStatus(Constant.STATUS_YES);
+			mOrderItemDao.update(ti);
+		}
+	}
+	
+	public void updateOrdersStatus(List<SyncStatusBean> syncStatusBeans) {
+		
+		for (SyncStatusBean bean : syncStatusBeans) {
+			
+			Orders orders = mOrdersDao.load(bean.getRemoteId());
+			
+			if (SyncStatusBean.SUCCESS.equals(bean.getStatus())) {
+				orders.setUploadStatus(Constant.STATUS_NO);
+				mOrdersDao.update(orders);
 			}
 		} 
 	}

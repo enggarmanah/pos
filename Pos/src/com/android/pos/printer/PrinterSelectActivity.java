@@ -106,7 +106,12 @@ public class PrinterSelectActivity extends Activity {
 				boolean isPrinterActiveNow = Constant.STATUS_ACTIVE.equals(merchant.getPrinterRequired());
 				
 				if (!isPrinterActiveBefore && isPrinterActiveNow) {
-					PrintUtil.selectBluetoothPrinter();
+					
+					if (PrintUtil.isBluetoothEnabled()) {
+						PrintUtil.selectBluetoothPrinter();
+					} else {
+						PrintUtil.initBluetooth(null);
+					}
 					
 				} else if (isPrinterActiveBefore && !isPrinterActiveNow) {
 					PrintUtil.disablePrinterOptions();

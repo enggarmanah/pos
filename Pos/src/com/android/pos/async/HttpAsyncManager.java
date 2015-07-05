@@ -30,6 +30,7 @@ import com.android.pos.Installation;
 import com.android.pos.R;
 import com.android.pos.auth.LoginListener;
 import com.android.pos.dao.BillsDaoService;
+import com.android.pos.dao.CashflowDaoService;
 import com.android.pos.dao.CustomerDaoService;
 import com.android.pos.dao.DiscountDaoService;
 import com.android.pos.dao.EmployeeDaoService;
@@ -37,9 +38,7 @@ import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantAccessDaoService;
 import com.android.pos.dao.MerchantDaoService;
-import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.OrderItemDaoService;
-import com.android.pos.dao.Orders;
 import com.android.pos.dao.OrdersDaoService;
 import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.ProductGroupDaoService;
@@ -49,10 +48,8 @@ import com.android.pos.dao.TransactionsDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserAccessDaoService;
 import com.android.pos.dao.UserDaoService;
-import com.android.pos.model.DeviceBean;
+import com.android.pos.model.SyncBean;
 import com.android.pos.model.MerchantBean;
-import com.android.pos.model.OrderItemBean;
-import com.android.pos.model.OrdersBean;
 import com.android.pos.model.SyncRequestBean;
 import com.android.pos.model.SyncResponseBean;
 import com.android.pos.model.UserBean;
@@ -70,7 +67,8 @@ public class HttpAsyncManager {
 	private static HttpPost httpPost;
 	
 	private Context mContext;
-	private DeviceBean mDevice;
+	private SyncBean mSync;
+	private String mSyncType;
 	private String mLoginId;
 	private String mPassword;
 
@@ -86,6 +84,7 @@ public class HttpAsyncManager {
 	private TransactionItemDaoService mTransactionItemDaoService;
 	private SupplierDaoService mSupplierDaoService;
 	private BillsDaoService mBillDaoService;
+	private CashflowDaoService mCashflowDaoService;
 	private InventoryDaoService mInventoryDaoService;
 	private MerchantAccessDaoService mMerchantAccessDaoService;
 	private OrdersDaoService mOrdersDaoService;
@@ -98,9 +97,6 @@ public class HttpAsyncManager {
 	private List<String> mUpdateTasks;
 	
 	private Map<String, String> taskMessage;
-	
-	private List<OrdersBean> mOrders;
-	private List<OrderItemBean> mOrderItems;
 	
 	private static ObjectMapper mapper;
 	
@@ -116,7 +112,7 @@ public class HttpAsyncManager {
 
 		this.mContext = context;
 		
-		mDevice = new DeviceBean();
+		mSync = new SyncBean();
 		
 		mAsyncListener = (HttpAsyncListener) context;
 
@@ -132,6 +128,7 @@ public class HttpAsyncManager {
 		mTransactionItemDaoService = new TransactionItemDaoService();
 		mSupplierDaoService = new SupplierDaoService();
 		mBillDaoService = new BillsDaoService();
+		mCashflowDaoService = new CashflowDaoService();
 		mInventoryDaoService = new InventoryDaoService();
 		mMerchantAccessDaoService = new MerchantAccessDaoService();
 		mOrdersDaoService = new OrdersDaoService();
@@ -147,11 +144,10 @@ public class HttpAsyncManager {
 		taskMessage.put(Constant.TASK_VALIDATE_USER, context.getString(R.string.task_validate_user));
 		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT, context.getString(R.string.task_root_get_merchant));
 		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT_ACCESS, context.getString(R.string.task_root_get_merchant_access));
-		taskMessage.put(Constant.TASK_SUBMIT_ORDERS, context.getString(R.string.task_submit_orders));
-		taskMessage.put(Constant.TASK_SUBMIT_ORDER_ITEMS, context.getString(R.string.task_submit_order_items));
-		taskMessage.put(Constant.TASK_GET_ORDERS, context.getString(R.string.task_get_orders));
-		taskMessage.put(Constant.TASK_GET_ORDER_ITEMS, context.getString(R.string.task_get_order_item));
-		taskMessage.put(Constant.TASK_DELETE_ORDERS, context.getString(R.string.task_delete_orders));
+		taskMessage.put(Constant.TASK_UPDATE_ORDER, context.getString(R.string.task_submit_orders));
+		taskMessage.put(Constant.TASK_UPDATE_ORDER_ITEM, context.getString(R.string.task_submit_order_items));
+		taskMessage.put(Constant.TASK_GET_ORDER, context.getString(R.string.task_get_orders));
+		taskMessage.put(Constant.TASK_GET_ORDER_ITEM, context.getString(R.string.task_get_order_item));
 		taskMessage.put(Constant.TASK_GET_PRODUCT_GROUP, context.getString(R.string.task_get_product_group));
 		taskMessage.put(Constant.TASK_UPDATE_PRODUCT_GROUP, context.getString(R.string.task_update_product_group));
 		taskMessage.put(Constant.TASK_GET_DISCOUNT, context.getString(R.string.task_get_discount));
@@ -166,8 +162,8 @@ public class HttpAsyncManager {
 		taskMessage.put(Constant.TASK_UPDATE_USER, context.getString(R.string.task_update_user));
 		taskMessage.put(Constant.TASK_GET_USER_ACCESS, context.getString(R.string.task_get_user_access));
 		taskMessage.put(Constant.TASK_UPDATE_USER_ACCESS, context.getString(R.string.task_update_user_access));
-		taskMessage.put(Constant.TASK_GET_TRANSACTIONS, context.getString(R.string.task_get_transactions));
-		taskMessage.put(Constant.TASK_UPDATE_TRANSACTIONS, context.getString(R.string.task_update_transactions));
+		taskMessage.put(Constant.TASK_GET_TRANSACTION, context.getString(R.string.task_get_transactions));
+		taskMessage.put(Constant.TASK_UPDATE_TRANSACTION, context.getString(R.string.task_update_transactions));
 		taskMessage.put(Constant.TASK_GET_TRANSACTION_ITEM, context.getString(R.string.task_get_transaction_item));
 		taskMessage.put(Constant.TASK_UPDATE_TRANSACTION_ITEM, context.getString(R.string.task_update_transaction_item));
 		taskMessage.put(Constant.TASK_GET_SUPPLIER, context.getString(R.string.task_get_supplier));
@@ -285,6 +281,8 @@ public class HttpAsyncManager {
 		
 		mTaskIndex = 0;
 		
+		mSyncType = Constant.SYNC_TYPE_MERCHANTS;
+		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
 		
@@ -310,6 +308,8 @@ public class HttpAsyncManager {
 		
 		mTaskIndex = 0;
 		
+		mSyncType = Constant.SYNC_TYPE_MERCHANT;
+		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
 		
@@ -327,6 +327,7 @@ public class HttpAsyncManager {
 		
 		mTasks.addAll(getTaskWithUpdate(mUpdateTasks));
 		
+		mTasks.add(Constant.TASK_UPDATE_LAST_SYNC);
 		mTasks.add(Constant.TASK_COMPLETED);
 		
 		executeNextTask();
@@ -337,6 +338,8 @@ public class HttpAsyncManager {
 		startTime = new Date().getTime();
 		
 		mTaskIndex = 0;
+		
+		mSyncType = Constant.SYNC_TYPE_USERS;
 		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
@@ -352,6 +355,7 @@ public class HttpAsyncManager {
 		
 		mTasks.addAll(getTaskWithUpdate(mUpdateTasks));
 		
+		mTasks.add(Constant.TASK_UPDATE_LAST_SYNC);
 		mTasks.add(Constant.TASK_COMPLETED);
 		
 		executeNextTask();
@@ -362,6 +366,8 @@ public class HttpAsyncManager {
 		startTime = new Date().getTime();
 		
 		mTaskIndex = 0;
+		
+		mSyncType = Constant.SYNC_TYPE_ALL;
 		
 		mTasks.clear();
 		
@@ -375,10 +381,11 @@ public class HttpAsyncManager {
 		mGetTasks.add(Constant.TASK_GET_PRODUCT);
 		mGetTasks.add(Constant.TASK_GET_USER);
 		mGetTasks.add(Constant.TASK_GET_USER_ACCESS);
-		mGetTasks.add(Constant.TASK_GET_TRANSACTIONS);
+		mGetTasks.add(Constant.TASK_GET_TRANSACTION);
 		mGetTasks.add(Constant.TASK_GET_TRANSACTION_ITEM);
 		mGetTasks.add(Constant.TASK_GET_SUPPLIER);
 		mGetTasks.add(Constant.TASK_GET_BILL);
+		mGetTasks.add(Constant.TASK_GET_CASHFLOW);
 		mGetTasks.add(Constant.TASK_GET_INVENTORY);
 		mGetTasks.add(Constant.TASK_GET_MERCHANT);
 		mGetTasks.add(Constant.TASK_GET_MERCHANT_ACCESS);
@@ -391,10 +398,11 @@ public class HttpAsyncManager {
 		mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT);
 		mUpdateTasks.add(Constant.TASK_UPDATE_USER);
 		mUpdateTasks.add(Constant.TASK_UPDATE_USER_ACCESS);
-		mUpdateTasks.add(Constant.TASK_UPDATE_TRANSACTIONS);
+		mUpdateTasks.add(Constant.TASK_UPDATE_TRANSACTION);
 		mUpdateTasks.add(Constant.TASK_UPDATE_TRANSACTION_ITEM);
 		mUpdateTasks.add(Constant.TASK_UPDATE_SUPPLIER);
 		mUpdateTasks.add(Constant.TASK_UPDATE_BILL);
+		mUpdateTasks.add(Constant.TASK_UPDATE_CASHFLOW);
 		mUpdateTasks.add(Constant.TASK_UPDATE_INVENTORY);
 		mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT);
 		mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT_ACCESS);
@@ -407,41 +415,28 @@ public class HttpAsyncManager {
 		executeNextTask();
 	}
 	
-	public void submitOrders(Orders orders, List<OrderItem> orderItems) {
-		
-		startTime = new Date().getTime();
-		
-		mOrders = new ArrayList<OrdersBean>();
-		
-		mOrders.add(BeanUtil.getBean(orders));
-		
-		mOrderItems = new ArrayList<OrderItemBean>();
-		
-		for (OrderItem orderItem : orderItems) {
-			
-			mOrderItems.add(BeanUtil.getBean(orderItem));
-		}
-		
-		mTaskIndex = 0;
-		
-		mTasks.clear();
-		mTasks.add(Constant.TASK_SUBMIT_ORDERS);
-		mTasks.add(Constant.TASK_SUBMIT_ORDER_ITEMS);
-		mTasks.add(Constant.TASK_COMPLETED);
-		
-		executeNextTask();
-	}
-	
-	public void getOrders() {
+	public void syncOrders() {
 		
 		startTime = new Date().getTime();
 		
 		mTaskIndex = 0;
 		
+		mSyncType = Constant.SYNC_TYPE_ORDERS;
+		
 		mTasks.clear();
-		mTasks.add(Constant.TASK_GET_ORDERS);
-		mTasks.add(Constant.TASK_GET_ORDER_ITEMS);
-		mTasks.add(Constant.TASK_DELETE_ORDERS);
+		mTasks.add(Constant.TASK_GET_LAST_SYNC);
+		
+		mGetTasks.clear();
+		mGetTasks.add(Constant.TASK_GET_ORDER);
+		mGetTasks.add(Constant.TASK_GET_ORDER_ITEM);
+		
+		mUpdateTasks.clear();
+		mUpdateTasks.add(Constant.TASK_UPDATE_ORDER);
+		mUpdateTasks.add(Constant.TASK_UPDATE_ORDER_ITEM);
+		
+		mTasks.addAll(getTaskWithUpdate(mUpdateTasks));
+		
+		mTasks.add(Constant.TASK_UPDATE_LAST_SYNC);
 		mTasks.add(Constant.TASK_COMPLETED);
 		
 		executeNextTask();
@@ -453,12 +448,20 @@ public class HttpAsyncManager {
 		
 		mTaskIndex = 0;
 		
+		mSyncType = Constant.SYNC_TYPE_PRODUCTS;
+		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
 		
 		mGetTasks.clear();
 		mGetTasks.add(Constant.TASK_GET_PRODUCT_GROUP);
 		mGetTasks.add(Constant.TASK_GET_PRODUCT);
+		
+		mUpdateTasks.clear();
+		mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT_GROUP);
+		mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT);
+		
+		mTasks.addAll(getTaskWithUpdate(mUpdateTasks));
 		
 		mTasks.add(Constant.TASK_UPDATE_LAST_SYNC);
 		mTasks.add(Constant.TASK_COMPLETED);
@@ -500,17 +503,26 @@ public class HttpAsyncManager {
 			} else if (Constant.TASK_UPDATE_USER_ACCESS.equals(task) &&  mUserAccessDaoService.hasUpdate()) {
 				taskWithUpdates.add(Constant.TASK_UPDATE_USER_ACCESS);
 			
-			} else if (Constant.TASK_UPDATE_TRANSACTIONS.equals(task) &&  mTransactionsDaoService.hasUpdate()) {
-				taskWithUpdates.add(Constant.TASK_UPDATE_TRANSACTIONS);
+			} else if (Constant.TASK_UPDATE_TRANSACTION.equals(task) &&  mTransactionsDaoService.hasUpdate()) {
+				taskWithUpdates.add(Constant.TASK_UPDATE_TRANSACTION);
 			
 			} else if (Constant.TASK_UPDATE_TRANSACTION_ITEM.equals(task) &&  mTransactionItemDaoService.hasUpdate()) {
 				taskWithUpdates.add(Constant.TASK_UPDATE_TRANSACTION_ITEM);
+			
+			} else if (Constant.TASK_UPDATE_ORDER.equals(task) &&  mOrdersDaoService.hasUpdate()) {
+				taskWithUpdates.add(Constant.TASK_UPDATE_ORDER);
+			
+			} else if (Constant.TASK_UPDATE_ORDER_ITEM.equals(task) &&  mOrderItemDaoService.hasUpdate()) {
+				taskWithUpdates.add(Constant.TASK_UPDATE_ORDER_ITEM);
 			
 			} else if (Constant.TASK_UPDATE_SUPPLIER.equals(task) &&  mSupplierDaoService.hasUpdate()) {
 				taskWithUpdates.add(Constant.TASK_UPDATE_SUPPLIER);
 			
 			} else if (Constant.TASK_UPDATE_BILL.equals(task) &&  mBillDaoService.hasUpdate()) {
 				taskWithUpdates.add(Constant.TASK_UPDATE_BILL);
+			
+			} else if (Constant.TASK_UPDATE_CASHFLOW.equals(task) &&  mCashflowDaoService.hasUpdate()) {
+				taskWithUpdates.add(Constant.TASK_UPDATE_CASHFLOW);
 			
 			} else if (Constant.TASK_UPDATE_INVENTORY.equals(task) &&  mInventoryDaoService.hasUpdate()) {
 				taskWithUpdates.add(Constant.TASK_UPDATE_INVENTORY);
@@ -550,7 +562,7 @@ public class HttpAsyncManager {
 			
 			request.setMerchant_id(merchantId);
 			request.setUuid(Installation.getInstallationId(mContext));
-			request.setLast_sync_date(mDevice.getLast_sync_date());
+			request.setLast_sync_date(mSync.getLast_sync_date());
 			request.setSync_date(mSyncDate);
 			
 			if (Constant.TASK_VALIDATE_MERCHANT.equals(tasks[0])) {
@@ -583,38 +595,34 @@ public class HttpAsyncManager {
 
 				url = Config.SERVER_URL + "/getLastSyncJsonServlet";
 
-				DeviceBean device = new DeviceBean();
-				device.setMerchant_id(merchantId);
-				device.setUuid(Installation.getInstallationId(mContext));
+				SyncBean sync = new SyncBean();
 				
-				request.setDevice(device);
+				sync.setMerchant_id(merchantId);
+				sync.setSync_type(mSyncType);
+				sync.setUuid(Installation.getInstallationId(mContext));
+				
+				request.setSync(sync);
 				request.setGetRequests(mGetTasks);
 
-			} else if (Constant.TASK_SUBMIT_ORDERS.equals(tasks[0])) {
-
-				url = Config.SERVER_URL + "/ordersUpdateJsonServlet";
-				
-				request.setOrders(mOrders);
-
-			} else if (Constant.TASK_SUBMIT_ORDER_ITEMS.equals(tasks[0])) {
-
-				url = Config.SERVER_URL + "/orderItemUpdateJsonServlet";
-				
-				request.setOrderItems(mOrderItems);
-
-			} else if (Constant.TASK_GET_ORDERS.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_ORDER.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/ordersGetJsonServlet";
 				
-			} else if (Constant.TASK_GET_ORDER_ITEMS.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_ORDER.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/ordersUpdateJsonServlet";
+				
+				request.setOrders(mOrdersDaoService.getOrdersForUpload());
+
+			} else if (Constant.TASK_GET_ORDER_ITEM.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/orderItemGetJsonServlet";
 				
-			} else if (Constant.TASK_DELETE_ORDERS.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_ORDER_ITEM.equals(tasks[0])) {
 
-				url = Config.SERVER_URL + "/ordersDeleteJsonServlet";
+				url = Config.SERVER_URL + "/orderItemUpdateJsonServlet";
 				
-				request.setOrders(mOrders);
+				request.setOrderItems(mOrderItemDaoService.getOrderItemsForUpload());
 
 			} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(tasks[0])) {
 
@@ -686,11 +694,11 @@ public class HttpAsyncManager {
 
 				request.setUserAccesses(mUserAccessDaoService.getUserAccessesForUpload());
 
-			} else if (Constant.TASK_GET_TRANSACTIONS.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_TRANSACTION.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/transactionsGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_TRANSACTIONS.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_TRANSACTION.equals(tasks[0])) {
 
 				url = Config.SERVER_URL + "/transactionsUpdateJsonServlet";
 
@@ -725,6 +733,16 @@ public class HttpAsyncManager {
 				url = Config.SERVER_URL + "/billUpdateJsonServlet";
 
 				request.setBills(mBillDaoService.getBillsForUpload());
+
+			} else if (Constant.TASK_GET_CASHFLOW.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/cashflowGetJsonServlet";
+				
+			} else if (Constant.TASK_UPDATE_CASHFLOW.equals(tasks[0])) {
+
+				url = Config.SERVER_URL + "/cashflowUpdateJsonServlet";
+
+				request.setCashflows(mCashflowDaoService.getCashflowForUpload());
 
 			} else if (Constant.TASK_GET_INVENTORY.equals(tasks[0])) {
 
@@ -764,8 +782,8 @@ public class HttpAsyncManager {
 
 				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
 				
-				//mDevice.setLast_sync_date(mSyncDate);
-				request.setDevice(mDevice);
+				//mSync.setLast_sync_date(mSyncDate);
+				request.setSync(mSync);
 			}
 			
 			return POST(url, request);
@@ -817,7 +835,7 @@ public class HttpAsyncManager {
 						
 					} else if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
 	
-						mDevice = resp.getDevice();
+						mSync = resp.getSync();
 						mSyncDate = resp.getRespDate();
 						
 						mTasks.remove(0);
@@ -829,21 +847,21 @@ public class HttpAsyncManager {
 						mTasks.clear();
 						mTasks.addAll(taskHasUpdates);
 	
-					} else if (Constant.TASK_SUBMIT_ORDERS.equals(task)) {
+					} else if (Constant.TASK_GET_ORDER.equals(task)) {
 	
-					} else if (Constant.TASK_SUBMIT_ORDER_ITEMS.equals(task)) {
+						mOrdersDaoService.updateOrders(resp.getOrders());
 	
-					} else if (Constant.TASK_GET_ORDERS.equals(task)) {
-	
-						mOrders = resp.getOrders();
+					} else if (Constant.TASK_UPDATE_ORDER.equals(task)) {
 						
-						mOrdersDaoService.addOrders(mOrders);
+						mOrdersDaoService.updateOrdersStatus(resp.getStatus());
 	
-					} else if (Constant.TASK_GET_ORDER_ITEMS.equals(task)) {
+					} else if (Constant.TASK_GET_ORDER_ITEM.equals(task)) {
 	
-						mOrderItemDaoService.addOrderItems(resp.getOrderItems());
+						mOrderItemDaoService.updateOrderItems(resp.getOrderItems());
 	
-					} else if (Constant.TASK_DELETE_ORDERS.equals(task)) {
+					} else if (Constant.TASK_UPDATE_ORDER_ITEM.equals(task)) {
+						
+						mOrderItemDaoService.updateOrderItemStatus(resp.getStatus());
 						
 					} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(task)) {
 						
@@ -901,11 +919,11 @@ public class HttpAsyncManager {
 	
 						mUserAccessDaoService.updateUserAccessStatus(resp.getStatus());
 	
-					} else if (Constant.TASK_GET_TRANSACTIONS.equals(task)) {
+					} else if (Constant.TASK_GET_TRANSACTION.equals(task)) {
 	
 						mTransactionsDaoService.updateTransactions(resp.getTransactions());
 	
-					} else if (Constant.TASK_UPDATE_TRANSACTIONS.equals(task)) {
+					} else if (Constant.TASK_UPDATE_TRANSACTION.equals(task)) {
 	
 						mTransactionsDaoService.updateTransactionsStatus(resp.getStatus());
 	
@@ -932,6 +950,14 @@ public class HttpAsyncManager {
 					} else if (Constant.TASK_UPDATE_BILL.equals(task)) {
 	
 						mBillDaoService.updateBillsStatus(resp.getStatus());
+	
+					} else if (Constant.TASK_GET_CASHFLOW.equals(task)) {
+	
+						mCashflowDaoService.updateCashflows(resp.getCashflows());
+	
+					} else if (Constant.TASK_UPDATE_CASHFLOW.equals(task)) {
+	
+						mCashflowDaoService.updateCashflowStatus(resp.getStatus());
 	
 					} else if (Constant.TASK_GET_INVENTORY.equals(task)) {
 	
@@ -961,7 +987,7 @@ public class HttpAsyncManager {
 	
 					} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(task)) {
 	
-						mDevice = resp.getDevice();
+						mSync = resp.getSync();
 						
 						if (mContext instanceof LoginListener) {
 							

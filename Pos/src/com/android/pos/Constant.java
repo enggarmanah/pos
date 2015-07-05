@@ -8,6 +8,13 @@ public class Constant {
 	
 	public static final String QUERY_LIMIT = "50";
 	
+	public static final String SYNC_TYPE_MERCHANTS = "SYNC_TYPE_MERCHANTS";
+	public static final String SYNC_TYPE_MERCHANT = "SYNC_TYPE_MERCHANT";
+	public static final String SYNC_TYPE_USERS = "SYNC_TYPE_USERS";
+	public static final String SYNC_TYPE_ORDERS = "SYNC_TYPE_ORDERS";
+	public static final String SYNC_TYPE_PRODUCTS = "SYNC_TYPE_PRODUCTS";
+	public static final String SYNC_TYPE_ALL = "SYNC_TYPE_ALL";
+	
 	public static final String EMPTY_STRING = "";
 	public static final String SPACE_STRING = " ";
 	public static final String CR_STRING = "\r";
@@ -37,6 +44,11 @@ public class Constant {
 	public static final String MERCHANT_TYPE_SHOP = "S";
 	public static final String MERCHANT_TYPE_CLINIC = "C";
 	
+	public static final String PAYMENT_TYPE_CASH = "CASH";
+	public static final String PAYMENT_TYPE_CREDIT_CARD = "CREDIT_CARD";
+	public static final String PAYMENT_TYPE_DEBIT_CARD = "DEBIT_CARD";
+	public static final String PAYMENT_TYPE_CREDIT = "CREDIT";
+	
 	public static final String DISCOUNT_TYPE_NOMINAL = "N";
 	public static final String DISCOUNT_TYPE_PERCENTAGE = "P";
 	
@@ -59,14 +71,6 @@ public class Constant {
 	public static final String TASK_ROOT_GET_MERCHANT = "TASK_ROOT_GET_MERCHANT";
 	public static final String TASK_ROOT_GET_MERCHANT_ACCESS = "TASK_ROOT_GET_MERCHANT_ACCESS";
 	
-	public static final String TASK_SUBMIT_ORDERS = "TASK_SUBMIT_ORDERS";
-	public static final String TASK_SUBMIT_ORDER_ITEMS = "TASK_SUBMIT_ORDER_ITEMS";
-	
-	public static final String TASK_GET_ORDERS = "TASK_GET_ORDERS";
-	public static final String TASK_GET_ORDER_ITEMS = "TASK_GET_ORDER_ITEMS";
-	
-	public static final String TASK_DELETE_ORDERS = "TASK_DELETE_ORDERS";
-	
 	public static final String TASK_GET_LAST_SYNC = "TASK_GET_LAST_SYNC";
 	public static final String TASK_UPDATE_LAST_SYNC = "TASK_UPDATE_LAST_SYNC";
 	
@@ -85,23 +89,32 @@ public class Constant {
 	public static final String TASK_GET_CUSTOMER = "TASK_GET_CUSTOMER";
 	public static final String TASK_UPDATE_CUSTOMER = "TASK_UPDATE_CUSTOMER";
 	
+	public static final String TASK_GET_CASHFLOW = "TASK_GET_CASHFLOW";
+	public static final String TASK_UPDATE_CASHFLOW = "TASK_UPDATE_CASHFLOW";
+	
 	public static final String TASK_GET_PRODUCT = "TASK_GET_PRODUCT";
 	public static final String TASK_UPDATE_PRODUCT = "TASK_UPDATE_PRODUCT";
 	
 	public static final String TASK_GET_USER = "TASK_GET_USER";
 	public static final String TASK_UPDATE_USER = "TASK_UPDATE_USER";
 	
-	public static final String TASK_GET_TRANSACTIONS = "TASK_GET_TRANSACTIONS";
-	public static final String TASK_UPDATE_TRANSACTIONS = "TASK_UPDATE_TRANSACTIONS";
+	public static final String TASK_GET_TRANSACTION = "TASK_GET_TRANSACTION";
+	public static final String TASK_UPDATE_TRANSACTION = "TASK_UPDATE_TRANSACTION";
 
 	public static final String TASK_GET_TRANSACTION_ITEM = "TASK_GET_TRANSACTION_ITEM";
 	public static final String TASK_UPDATE_TRANSACTION_ITEM = "TASK_UPDATE_TRANSACTION_ITEM";
 	
+	public static final String TASK_GET_ORDER = "TASK_GET_ORDER";
+	public static final String TASK_UPDATE_ORDER = "TASK_UPDATE_ORDER";
+	
+	public static final String TASK_GET_ORDER_ITEM = "TASK_GET_ORDER_ITEM";
+	public static final String TASK_UPDATE_ORDER_ITEM = "TASK_UPDATE_ORDER_ITEM";
+	
 	public static final String TASK_GET_SUPPLIER = "TASK_GET_SUPPLIER";
 	public static final String TASK_UPDATE_SUPPLIER = "TASK_UPDATE_SUPPLIER";
 	
-	public static final String TASK_GET_BILL = "TASK_GET_BILLS";
-	public static final String TASK_UPDATE_BILL = "TASK_UPDATE_BILLS";
+	public static final String TASK_GET_BILL = "TASK_GET_BILL";
+	public static final String TASK_UPDATE_BILL = "TASK_UPDATE_BILL";
 	
 	public static final String TASK_GET_INVENTORY = "TASK_GET_INVENTORY";
 	public static final String TASK_UPDATE_INVENTORY = "TASK_UPDATE_INVENTORY";
@@ -116,6 +129,7 @@ public class Constant {
 	
 	public static final String ORDER_TYPE_DINE_IN = "DINE_IN";
 	public static final String ORDER_TYPE_TAKEWAY = "TAKE_AWAY";
+	public static final String ORDER_TYPE_SERVICE = "SERVICE";
 	
 	public static final String SELECTED_ORDERS_FOR_PAYMENT = "SELECTED_ORDERS_FOR_PAYMENT";
 	public static final String SELECTED_ORDERS_FOR_NEW_ITEM = "SELECTED_ORDERS_FOR_NEW_ITEM";
@@ -151,6 +165,7 @@ public class Constant {
 	public static final String ACCESS_INVENTORY = "INVT";
 	public static final String ACCESS_USER_ACCESS = "UACC";
 	public static final String ACCESS_BILLS = "BILL";
+	public static final String ACCESS_CASHFLOW = "CAFL";
 	public static final String ACCESS_REPORT_TRANSACTION = "RTRA";
 	public static final String ACCESS_REPORT_PRODUCT_STATISTIC = "RPST";
 	public static final String ACCESS_REPORT_COMMISION = "RCMS";
@@ -158,4 +173,12 @@ public class Constant {
 	public static final String ACCESS_REPORT_CASHFLOW = "RCFL";
 	public static final String ACCESS_FAVORITE_CUSTOMER = "FVCS";
 	public static final String ACCESS_FAVORITE_SUPPLIER = "FVSP";
+	
+	public static final String CASHFLOW_TYPE_CAPITAL_IN = "CAPIN";
+	public static final String CASHFLOW_TYPE_CAPITAL_OUT = "CAPOUT";
+	public static final String CASHFLOW_TYPE_BANK_DEPOSIT = "BNKDEP";
+	public static final String CASHFLOW_TYPE_BANK_WITHDRAWAL = "BNKWTH";
+	public static final String CASHFLOW_TYPE_BILL_PAYMENT = "BILPAY";
+	public static final String CASHFLOW_TYPE_INVC_PAYMENT = "INVPAY";
+	public static final String CASHFLOW_TYPE_EXPENSE = "EXPENS";
 }

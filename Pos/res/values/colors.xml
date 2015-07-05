@@ -14,9 +14,9 @@
     <color name="section_header_text">#31343a</color>
     
     <color name="border_dark">#666</color>
-    <color name="border_gray">#AAA</color>
-    <color name="border_gray_dark">#777</color>
-    <color name="border_gray_light">#E1E1E1</color>
+    <color name="border_grey">#AAA</color>
+    <color name="border_grey_dark">#777</color>
+    <color name="border_grey_light">#E1E1E1</color>
     <color name="border_white">#FFF</color>
     <color name="border_blue_light">#c3d8ea</color>
     <color name="border_blue_dark">#356d9b</color>

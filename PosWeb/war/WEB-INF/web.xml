@@ -66,6 +66,14 @@
 		<servlet-class>com.app.posweb.server.servlet.CustomerUpdateJsonServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>cashflowGetJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.CashflowGetJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>cashflowUpdateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.CashflowUpdateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>productGetJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.ProductGetJsonServlet</servlet-class>
 	</servlet>
@@ -269,6 +277,14 @@
 	<servlet-mapping>
 		<servlet-name>billUpdateJsonServlet</servlet-name>
 		<url-pattern>/billUpdateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>cashflowGetJsonServlet</servlet-name>
+		<url-pattern>/cashflowGetJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>cashflowUpdateJsonServlet</servlet-name>
+		<url-pattern>/cashflowUpdateJsonServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>inventoryGetJsonServlet</servlet-name>

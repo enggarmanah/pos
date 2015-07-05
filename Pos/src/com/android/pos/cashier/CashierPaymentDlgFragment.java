@@ -81,7 +81,7 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.cashier_payment_fragment, container, false);
+		View view = inflater.inflate(R.layout.cashier_payment_dlg_fragment, container, false);
 
 		return view;
 	}
@@ -333,9 +333,10 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 		};
 	}
 	
-	public void setTotalBill(Float amount) {
+	public void setBillInfo(Float amount, Customer customer) {
 		
 		mTotalBill = amount;
+		mCustomer = customer;
 		
 		refreshDisplay();
 	}

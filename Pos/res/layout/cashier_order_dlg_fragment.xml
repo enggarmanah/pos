@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="300dp"
@@ -43,122 +43,80 @@
             style="@style/CashierSpinnerRowTextStyle" />
     </FrameLayout>
 	
+    <LinearLayout
+        android:id="@+id/customerPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/background">
+        
+        <EditText
+            android:id="@+id/customerText"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center_vertical|start"
+            android:hint="@string/customer"
+            android:padding="12dp"
+            android:textColor="@color/text_default"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:singleLine="true"/>
+        
+        <ImageButton
+            android:id="@+id/customerSearchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:src="@drawable/ic_search_black"
+            android:background="@color/background"/>
+        
+    </LinearLayout>
+    
     <EditText
-        android:id="@+id/customerText"
+        android:id="@+id/reservationNoText"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:gravity="center"
-        android:padding="10dp"
+        android:padding="12dp"
         android:textColor="@color/text_default"
         android:textSize="20sp"
         android:textStyle="bold" 
+        android:inputType="number"
         android:background="#FFF"
-        android:hint="@string/customer_name"/>
+        android:hint="@string/reservation_no"/>
     
-	<LinearLayout
-	    android:id="@+id/reservationNoPanel"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:background="#FFF"
-	    android:paddingBottom="1dp">
-
-	    <TextView
-	        android:gravity="center_vertical|start"
-	        android:text="@string/reservation_no"
-	        style="@style/CashierNumberValueStyle"
-	        android:layout_width="wrap_content"
-	        android:textSize="22sp"/>
-	
-	    <TextView
-	        android:id="@+id/reservationNoText"
-	        android:gravity="center_vertical|end"
-	        style="@style/CashierNumberValueStyle"/>
-	</LinearLayout>
-	
-	<TextView style="@style/SectionDividerStyle"/>
+    <LinearLayout style="@style/SectionDividerStyle"/>
     
-    <LinearLayout 
-        android:id="@+id/reservationInputPanel"
+  	<LinearLayout
+        android:id="@+id/waitressPanel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-    
-	    <LinearLayout style="@style/CashierNumberRowStyle" >
-	
-	        <Button
-	            android:id="@+id/number7Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_7" />
-	
-	        <Button
-	            android:id="@+id/number8Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_8" />
-	
-	        <Button
-	            android:id="@+id/number9Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_9" />
-	    </LinearLayout>
-	
-	    <LinearLayout style="@style/CashierNumberRowStyle" >
-	
-	        <Button
-	            android:id="@+id/number4Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_4" />
-	
-	        <Button
-	            android:id="@+id/number5Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_5" />
-	
-	        <Button
-	            android:id="@+id/number6Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_6" />
-	    </LinearLayout>
-	
-	    <LinearLayout style="@style/CashierNumberRowStyle" >
-	
-	        <Button
-	            android:id="@+id/number1Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_1" />
-	
-	        <Button
-	            android:id="@+id/number2Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_2" />
-	
-	        <Button
-	            android:id="@+id/number3Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_3" />
-	    </LinearLayout>
-	
-	    <LinearLayout style="@style/CashierNumberRowStyle" >
-	
-	        <Button
-	            android:id="@+id/actionCBtn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_c" />
-	
-	        <Button
-	            android:id="@+id/number0Btn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:text="@string/number_0" />
-	
-	        <ImageButton
-	            android:id="@+id/actionXBtn"
-	            style="@style/CashierNumberButtonStyle"
-	            android:src="@drawable/ic_backspace_black"
-	            android:contentDescription="@string/none"/>
-	    </LinearLayout>
-    
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/background">
+        
+        <EditText
+            android:id="@+id/waitressText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:gravity="center_vertical|start"
+            android:hint="@string/waitress"
+            android:padding="12dp"
+            android:textColor="@color/text_default"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:drawableRight="@drawable/ic_search_black"
+            android:drawableEnd="@drawable/ic_search_black"
+            android:singleLine="true"
+            android:focusable="false"/>
+        
+        
     </LinearLayout>
-
-    <LinearLayout style="@style/CashierNumberRowStyle" >
+    
+	<LinearLayout style="@style/CashierNumberRowStyle" >
 
         <Button
             android:id="@+id/okBtn"

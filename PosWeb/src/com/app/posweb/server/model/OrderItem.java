@@ -15,6 +15,7 @@ public class OrderItem {
 	protected Long id;
 	
 	private long remote_id;
+	private String ref_id;
 	private long merchant_id;
 	private long order_id;
 	private String order_no;
@@ -22,18 +23,21 @@ public class OrderItem {
     private String product_name;
     private Float quantity;
     private String remarks;
+    private Long employee_id;
 
 	public void setBean(OrderItem bean) {
 
 		this.id = bean.getId();
 		this.merchant_id = bean.getMerchant_id();
 		this.remote_id = bean.getRemote_id();
+		this.ref_id = bean.getRef_id();
 		this.order_id = bean.getOrder_id();
 		this.order_no = bean.getOrder_no();
 		this.product_id = bean.getProduct_id();
 		this.product_name = bean.getProduct_name();
 		this.quantity = bean.getQuantity();
 		this.remarks = bean.getRemarks();
+		this.employee_id = bean.getEmployee_id();
 	}
 
 	public Long getId() {
@@ -50,6 +54,14 @@ public class OrderItem {
 
 	public void setRemote_id(long remote_id) {
 		this.remote_id = remote_id;
+	}
+	
+	public String getRef_id() {
+		return ref_id;
+	}
+
+	public void setRef_id(String ref_id) {
+		this.ref_id = ref_id;
 	}
 
 	public long getMerchant_id() {
@@ -106,5 +118,13 @@ public class OrderItem {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public Long getEmployee_id() {
+		return employee_id;
+	}
+
+	public void setEmployee_id(Long employee_id) {
+		this.employee_id = employee_id;
 	}
 }

@@ -6,8 +6,11 @@ import com.android.pos.CodeBean;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
+import com.android.pos.dao.Customer;
+import com.android.pos.dao.Employee;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 
 import android.app.Activity;
@@ -28,33 +31,26 @@ public class CashierOrderDlgFragment extends DialogFragment {
 	
 	TextView mTotalItemText;
 	Spinner mOrderTypeSp;
+	EditText mWaitressText;
 	EditText mCustomerText;
 	TextView mReservationNoText;
 	
-	LinearLayout mReservationNoPanel;
-	LinearLayout mReservationInputPanel;
+	ImageButton mCustomerSearchBtn;
 	
-	Button number0Btn;
-	Button number1Btn;
-	Button number2Btn;
-	Button number3Btn;
-	Button number4Btn;
-	Button number5Btn;
-	Button number6Btn;
-	Button number7Btn;
-	Button number8Btn;
-	Button number9Btn;
-	
-	Button actionCBtn;
-	ImageButton actionXBtn;
+	LinearLayout mWaitressPanel;
+	LinearLayout mCustomerPanel;
 	
 	Button okBtn;
 	Button cancelBtn;
 	
+	Employee mWaitress;
+	Customer mCustomer;
+	
 	float mTotalItem;
 	String mOrderType;
+	String mWaitressName;
 	String mCustomerName;
-	int mReservationNo;
+	String mReservationNo;
 	
 	CashierActionListener mActionListener;
 	
@@ -63,6 +59,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 	private static String TOTAL_ITEM = "TOTAL_ITEM";
 	private static String ORDER_TYPE = "ORDER_TYPE";
 	private static String CUSTOMER = "CUSTOMER";
+	private static String WAITRESS = "WAITRESS";
 	private static String RESERVATION_NO = "RESERVATION_NO";
 	
 	@Override
@@ -77,8 +74,9 @@ public class CashierOrderDlgFragment extends DialogFragment {
         	
 			mTotalItem = (Float) savedInstanceState.getSerializable(TOTAL_ITEM);
 			mOrderType = (String) savedInstanceState.getSerializable(ORDER_TYPE);
-			mCustomerName = (String) savedInstanceState.getSerializable(CUSTOMER);
-			mReservationNo = (Integer) savedInstanceState.getSerializable(RESERVATION_NO);
+			mReservationNo = (String) savedInstanceState.getSerializable(RESERVATION_NO);
+			mCustomer = (Customer) savedInstanceState.getSerializable(CUSTOMER);
+			mWaitress = (Employee) savedInstanceState.getSerializable(WAITRESS);
 		}
 	}
 	
@@ -97,11 +95,11 @@ public class CashierOrderDlgFragment extends DialogFragment {
 		
 		mTotalItemText = (TextView) getView().findViewById(R.id.totalItemText);
 		mOrderTypeSp = (Spinner) getView().findViewById(R.id.orderTypeSp);
+		mWaitressText = (EditText) getView().findViewById(R.id.waitressText);
 		mCustomerText = (EditText) getView().findViewById(R.id.customerText);
 		mReservationNoText = (TextView) getView().findViewById(R.id.reservationNoText);
 		
-		mReservationNoPanel = (LinearLayout) getView().findViewById(R.id.reservationNoPanel);
-		mReservationInputPanel = (LinearLayout) getView().findViewById(R.id.reservationInputPanel);
+		mWaitressText.setOnClickListener(getWaitressSearchBtnOnClickListener());
 		
 		mOrderTypeSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -116,36 +114,11 @@ public class CashierOrderDlgFragment extends DialogFragment {
 			}
 		});
 		
-		number0Btn = (Button) getView().findViewById(R.id.number0Btn);
-		number1Btn = (Button) getView().findViewById(R.id.number1Btn);
-		number2Btn = (Button) getView().findViewById(R.id.number2Btn);
-		number3Btn = (Button) getView().findViewById(R.id.number3Btn);
-		number4Btn = (Button) getView().findViewById(R.id.number4Btn);
-		number5Btn = (Button) getView().findViewById(R.id.number5Btn);
-		number6Btn = (Button) getView().findViewById(R.id.number6Btn);
-		number7Btn = (Button) getView().findViewById(R.id.number7Btn);
-		number8Btn = (Button) getView().findViewById(R.id.number8Btn);
-		number9Btn = (Button) getView().findViewById(R.id.number9Btn);
-		
-		actionCBtn = (Button) getView().findViewById(R.id.actionCBtn);
-		actionXBtn = (ImageButton) getView().findViewById(R.id.actionXBtn);
+		mCustomerSearchBtn = (ImageButton) getView().findViewById(R.id.customerSearchBtn);
+		mCustomerSearchBtn.setOnClickListener(getCustomerSearchBtnOnClickListener());
 		
 		okBtn = (Button) getView().findViewById(R.id.okBtn);
 		cancelBtn = (Button) getView().findViewById(R.id.cancelBtn);
-		
-		number0Btn.setOnClickListener(getNumberBtnOnClickListener("0"));
-		number1Btn.setOnClickListener(getNumberBtnOnClickListener("1"));
-		number2Btn.setOnClickListener(getNumberBtnOnClickListener("2"));
-		number3Btn.setOnClickListener(getNumberBtnOnClickListener("3"));
-		number4Btn.setOnClickListener(getNumberBtnOnClickListener("4"));
-		number5Btn.setOnClickListener(getNumberBtnOnClickListener("5"));
-		number6Btn.setOnClickListener(getNumberBtnOnClickListener("6"));
-		number7Btn.setOnClickListener(getNumberBtnOnClickListener("7"));
-		number8Btn.setOnClickListener(getNumberBtnOnClickListener("8"));
-		number9Btn.setOnClickListener(getNumberBtnOnClickListener("9"));
-		
-		actionCBtn.setOnClickListener(getClearBtnOnClickListener());
-		actionXBtn.setOnClickListener(getDeleteBtnOnClickListener());
 		
 		okBtn.setOnClickListener(getOkBtnOnClickListener());
 		cancelBtn.setOnClickListener(getCancelBtnOnClickListener());
@@ -156,6 +129,9 @@ public class CashierOrderDlgFragment extends DialogFragment {
 											R.layout.cashier_spinner_selected_item);
 		
 		mOrderTypeSp.setAdapter(orderTypeArrayAdapter);
+		
+		mWaitressPanel = (LinearLayout) getView().findViewById(R.id.waitressPanel);
+		mCustomerPanel = (LinearLayout) getView().findViewById(R.id.customerPanel);
 		
 		refreshDisplay();
 	}
@@ -181,16 +157,76 @@ public class CashierOrderDlgFragment extends DialogFragment {
 		
 		outState.putSerializable(TOTAL_ITEM, (Serializable) mTotalItem);
 		outState.putSerializable(ORDER_TYPE, (Serializable) mOrderType);
-		outState.putSerializable(CUSTOMER, (Serializable) mCustomerName);
 		outState.putSerializable(RESERVATION_NO, (Serializable) mReservationNo);
+		outState.putSerializable(CUSTOMER, (Serializable) mCustomer);
+		outState.putSerializable(WAITRESS, (Serializable) mWaitress);
+	}
+	
+	public void setWaitress(Employee employee) {
+		
+		mWaitress = employee;
+		
+		if (mWaitress != null) {
+			mWaitressText.setText(mWaitress.getName());
+		}
+	}
+	
+	public void setCustomer(Customer customer) {
+		
+		mCustomer = customer;
+		
+		if (mCustomer != null) {
+			mCustomerText.setText(mCustomer.getName());
+		}
 	}
 	
 	private void saveDataFromView() {
 		
 		mTotalItem = CommonUtil.parseIntNumber(mTotalItemText.getText().toString());
-    	mOrderType = CodeBean.getNvlCode((CodeBean) mOrderTypeSp.getSelectedItem());
-    	mReservationNo = CommonUtil.parseIntCurrency(mReservationNoText.getText().toString());
-    	mCustomerName = mCustomerText.getText().toString();
+		
+		if (!Constant.ORDER_TYPE_SERVICE.equals(mOrderType)) {
+			mOrderType = CodeBean.getNvlCode((CodeBean) mOrderTypeSp.getSelectedItem());
+		}
+			
+		mReservationNo = mReservationNoText.getText().toString();
+		mCustomerName = mCustomerText.getText().toString();
+    	
+    	if (mCustomer == null) {
+    		mCustomer = new Customer();
+    		mCustomer.setName(mCustomerName);
+    	}
+	}
+	
+	private void reset() {
+		
+		mWaitress = null;
+		mCustomer = null;
+		
+		mWaitressName = Constant.EMPTY_STRING;
+		mCustomerName = Constant.EMPTY_STRING;
+		mReservationNo = Constant.EMPTY_STRING;
+	}
+	
+	private View.OnClickListener getWaitressSearchBtnOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mActionListener.onSelectEmployee();
+			}
+		};
+	}
+	
+	private View.OnClickListener getCustomerSearchBtnOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mActionListener.onSelectCustomer();
+			}
+		};
 	}
 	
 	private void refreshDisplay() {
@@ -204,78 +240,49 @@ public class CashierOrderDlgFragment extends DialogFragment {
 		mTotalItemText.setText(CommonUtil.formatNumber(mTotalItem));
 		mOrderTypeSp.setSelection(orderTypeIndex);
 		mCustomerText.setText(mCustomerName);
-		mReservationNoText.setText(CommonUtil.formatNumber(mReservationNo));
-		
+		mReservationNoText.setText(mReservationNo);
+
 		if (mOrderType == null) {
-			mOrderType = Constant.ORDER_TYPE_DINE_IN;
+			
+			if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchantType())) {
+				mOrderType = Constant.ORDER_TYPE_DINE_IN;
+				
+			} else if (Constant.MERCHANT_TYPE_BEAUTY_N_SPA.equals(MerchantUtil.getMerchantType())) {
+				mOrderType = Constant.ORDER_TYPE_SERVICE;
+			}
 		}
 		
 		if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType)) {
 			
-			mCustomerText.setVisibility(View.GONE);
-			mReservationNoPanel.setVisibility(View.VISIBLE);
-			mReservationInputPanel.setVisibility(View.VISIBLE);
+			mCustomerPanel.setVisibility(View.GONE);
+			mReservationNoText.setVisibility(View.VISIBLE);
+			mOrderTypeSp.setVisibility(View.VISIBLE);
 			
-		} else {
+			mReservationNoText.requestFocus();
 			
-			mCustomerText.setVisibility(View.VISIBLE);
-			mReservationNoPanel.setVisibility(View.GONE);
-			mReservationInputPanel.setVisibility(View.GONE);
+		} else if (Constant.ORDER_TYPE_TAKEWAY.equals(mOrderType)) {
+			
+			mCustomerPanel.setVisibility(View.VISIBLE);
+			mReservationNoText.setVisibility(View.GONE);
+			mOrderTypeSp.setVisibility(View.VISIBLE);
+			
+			mCustomerText.requestFocus();
+		
+		} else if (Constant.ORDER_TYPE_SERVICE.equals(mOrderType)) {
+			
+			mCustomerText.setMinHeight(CommonUtil.convertDpToPix(60));
+			mCustomerPanel.setVisibility(View.VISIBLE);
+			mReservationNoText.setVisibility(View.GONE);
+			mOrderTypeSp.setVisibility(View.GONE);
 			
 			mCustomerText.requestFocus();
 		}
-	}
-	
-	private View.OnClickListener getNumberBtnOnClickListener(final String numberText) {
 		
-		return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				int payment = CommonUtil.parseIntCurrency(mReservationNoText.getText().toString());
-				String number = String.valueOf(payment);
-				
-				if (number.equals("0")) {
-					mReservationNoText.setText(numberText);
-				} else {
-					number = CommonUtil.formatNumber(number + numberText);
-					mReservationNoText.setText(number);
-				}
-			}
-		};
-	}
-	
-	private View.OnClickListener getClearBtnOnClickListener() {
-		
-		return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				mReservationNoText.setText("0");
-			}
-		};
-	}
-	
-	private View.OnClickListener getDeleteBtnOnClickListener() {
-		
-		return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				int payment = CommonUtil.parseIntCurrency(mReservationNoText.getText().toString());
-				String number = String.valueOf(payment);
-				
-				if (number.length() == 1) {
-					mReservationNoText.setText("0");
-				} else {
-					number = CommonUtil.formatNumber(number.substring(0, number.length()-1));
-					mReservationNoText.setText(number);
-				}
-			}
-		};
+		if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchantType())) {
+			mWaitressPanel.setVisibility(View.VISIBLE);
+		} else {
+			mWaitressPanel.setVisibility(View.GONE);
+		}
 	}
 	
 	private View.OnClickListener getOkBtnOnClickListener() {
@@ -290,12 +297,12 @@ public class CashierOrderDlgFragment extends DialogFragment {
 				String orderReference = Constant.EMPTY_STRING;
 				
 				if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType)) {
-					orderReference = String.valueOf(mReservationNo);
+					orderReference = CommonUtil.formatReservationNo(mReservationNo);
 				} else {
 					orderReference = mCustomerName;
 				}
 				
-				if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType) && "0".equals(orderReference)) {
+				if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType) && CommonUtil.isEmpty(orderReference)) {
 				
 					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_please_choose_table_no));
 	    			
@@ -308,9 +315,11 @@ public class CashierOrderDlgFragment extends DialogFragment {
 	    			return;
 				}
 				
-				mActionListener.onOrderInfoProvided(orderReference, mOrderType);
+				mActionListener.onOrderInfoProvided(orderReference, mOrderType, mWaitress, mCustomer);
 				
-				mReservationNo = 0;
+				mReservationNo = Constant.EMPTY_STRING;
+				
+				reset();
 				
 				dismiss();
 			}
@@ -324,7 +333,9 @@ public class CashierOrderDlgFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mReservationNo = 0;
+				mReservationNo = Constant.EMPTY_STRING;
+				
+				reset();
 				
 				dismiss();
 			}

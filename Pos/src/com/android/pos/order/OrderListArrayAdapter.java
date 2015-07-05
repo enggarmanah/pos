@@ -81,7 +81,7 @@ public class OrderListArrayAdapter extends ArrayAdapter<String> {
 		}
 		
 		if (orderReference.length() > 2) {
-			orderReferenceText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 17);
+			orderReferenceText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 		}
 
 		return rowView;

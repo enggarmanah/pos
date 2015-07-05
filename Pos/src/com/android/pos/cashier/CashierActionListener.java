@@ -21,7 +21,7 @@ public interface CashierActionListener {
 	
 	public void onPaymentInfoProvided(Customer customer, String paymentType, Float totalBill, Float payment);
 	
-	public void onOrderInfoProvided(String orderReference, String orderType);
+	public void onOrderInfoProvided(String orderReference, String orderType, Employee waitress, Customer customer);
 	
 	public void onPaymentCompleted(Transactions transaction);
 	
@@ -34,6 +34,8 @@ public interface CashierActionListener {
 	public void onSelectDiscount();
 	
 	public void onDiscountSelected(Discount discount);
+	
+	public void onSelectEmployee();
 	
 	public void onSelectCustomer();
 	
