@@ -39,9 +39,6 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     EditText mBillDate;
     EditText mBillDueDate;
     EditText mBillAmountText;
-    Spinner mStatusSp;
-    EditText mPaymentDate;
-    EditText mPaymentText;
     EditText mDeliveryDate;
     EditText mRemarksText;
     
@@ -50,13 +47,9 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     LinearLayout mBillDatePanel;
     LinearLayout mBillDueDatePanel;
     LinearLayout mBillAmountPanel;
-    LinearLayout mBillStatusPanel;
-    LinearLayout mPaymentDatePanel;
-    LinearLayout mPaymentAmountPanel;
     LinearLayout mDeliveryDatePanel;
     
     CodeSpinnerArrayAdapter typeArrayAdapter;
-    CodeSpinnerArrayAdapter statusArrayAdapter;
     
     private BillsDaoService mBillsDaoService = new BillsDaoService();
     
@@ -105,15 +98,12 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     protected void initViewReference(View view) {
         
     	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
-    	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
     	mSupplierNameText = (EditText) view.findViewById(R.id.supplierNameText);
     	mBillReferenceNoText = (EditText) view.findViewById(R.id.billsReferenceNoText);
     	mBillDate = (EditText) view.findViewById(R.id.billsDate);
     	mBillDueDate = (EditText) view.findViewById(R.id.billsDueDate);
     	mBillAmountText = (EditText) view.findViewById(R.id.billsAmountText);
-    	mPaymentDate = (EditText) view.findViewById(R.id.paymentDate);
-    	mPaymentText = (EditText) view.findViewById(R.id.paymentText);
     	mDeliveryDate = (EditText) view.findViewById(R.id.deliveryDate);
     	mRemarksText = (EditText) view.findViewById(R.id.remarksText);
     	
@@ -123,9 +113,6 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	registerField(mBillDate);
     	registerField(mBillDueDate);
     	registerField(mBillAmountText);
-    	registerField(mStatusSp);
-    	registerField(mPaymentDate);
-    	registerField(mPaymentText);
     	registerField(mDeliveryDate);
     	registerField(mRemarksText);
     	
@@ -134,22 +121,16 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	mandatoryFields = new ArrayList<BillsEditFragment.FormField>();
     	
     	mBillAmountText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
-    	mPaymentText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
     	
     	typeArrayAdapter = new CodeSpinnerArrayAdapter(mTypeSp, getActivity(), CodeUtil.getBillTypes());
     	mTypeSp.setAdapter(typeArrayAdapter);
     	
-    	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getBillStatus());
-    	mStatusSp.setAdapter(statusArrayAdapter);
-    	
     	mBillDate.setOnClickListener(getDateFieldOnClickListener("billsDatePicker"));
     	mBillDueDate.setOnClickListener(getDateFieldOnClickListener("billsDueDatePicker"));
-    	mPaymentDate.setOnClickListener(getDateFieldOnClickListener("paymentDatePicker"));
     	mDeliveryDate.setOnClickListener(getDateFieldOnClickListener("deliveryDatePicker"));
     	
     	linkDatePickerWithInputField("billsDatePicker", mBillDate);
     	linkDatePickerWithInputField("billsDueDatePicker", mBillDueDate);
-    	linkDatePickerWithInputField("paymentDatePicker", mPaymentDate);
     	linkDatePickerWithInputField("deliveryDatePicker", mDeliveryDate);
     	
     	mSupplierNameText.setFocusable(false);
@@ -160,13 +141,9 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
         mBillDatePanel = (LinearLayout) view.findViewById(R.id.billDatePanel);
         mBillDueDatePanel = (LinearLayout) view.findViewById(R.id.billDueDatePanel);
         mBillAmountPanel = (LinearLayout) view.findViewById(R.id.billAmountPanel);
-        mBillStatusPanel = (LinearLayout) view.findViewById(R.id.billStatusPanel);
-        mPaymentDatePanel = (LinearLayout) view.findViewById(R.id.paymentDatePanel);
-        mPaymentAmountPanel = (LinearLayout) view.findViewById(R.id.paymentAmountPanel);
         mDeliveryDatePanel = (LinearLayout) view.findViewById(R.id.deliveryDatePanel);
         
         mTypeSp.setOnItemSelectedListener(getTypeOnItemSelectedListener());
-        mStatusSp.setOnItemSelectedListener(getStatusOnItemSelectedListener());
         
         refreshVisibleField();
     }
@@ -179,16 +156,11 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     		int typeIndex = typeArrayAdapter.getPosition(bills.getBillType());
     		mTypeSp.setSelection(typeIndex);
     		
-    		int statusIndex = statusArrayAdapter.getPosition(bills.getStatus());
-    		mStatusSp.setSelection(statusIndex);
-    		
     		mSupplierNameText.setText(bills.getSupplierName());
     		mBillReferenceNoText.setText(bills.getBillReferenceNo());
     		mBillDate.setText(CommonUtil.formatDate(bills.getBillDate()));
     		mBillDueDate.setText(CommonUtil.formatDate(bills.getBillDueDate()));
     		mBillAmountText.setText(CommonUtil.formatCurrency(bills.getBillAmount()));
-    		mPaymentDate.setText(CommonUtil.formatDate(bills.getPaymentDate()));
-    		mPaymentText.setText(CommonUtil.formatCurrency(bills.getPayment()));
     		mDeliveryDate.setText(CommonUtil.formatDate(bills.getDeliveryDate()));
     		mRemarksText.setText(bills.getRemarks());
     		
@@ -200,7 +172,6 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	}
     	
     	mBillType = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
-        mBillStatus = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
         
         refreshVisibleField();
     }
@@ -214,9 +185,6 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	Date billDate = CommonUtil.parseDate(mBillDate.getText().toString());
     	Date billDueDate = CommonUtil.parseDate(mBillDueDate.getText().toString());
     	Float billAmount = CommonUtil.parseFloatCurrency(mBillAmountText.getText().toString());
-    	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
-    	Date paymentDate = CommonUtil.parseDate(mPaymentDate.getText().toString());
-    	Float payment = CommonUtil.parseFloatCurrency(mPaymentText.getText().toString());
     	Date deliveryDate = CommonUtil.parseDate(mDeliveryDate.getText().toString());
     	String remarks = mRemarksText.getText().toString();
     	
@@ -230,12 +198,10 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     		mItem.setBillDate(billDate);
     		mItem.setBillDueDate(billDueDate);
     		mItem.setBillAmount(billAmount);
-    		mItem.setStatus(status);
-    		mItem.setPaymentDate(paymentDate);
-    		mItem.setPayment(payment);
     		mItem.setDeliveryDate(deliveryDate);
     		mItem.setRemarks(remarks);
     		
+    		mItem.setStatus(Constant.STATUS_ACTIVE);
     		mItem.setUploadStatus(Constant.STATUS_YES);
     		
     		String loginId = UserUtil.getUser().getUserId();
@@ -266,8 +232,6 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
         mBillDate.getText().clear();
         mBillDueDate.getText().clear();
         mBillAmountText.getText().clear();
-        mPaymentDate.getText().clear();
-        mPaymentText.getText().clear();
         mDeliveryDate.getText().clear();
         mRemarksText.getText().clear();
         
@@ -325,19 +289,6 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	}
 	}
     
-    @Override
-    protected boolean isValidated() {
-    	
-    	String type = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
-    	
-    	if (Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT.equals(type)) {
-    		mBillDate.setText(mPaymentDate.getText().toString());
-    		mBillAmountText.setText(mPaymentText.getText().toString());
-    	}
-    	
-    	return super.isValidated();
-    }
-    
     private void refreshVisibleField() {
     	
     	mSupplierPanel.setVisibility(View.VISIBLE);
@@ -345,32 +296,18 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
 		mBillDatePanel.setVisibility(View.VISIBLE);
 		mBillDueDatePanel.setVisibility(View.VISIBLE);
 		mBillAmountPanel.setVisibility(View.VISIBLE);
-		mBillStatusPanel.setVisibility(View.VISIBLE);
 		mDeliveryDatePanel.setVisibility(View.VISIBLE);
-		mPaymentDatePanel.setVisibility(View.VISIBLE);
-		mPaymentAmountPanel.setVisibility(View.VISIBLE);
-    	
+		
 		mandatoryFields.clear();
 		
     	if (Constant.BILL_TYPE_PRODUCT_PURCHASE.equals(mBillType)) {
     		
     		mandatoryFields.add(new FormField(mBillDate, R.string.field_bills_date));
         	mandatoryFields.add(new FormField(mBillAmountText, R.string.field_total));
+        	mandatoryFields.add(new FormField(mDeliveryDate, R.string.field_delivery_date));
         	mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
     		
-    	} else if (Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT.equals(mBillType)) {
-    		
-    		mSupplierPanel.setVisibility(View.GONE);
-    		mBillReferenceNoPanel.setVisibility(View.GONE);
-    		mBillDatePanel.setVisibility(View.GONE);
-    		mBillDueDatePanel.setVisibility(View.GONE);
-    		mBillAmountPanel.setVisibility(View.GONE);
-    		mBillStatusPanel.setVisibility(View.GONE);
-    		mDeliveryDatePanel.setVisibility(View.GONE);
-    		
-    		mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
-    	
-    	} else if (Constant.BILL_TYPE_EXPENSE_WITH_RECEIPT.equals(mBillType)) {
+    	} else if (Constant.BILL_TYPE_EXPENSE.equals(mBillType)) {
     		
     		mSupplierPanel.setVisibility(View.GONE);
     		mDeliveryDatePanel.setVisibility(View.GONE);
@@ -379,24 +316,6 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
         	mandatoryFields.add(new FormField(mBillAmountText, R.string.field_total));
         	mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
     	}
-    	
-    	if (Constant.BILL_STATUS_UNPAID.equals(mBillStatus)) {
-    		
-    		mPaymentDatePanel.setVisibility(View.GONE);
-    		mPaymentAmountPanel.setVisibility(View.GONE);
-    		
-    	} else if (Constant.BILL_STATUS_PARTIAL.equals(mBillStatus)) {
-    		
-    		mandatoryFields.add(new FormField(mPaymentDate, R.string.field_payment_date));
-        	mandatoryFields.add(new FormField(mPaymentText, R.string.field_payment));
-    		
-    	} else if (Constant.BILL_STATUS_PAID.equals(mBillStatus)) {
-    		
-    		mBillDueDatePanel.setVisibility(View.GONE);
-    		
-    		mandatoryFields.add(new FormField(mPaymentDate, R.string.field_payment_date));
-        	mandatoryFields.add(new FormField(mPaymentText, R.string.field_payment));
-    	} 
     	
     	highlightMandatoryFields();
     }
@@ -431,41 +350,7 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
 				
 		    	mBillType = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
 		    	
-		    	if (Constant.BILL_TYPE_EXPENSE_WITHOUT_RECEIPT.equals(mBillType)) {
-		    		
-		    		mBillStatus = Constant.BILL_STATUS_PAID;
-		    		
-		    		int statusIndex = statusArrayAdapter.getPosition(mBillStatus);
-		    		mStatusSp.setSelection(statusIndex);
-		    	}
-		    	
 		    	refreshVisibleField();
-		    }
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		};
-    }
-    
-    private AdapterView.OnItemSelectedListener getStatusOnItemSelectedListener() {
-    	
-    	return new AdapterView.OnItemSelectedListener() {
-			
-        	@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				
-        		mBillStatus = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
-		    	
-		    	refreshVisibleField();
-        		
-		    	if (Constant.BILL_STATUS_PAID.equals(mBillStatus)) {
-		    		
-		    		mRemarksText.requestFocus();
-		    		
-		    		mPaymentDate.setText(mBillDate.getText());
-		    		mPaymentText.setText(mBillAmountText.getText().toString());
-		    	}		    	
 		    }
 
 			@Override

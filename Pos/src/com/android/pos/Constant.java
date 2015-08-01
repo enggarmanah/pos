@@ -138,13 +138,8 @@ public class Constant {
 	public static final String CASHIER_STATE_ORDER_PAYMENT = "CASHIER_STATE_ORDER_PAYMENT";
 	public static final String CASHIER_STATE_ORDER_NEW_ITEM = "CASHIER_STATE_ORDER_NEW_ITEM";
 	
-	public static final String BILL_TYPE_EXPENSE_WITH_RECEIPT = "RCPT";
-	public static final String BILL_TYPE_EXPENSE_WITHOUT_RECEIPT = "NORC";
 	public static final String BILL_TYPE_PRODUCT_PURCHASE = "PRCH";
-	
-	public static final String BILL_STATUS_PAID = "PAID";
-	public static final String BILL_STATUS_UNPAID = "UNPD";
-	public static final String BILL_STATUS_PARTIAL = "PART";
+	public static final String BILL_TYPE_EXPENSE = "EXPN";
 	
 	public static final String INVENTORY_STATUS_PURCHASE = "PRCH";
 	public static final String INVENTORY_STATUS_SALE = "SALE";
@@ -171,6 +166,7 @@ public class Constant {
 	public static final String ACCESS_REPORT_COMMISION = "RCMS";
 	public static final String ACCESS_REPORT_INVENTORY = "RIVT";
 	public static final String ACCESS_REPORT_CASHFLOW = "RCFL";
+	public static final String ACCESS_REPORT_BILLS = "RBIL";
 	public static final String ACCESS_FAVORITE_CUSTOMER = "FVCS";
 	public static final String ACCESS_FAVORITE_SUPPLIER = "FVSP";
 	

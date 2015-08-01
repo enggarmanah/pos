@@ -155,7 +155,7 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     		if (cashflow.getBillId() != null) {
     			Bills bill = mBillDaoService.getBills(cashflow.getBillId());
     			mBillReferenceNoText.setText(bill.getBillReferenceNo());
-    			mBillSupplierText.setText(bill.getSupplierName());
+				mBillSupplierText.setText(bill.getSupplierName());
     		}
     		
     		if (cashflow.getTransactionId() != null) {
@@ -241,6 +241,10 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     	
         mCashflowDaoService.addCashflow(mItem);
         
+        if (mItem.getBillId() != null) {
+        	mBillDaoService.updatePaymentDetails(mItem.getBillId());
+        }
+        
         mBillReferenceNoText.getText().clear();
         mBillSupplierText.getText().clear();
         mTransactionNoText.getText().clear();
@@ -258,6 +262,10 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     protected boolean updateItem() {
     	
     	mCashflowDaoService.updateCashflow(mItem);
+    	
+    	if (mItem.getBillId() != null) {
+        	mBillDaoService.updatePaymentDetails(mItem.getBillId());
+        }
     	
     	return true;
     }
@@ -308,7 +316,12 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     	if (Constant.CASHFLOW_TYPE_BILL_PAYMENT.equals(mCashflowType)) {
     		mBillReferenceNoPanel.setVisibility(View.VISIBLE);
 			mBillSupplierPanel.setVisibility(View.VISIBLE);
-    	
+			
+			if (mItem != null && mItem.getBillId() != null && mItem.getBills().getSupplierId() != null) {
+				mBillSupplierPanel.setVisibility(View.VISIBLE);
+			} else {
+				mBillSupplierPanel.setVisibility(View.GONE);
+			}
     	} else if (Constant.CASHFLOW_TYPE_INVC_PAYMENT.equals(mCashflowType)) {
 			mTransactionNoPanel.setVisibility(View.VISIBLE);
 			mTransactionCustomerPanel.setVisibility(View.VISIBLE);

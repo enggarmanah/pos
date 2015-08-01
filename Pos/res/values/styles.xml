@@ -1073,7 +1073,7 @@
     </style>
     
     <style name="SectionSubCashFlowContentTextStyle">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
@@ -1085,6 +1085,10 @@
 
     <style name="SectionSubCashFlowContentInfoTextStyle" parent="SectionSubCashFlowContentTextStyle">
         <item name="android:textColor">@color/text_default</item>
+    </style>
+    
+    <style name="SectionBillsInfoTextStyle" parent="SectionSubCashFlowContentTextStyle">
+        <item name="android:textColor">@color/text_light</item>
     </style>
     
     <style name="SectionSubFavoriteTitleTextStyle">

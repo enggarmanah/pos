@@ -119,7 +119,10 @@ public class CashflowSearchArrayAdapter extends BaseSearchArrayAdapter<Cashflow>
 			Bills bill = billDaoService.getBills(item.getBillId());
 			
 			billReferenceNo = bill.getBillReferenceNo();
-			supplierName = supplierDaoService.getSupplier(bill.getSupplierId()).getName();
+			
+			if (bill.getSupplierId() != null) {
+				supplierName = supplierDaoService.getSupplier(bill.getSupplierId()).getName();
+			}
 		}
 		
 		String transactionNo = null;

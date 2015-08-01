@@ -88,23 +88,6 @@
         </LinearLayout>
 		
         <LinearLayout 
-            android:id="@+id/billStatusPanel"
-            style="@style/FormRowStyle" >
-			
-            <TextView
-                style="@style/FormTextFirstLetterStyle"
-                android:text="@string/field_status_fl" />
-            
-            <TextView
-                style="@style/FormTextStyle"
-                android:text="@string/field_status" />
-
-            <Spinner
-                android:id="@+id/statusSp"
-                style="@style/FormInputListStyle" />
-        </LinearLayout>
-        
-        <LinearLayout 
             android:id="@+id/billDueDatePanel"
             style="@style/FormRowStyle" >
 
@@ -119,40 +102,6 @@
             <EditText
                 android:id="@+id/billsDueDate"
                 style="@style/FormInputDateStyle" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:id="@+id/paymentDatePanel"
-            style="@style/FormRowStyle" >
-
-            <TextView
-                style="@style/FormTextFirstLetterStyle"
-                android:text="@string/field_payment_date_fl" />
-            
-            <TextView
-                style="@style/FormTextStyle"
-                android:text="@string/field_payment_date" />
-
-            <EditText
-                android:id="@+id/paymentDate"
-                style="@style/FormInputDateStyle" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:id="@+id/paymentAmountPanel"
-            style="@style/FormRowStyle" >
-
-            <TextView
-                style="@style/FormTextFirstLetterStyle"
-                android:text="@string/field_payment_fl" />
-            
-            <TextView
-                style="@style/FormTextStyle"
-                android:text="@string/field_payment" />
-
-            <EditText
-                android:id="@+id/paymentText"
-                style="@style/FormInputNumericStyle" />
         </LinearLayout>
         
         <LinearLayout

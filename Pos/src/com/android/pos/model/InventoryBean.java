@@ -10,7 +10,7 @@ public class InventoryBean extends BaseBean {
 	private String bill_reference_no;
 	private Long supplier_id;
 	private String supplier_name;
-	private java.util.Date delivery_date;
+	private java.util.Date inventory_date;
 	private String remarks;
 	private String status;
 	
@@ -78,12 +78,12 @@ public class InventoryBean extends BaseBean {
 		this.supplier_name = supplier_name;
 	}
 
-	public java.util.Date getDelivery_date() {
-		return delivery_date;
+	public java.util.Date getInventory_date() {
+		return inventory_date;
 	}
 
-	public void setDelivery_date(java.util.Date delivery_date) {
-		this.delivery_date = delivery_date;
+	public void setInventory_date(java.util.Date inventory_date) {
+		this.inventory_date = inventory_date;
 	}
 
 	public String getRemarks() {

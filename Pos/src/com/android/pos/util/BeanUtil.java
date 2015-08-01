@@ -513,7 +513,7 @@ public class BeanUtil {
 		bean.setBill_reference_no(inventory.getBillReferenceNo());
 		bean.setSupplier_id(inventory.getSupplierId());
 		bean.setSupplier_name(inventory.getSupplierName());
-		bean.setDelivery_date(inventory.getDeliveryDate());
+		bean.setInventory_date(inventory.getInventoryDate());
 		bean.setRemarks(inventory.getRemarks());
 		bean.setStatus(inventory.getStatus());
 		bean.setCreate_by(inventory.getCreateBy());
@@ -537,7 +537,7 @@ public class BeanUtil {
 		inventory.setBillReferenceNo(bean.getBill_reference_no());
 		inventory.setSupplierId(bean.getSupplier_id());
 		inventory.setSupplierName(bean.getSupplier_name());
-		inventory.setDeliveryDate(bean.getDelivery_date());
+		inventory.setInventoryDate(bean.getInventory_date());
 		inventory.setRemarks(bean.getRemarks());
 		inventory.setStatus(bean.getStatus());
 		inventory.setUploadStatus(Constant.STATUS_NO);

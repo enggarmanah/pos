@@ -68,7 +68,7 @@ public class CashflowDaoService {
 				+ "   LEFT OUTER JOIN transactions t ON c.transaction_id = t._id "
 				+ " WHERE "
 				+ "   (b.bill_reference_no like ? OR b.supplier_name like ? OR t.customer_name like ? OR c.remarks like ? ) AND c.status <> ? "
-				+ " ORDER BY delivery_date DESC LIMIT ? OFFSET ? ",
+				+ " ORDER BY c.cash_date DESC LIMIT ? OFFSET ? ",
 				new String[] { queryStr, queryStr, queryStr, queryStr, status, limit, lastIdx});
 		
 		List<Cashflow> list = new ArrayList<Cashflow>();
@@ -83,6 +83,23 @@ public class CashflowDaoService {
 		cursor.close();
 		
 		return list;
+	}
+	
+	public List<Cashflow> getCashflows(Bills bill) {
+
+		QueryBuilder<Cashflow> qb = cashflowDao.queryBuilder();
+		qb.where(CashflowDao.Properties.BillId.eq(bill.getId()), 
+				CashflowDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(CashflowDao.Properties.CashDate);
+		
+		Query<Cashflow> q = qb.build();
+		
+		ArrayList<Cashflow> cashflows = new ArrayList<Cashflow>();
+		
+		for (Cashflow cashflow : q.list()) {
+			cashflows.add(cashflow);
+		}
+		
+		return cashflows;
 	}
 	
 	public List<CashflowBean> getCashflowForUpload() {

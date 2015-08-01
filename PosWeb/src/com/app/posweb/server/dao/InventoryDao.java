@@ -87,7 +87,7 @@ public class InventoryDao {
 		
 		StringBuffer sql = new StringBuffer("SELECT c FROM Inventory c WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
-		sql.append(" ORDER BY c.delivery_date");
+		sql.append(" ORDER BY c.inventory_date");
 		
 		TypedQuery<Inventory> query = em.createQuery(sql.toString(), Inventory.class);
 		

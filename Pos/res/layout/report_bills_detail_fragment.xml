@@ -37,7 +37,7 @@
             <LinearLayout
                 android:id="@+id/supplierPanel"
                 style="@style/SectionSubContentPanelStyle"
-                android:layout_weight="2" >
+                android:layout_weight="1" >
 
                 <TextView
                     style="@style/SectionSubCashFlowContentLabelTextStyle"
@@ -146,18 +146,31 @@
         
         <TextView style="@style/SectionDividerStyle" />
         
-        <TextView
-       		android:id="@+id/listTitleText"
-	        style="@style/SectionSubCashFlowContentLabelTextStyle"
-	        android:layout_marginTop="10dp"
-	        android:layout_marginStart="15dp"
-	        android:layout_marginLeft="15dp"
-	        android:text="@string/report_bill_purchase" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+        	
+            <TextView
+	       		android:id="@+id/billPaymentsText"
+		        style="@style/SectionBillsInfoTextStyle"
+		        android:layout_marginStart="15dp"
+		        android:layout_marginLeft="15dp"
+		        android:text="@string/report_bill_payments" />
+            	
+	     	<TextView
+	       		android:id="@+id/productPurchasedText"
+		        style="@style/SectionBillsInfoTextStyle"
+			    android:layout_marginStart="15dp"
+		    	android:layout_marginLeft="15dp"
+		        android:text="@string/report_bill_purchased" />
+		</LinearLayout>
         
     </LinearLayout>
 
     <ListView
-        android:id="@+id/inventoryList"
+        android:id="@+id/billInfoList"
         style="@style/ListViewStyle"
         android:layout_below="@id/topPanel" />
 

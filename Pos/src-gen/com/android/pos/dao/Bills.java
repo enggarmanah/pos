@@ -47,6 +47,7 @@ public class Bills implements Serializable {
     private Supplier supplier;
     private Long supplier__resolvedKey;
 
+    private List<Cashflow> cashflowList;
     private List<Inventory> inventoryList;
 
     public Bills() {
@@ -296,6 +297,28 @@ public class Bills implements Serializable {
             supplierId = supplier == null ? null : supplier.getId();
             supplier__resolvedKey = supplierId;
         }
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Cashflow> getCashflowList() {
+        if (cashflowList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            CashflowDao targetDao = daoSession.getCashflowDao();
+            List<Cashflow> cashflowListNew = targetDao._queryBills_CashflowList(id);
+            synchronized (this) {
+                if(cashflowList == null) {
+                    cashflowList = cashflowListNew;
+                }
+            }
+        }
+        return cashflowList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetCashflowList() {
+        cashflowList = null;
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */

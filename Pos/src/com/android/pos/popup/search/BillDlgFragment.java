@@ -31,6 +31,7 @@ public class BillDlgFragment extends BaseSearchDlgFragment<Bills> implements Bil
 	BillArrayAdapter billArrayAdapter;
 	
 	boolean mIsMandatory = false;
+	boolean mIsProductPurchase = false;
 	
 	private BillsDaoService mBillsDaoService = new BillsDaoService();
 	
@@ -72,7 +73,13 @@ public class BillDlgFragment extends BaseSearchDlgFragment<Bills> implements Bil
 				mQuery = s.toString();
 				
 				mItems.clear();
-				mItems.addAll(mBillsDaoService.getBills(mQuery, 0));
+				
+				if (mIsProductPurchase) {
+					mItems.addAll(mBillsDaoService.getBills(mQuery, Constant.BILL_TYPE_PRODUCT_PURCHASE, 0));
+				} else {
+					mItems.addAll(mBillsDaoService.getBills(mQuery, 0));
+				}
+				
 				billArrayAdapter.notifyDataSetChanged();
 			}
 			
@@ -99,7 +106,13 @@ public class BillDlgFragment extends BaseSearchDlgFragment<Bills> implements Bil
 		}
 		
 		mItems.clear();
-		mItems.addAll(mBillsDaoService.getBills(mQuery, 0));
+		
+		if (mIsProductPurchase) {
+			mItems.addAll(mBillsDaoService.getBills(mQuery, Constant.BILL_TYPE_PRODUCT_PURCHASE, 0));
+		} else {
+			mItems.addAll(mBillsDaoService.getBills(mQuery, 0));
+		}
+		
 		billArrayAdapter.notifyDataSetChanged();
 	}
 	
@@ -124,6 +137,11 @@ public class BillDlgFragment extends BaseSearchDlgFragment<Bills> implements Bil
 	public void setMandatory(boolean isMandatory) {
 		
 		mIsMandatory = isMandatory;
+	}
+		
+	public void setProductPurchase(boolean isProductPurchase) {
+		
+		mIsProductPurchase = isProductPurchase;
 	}
 	
 	@Override
@@ -161,13 +179,21 @@ public class BillDlgFragment extends BaseSearchDlgFragment<Bills> implements Bil
 	@Override
 	protected List<Bills> getItems(String query) {
 		
-		return mBillsDaoService.getBills(mQuery, 0);
+		if (mIsProductPurchase) {
+			return mBillsDaoService.getBills(mQuery, Constant.BILL_TYPE_PRODUCT_PURCHASE, 0);
+		} else {
+			return mBillsDaoService.getBills(mQuery, 0);
+		}
 	}
 	
 	@Override
 	protected List<Bills> getNextItems(String query, int lastIndex) {
 		
-		return mBillsDaoService.getBills(mQuery, lastIndex);
+		if (mIsProductPurchase) {
+			return mBillsDaoService.getBills(mQuery, Constant.BILL_TYPE_PRODUCT_PURCHASE, lastIndex);
+		} else {
+			return mBillsDaoService.getBills(mQuery, lastIndex);
+		}
 	}
 	
 	@Override

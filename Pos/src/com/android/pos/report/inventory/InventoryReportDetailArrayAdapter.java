@@ -24,7 +24,7 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 	class ViewHolder {
 		ImageView flowImage;
 		TextView remarksText;
-		TextView deliveryDateText;
+		TextView inventoryDateText;
 		TextView quantityText;
 		TextView supplierText;
 	}
@@ -49,7 +49,7 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 		ImageView flowImage = null;
 		TextView remarksText = null;
 		TextView quantityText = null;
-		TextView deliveryDateText = null;
+		TextView inventoryDateText = null;
 		TextView supplierText = null;
 		
 		if (rowView == null) {
@@ -59,7 +59,7 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 			flowImage = (ImageView) rowView.findViewById(R.id.flowImage);
 			remarksText = (TextView) rowView.findViewById(R.id.remarksText);
 			quantityText = (TextView) rowView.findViewById(R.id.quantityText);
-			deliveryDateText = (TextView) rowView.findViewById(R.id.deliveryDate);
+			inventoryDateText = (TextView) rowView.findViewById(R.id.inventoryDate);
 			supplierText = (TextView) rowView.findViewById(R.id.supplierText);
 			
 			ViewHolder viewHolder = new ViewHolder();
@@ -67,7 +67,7 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 			viewHolder.flowImage = flowImage;
 			viewHolder.remarksText = remarksText;
 			viewHolder.quantityText = quantityText;
-			viewHolder.deliveryDateText = deliveryDateText;
+			viewHolder.inventoryDateText = inventoryDateText;
 			viewHolder.supplierText = supplierText;
 
 			rowView.setTag(viewHolder);
@@ -79,7 +79,7 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 			flowImage = viewHolder.flowImage;
 			remarksText = viewHolder.remarksText;
 			quantityText = viewHolder.quantityText;
-			deliveryDateText = viewHolder.deliveryDateText;
+			inventoryDateText = viewHolder.inventoryDateText;
 			supplierText = viewHolder.supplierText;
 		}
 			
@@ -102,9 +102,9 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 	    quantityText.setText(CommonUtil.formatNumber(inventory.getQuantity()));
 		
 	    if (Constant.INVENTORY_STATUS_SALE.equals(inventory.getStatus())) {
-	    	deliveryDateText.setText(CommonUtil.formatDateTime(inventory.getDeliveryDate()));
+	    	inventoryDateText.setText(CommonUtil.formatDateTime(inventory.getInventoryDate()));
 	    } else {
-	    	deliveryDateText.setText(CommonUtil.formatDate(inventory.getDeliveryDate()));
+	    	inventoryDateText.setText(CommonUtil.formatDate(inventory.getInventoryDate()));
 	    }
 	    
 	    remarksText.setText(remarks);

@@ -62,6 +62,7 @@ public class Transactions implements Serializable {
     private Long customer__resolvedKey;
 
     private List<TransactionItem> transactionItemList;
+    private List<Cashflow> cashflowList;
 
     public Transactions() {
     }
@@ -450,6 +451,28 @@ public class Transactions implements Serializable {
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     public synchronized void resetTransactionItemList() {
         transactionItemList = null;
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Cashflow> getCashflowList() {
+        if (cashflowList == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            CashflowDao targetDao = daoSession.getCashflowDao();
+            List<Cashflow> cashflowListNew = targetDao._queryTransactions_CashflowList(id);
+            synchronized (this) {
+                if(cashflowList == null) {
+                    cashflowList = cashflowListNew;
+                }
+            }
+        }
+        return cashflowList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetCashflowList() {
+        cashflowList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

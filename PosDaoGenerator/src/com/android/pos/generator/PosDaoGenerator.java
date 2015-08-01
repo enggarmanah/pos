@@ -426,7 +426,7 @@ public class PosDaoGenerator {
     	cashflow.addToOne(transactions, transactionId);
     	
     	cashflow.addFloatProperty("cashAmount");
-    	cashflow.addDateProperty("cashDate");
+    	Property cashDate = cashflow.addDateProperty("cashDate").getProperty();
     	cashflow.addStringProperty("remarks");
     	
     	cashflow.addStringProperty("status");
@@ -435,6 +435,12 @@ public class PosDaoGenerator {
     	cashflow.addDateProperty("createDate");
     	cashflow.addStringProperty("updateBy");
     	cashflow.addDateProperty("updateDate");
+    	
+    	ToMany transactionToCashflow = transactions.addToMany(cashflow, transactionId);
+    	transactionToCashflow.orderAsc(cashDate);
+    	
+    	ToMany BillToCashflow = bills.addToMany(cashflow, billsId);
+    	BillToCashflow.orderAsc(cashDate);
     	
     	Entity inventory = schema.addEntity("Inventory");
     	
@@ -461,7 +467,7 @@ public class PosDaoGenerator {
     	
     	inventory.addStringProperty("supplierName");
     	
-    	inventory.addDateProperty("deliveryDate");
+    	inventory.addDateProperty("inventoryDate");
     	inventory.addStringProperty("remarks");
     	
     	inventory.addStringProperty("status");

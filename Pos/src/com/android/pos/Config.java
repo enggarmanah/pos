@@ -2,7 +2,7 @@ package com.android.pos;
 
 public class Config {
 	
-	public static boolean isByPassLogin = true;
+	public static boolean isByPassLogin = false;
 	
 	public static String SERVER_URL = "http://192.168.1.161:8888";
 	//public static String SERVER_URL = "http://192.168.0.100:8888";

@@ -240,6 +240,7 @@ public class InventoryMgtActivity extends BaseItemMgtActivity<InventorySearchFra
 		}
 		
 		mBillDlgFragment.setMandatory(isMandatory);
+		mBillDlgFragment.setProductPurchase(true);
 		mBillDlgFragment.show(getFragmentManager(), mBillDlgFragmentTag);
 	}
 	

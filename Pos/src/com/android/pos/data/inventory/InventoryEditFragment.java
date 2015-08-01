@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -41,9 +42,11 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
 	EditText mQuantityText;
     EditText mBillsReferenceNoText;
     EditText mSupplierNameText;
-    EditText mDeliveryDate;
+    EditText mInventoryDate;
     EditText mRemarksText;
     
+    LinearLayout mProductCostPricePanel;
+    LinearLayout mBillsReferenceNoPanel;
     LinearLayout mSupplierPanel;
     LinearLayout mRemarksPanel;
     	
@@ -101,9 +104,11 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	mQuantityText = (EditText) view.findViewById(R.id.quantityText);
     	mBillsReferenceNoText = (EditText) view.findViewById(R.id.billsReferenceNoText);
     	mSupplierNameText = (EditText) view.findViewById(R.id.supplierNameText);
-    	mDeliveryDate = (EditText) view.findViewById(R.id.deliveryDate);
+    	mInventoryDate = (EditText) view.findViewById(R.id.inventoryDate);
     	mRemarksText = (EditText) view.findViewById(R.id.remarksText);
     	
+    	mProductCostPricePanel = (LinearLayout) view.findViewById(R.id.productCostPricePanel);
+    	mBillsReferenceNoPanel = (LinearLayout) view.findViewById(R.id.billReferenceNoPanel);
     	mSupplierPanel = (LinearLayout) view.findViewById(R.id.supplierPanel);
         mRemarksPanel = (LinearLayout) view.findViewById(R.id.remarksPanel);
     	
@@ -113,16 +118,12 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	registerField(mQuantityText);
     	registerField(mBillsReferenceNoText);
     	registerField(mSupplierNameText);
-    	registerField(mDeliveryDate);
+    	registerField(mInventoryDate);
     	registerField(mRemarksText);
     	
     	enableInputFields(false);
     	
     	mandatoryFields = new ArrayList<InventoryEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
-    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
-    	mandatoryFields.add(new FormField(mBillsReferenceNoText, R.string.field_bills_reference_no));
-    	mandatoryFields.add(new FormField(mDeliveryDate, R.string.field_delivery_date));
     	
     	mProductCostPriceText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
     	mQuantityText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener());
@@ -130,9 +131,9 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getInventoryStatus());
     	mStatusSp.setAdapter(statusArrayAdapter);
     	
-    	mDeliveryDate.setOnClickListener(getDateFieldOnClickListener("deliveryDatePicker"));
+    	mInventoryDate.setOnClickListener(getDateFieldOnClickListener("deliveryDatePicker"));
     	
-    	linkDatePickerWithInputField("deliveryDatePicker", mDeliveryDate);
+    	linkDatePickerWithInputField("deliveryDatePicker", mInventoryDate);
     	
     	mProductNameText.setFocusable(false);
     	mProductNameText.setOnClickListener(getProductOnClickListener());
@@ -142,6 +143,8 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	
     	mSupplierNameText.setFocusable(false);
     	mSupplierNameText.setOnClickListener(getSupplierOnClickListener());
+    	
+    	mStatusSp.setOnItemSelectedListener(getStatusOnItemSelectedListener());
     }
     
     @Override
@@ -157,7 +160,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     		mQuantityText.setText(inventory.getQuantity() == null ? Constant.EMPTY_STRING : CommonUtil.formatNumber(Math.abs(inventory.getQuantity())));
     		mBillsReferenceNoText.setText(inventory.getBillReferenceNo());
     		mSupplierNameText.setText(inventory.getSupplierName());
-    		mDeliveryDate.setText(CommonUtil.formatDate(inventory.getDeliveryDate()));
+    		mInventoryDate.setText(CommonUtil.formatDate(inventory.getInventoryDate()));
     		mRemarksText.setText(inventory.getRemarks());
     		
     		showView();
@@ -183,7 +186,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	Float quantity = CommonUtil.parseFloatNumber(mQuantityText.getText().toString());
     	String billReferenceNo = mBillsReferenceNoText.getText().toString();
     	String supplierName = mSupplierNameText.getText().toString();
-    	Date deliveryDate = CommonUtil.parseDate(mDeliveryDate.getText().toString());
+    	Date deliveryDate = CommonUtil.parseDate(mInventoryDate.getText().toString());
     	String remarks = mRemarksText.getText().toString();
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
@@ -209,7 +212,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
      		
     		mItem.setBillReferenceNo(billReferenceNo);
     		mItem.setSupplierName(supplierName);
-    		mItem.setDeliveryDate(deliveryDate);
+    		mItem.setInventoryDate(deliveryDate);
     		mItem.setRemarks(remarks);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
@@ -242,7 +245,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
         mQuantityText.getText().clear();
         mBillsReferenceNoText.getText().clear();
         mSupplierNameText.getText().clear();
-        mDeliveryDate.getText().clear();
+        mInventoryDate.getText().clear();
         mRemarksText.getText().clear();
         
         mItem = null;
@@ -332,7 +335,10 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     			mItem.setBillReferenceNo(bill.getBillReferenceNo());
     			mItem.setSupplierId(bill.getSupplierId());
     			mItem.setSupplierName(bill.getSupplierName());
-    			mItem.setDeliveryDate(bill.getDeliveryDate());
+    			
+    			if (Constant.INVENTORY_STATUS_PURCHASE.equals(mStatus)) {
+    				mItem.setInventoryDate(bill.getDeliveryDate());
+        		}
     			
     		} else {
     			
@@ -340,7 +346,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     			mItem.setBillReferenceNo(Constant.EMPTY_STRING);
     			mItem.setSupplier(null);
     			mItem.setSupplierName(Constant.EMPTY_STRING);
-    			mItem.setDeliveryDate(null);
+    			mItem.setInventoryDate(null);
     		}
     		
     		updateView(mItem);
@@ -349,14 +355,88 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     
     private void refreshVisibleField() {
     	
+    	mProductCostPricePanel.setVisibility(View.VISIBLE);
+    	mBillsReferenceNoPanel.setVisibility(View.VISIBLE);
     	mSupplierPanel.setVisibility(View.VISIBLE);
 		mRemarksPanel.setVisibility(View.VISIBLE);
 		
-		if (Constant.INVENTORY_STATUS_SALE.equals(mStatus)) {
+		mandatoryFields.clear();
+		
+		if (Constant.INVENTORY_STATUS_PURCHASE.equals(mStatus)) {
 			
+			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormField(mBillsReferenceNoText, R.string.field_bills_reference_no));
+	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+		
+		} else if (Constant.INVENTORY_STATUS_RETURN.equals(mStatus)) {
+			
+			mProductCostPricePanel.setVisibility(View.GONE);
+			
+			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormField(mBillsReferenceNoText, R.string.field_bills_reference_no));
+	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+		
+		} else if (Constant.INVENTORY_STATUS_REPLACEMENT.equals(mStatus)) {
+			
+			mProductCostPricePanel.setVisibility(View.GONE);
+			
+			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormField(mBillsReferenceNoText, R.string.field_bills_reference_no));
+	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+		
+		} else if (Constant.INVENTORY_STATUS_LOST.equals(mStatus)) {
+			
+			mProductCostPricePanel.setVisibility(View.GONE);
+			mBillsReferenceNoPanel.setVisibility(View.GONE);
 			mSupplierPanel.setVisibility(View.GONE);
-			mRemarksPanel.setVisibility(View.GONE);
+			
+			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+			
+		} else if (Constant.INVENTORY_STATUS_DAMAGE.equals(mStatus)) {
+			
+			mProductCostPricePanel.setVisibility(View.GONE);
+			mBillsReferenceNoPanel.setVisibility(View.GONE);
+			mSupplierPanel.setVisibility(View.GONE);
+			
+			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+			
+		}  else if (Constant.INVENTORY_STATUS_INITIAL_STOCK.equals(mStatus)) {
+			
+			mProductCostPricePanel.setVisibility(View.GONE);
+			mBillsReferenceNoPanel.setVisibility(View.GONE);
+			mSupplierPanel.setVisibility(View.GONE);
+			
+			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
 		}
+		
+		highlightMandatoryFields();
+    }
+    
+    private AdapterView.OnItemSelectedListener getStatusOnItemSelectedListener() {
+    	
+    	return new AdapterView.OnItemSelectedListener() {
+			
+        	@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				
+		    	mStatus = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
+		    	
+		    	refreshVisibleField();
+		    }
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		};
     }
     
     public View.OnClickListener getProductOnClickListener() {

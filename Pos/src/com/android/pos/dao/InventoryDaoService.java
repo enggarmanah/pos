@@ -57,15 +57,16 @@ public class InventoryDaoService {
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		String queryStr = CommonUtil.getSqlLikeString(query);
+		String statusSale = Constant.INVENTORY_STATUS_SALE;
 		String status = Constant.STATUS_DELETED;
 		String limit = Constant.QUERY_LIMIT;
 		String lastIdx = String.valueOf(lastIndex);
 		
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM inventory "
-				+ " WHERE (bill_reference_no like ? OR product_name like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? "
-				+ " ORDER BY delivery_date DESC LIMIT ? OFFSET ? ",
-				new String[] { queryStr, queryStr, queryStr, queryStr, status, limit, lastIdx});
+				+ " WHERE (bill_reference_no like ? OR product_name like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? AND status <> ? "
+				+ " ORDER BY inventory_date DESC LIMIT ? OFFSET ? ",
+				new String[] { queryStr, queryStr, queryStr, queryStr, statusSale, status, limit, lastIdx});
 		
 		List<Inventory> list = new ArrayList<Inventory>();
 		
@@ -86,13 +87,14 @@ public class InventoryDaoService {
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		String billReferenceNo = bill.getBillReferenceNo();
+		String statusSale = Constant.INVENTORY_STATUS_SALE;
 		String status = Constant.STATUS_DELETED;
 		
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM inventory "
-				+ " WHERE bill_reference_no like ? AND status <> ? "
-				+ " ORDER BY delivery_date DESC ",
-				new String[] { billReferenceNo, status});
+				+ " WHERE bill_reference_no like ? AND status <> ? AND status <> ? "
+				+ " ORDER BY inventory_date DESC ",
+				new String[] { billReferenceNo, statusSale, status});
 		
 		List<Inventory> list = new ArrayList<Inventory>();
 		
@@ -117,7 +119,7 @@ public class InventoryDaoService {
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM inventory "
 				+ " WHERE bill_reference_no like ? AND status <> ? "
-				+ " ORDER BY delivery_date DESC ",
+				+ " ORDER BY inventory_date DESC ",
 				new String[] { billReferenceNo, status});
 		
 		List<Inventory> list = new ArrayList<Inventory>();
@@ -146,7 +148,7 @@ public class InventoryDaoService {
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM inventory "
 				+ " WHERE product_id = ? AND status <> ? "
-				+ " ORDER BY delivery_date DESC LIMIT ? OFFSET ? ",
+				+ " ORDER BY inventory_date DESC LIMIT ? OFFSET ? ",
 				new String[] { productId, status, limit, lastIdx});
 		
 		List<Inventory> list = new ArrayList<Inventory>();
@@ -190,7 +192,7 @@ public class InventoryDaoService {
 	public List<InventoryBean> getInventoriesForUpload() {
 
 		QueryBuilder<Inventory> qb = inventoryDao.queryBuilder();
-		qb.where(InventoryDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(InventoryDao.Properties.DeliveryDate);
+		qb.where(InventoryDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(InventoryDao.Properties.InventoryDate);
 		
 		Query<Inventory> q = qb.build();
 		
@@ -298,7 +300,7 @@ public class InventoryDaoService {
 				+ "   (i.product_name like ? OR pg.name like ?) AND "
 				+ "   i.status <> ? "
 				+ " ORDER BY "
-				+ "   i.delivery_date DESC "
+				+ "   i.inventory_date DESC "
 				+ " LIMIT ? OFFSET ? ",
 				new String[] { supplierId, queryStr, queryStr, status, limit, lastIdx});
 		

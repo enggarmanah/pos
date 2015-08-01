@@ -28,6 +28,7 @@ public class TransactionsDaoService {
 	
 	private TransactionsDao mTransactionsDao = DbUtil.getSession().getTransactionsDao();
 	private TransactionItemDao mTransactionItemDao = DbUtil.getSession().getTransactionItemDao();
+	private CashflowDao mCashflowDao = DbUtil.getSession().getCashflowDao();
 	
 	public void addTransactions(Transactions transactions) {
 		
@@ -145,6 +146,7 @@ public class TransactionsDaoService {
 			Long newId = mTransactionsDao.insert(transaction);
 			
 			updateTransactionItemFk(oldId, newId);
+			updateCashflowFk(oldId, newId);
 		}
 		
 		DbUtil.getDb().setTransactionSuccessful();
@@ -160,6 +162,18 @@ public class TransactionsDaoService {
 			ti.setTransactionId(newId);
 			ti.setUploadStatus(Constant.STATUS_YES);
 			mTransactionItemDao.update(ti);
+		}
+	}
+	
+	private void updateCashflowFk(Long oldId, Long newId) {
+		
+		Transactions t = mTransactionsDao.load(oldId);
+		
+		for (Cashflow c : t.getCashflowList()) {
+			
+			c.setTransactionId(newId);
+			c.setUploadStatus(Constant.STATUS_YES);
+			mCashflowDao.update(c);
 		}
 	}
 	

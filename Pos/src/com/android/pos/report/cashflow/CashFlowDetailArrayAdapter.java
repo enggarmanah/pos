@@ -134,7 +134,10 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<CashflowBean> {
 			Bills bill = billDaoService.getBills(cashflow.getBill_id());
 			
 			billReferenceNo = bill.getBillReferenceNo();
-			supplierName = supplierDaoService.getSupplier(bill.getSupplierId()).getName();
+			
+			if (bill.getSupplierId() != null) {
+				supplierName = supplierDaoService.getSupplier(bill.getSupplierId()).getName();
+			}
 		}
 		
 		String transactionNo = null;

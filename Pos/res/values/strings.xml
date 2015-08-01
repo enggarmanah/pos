@@ -240,6 +240,7 @@
     <string name="report_cashflow_service_charge_amount">Bea Servis</string>
     <string name="report_cashflow_expense">Pengeluaran</string>
     
+    <string name="report_bill">Tagihan</string>
     <string name="report_bill_pastdue">Tagihan Jatuh Tempo</string>
     <string name="report_bill_supplier">Supplier</string>
     <string name="report_bill_duedate">Jatuh Tempo</string>
@@ -248,7 +249,8 @@
     <string name="report_bill_payment">Bayar</string>
     <string name="report_bill_outstanding">Sisa</string>
     <string name="report_bill_remarks">Keterangan</string>
-    <string name="report_bill_purchase">Daftar Pembelian</string>
+    <string name="report_bill_purchased">Daftar Pembelian</string>
+    <string name="report_bill_payments">Daftar Pembayaran</string>
     
     <string name="report_bill_outstanding_title">Tagihan Belum Lunas</string>
     
@@ -436,8 +438,7 @@
 	<string name="order_type_take_away">Take Away</string>
 	
 	<string name="bill_type_product_purchase">"Pembelian Produk"</string>
-	<string name="bill_type_expense_with_receipt">"Pengeluaran Dengan Nota"</string>
-	<string name="bill_type_expense_without_receipt">"Pengeluaran Tanpa Nota"</string>
+	<string name="bill_type_expense">"Pengeluaran"</string>
 	
 	<string name="bill_status_unpaid">"Belum Dibayar"</string>
 	<string name="bill_status_partial">"Pembayaran Sebagian"</string>
@@ -467,12 +468,12 @@
 	<string name="menu_user_access">Hak Akses</string>
 	<string name="menu_bills">Tagihan</string>
 	<string name="menu_report">Laporan</string>					
-	
 	<string name="menu_report_transaction">Laporan Transaksi</string>
 	<string name="menu_report_product_statistic">Laporan Penjualan</string>
 	<string name="menu_report_commision">Laporan Komisi</string>
 	<string name="menu_report_inventory">Laporan Inventori</string>
 	<string name="menu_report_cashflow">Laporan Keuangan</string>
+	<string name="menu_report_bills">Laporan Tagihan</string>
 	<string name="menu_favorite">Favorit</string>
 	<string name="menu_favorite_customer">Pelanggan Favorit</string>
 	<string name="menu_favorite_patient">Pasien Favorit</string>
@@ -501,6 +502,7 @@
 	<string name="menu_report_inventory_order">J03</string>
 	<string name="menu_report_cashflow_order">J04</string>
 	<string name="menu_report_commision_order">J05</string>
+	<string name="menu_report_bills_order">J06</string>
 	<string name="menu_favorite_customer_order">K01</string>
 	<string name="menu_favorite_supplier_order">K02</string>
 	
@@ -550,8 +552,8 @@
 	<string name="cashflow_type_capital_out">Penarikan Modal</string>
 	<string name="cashflow_type_bank_deposit">Transfer Dana ke Bank</string>
 	<string name="cashflow_type_bank_withdrawal">Penarikan Dana dari Bank</string>
-	<string name="cashflow_type_bill_payment">Pembayaran Tagihan ke Supplier</string>
-	<string name="cashflow_type_invc_payment">Penerimaan Tagihan dari Customer</string>
+	<string name="cashflow_type_bill_payment">Pembayaran Tagihan</string>
+	<string name="cashflow_type_invc_payment">Penerimaan Tagihan</string>
 	<string name="cashflow_type_expense">Pengeluaran Lain-lain</string>
 		
 </resources>

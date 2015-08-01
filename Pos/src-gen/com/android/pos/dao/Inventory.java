@@ -24,7 +24,7 @@ public class Inventory implements Serializable {
     private String billReferenceNo;
     private Long supplierId;
     private String supplierName;
-    private java.util.Date deliveryDate;
+    private java.util.Date inventoryDate;
     private String remarks;
     private String status;
     private String uploadStatus;
@@ -59,7 +59,7 @@ public class Inventory implements Serializable {
         this.id = id;
     }
 
-    public Inventory(Long id, String refId, long merchantId, long productId, String productName, Float productCostPrice, Float quantity, Long billId, String billReferenceNo, Long supplierId, String supplierName, java.util.Date deliveryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Inventory(Long id, String refId, long merchantId, long productId, String productName, Float productCostPrice, Float quantity, Long billId, String billReferenceNo, Long supplierId, String supplierName, java.util.Date inventoryDate, String remarks, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.refId = refId;
         this.merchantId = merchantId;
@@ -71,7 +71,7 @@ public class Inventory implements Serializable {
         this.billReferenceNo = billReferenceNo;
         this.supplierId = supplierId;
         this.supplierName = supplierName;
-        this.deliveryDate = deliveryDate;
+        this.inventoryDate = inventoryDate;
         this.remarks = remarks;
         this.status = status;
         this.uploadStatus = uploadStatus;
@@ -175,12 +175,12 @@ public class Inventory implements Serializable {
         this.supplierName = supplierName;
     }
 
-    public java.util.Date getDeliveryDate() {
-        return deliveryDate;
+    public java.util.Date getInventoryDate() {
+        return inventoryDate;
     }
 
-    public void setDeliveryDate(java.util.Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setInventoryDate(java.util.Date inventoryDate) {
+        this.inventoryDate = inventoryDate;
     }
 
     public String getRemarks() {

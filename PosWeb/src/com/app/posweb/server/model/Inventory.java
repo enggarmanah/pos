@@ -15,7 +15,7 @@ public class Inventory extends Base {
     private String bill_reference_no;
     private Long supplier_id;
     private String supplier_name;
-    private java.util.Date delivery_date;
+    private java.util.Date inventory_date;
     private String remarks;
     private String status;
     
@@ -31,7 +31,7 @@ public class Inventory extends Base {
 		this.bill_reference_no = bean.getBill_reference_no();
 		this.supplier_id = bean.getSupplier_id();
 		this.supplier_name = bean.getSupplier_name();
-		this.delivery_date = bean.getDelivery_date();
+		this.inventory_date = bean.getInventory_date();
 		this.remarks = bean.getRemarks();
 		this.status = bean.getStatus();
 	}
@@ -100,12 +100,12 @@ public class Inventory extends Base {
 		this.supplier_name = supplier_name;
 	}
 
-	public java.util.Date getDelivery_date() {
-		return delivery_date;
+	public java.util.Date getInventory_date() {
+		return inventory_date;
 	}
 
-	public void setDelivery_date(java.util.Date delivery_date) {
-		this.delivery_date = delivery_date;
+	public void setInventory_date(java.util.Date inventory_date) {
+		this.inventory_date = inventory_date;
 	}
 
 	public String getRemarks() {

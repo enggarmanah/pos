@@ -27,6 +27,7 @@ public class BillsDaoService {
 	
 	private BillsDao billsDao = DbUtil.getSession().getBillsDao();
 	private InventoryDao inventoryDao = DbUtil.getSession().getInventoryDao();
+	private CashflowDao cashflowDao = DbUtil.getSession().getCashflowDao();
 	
 	public void addBills(Bills bills) {
 		
@@ -73,7 +74,77 @@ public class BillsDaoService {
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM bills "
 				+ " WHERE (bill_reference_no like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? "
-				+ " ORDER BY bill_date DESC, bill_reference_no ASC LIMIT ? OFFSET ? ",
+				+ " ORDER BY "
+				+ "   bill_date DESC"
+				+ " LIMIT ? OFFSET ? ",
+				new String[] { queryStr, queryStr, queryStr, status, limit, lastIdx});
+		
+		List<Bills> list = new ArrayList<Bills>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Bills item = getBills(id);
+			list.add(item);
+		}
+		
+		cursor.close();
+
+		return list;
+	}
+	
+	public List<Bills> getBills(String query, String billType, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = CommonUtil.getSqlLikeString(query);
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM bills "
+				+ " WHERE (bill_reference_no like ? OR supplier_name like ? OR remarks like ? ) AND bill_type = ? AND status <> ? "
+				+ " ORDER BY "
+				+ "   bill_date DESC"
+				+ " LIMIT ? OFFSET ? ",
+				new String[] { queryStr, queryStr, queryStr, billType, status, limit, lastIdx});
+		
+		List<Bills> list = new ArrayList<Bills>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Bills item = getBills(id);
+			list.add(item);
+		}
+		
+		cursor.close();
+
+		return list;
+	}
+	
+	public List<Bills> getBillsReport(String query, int lastIndex) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String queryStr = CommonUtil.getSqlLikeString(query);
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM bills "
+				+ " WHERE (bill_reference_no like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? "
+				+ " ORDER BY "
+				+ "   CASE "
+				+ "     WHEN bill_amount > payment AND bill_due_date IS NOT NULL "
+				+ "       THEN 1 "
+				+ "     WHEN bill_amount > payment AND bill_due_date IS NULL "
+				+ "       THEN 2 "
+				+ "     ELSE 3 "
+				+ "   END ASC, bill_due_date ASC, payment_date DESC "
+				+ " LIMIT ? OFFSET ? ",
 				new String[] { queryStr, queryStr, queryStr, status, limit, lastIdx});
 		
 		List<Bills> list = new ArrayList<Bills>();
@@ -121,9 +192,9 @@ public class BillsDaoService {
 		return list;
 	}
 	
-	public List<Bills> getPastDueBills() {
+	public List<Bills> getPastDueBills(String query, int lastIndex) {
 
-		SQLiteDatabase db = DbUtil.getDb();
+		/*SQLiteDatabase db = DbUtil.getDb();
 		
 		String today = String.valueOf(new Date().getTime());
 		String status = Constant.STATUS_DELETED;
@@ -133,6 +204,35 @@ public class BillsDaoService {
 				+ " WHERE payment < bill_amount AND bill_due_date <= ? AND status <> ? "
 				+ " ORDER BY bill_date ",
 				new String[] { today, status});
+		
+		List<Bills> list = new ArrayList<Bills>();
+		
+		while(cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			Bills item = getBills(id);
+			list.add(item);
+		}
+		
+		cursor.close();
+
+		return list;*/
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String today = String.valueOf(new Date().getTime());
+		String queryStr = CommonUtil.getSqlLikeString(query);
+		String status = Constant.STATUS_DELETED;
+		String limit = Constant.QUERY_LIMIT;
+		String lastIdx = String.valueOf(lastIndex);
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM bills "
+				+ " WHERE "
+				+ "   payment < bill_amount AND bill_due_date <= ? AND "
+				+ "   (bill_reference_no like ? OR supplier_name like ? OR remarks like ? ) AND status <> ? "
+				+ " ORDER BY bill_date DESC, bill_reference_no ASC LIMIT ? OFFSET ? ",
+				new String[] { today, queryStr, queryStr, queryStr, status, limit, lastIdx});
 		
 		List<Bills> list = new ArrayList<Bills>();
 		
@@ -298,6 +398,8 @@ public class BillsDaoService {
 			} else {
 				billsDao.update(bill);
 			}
+			
+			updatePaymentDetails(bill.getId());
 		}
 		
 		for (BillsBean bean : shiftedBeans) {
@@ -313,6 +415,7 @@ public class BillsDaoService {
 			Long newId = billsDao.insert(bill);
 			
 			updateInventoryFk(oldId, newId);
+			updateCashflowFk(oldId, newId);
 		}
 		
 		DbUtil.getDb().setTransactionSuccessful();
@@ -327,6 +430,17 @@ public class BillsDaoService {
 			i.setBillId(newId);
 			i.setUploadStatus(Constant.STATUS_YES);
 			inventoryDao.update(i);
+		}
+	}
+	
+	private void updateCashflowFk(Long oldId, Long newId) {
+		
+		Bills oldBill = billsDao.load(oldId);
+		
+		for (Cashflow c : oldBill.getCashflowList()) {
+			c.setBillId(newId);
+			c.setUploadStatus(Constant.STATUS_YES);
+			cashflowDao.update(c);
 		}
 	}
 	
@@ -397,6 +511,31 @@ public class BillsDaoService {
 		cursor.close();
 		
 		return cashFlowMonths;
+	}
+	
+	public void updatePaymentDetails(Long billId) {
+		
+		Bills bill = getBills(billId);
+		
+		Date lastPaymentDate = null;
+		Float totalPayment = Float.valueOf(0);
+		
+		QueryBuilder<Cashflow> qb = cashflowDao.queryBuilder();
+		qb.where(CashflowDao.Properties.BillId.eq(billId), 
+				CashflowDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(CashflowDao.Properties.CashDate);
+		
+		Query<Cashflow> q = qb.build();
+		
+		for (Cashflow cashflow : q.list()) {
+			
+			lastPaymentDate = cashflow.getCashDate();
+			totalPayment += Math.abs(cashflow.getCashAmount());
+		}
+		
+		bill.setPaymentDate(lastPaymentDate);
+		bill.setPayment(totalPayment);
+		
+		updateBills(bill);
 	}
 	
 	public boolean hasUpdate() {

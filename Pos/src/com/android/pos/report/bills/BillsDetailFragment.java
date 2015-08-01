@@ -1,4 +1,4 @@
-package com.android.pos.report.cashflow;
+package com.android.pos.report.bills;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,14 @@ import android.widget.TextView;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.dao.Bills;
+import com.android.pos.dao.BillsDaoService;
+import com.android.pos.dao.Cashflow;
+import com.android.pos.dao.CashflowDaoService;
 import com.android.pos.dao.Inventory;
 import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.util.CommonUtil;
 
-public class CashFlowBillDetailFragment extends BaseFragment {
+public class BillsDetailFragment extends BaseFragment {
 	
 	private ImageButton mBackButton;
 	
@@ -42,29 +45,40 @@ public class CashFlowBillDetailFragment extends BaseFragment {
 	
 	private TextView mRemarksText;
 	
-	private TextView mListTitleText;
+	private TextView mBillPaymentsText;
+	private TextView mProductPurchasedText;
 	
-	private ListView mInventoryListView;
+	private ListView mBillInfoListView;
 
 	private Bills mBill;
+	
+	private List<Cashflow> mCashflows;
 	private List<Inventory> mInventories;
 	
-	private CashFlowActionListener mActionListener;
+	private BillsActionListener mActionListener;
 	
-	private CashFlowBillDetailArrayAdapter mAdapter;
+	private BillsDetailPaymentArrayAdapter mPaymentAdapter;
+	private BillsDetailProductArrayAdapter mProductPurchasedAdapter;
 	
+	private CashflowDaoService mCashflowDaoService = new CashflowDaoService();
 	private InventoryDaoService mInventoryDaoService = new InventoryDaoService();
+	private BillsDaoService mBillsDaoService = new BillsDaoService();
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.report_cashflow_bill_detail_fragment, container, false);
+		View view = inflater.inflate(R.layout.report_bills_detail_fragment, container, false);
+		
+		if (mCashflows == null) {
+			mCashflows = new ArrayList<Cashflow>();
+		}
 		
 		if (mInventories == null) {
 			mInventories = new ArrayList<Inventory>();
-		} 
+		}
 		
-		mAdapter = new CashFlowBillDetailArrayAdapter(getActivity(), mInventories);
+		mPaymentAdapter = new BillsDetailPaymentArrayAdapter(getActivity(), mCashflows);
+		mProductPurchasedAdapter = new BillsDetailProductArrayAdapter(getActivity(), mInventories);
 		
 		initViewVariables(view);
 		
@@ -73,11 +87,10 @@ public class CashFlowBillDetailFragment extends BaseFragment {
 	
 	private void initViewVariables(View view) {
 		
-		mInventoryListView = (ListView) view.findViewById(R.id.inventoryList);
-
-		mInventoryListView.setAdapter(mAdapter);
-		mInventoryListView.setItemsCanFocus(true);
-		mInventoryListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);	
+		mBillInfoListView = (ListView) view.findViewById(R.id.billInfoList);
+		
+		mBillInfoListView.setItemsCanFocus(true);
+		mBillInfoListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);	
 		
 		mSupplierAndDatePanel = (LinearLayout) view.findViewById(R.id.supplierAndDatePanel);
 		mSupplierPanel = (LinearLayout) view.findViewById(R.id.supplierPanel);
@@ -98,7 +111,11 @@ public class CashFlowBillDetailFragment extends BaseFragment {
 		mOutstandingAmountText = (TextView) view.findViewById(R.id.outstandingAmountText);
 		mRemarksText = (TextView) view.findViewById(R.id.remarksText);
 		
-		mListTitleText = (TextView) view.findViewById(R.id.listTitleText);
+		mBillPaymentsText = (TextView) view.findViewById(R.id.billPaymentsText);
+		mProductPurchasedText = (TextView) view.findViewById(R.id.productPurchasedText);
+		
+		mBillPaymentsText.setOnClickListener(getBillPaymentsOnClickListener());
+		mProductPurchasedText.setOnClickListener(getProductPurchasedOnClickListener());
 	}
 	
 	public void onStart() {
@@ -112,10 +129,10 @@ public class CashFlowBillDetailFragment extends BaseFragment {
         super.onAttach(activity);
 
         try {
-            mActionListener = (CashFlowActionListener) activity;
+            mActionListener = (BillsActionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement CashFlowActionListener");
+                    + " must implement BillsReportActionListener");
         }
     }
 	
@@ -139,6 +156,8 @@ public class CashFlowBillDetailFragment extends BaseFragment {
 			getView().setVisibility(View.INVISIBLE);
 			return;
 		}
+		
+		mBillsDaoService.updatePaymentDetails(mBill.getId());
 
 		mReferenceNoText.setText(mBill.getBillReferenceNo());
 		mDateText.setText(CommonUtil.formatDate(mBill.getBillDate()));
@@ -155,20 +174,7 @@ public class CashFlowBillDetailFragment extends BaseFragment {
 		mOutstandingAmountText.setText(CommonUtil.formatCurrency(outstandingAmount));
 		mRemarksText.setText(mBill.getRemarks());
 		
-		mInventories.clear();
-
-		List<Inventory> inventories = mInventoryDaoService.getInventories(mBill);
-		
-		if (inventories.size() > 0) {
-			
-			mListTitleText.setVisibility(View.VISIBLE);
-			mInventories.addAll(inventories);
-			
-		} else {
-			mListTitleText.setVisibility(View.GONE);
-		}
-		
-		mAdapter.notifyDataSetChanged();
+		updateList();
 		
 		if (CommonUtil.isEmpty(mBill.getSupplierName())) {
 			mSupplierPanel.setVisibility(View.GONE);
@@ -197,6 +203,42 @@ public class CashFlowBillDetailFragment extends BaseFragment {
 		getView().setVisibility(View.VISIBLE);
 	}
 	
+	private void updateList() {
+		
+		mCashflows.clear();
+
+		List<Cashflow> cashflows = mCashflowDaoService.getCashflows(mBill);
+		mCashflows.addAll(cashflows);
+		
+		if (cashflows.size() > 0) {
+			mBillPaymentsText.setVisibility(View.VISIBLE);
+			mBillPaymentsText.setTextColor(getResources().getColor(R.color.text_blue));
+			mBillInfoListView.setAdapter(mPaymentAdapter);
+		} else {
+			mBillPaymentsText.setVisibility(View.GONE);
+		}
+		
+		mPaymentAdapter.notifyDataSetChanged();
+		
+		mInventories.clear();
+
+		List<Inventory> inventories = mInventoryDaoService.getInventories(mBill);
+		mInventories.addAll(inventories);
+		
+		if (inventories.size() > 0) {
+			mProductPurchasedText.setVisibility(View.VISIBLE);
+			
+			if (cashflows.size() == 0) {
+				mProductPurchasedText.setTextColor(getResources().getColor(R.color.text_blue));
+				mBillInfoListView.setAdapter(mProductPurchasedAdapter);
+			}
+		} else {
+			mProductPurchasedText.setVisibility(View.GONE);
+		}
+		
+		mProductPurchasedAdapter.notifyDataSetChanged();
+	}
+	
 	private View.OnClickListener getBackButtonOnClickListener() {
 		
 		return new View.OnClickListener() {
@@ -205,6 +247,36 @@ public class CashFlowBillDetailFragment extends BaseFragment {
 			public void onClick(View v) {
 				
 				mActionListener.onBackPressed();
+			}
+		};
+	}
+	
+	private View.OnClickListener getProductPurchasedOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mBillPaymentsText.setTextColor(getResources().getColor(R.color.text_light));
+				mProductPurchasedText.setTextColor(getResources().getColor(R.color.text_blue));
+				
+				mBillInfoListView.setAdapter(mProductPurchasedAdapter);
+			}
+		};
+	}
+	
+	private View.OnClickListener getBillPaymentsOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mBillPaymentsText.setTextColor(getResources().getColor(R.color.text_blue));
+				mProductPurchasedText.setTextColor(getResources().getColor(R.color.text_light));
+				
+				mBillInfoListView.setAdapter(mPaymentAdapter);
 			}
 		};
 	}

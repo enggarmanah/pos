@@ -87,6 +87,18 @@ public class BillArrayAdapter extends ArrayAdapter<Bills> {
 		billRemarksText.setText(bill.getRemarks());
 		billSupplierText.setText(bill.getSupplierName());
 		
+		if (CommonUtil.isEmpty(bill.getRemarks())) {
+			billRemarksText.setVisibility(View.GONE);
+		} else {
+			billRemarksText.setVisibility(View.VISIBLE);
+		}
+		
+		if (bill.getSupplier() == null) {
+			billSupplierText.setVisibility(View.GONE);
+		} else {
+			billSupplierText.setVisibility(View.VISIBLE);
+		}
+		
 		rowView.setOnClickListener(getItemOnClickListener(bill, billReferenceNoText));
 
 		return rowView;

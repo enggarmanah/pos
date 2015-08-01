@@ -763,7 +763,7 @@ public class CashierActivity extends BaseActivity
 				inventory.setProductName(transactionItem.getProductName());
 				inventory.setQuantity(-transactionItem.getQuantity());
 				inventory.setProductCostPrice(transactionItem.getCostPrice());
-				inventory.setDeliveryDate(new Date());
+				inventory.setInventoryDate(new Date());
 				inventory.setStatus(Constant.INVENTORY_STATUS_SALE);
 				inventory.setUploadStatus(Constant.STATUS_YES);
 				inventory.setCreateBy(UserUtil.getUser().getUserId());

@@ -16,7 +16,6 @@
         <TextView
             android:layout_weight="1"
             style="@style/SectionTopTextStyle"
-            android:text="@string/report_inventory_product_stock"
             android:gravity="end|center_vertical" />
     </LinearLayout>
 

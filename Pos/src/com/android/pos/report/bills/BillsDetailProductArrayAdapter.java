@@ -1,4 +1,4 @@
-package com.android.pos.report.outstanding;
+package com.android.pos.report.bills;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class OutstandingBillDetailArrayAdapter extends ArrayAdapter<Inventory> {
+public class BillsDetailProductArrayAdapter extends ArrayAdapter<Inventory> {
 
 	private Context context;
 	private List<Inventory> mInventories;
@@ -28,12 +28,12 @@ public class OutstandingBillDetailArrayAdapter extends ArrayAdapter<Inventory> {
 		TextView supplierText;
 	}
 
-	public OutstandingBillDetailArrayAdapter(Context context, List<Inventory> productStatistics) {
+	public BillsDetailProductArrayAdapter(Context context, List<Inventory> inventories) {
 
-		super(context, R.layout.report_pastdue_detail_list_item, productStatistics);
+		super(context, R.layout.report_bills_detail_product_list_item, inventories);
 		
 		this.context = context;
-		this.mInventories = productStatistics;
+		this.mInventories = inventories;
 	}
 	
 	@Override
@@ -52,7 +52,7 @@ public class OutstandingBillDetailArrayAdapter extends ArrayAdapter<Inventory> {
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.report_pastdue_detail_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.report_bills_detail_product_list_item, parent, false);
 			
 			flowImage = (ImageView) rowView.findViewById(R.id.flowImage);
 			productText = (TextView) rowView.findViewById(R.id.productText);

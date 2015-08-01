@@ -99,7 +99,7 @@ public class InventorySearchArrayAdapter extends BaseSearchArrayAdapter<Inventor
 	    
 	    nameText.setText(getItemName(item));
 	    quantityText.setText(CommonUtil.formatNumber(Math.abs(item.getQuantity())));
-		deliveryDateText.setText(CommonUtil.formatDate(item.getDeliveryDate()));
+		deliveryDateText.setText(CommonUtil.formatDate(item.getInventoryDate()));
 		remarksText.setText(remarks);
 		
 		if (!CommonUtil.isEmpty(item.getSupplierName())) {

@@ -1,10 +1,12 @@
-package com.android.pos.report.outstanding;
+package com.android.pos.report.bills;
 
 import com.android.pos.dao.Bills;
 
-public interface OutstandingBillActionListener {
+public interface BillsActionListener {
 	
 	public void onBillSelected(Bills bill);
+	
+	public void onBillUnselected();
 	
 	public void onBackPressed();
 }

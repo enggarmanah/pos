@@ -212,8 +212,8 @@
     <string name="favorite_customer_transaction_search">Search</string>
     <string name="favorite_customer_product">Product</string>
     <string name="favorite_customer_total">Total</string>
-    <string name="favorite_customer_first_trans">First Transaction</string>
-    <string name="favorite_customer_last_trans">Last Transaction</string>
+    <string name="favorite_customer_first_trans">First Trans.</string>
+    <string name="favorite_customer_last_trans">Last Trans.</string>
     <string name="favorite_customer_average">Average</string>
     <string name="favorite_customer_min_trans">Minimal</string>
     <string name="favorite_customer_max_trans">Maximal</string>
@@ -240,6 +240,7 @@
     <string name="report_cashflow_service_charge_amount">Service Charge</string>
     <string name="report_cashflow_expense">Expense</string>
     
+    <string name="report_bill">Bills</string>
     <string name="report_bill_pastdue">Past Due</string>
     <string name="report_bill_supplier">Supplier</string>
     <string name="report_bill_duedate">Due Date</string>
@@ -248,7 +249,8 @@
     <string name="report_bill_payment">Payment</string>
     <string name="report_bill_outstanding">Outstanding</string>
     <string name="report_bill_remarks">Remarks</string>
-    <string name="report_bill_purchase">Expense</string>
+    <string name="report_bill_purchased">Product Purchased</string>
+    <string name="report_bill_payments">Bill Payments</string>
     
     <string name="report_bill_outstanding_title">Outstanding Bill</string>
     
@@ -436,8 +438,7 @@
 	<string name="order_type_take_away">Take Away</string>
 	
 	<string name="bill_type_product_purchase">"Product Purchase"</string>
-	<string name="bill_type_expense_with_receipt">"Expense With Receipt"</string>
-	<string name="bill_type_expense_without_receipt">"Expense Without Receipt"</string>
+	<string name="bill_type_expense">"Expense"</string>
 	
 	<string name="bill_status_unpaid">"Unpaid"</string>
 	<string name="bill_status_partial">"Partial Payment"</string>
@@ -466,28 +467,12 @@
 	<string name="menu_user_access">User Access</string>
 	<string name="menu_bills">Bills</string>
 	<string name="menu_report">Reports</string>					
-	
-	<string name="menu_cashier_order">A01</string>
-	<string name="menu_waitress_order">B01</string>
-	<string name="menu_order_order">C01</string>
-	<string name="menu_data_management_order">D01</string>
-	<string name="menu_customer_order">E01</string>
-	<string name="menu_inventory_order">F01</string>
-	<string name="menu_bills_order">G01</string>
-	<string name="menu_user_access_order">H01</string>
-	<string name="menu_report_transaction_order">I01</string>
-	<string name="menu_report_product_statistic_order">I02</string>
-	<string name="menu_report_inventory_order">I03</string>
-	<string name="menu_report_cashflow_order">I04</string>
-	<string name="menu_report_commision_order">I05</string>
-	<string name="menu_favorite_customer_order">J01</string>
-	<string name="menu_favorite_supplier_order">J02</string>
-	
 	<string name="menu_report_transaction">Transaction Report</string>
 	<string name="menu_report_product_statistic">Sales Report</string>
 	<string name="menu_report_commision">Commission Report</string>
 	<string name="menu_report_inventory">Inventory Report</string>
 	<string name="menu_report_cashflow">Cashflow Report</string>
+	<string name="menu_report_bills">Bills Report</string>
 	<string name="menu_favorite">Favorites</string>
 	<string name="menu_favorite_customer">Favorite Customer</string>
 	<string name="menu_favorite_patient">Favorite Patient</string>
@@ -501,6 +486,24 @@
 	<string name="menu_printer">Printer</string>
 	<string name="menu_exit">Exit</string>
 	<string name="menu_sync">Sync</string>
+	
+	<string name="menu_cashier_order">A01</string>
+	<string name="menu_waitress_order">B01</string>
+	<string name="menu_order_order">C01</string>
+	<string name="menu_data_management_order">D01</string>
+	<string name="menu_customer_order">E01</string>
+	<string name="menu_inventory_order">F01</string>
+	<string name="menu_bills_order">G01</string>
+	<string name="menu_cashflow_order">H01</string>
+	<string name="menu_user_access_order">I01</string>
+	<string name="menu_report_transaction_order">J01</string>
+	<string name="menu_report_product_statistic_order">J02</string>
+	<string name="menu_report_inventory_order">J03</string>
+	<string name="menu_report_cashflow_order">J04</string>
+	<string name="menu_report_commision_order">J05</string>
+	<string name="menu_report_bills_order">J06</string>
+	<string name="menu_favorite_customer_order">K01</string>
+	<string name="menu_favorite_supplier_order">K02</string>
 	
 	<string name="task_validate_merchant">"Authenticate merchant &#8230;"</string>
 	<string name="task_validate_user">"Authenticate user &#8230;"</string>
@@ -548,8 +551,8 @@
 	<string name="cashflow_type_capital_out">Capital Withdrawal</string>
 	<string name="cashflow_type_bank_deposit">Funds Transfer to Bank</string>
 	<string name="cashflow_type_bank_withdrawal">Funds Withdrawal from Bank</string>
-	<string name="cashflow_type_bill_payment">Bill Payment to Supplier</string>
-	<string name="cashflow_type_invc_payment">Invoice Payment from Customer</string>
+	<string name="cashflow_type_bill_payment">Bill Payment</string>
+	<string name="cashflow_type_invc_payment">Invoice Payment</string>
 	<string name="cashflow_type_expense">General Expense</string>
 		
 </resources>

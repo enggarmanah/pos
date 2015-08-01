@@ -3,6 +3,7 @@ package com.android.pos.base.adapter;
 import java.util.List;
 
 import com.android.pos.Config;
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
@@ -141,7 +142,15 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			
 			if (!Config.isMenuReportExpanded()) {
 				
-				Integer count = MerchantUtil.getBelowStockLimitProductCount() + MerchantUtil.getPastDueBillsCount();
+				Integer count = 0;
+				
+				if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
+					count += MerchantUtil.getBelowStockLimitProductCount();
+				}
+				
+				if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS)) {
+					count += MerchantUtil.getPastDueBillsCount();
+				}
 				
 				if (count > 99) {
 					countText.setText("++");
@@ -155,7 +164,7 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			}
 			
 		} else if (context.getString(R.string.menu_report_inventory).equals(menu) ||
-				context.getString(R.string.menu_report_cashflow).equals(menu)) {
+				context.getString(R.string.menu_report_bills).equals(menu)) {
 			
 			countText.setVisibility(View.VISIBLE);
 			
@@ -163,7 +172,7 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			
 			if (context.getString(R.string.menu_report_inventory).equals(menu)) {
 				count = MerchantUtil.getBelowStockLimitProductCount();
-			} else if (context.getString(R.string.menu_report_cashflow).equals(menu)) {
+			} else if (context.getString(R.string.menu_report_bills).equals(menu)) {
 				count = MerchantUtil.getPastDueBillsCount();
 			}
 			

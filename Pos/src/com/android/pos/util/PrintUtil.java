@@ -420,7 +420,7 @@ public class PrintUtil {
 		
 		} else if (!CommonUtil.isEmpty(transaction.getCustomerName())) {
 			
-			String customer = mActivity.getString(R.string.print_customer) + transaction.getOrderReference();
+			String customer = mActivity.getString(R.string.print_customer) + transaction.getCustomerName();
 			
 			line.setLength(0);
 			line.append(customer);

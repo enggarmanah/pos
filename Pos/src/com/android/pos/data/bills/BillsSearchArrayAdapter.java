@@ -84,17 +84,7 @@ public class BillsSearchArrayAdapter extends BaseSearchArrayAdapter<Bills> {
 		billDateText.setText(CommonUtil.formatDate(item.getBillDate()));
 		remarksText.setText(remarks);
 		
-		float payment = CommonUtil.getNvlFloat(item.getPayment());
-		float billAmount = CommonUtil.getNvlFloat(item.getBillAmount());
-		
-		if (payment < billAmount) {
-			billAmountText.setText(CommonUtil.formatCurrency(billAmount - payment));
-			billAmountText.setTextColor(context.getResources().getColor(R.color.text_red));
-		} else {
-			billAmountText.setText(CommonUtil.formatCurrency(payment));
-			billAmountText.setTextColor(context.getResources().getColor(R.color.text_medium));
-		}
-		
+		billAmountText.setText(CommonUtil.formatCurrency(item.getBillAmount()));
 		supplierText.setText(item.getSupplierName());
 		
 		if (!CommonUtil.isEmpty(item.getSupplierName())) {

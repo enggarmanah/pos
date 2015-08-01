@@ -10,6 +10,8 @@ import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.SqlUtils;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 
 import com.android.pos.dao.Cashflow;
 
@@ -45,6 +47,8 @@ public class CashflowDao extends AbstractDao<Cashflow, Long> {
 
     private DaoSession daoSession;
 
+    private Query<Cashflow> transactions_CashflowListQuery;
+    private Query<Cashflow> bills_CashflowListQuery;
 
     public CashflowDao(DaoConfig config) {
         super(config);
@@ -65,7 +69,7 @@ public class CashflowDao extends AbstractDao<Cashflow, Long> {
                 "'TYPE' TEXT," + // 3: type
                 "'BILL_ID' INTEGER," + // 4: billId
                 "'TRANSACTION_ID' INTEGER," + // 5: transactionId
-                "'CASH_AMOUNT' REAL," + // 6: cashAmount
+                "'CASH_AMOUNT' DECIMAL(10,2)," + // 6: cashAmount
                 "'CASH_DATE' INTEGER," + // 7: cashDate
                 "'REMARKS' TEXT," + // 8: remarks
                 "'STATUS' TEXT," + // 9: status
@@ -237,6 +241,36 @@ public class CashflowDao extends AbstractDao<Cashflow, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "cashflowList" to-many relationship of Transactions. */
+    public List<Cashflow> _queryTransactions_CashflowList(Long transactionId) {
+        synchronized (this) {
+            if (transactions_CashflowListQuery == null) {
+                QueryBuilder<Cashflow> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.TransactionId.eq(null));
+                queryBuilder.orderRaw("CASH_DATE ASC");
+                transactions_CashflowListQuery = queryBuilder.build();
+            }
+        }
+        Query<Cashflow> query = transactions_CashflowListQuery.forCurrentThread();
+        query.setParameter(0, transactionId);
+        return query.list();
+    }
+
+    /** Internal query to resolve the "cashflowList" to-many relationship of Bills. */
+    public List<Cashflow> _queryBills_CashflowList(Long billId) {
+        synchronized (this) {
+            if (bills_CashflowListQuery == null) {
+                QueryBuilder<Cashflow> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.BillId.eq(null));
+                queryBuilder.orderRaw("CASH_DATE ASC");
+                bills_CashflowListQuery = queryBuilder.build();
+            }
+        }
+        Query<Cashflow> query = bills_CashflowListQuery.forCurrentThread();
+        query.setParameter(0, billId);
+        return query.list();
+    }
+
     private String selectDeep;
 
     protected String getSelectDeep() {

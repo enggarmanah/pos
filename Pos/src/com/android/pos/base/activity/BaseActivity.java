@@ -30,6 +30,7 @@ import com.android.pos.favorite.customer.CustomerActivity;
 import com.android.pos.favorite.supplier.SupplierActivity;
 import com.android.pos.order.OrderActivity;
 import com.android.pos.printer.PrinterSelectActivity;
+import com.android.pos.report.bills.BillsActivity;
 import com.android.pos.report.cashflow.CashFlowActivity;
 import com.android.pos.report.commission.CommissionActivity;
 import com.android.pos.report.inventory.InventoryReportActivity;
@@ -206,7 +207,8 @@ public abstract class BaseActivity extends Activity
 	
 	protected void showSelectedMenu() {
 		
-		if (getString(R.string.menu_report_cashflow).equals(getSelectedMenu()) || 
+		if (getString(R.string.menu_report_cashflow).equals(getSelectedMenu()) ||
+			getString(R.string.menu_report_bills).equals(getSelectedMenu()) ||
 			getString(R.string.menu_report_commision).equals(getSelectedMenu()) ||
 			getString(R.string.menu_report_inventory).equals(getSelectedMenu()) ||
 			getString(R.string.menu_report_product_statistic).equals(getSelectedMenu()) ||
@@ -270,6 +272,7 @@ public abstract class BaseActivity extends Activity
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
 			
 			mMenus.add(getString(R.string.menu_report));
@@ -291,6 +294,10 @@ public abstract class BaseActivity extends Activity
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
 				mMenus.add(getString(R.string.menu_report_cashflow));
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS)) {
+				mMenus.add(getString(R.string.menu_report_bills));
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
@@ -493,6 +500,11 @@ public abstract class BaseActivity extends Activity
 		} else if (getString(R.string.menu_report_cashflow).equals(menu)) {
 
 			Intent intent = new Intent(this, CashFlowActivity.class);
+			startActivity(intent);
+
+		} else if (getString(R.string.menu_report_bills).equals(menu)) {
+
+			Intent intent = new Intent(this, BillsActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_report_inventory).equals(menu)) {

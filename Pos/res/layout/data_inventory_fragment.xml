@@ -34,7 +34,8 @@
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout style="@style/FormRowStyle"
+            android:id="@+id/productCostPricePanel">
 			
             <TextView
                 style="@style/FormTextFirstLetterStyle"
@@ -65,7 +66,8 @@
                 style="@style/FormInputNumericStyle" />
         </LinearLayout>
         
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout style="@style/FormRowStyle"
+            android:id="@+id/billReferenceNoPanel">
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
@@ -107,7 +109,7 @@
                 android:text="@string/field_date" />
 
             <EditText
-                android:id="@+id/deliveryDate"
+                android:id="@+id/inventoryDate"
                 style="@style/FormInputDateStyle" />
         </LinearLayout>
         

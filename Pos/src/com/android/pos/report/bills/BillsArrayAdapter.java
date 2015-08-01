@@ -1,5 +1,6 @@
-package com.android.pos.report.pastdue;
+package com.android.pos.report.bills;
 
+import java.util.Date;
 import java.util.List;
 
 import com.android.pos.R;
@@ -13,33 +14,32 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class PastDueArrayAdapter extends ArrayAdapter<Bills> {
+public class BillsArrayAdapter extends ArrayAdapter<Bills> {
 
-	private Context mContext;
+	private Context context;
 	private List<Bills> mBills;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onBillSelected(Bills bill);
+		public void onBillSelected(Bills item);
 		
 		public Bills getSelectedBill();
 	}
-
+	
 	class ViewHolder {
-		
-		TextView billReferenceNoText;
+		TextView itemText;
 		TextView remarksText;
 		TextView billDateText;
 		TextView billAmountText;
 		TextView supplierText;
 	}
+	
+	public BillsArrayAdapter(Context context, List<Bills> bills, ItemActionListener listener) {
 
-	public PastDueArrayAdapter(Context context, List<Bills> bills, ItemActionListener listener) {
-
-		super(context, R.layout.report_pastdue_list_item, bills);
+		super(context, R.layout.bills_list_item, bills);
 		
-		this.mContext = context;
+		this.context = context;
 		this.mBills = bills;
 		this.mCallback = listener;
 	}
@@ -49,41 +49,41 @@ public class PastDueArrayAdapter extends ArrayAdapter<Bills> {
 		
 		final Bills bill = mBills.get(position);
 		
-		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView = convertView;
 		
-		TextView billReferenceText = null;
+		TextView billReferenceNoText = null;
 		TextView remarksText = null;
+		TextView supplierText = null;
 		TextView billAmountText = null;
 		TextView billDateText = null;
-		TextView supplierText = null;
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.report_pastdue_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.bills_list_item, parent, false);
 			
-			billReferenceText = (TextView) rowView.findViewById(R.id.billReferenceNoText);
+			billReferenceNoText = (TextView) rowView.findViewById(R.id.nameText);
 			remarksText = (TextView) rowView.findViewById(R.id.remarksText);
+			supplierText = (TextView) rowView.findViewById(R.id.supplierText);
 			billAmountText = (TextView) rowView.findViewById(R.id.billAmountText);
 			billDateText = (TextView) rowView.findViewById(R.id.billDate);
-			supplierText = (TextView) rowView.findViewById(R.id.supplierText);
 			
 			ViewHolder viewHolder = new ViewHolder();
 			
-			viewHolder.billReferenceNoText = billReferenceText;
+			viewHolder.itemText = billReferenceNoText;
 			viewHolder.remarksText = remarksText;
+			viewHolder.supplierText = supplierText;
 			viewHolder.billAmountText = billAmountText;
 			viewHolder.billDateText = billDateText;
-			viewHolder.supplierText = supplierText;
-
+			
 			rowView.setTag(viewHolder);
 
 		} else {
 
 			ViewHolder viewHolder = (ViewHolder) rowView.getTag();
 			
-			billReferenceText = viewHolder.billReferenceNoText;
+			billReferenceNoText = viewHolder.itemText;
 			remarksText = viewHolder.remarksText;
 			billAmountText = viewHolder.billAmountText;
 			billDateText = viewHolder.billDateText;
@@ -92,13 +92,13 @@ public class PastDueArrayAdapter extends ArrayAdapter<Bills> {
 			
 		String remarks = bill.getRemarks();
 	    
-	    billReferenceText.setText(bill.getBillReferenceNo());
+	    billReferenceNoText.setText(bill.getBillReferenceNo());
 	    
 	    if (CommonUtil.isEmpty(bill.getBillReferenceNo())) {
-	    	billReferenceText.setText(mContext.getString(R.string.bill_no_receipt));
+	    	billReferenceNoText.setText(context.getString(R.string.bill_no_receipt));
 		}
 	    
-		billDateText.setText(CommonUtil.formatDate(bill.getBillDueDate()));
+		billDateText.setText(CommonUtil.formatDate(bill.getBillDate()));
 		remarksText.setText(remarks);
 		
 		float payment = CommonUtil.getNvlFloat(bill.getPayment());
@@ -106,10 +106,23 @@ public class PastDueArrayAdapter extends ArrayAdapter<Bills> {
 		
 		if (payment < billAmount) {
 			billAmountText.setText(CommonUtil.formatCurrency(billAmount - payment));
-			billAmountText.setTextColor(mContext.getResources().getColor(R.color.text_red));
+			
+			Date dueDate = bill.getBillDueDate();
+			Date curDate = new Date();
+			
+			if (dueDate != null) {
+				billDateText.setText(CommonUtil.formatDate(bill.getBillDueDate()));
+			}
+			
+			if (dueDate != null && curDate.getTime() > dueDate.getTime()) {
+				billAmountText.setTextColor(context.getResources().getColor(R.color.text_red));
+			} else {
+				billAmountText.setTextColor(context.getResources().getColor(R.color.text_orange));
+			}
 		} else {
+			billDateText.setText(CommonUtil.formatDate(bill.getPaymentDate()));
 			billAmountText.setText(CommonUtil.formatCurrency(payment));
-			billAmountText.setTextColor(mContext.getResources().getColor(R.color.text_medium));
+			billAmountText.setTextColor(context.getResources().getColor(R.color.text_medium));
 		}
 		
 		supplierText.setText(bill.getSupplierName());
@@ -120,22 +133,20 @@ public class PastDueArrayAdapter extends ArrayAdapter<Bills> {
 			supplierText.setVisibility(View.GONE);
 		}
 		
-		Bills selectedItem = mCallback.getSelectedBill();
-		
-		if (selectedItem != null && selectedItem.getId() == bill.getId()) {
+		if (mCallback.getSelectedBill() != null && mCallback.getSelectedBill().getId() == bill.getId()) {
 			
-			rowView.setBackgroundColor(mContext.getResources().getColor(R.color.list_row_selected_background));
+			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
 			
 		} else {
-			rowView.setBackgroundColor(mContext.getResources().getColor(R.color.list_row_normal_background));
+			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
 		}
 		
-		rowView.setOnClickListener(getItemOnClickListener(bill));
+		rowView.setOnClickListener(getItemOnClickListener(bill, billReferenceNoText));
 
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final Bills bill) {
+	private View.OnClickListener getItemOnClickListener(final Bills item, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			
@@ -144,7 +155,7 @@ public class PastDueArrayAdapter extends ArrayAdapter<Bills> {
 				
 				v.setSelected(true);
 
-				mCallback.onBillSelected(bill);
+				mCallback.onBillSelected(item);
 			}
 		};
 	}

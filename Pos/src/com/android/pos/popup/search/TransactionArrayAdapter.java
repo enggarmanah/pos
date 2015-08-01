@@ -87,6 +87,12 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 		transactionCustomerText.setText(transaction.getCustomerName());
 		transactionAmountText.setText(CommonUtil.formatCurrency(transaction.getTotalAmount()));
 		
+		if (!CommonUtil.isEmpty(transaction.getCustomerName())) {
+			transactionCustomerText.setVisibility(View.VISIBLE);
+		} else {
+			transactionCustomerText.setVisibility(View.GONE);			
+		}
+		
 		rowView.setOnClickListener(getItemOnClickListener(transaction, transactionNoText));
 
 		return rowView;

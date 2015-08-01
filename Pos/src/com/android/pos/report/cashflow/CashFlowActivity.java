@@ -6,19 +6,11 @@ import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashFlowYearBean;
-import com.android.pos.report.outstanding.OutstandingBillActivity;
-import com.android.pos.report.pastdue.PastDueActivity;
 import com.android.pos.util.CommonUtil;
-import com.android.pos.util.MerchantUtil;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 public class CashFlowActivity extends BaseActivity 
 	implements CashFlowActionListener {
@@ -30,12 +22,6 @@ public class CashFlowActivity extends BaseActivity
 	
 	private MenuItem mAlertMenu;
 	private MenuItem mWarningMenu;
-	
-	private TextView mAlertMenuText;
-	private ImageButton mAlertMenuBtn;
-	
-	private TextView mWarningMenuText;
-	private ImageButton mWarningMenuBtn;
 	
 	private CashFlowYearBean mSelectedCashFlowYear;
 	private CashFlowMonthBean mSelectedCashFlowMonth;
@@ -79,9 +65,6 @@ public class CashFlowActivity extends BaseActivity
 		
 		setTitle(getString(R.string.menu_report_cashflow));
 		setSelectedMenu(getString(R.string.menu_report_cashflow));
-		
-		updatePastDueBillsCount();
-		updateOutstandingBillsCount();
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {
@@ -177,55 +160,6 @@ public class CashFlowActivity extends BaseActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.report_cashflow_menu, menu);
-		
-		mAlertMenu = menu.findItem(R.id.menu_item_alert);
-		
-		mAlertMenuText = (TextView) mAlertMenu.getActionView().findViewById(R.id.menu_item_alert_text);
-		mAlertMenuBtn = (ImageButton) mAlertMenu.getActionView().findViewById(R.id.menu_item_alert_icon);
-		
-		String alertText = "0";
-		
-		if (mPastDueBillsCount > 99) {
-			alertText = "++";
-		} else if (mPastDueBillsCount > 0) {
-			alertText = CommonUtil.formatNumber(mPastDueBillsCount);
-		}
-		
-		mAlertMenuText.setText(alertText);
-		mAlertMenuBtn.setOnClickListener(getMenuAlertOnClickListener());
-		
-		mAlertMenu.setVisible(false);
-		
-		if (mPastDueBillsCount != 0) {
-			
-			mAlertMenu.setVisible(true);
-		}
-		
-		mWarningMenu = menu.findItem(R.id.menu_item_warning);
-		
-		mWarningMenuText = (TextView) mWarningMenu.getActionView().findViewById(R.id.menu_item_warning_text);
-		mWarningMenuBtn = (ImageButton) mWarningMenu.getActionView().findViewById(R.id.menu_item_warning_icon);
-		
-		String warningText = "0";
-		
-		if (mOutstandingBillsCount > 99) {
-			warningText = "++";
-		} else if (mOutstandingBillsCount > 0) {
-			warningText = CommonUtil.formatNumber(mOutstandingBillsCount);
-		}
-		
-		mWarningMenuText.setText(warningText);
-		mWarningMenuBtn.setOnClickListener(getMenuWarningOnClickListener());
-		
-		mWarningMenu.setVisible(false);
-		
-		if (mOutstandingBillsCount != 0) {
-			
-			mWarningMenu.setVisible(true);
-		}
-		
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -235,68 +169,6 @@ public class CashFlowActivity extends BaseActivity
 		hideSelectedMenu();
 		
 		return super.onPrepareOptionsMenu(menu);
-	}
-	
-	private View.OnClickListener getMenuAlertOnClickListener() {
-		
-		return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				Intent intent = new Intent(getApplicationContext(), PastDueActivity.class);
-				startActivity(intent);
-			}
-		};
-	}
-	
-	private View.OnClickListener getMenuWarningOnClickListener() {
-		
-		return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				Intent intent = new Intent(getApplicationContext(), OutstandingBillActivity.class);
-				startActivity(intent);
-			}
-		};
-	}
-	
-	private void updatePastDueBillsCount() {
-		
-		MerchantUtil.refreshPastDueBillsCount();
-		
-		mPastDueBillsCount = MerchantUtil.getPastDueBillsCount();
-		
-		if (mAlertMenuText != null) {
-			mAlertMenuText.setText(CommonUtil.formatNumber(mPastDueBillsCount));
-		}
-		
-		if (mPastDueBillsCount != 0) {
-			
-			if (mAlertMenu != null) {
-				mAlertMenu.setVisible(true);
-			}
-		}
-	}
-	
-	private void updateOutstandingBillsCount() {
-		
-		MerchantUtil.refreshOutstandingBillsCount();
-		
-		mOutstandingBillsCount = MerchantUtil.getOutstandingBillsCount();
-		
-		if (mWarningMenuText != null) {
-			mWarningMenuText.setText(CommonUtil.formatNumber(mOutstandingBillsCount));
-		}
-		
-		if (mOutstandingBillsCount != 0) {
-			
-			if (mWarningMenu != null) {
-				mWarningMenu.setVisible(true);
-			}
-		}
 	}
 	
 	private void hideSelectedMenu() {
