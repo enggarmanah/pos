@@ -179,6 +179,8 @@
     <string name="field_payment_date_fl">P</string>
     <string name="field_payment">Payment</string>
     <string name="field_payment_fl">P</string>
+    <string name="field_payment_type">Payment Type</string>
+    <string name="field_payment_type_fl">P</string>
     <string name="field_date">Date</string>
     <string name="field_date_fl">D</string>
     <string name="field_price_type_count">Price Type Count</string>
@@ -334,6 +336,8 @@
     <string name="no_transaction">No Credit</string>
     <string name="waitress">Waitress</string>
     
+    <string name="transaction_daily">Daily Transaction</string>
+    
     <string name="transaction">Transaction</string>
     <string name="transaction_no">Transaction No.</string>
     <string name="transaction_date">Date</string>
@@ -389,7 +393,8 @@
 	<string name="printer_bluetooth_adapter_error">"Bluetooth adapter error. Please restart bluetooth adapter"</string>
 	
 	<string name="payment_insufficient">Payment is not sufficient</string>
-    
+	<string name="payment_credit_without_customer">Customer should not be empty when the payment type is Credit</string>
+	
     <string name="none_paired">There is no printer connected</string>
     <string name="scanning">Scanning printer  &#8230;</string>
     <string name="select_device">Please Select Printer</string>
@@ -431,8 +436,9 @@
 	<string name="quantity_type_liter">Liter</string>
 	
 	<string name="payment_type_cash">Cash</string>
-	<string name="payment_type_debit">Debit Card</string>
-	<string name="payment_type_credit">Credit Card</string>
+	<string name="payment_type_debit_card">Debit Card</string>
+	<string name="payment_type_credit_card">Credit Card</string>
+	<string name="payment_type_credit">Credit</string>
 	
 	<string name="order_type_dine_in">Dine In</string>
 	<string name="order_type_take_away">Take Away</string>

@@ -354,6 +354,12 @@ public class DbUtil {
             	CashflowDao.createTable(db, true);
             }
             
+            // handle version 44 changes
+            if (oldVersion < 44) {
+            	
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PAYMENT_TYPE' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

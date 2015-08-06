@@ -37,6 +37,7 @@ public class Merchant {
 	private String price_label_2;
 	private String price_label_3;
 	private String discount_type;
+	private String payment_type;
 	private Float tax_percentage;
 	private Float service_charge_percentage;
 	private String printer_mini_font;
@@ -78,6 +79,7 @@ public class Merchant {
 		this.price_label_2 = bean.getPrice_label_2();
 		this.price_label_3 = bean.getPrice_label_3();
 		this.discount_type = bean.getDiscount_type();
+		this.payment_type = bean.getPayment_type();
 		this.tax_percentage = bean.getTax_percentage();
 		this.service_charge_percentage = bean.getService_charge_percentage();
 		this.printer_required = bean.getPrinter_required();
@@ -244,6 +246,14 @@ public class Merchant {
 
 	public void setDiscount_type(String discount_type) {
 		this.discount_type = discount_type;
+	}
+
+	public String getPayment_type() {
+		return payment_type;
+	}
+
+	public void setPayment_type(String payment_type) {
+		this.payment_type = payment_type;
 	}
 
 	public Float getTax_percentage() {

@@ -120,7 +120,7 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<CashflowBean> {
 	    if (cashflow.getType() != null) {
 	    	typeText.setText(CodeUtil.getCashflowTypeLabel(cashflow.getType()));
 	    } else {
-	    	typeText.setText(mContext.getString(R.string.transaction));
+	    	typeText.setText(mContext.getString(R.string.transaction_daily));
 	    }
 	    
 	    cashAmountText.setText(CommonUtil.formatCurrency(Math.abs(cashflow.getCash_amount())));

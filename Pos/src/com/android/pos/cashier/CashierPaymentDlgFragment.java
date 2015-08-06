@@ -1,13 +1,18 @@
 package com.android.pos.cashier;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.android.pos.CodeBean;
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.dao.Customer;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 
 import android.app.Activity;
@@ -16,6 +21,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -131,12 +137,28 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 		okBtn.setOnClickListener(getOkBtnOnClickListener());
 		cancelBtn.setOnClickListener(getCancelBtnOnClickListener());
 		
-		paymentTypeArrayAdapter = new CodeSpinnerArrayAdapter(mPaymentTypeSp, getActivity(), CodeUtil.getPaymentTypes(),
+		paymentTypeArrayAdapter = new CodeSpinnerArrayAdapter(mPaymentTypeSp, getActivity(), getPaymentTypes(),
 											R.layout.cashier_spinner_items, 
 											R.layout.cashier_spinner_items_selected, 
 											R.layout.cashier_spinner_selected_item);
 		
 		mPaymentTypeSp.setAdapter(paymentTypeArrayAdapter);
+		
+		mPaymentTypeSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				
+		    	mPaymentType = CodeBean.getNvlCode((CodeBean) mPaymentTypeSp.getSelectedItem());
+		    	
+		    	if (Constant.PAYMENT_TYPE_CREDIT.equals(mPaymentType)) {
+		    		mPaymentText.setText(CommonUtil.formatNumber(mTotalBill));
+		    	}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
 		
 		if (CommonUtil.isDecimalCurrency()) {
 			actionCBtn.setText(CommonUtil.getCurrencyDecimalSeparator());
@@ -303,6 +325,12 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 				mPayment = CommonUtil.parseFloatCurrency(mPaymentText.getText().toString()); 
 				mPaymentType = CodeBean.getNvlCode((CodeBean) mPaymentTypeSp.getSelectedItem());
 				
+				if (Constant.PAYMENT_TYPE_CREDIT.equals(mPaymentType) && mCustomer == null) {
+					
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.payment_credit_without_customer));
+					return;
+				}
+				
 				if (mPayment >= mTotalBill) {
 				
 					mActionListener.onPaymentInfoProvided(mCustomer, mPaymentType, mTotalBill, mPayment);
@@ -339,5 +367,29 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 		mCustomer = customer;
 		
 		refreshDisplay();
+	}
+	
+	private CodeBean[] getPaymentTypes() {
+		
+		HashMap<String, String> merchantPaymentTypes = new HashMap<String, String>();
+		String[] merchantPaymentTypeArray = MerchantUtil.getMerchant().getPaymentType().split(Constant.DATA_SEPARATOR);
+		
+		if (merchantPaymentTypeArray != null) {
+			
+			for (String paymentType : merchantPaymentTypeArray) {
+				merchantPaymentTypes.put(paymentType, Constant.STATUS_YES);
+			}
+		}
+		
+		List<CodeBean> paymentTypes = new ArrayList<CodeBean>();
+		
+		for (CodeBean codeBean : CodeUtil.getPaymentTypes()) {
+			
+			if (merchantPaymentTypes.get(codeBean.getCode()) != null) {
+				paymentTypes.add(codeBean);
+			}
+		}
+		
+		return paymentTypes.toArray(new CodeBean[paymentTypes.size()]);
 	}
 }

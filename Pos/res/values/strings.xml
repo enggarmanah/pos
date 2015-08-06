@@ -179,6 +179,8 @@
     <string name="field_payment_date_fl">T</string>
     <string name="field_payment">Bayar</string>
     <string name="field_payment_fl">B</string>
+    <string name="field_payment_type">Tipe Bayar</string>
+    <string name="field_payment_type_fl">T</string>
     <string name="field_date">Tanggal</string>
     <string name="field_date_fl">T</string>
     <string name="field_price_type_count">Jumlah Harga</string>
@@ -294,7 +296,7 @@
     
     <string name="product_group">Kategori</string>
     <string name="product">Produk</string>
-    <string name="product_below_min_stock">Produk</string>
+    <string name="product_below_min_stock">Produk Dibawah Min. Stok</string>
     
     <string name="select_discount">Pilih Diskon</string>
     <string name="discount">Diskon</string>
@@ -333,6 +335,8 @@
     <string name="select_transaction">Pilih Piutang</string>
     <string name="no_transaction">Tanpa Piutang</string>
     <string name="waitress">Pramusaji</string>
+    
+    <string name="transaction_daily">Transaksi Harian</string>
     
     <string name="transaction">Transaksi</string>
     <string name="transaction_no">No. Transaksi</string>
@@ -389,6 +393,7 @@
 	<string name="printer_bluetooth_adapter_error">"Bluetooth servis error. Mohon restart servis bluetooth"</string>
 	
 	<string name="payment_insufficient">Pembayaran tidak mencukupi</string>
+	<string name="payment_credit_without_customer">Pelanggan tidak boleh kosong untuk tipe pembayaran kredit</string>
     
     <string name="none_paired">Tidak ada printer yang terhubung</string>
     <string name="scanning">Scanning perangkat printer</string>
@@ -431,8 +436,9 @@
 	<string name="quantity_type_liter">Liter</string>
 	
 	<string name="payment_type_cash">Tunai</string>
-	<string name="payment_type_debit">Kartu Debit</string>
-	<string name="payment_type_credit">Kartu Kredit</string>
+	<string name="payment_type_debit_card">Kartu Debit</string>
+	<string name="payment_type_credit_card">Kartu Kredit</string>
+	<string name="payment_type_credit">Kredit</string>
 	
 	<string name="order_type_dine_in">Makan di Tempat</string>
 	<string name="order_type_take_away">Take Away</string>

@@ -6,6 +6,8 @@ public class Constant {
 	
 	public static final int TIMEOUT = 60000;
 	
+	public static final String DATA_SEPARATOR = ",";
+	
 	public static final String QUERY_LIMIT = "50";
 	
 	public static final String SYNC_TYPE_MERCHANTS = "SYNC_TYPE_MERCHANTS";

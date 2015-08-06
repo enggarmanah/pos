@@ -72,7 +72,7 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
 				mQuery = s.toString();
 				
 				mItems.clear();
-				mItems.addAll(mTransactionsDaoService.getTransactions(mQuery, 0));
+				mItems.addAll(mTransactionsDaoService.getUnpaidTransactions(mQuery, 0));
 				transactionArrayAdapter.notifyDataSetChanged();
 			}
 			
@@ -99,7 +99,7 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
 		}
 		
 		mItems.clear();
-		mItems.addAll(mTransactionsDaoService.getTransactions(mQuery, 0));
+		mItems.addAll(mTransactionsDaoService.getUnpaidTransactions(mQuery, 0));
 		transactionArrayAdapter.notifyDataSetChanged();
 	}
 	
@@ -161,13 +161,13 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
 	@Override
 	protected List<Transactions> getItems(String query) {
 		
-		return mTransactionsDaoService.getTransactions(mQuery, 0);
+		return mTransactionsDaoService.getUnpaidTransactions(mQuery, 0);
 	}
 	
 	@Override
 	protected List<Transactions> getNextItems(String query, int lastIndex) {
 		
-		return mTransactionsDaoService.getTransactions(mQuery, lastIndex);
+		return mTransactionsDaoService.getUnpaidTransactions(mQuery, lastIndex);
 	}
 	
 	@Override

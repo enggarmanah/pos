@@ -1,7 +1,9 @@
 package com.android.pos.data.merchant;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import com.android.pos.CodeBean;
@@ -13,8 +15,10 @@ import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantAccess;
 import com.android.pos.dao.MerchantAccessDaoService;
 import com.android.pos.dao.MerchantDaoService;
+import com.android.pos.model.PaymentTypeStatus;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
+import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
@@ -58,11 +62,15 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     Spinner mStatusSp;
     
     LinearLayout mStatusPanel;
+    LinearLayout paymentTypePanel;
     LinearLayout accessRightPanel;
     LinearLayout accessRightRowPanel;
     
+    List<PaymentTypeStatus> mPaymentTypeStatuses;
     List<MerchantAccess> mMerchantAccesses;
-    List<ImageButton> mCheckedButtons;
+    
+    List<ImageButton> mPaymentTypeButtons;
+    List<ImageButton> mAccessButtons;
     
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
@@ -128,6 +136,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mPriceLabel1Panel = (LinearLayout) view.findViewById(R.id.priceLabel1Panel);
     	mPriceLabel2Panel = (LinearLayout) view.findViewById(R.id.priceLabel2Panel);
     	mPriceLabel3Panel = (LinearLayout) view.findViewById(R.id.priceLabel3Panel);
+    	
+    	paymentTypePanel = (LinearLayout) view.findViewById(R.id.paymentTypePanel);
     	
     	accessRightRowPanel = (LinearLayout) view.findViewById(R.id.accessRightsRowPanel);
     	accessRightPanel = (LinearLayout) view.findViewById(R.id.accessRightsPanel);
@@ -226,11 +236,63 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     			accessRightRowPanel.setVisibility(View.VISIBLE);
     		}
     		
+    		paymentTypePanel.removeAllViews();
+    		
+    		mPaymentTypeButtons = new ArrayList<ImageButton>();
+    		
+    		mPaymentTypeStatuses = getPaymentStatuses();
+    		
+    		for (final PaymentTypeStatus paymentTypeStatus : mPaymentTypeStatuses) {
+        		
+        		View paymentTypeView = mInflater.inflate(R.layout.data_merchant_access_list_item, mContainer, false);
+        		
+        		TextView nameText = (TextView) paymentTypeView.findViewById(R.id.nameText);
+    			final ImageButton paymentTypeButton = (ImageButton) paymentTypeView.findViewById(R.id.checkedButton);
+    			
+    			paymentTypeButton.setEnabled(mIsEnableInputFields);
+    			mPaymentTypeButtons.add(paymentTypeButton);
+    			
+    			char c = 8226;
+    			
+    			nameText.setText(c + " " + paymentTypeStatus.getPaymentType().getLabel());
+    			
+    			boolean isChecked = Constant.STATUS_YES.equals(paymentTypeStatus.getStatus());
+    			
+    			if (isChecked) {
+					paymentTypeButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_black));
+				} else {
+					paymentTypeButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_clear_black));
+				}
+    			
+    			paymentTypeButton.setOnClickListener(new View.OnClickListener() {
+    				
+    				@Override
+    				public void onClick(View v) {
+    					
+    					if (!isEnableInputFields) {
+    						return;
+    					}
+    					
+    					boolean isSelected = Constant.STATUS_YES.equals(paymentTypeStatus.getStatus());
+    					
+    					if (!isSelected) {
+    						paymentTypeButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_black));
+    						paymentTypeStatus.setStatus(Constant.STATUS_YES);
+    					} else {
+    						paymentTypeButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_clear_black));
+    						paymentTypeStatus.setStatus(Constant.STATUS_NO);
+    					}
+    				}
+    			});
+    			
+    			paymentTypePanel.addView(paymentTypeView);
+        	}
+    		
     		accessRightPanel.removeAllViews();
     		
     		mMerchantAccesses = mMerchantAccessDaoService.getMerchantAccessList(merchant.getId());
     		
-    		mCheckedButtons = new ArrayList<ImageButton>();
+    		mAccessButtons = new ArrayList<ImageButton>();
     		
     		for (final MerchantAccess merchantAccess : mMerchantAccesses) {
         		
@@ -240,7 +302,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     			final ImageButton checkedButton = (ImageButton) accessView.findViewById(R.id.checkedButton);
     			
     			checkedButton.setEnabled(mIsEnableInputFields);
-    			mCheckedButtons.add(checkedButton);
+    			mAccessButtons.add(checkedButton);
     			
     			char c = 8226;
     			
@@ -345,6 +407,19 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setUpdateBy(userId);
     		mItem.setUpdateDate(new Date());
     		
+    		String paymentType = Constant.EMPTY_STRING;
+    		
+    		for (PaymentTypeStatus paymentTypeStatus : mPaymentTypeStatuses) {
+    			
+    			if (Constant.STATUS_YES.equals(paymentTypeStatus.getStatus())) {
+    				
+    				paymentType += !CommonUtil.isEmpty(paymentType) ? Constant.DATA_SEPARATOR : Constant.EMPTY_STRING; 
+    				paymentType += paymentTypeStatus.getPaymentType().getCode();
+    			}
+    		}
+    		
+    		mItem.setPaymentType(paymentType);
+    		
     		for (MerchantAccess merchantAccess : mMerchantAccesses) {
     			
     			merchantAccess.setUploadStatus(Constant.STATUS_YES);
@@ -429,6 +504,10 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mMerchantDaoService.updateMerchant(mItem);
     		mMerchantAccessDaoService.updateMerchantAccess(mMerchantAccesses);
     		
+    		if (MerchantUtil.getMerchantId() == mItem.getId()) {
+    			MerchantUtil.setMerchant(mItem);
+    		}
+    		
     		isUpdated = true;
     	}
     	
@@ -458,11 +537,15 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	mIsEnableInputFields = isEnabled;
     	
-    	if (mCheckedButtons == null) {
+    	if (mAccessButtons == null) {
     		return;
     	}
     	
-    	for (ImageButton button : mCheckedButtons) {
+    	for (ImageButton button : mPaymentTypeButtons) {
+    		button.setEnabled(isEnabled);
+    	}
+    	
+    	for (ImageButton button : mAccessButtons) {
     		button.setEnabled(isEnabled);
     	}
     }
@@ -523,5 +606,39 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	}
     	
     	highlightMandatoryFields();
+    }
+    
+    private List<PaymentTypeStatus> getPaymentStatuses() {
+    	
+    	String merchantPaymentType = mItem.getPaymentType();
+    	
+    	String[] merchantPaymentTypeStatus = !CommonUtil.isEmpty(merchantPaymentType) ? merchantPaymentType.split(Constant.DATA_SEPARATOR) : null;
+    	HashMap<String, String> merchantPaymentTypeStatuses = new HashMap<String, String>();
+    	
+    	if (merchantPaymentTypeStatus != null) {
+	    	
+    		for (String paymentTypeStatus : merchantPaymentTypeStatus) {
+	    		merchantPaymentTypeStatuses.put(paymentTypeStatus, Constant.STATUS_YES);
+	    	}
+    	}
+    	
+    	List<PaymentTypeStatus> paymentTypeStatuses = new ArrayList<PaymentTypeStatus>();
+    	List<CodeBean> paymentTypes = Arrays.asList(CodeUtil.getPaymentTypes());
+    	
+    	for (CodeBean paymentType : paymentTypes) {
+    		
+    		PaymentTypeStatus paymentTypeStatus = new PaymentTypeStatus();
+        	paymentTypeStatus.setPaymentType(paymentType);
+        	
+        	if (merchantPaymentTypeStatuses.get(paymentType.getCode()) != null) {
+        		paymentTypeStatus.setStatus(Constant.STATUS_YES);
+        	} else {
+        		paymentTypeStatus.setStatus(Constant.STATUS_NO);
+        	}
+        	
+        	paymentTypeStatuses.add(paymentTypeStatus);
+    	}
+    	
+    	return paymentTypeStatuses;
     }
 }

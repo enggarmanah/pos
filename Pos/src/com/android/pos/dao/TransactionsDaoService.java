@@ -57,20 +57,21 @@ public class TransactionsDaoService {
 		return mTransactionsDao.load(id);
 	}
 	
-	public List<Transactions> getTransactions(String query, int lastIndex) {
+	public List<Transactions> getUnpaidTransactions(String query, int lastIndex) {
 
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		String queryStr = CommonUtil.getSqlLikeString(query);
+		String paymentType = Constant.PAYMENT_TYPE_CREDIT;
 		String status = Constant.STATUS_DELETED;
 		String limit = Constant.QUERY_LIMIT;
 		String lastIdx = String.valueOf(lastIndex);
 		
 		Cursor cursor = db.rawQuery("SELECT _id "
-				+ " FROM transactions "
-				+ " WHERE (transaction_no like ? OR customer_name like ? ) AND status <> ? "
+				+ " FROM transactions t LEFT JOIN (SELECT transaction_id, SUM(cash_amount) cash_amount FROM cashflow GROUP BY transaction_id) c ON t._id = c.transaction_id "
+				+ " WHERE (transaction_no like ? OR customer_name like ? ) AND (c.cash_amount IS NULL OR c.cash_amount < t.total_amount) AND payment_type = ? AND status <> ? "
 				+ " ORDER BY transaction_date DESC, transaction_no ASC LIMIT ? OFFSET ? ",
-				new String[] { queryStr, queryStr, status, limit, lastIdx});
+				new String[] { queryStr, queryStr, paymentType, status, limit, lastIdx});
 		
 		List<Transactions> list = new ArrayList<Transactions>();
 		

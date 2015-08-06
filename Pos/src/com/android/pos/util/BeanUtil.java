@@ -124,6 +124,7 @@ public class BeanUtil {
 		bean.setPrice_label_2(merchant.getPriceLabel2());
 		bean.setPrice_label_3(merchant.getPriceLabel3());
 		bean.setDiscount_type(merchant.getDiscountType());
+		bean.setPayment_type(merchant.getPaymentType());
 		bean.setTax_percentage(merchant.getTaxPercentage());
 		bean.setService_charge_percentage(merchant.getServiceChargePercentage());
 		bean.setPrinter_required(merchant.getPrinterRequired());
@@ -158,9 +159,11 @@ public class BeanUtil {
 		merchant.setPriceLabel2(bean.getPrice_label_2());
 		merchant.setPriceLabel3(bean.getPrice_label_3());
 		merchant.setDiscountType(bean.getDiscount_type());
+		merchant.setPaymentType(bean.getPayment_type());
 		merchant.setTaxPercentage(bean.getTax_percentage());
 		merchant.setServiceChargePercentage(bean.getService_charge_percentage());
 		
+		// retain local value unless it's empty
 		if (merchant.getPrinterRequired() == null) {
 			merchant.setPrinterRequired(bean.getPrinter_required());
 		}

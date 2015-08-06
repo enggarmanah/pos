@@ -1,5 +1,9 @@
 package com.android.pos.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.content.Context;
 
 import com.android.pos.CodeBean;
@@ -8,24 +12,26 @@ import com.android.pos.R;
 
 public class CodeUtil {
 	
-	public static CodeBean[] merchantTypes;
-	public static CodeBean[] productStatus;
-	public static CodeBean[] status;
-	public static CodeBean[] productTypes;
-	public static CodeBean[] restoProductTypes;
-	public static CodeBean[] booleans;
-	public static CodeBean[] roles;
-	public static CodeBean[] emailStatus;
-	public static CodeBean[] priceTypeCount;
-	public static CodeBean[] quantityType;
-	public static CodeBean[] discountTypes;
-	public static CodeBean[] paymentTypes;
-	public static CodeBean[] orderTypes;
-	public static CodeBean[] billTypes;
-	public static CodeBean[] inventoryStatus;
-	public static CodeBean[] moduleAccess;
-	public static CodeBean[] fontSizes;
-	public static CodeBean[] cashflowTypes;
+	private static CodeBean[] merchantTypes;
+	private static CodeBean[] productStatus;
+	private static CodeBean[] status;
+	private static CodeBean[] productTypes;
+	private static CodeBean[] restoProductTypes;
+	private static CodeBean[] booleans;
+	private static CodeBean[] roles;
+	private static CodeBean[] emailStatus;
+	private static CodeBean[] priceTypeCount;
+	private static CodeBean[] quantityType;
+	private static CodeBean[] discountTypes;
+	private static CodeBean[] paymentTypes;
+	private static CodeBean[] orderTypes;
+	private static CodeBean[] billTypes;
+	private static CodeBean[] inventoryStatus;
+	private static CodeBean[] moduleAccess;
+	private static CodeBean[] fontSizes;
+	private static CodeBean[] cashflowTypes;
+	
+	private static List<CodeBean> inventorystatusList;
 	
 	private static Context mContext;
 	private static Boolean isInitialized = false;
@@ -348,7 +354,7 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.discount_type_amount));
 		discountTypes[1] = code;
 		
-		paymentTypes = new CodeBean[3];
+		paymentTypes = new CodeBean[4];
 		
 		code = new CodeBean();
 		code.setCode(Constant.PAYMENT_TYPE_CASH);
@@ -357,13 +363,18 @@ public class CodeUtil {
 		
 		code = new CodeBean();
 		code.setCode(Constant.PAYMENT_TYPE_DEBIT_CARD);
-		code.setLabel(mContext.getString(R.string.payment_type_debit));
+		code.setLabel(mContext.getString(R.string.payment_type_debit_card));
 		paymentTypes[1] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.PAYMENT_TYPE_CREDIT_CARD);
-		code.setLabel(mContext.getString(R.string.payment_type_credit));
+		code.setLabel(mContext.getString(R.string.payment_type_credit_card));
 		paymentTypes[2] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.PAYMENT_TYPE_CREDIT);
+		code.setLabel(mContext.getString(R.string.payment_type_credit));
+		paymentTypes[3] = code;
 		
 		orderTypes = new CodeBean[2];
 		
@@ -430,6 +441,18 @@ public class CodeUtil {
 		code.setCode(Constant.INVENTORY_STATUS_INITIAL_STOCK);
 		code.setLabel(mContext.getString(R.string.inventory_status_initial_stock));
 		inventoryStatus[5] = code;
+		
+		inventorystatusList = new ArrayList<CodeBean>(Arrays.asList(inventoryStatus));
+		
+		CodeBean bean = new CodeBean();
+		bean.setCode(Constant.INVENTORY_STATUS_SALE);
+		bean.setLabel(mContext.getString(R.string.inventory_status_sale));
+		inventorystatusList.add(bean);
+		
+		bean = new CodeBean();
+		bean.setCode(Constant.INVENTORY_STATUS_REFUND);
+		bean.setLabel(mContext.getString(R.string.inventory_status_refund));
+		inventorystatusList.add(bean);
 		
 		isInitialized = true;
 	}
@@ -552,7 +575,7 @@ public class CodeUtil {
 		
 		String label = Constant.EMPTY_STRING;
 		
-		for (CodeBean codeBean : inventoryStatus) {
+		for (CodeBean codeBean : inventorystatusList) {
 			if (codeBean.getCode().equals(code)) {
 				label = codeBean.getLabel();
 				break;
