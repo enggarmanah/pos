@@ -31,7 +31,14 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<CashflowBean> {
 	SupplierDaoService supplierDaoService = new SupplierDaoService();
 	CustomerDaoService customerDaoService = new CustomerDaoService();
 	
+	private ItemActionListener mCallback;
+	
 	List<CashflowBean> mCashflows;
+	
+	public interface ItemActionListener {
+
+		public void onCashflowSelected(CashflowBean item);
+	}
 	
 	class ViewHolder {
 		
@@ -43,12 +50,13 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<CashflowBean> {
 		TextView entityText;
 	}
 	
-	public CashFlowDetailArrayAdapter(Context context, List<CashflowBean> cashflows) {
+	public CashFlowDetailArrayAdapter(Context context, List<CashflowBean> cashflows, ItemActionListener listener) {
 		
 		super(context, R.layout.bills_list_item, cashflows);
 
 		mContext = context;
 		mCashflows = cashflows;
+		mCallback = listener;
 	}
 	
 	@Override
@@ -126,6 +134,8 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<CashflowBean> {
 	    cashAmountText.setText(CommonUtil.formatCurrency(Math.abs(cashflow.getCash_amount())));
 		cashDateText.setText(CommonUtil.formatDate(cashflow.getCash_date()));
 		
+		rowView.setOnClickListener(getItemOnClickListener(cashflow));
+		
 		String billReferenceNo = null;
 		String supplierName = null;
 		
@@ -188,5 +198,19 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<CashflowBean> {
 		}
 		
 		return rowView;
+	}
+	
+	private View.OnClickListener getItemOnClickListener(final CashflowBean item) {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				v.setSelected(true);
+
+				mCallback.onCashflowSelected(item);
+			}
+		};
 	}
 }

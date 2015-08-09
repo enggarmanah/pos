@@ -33,8 +33,11 @@ import com.android.pos.printer.PrinterSelectActivity;
 import com.android.pos.report.bills.BillsActivity;
 import com.android.pos.report.cashflow.CashFlowActivity;
 import com.android.pos.report.commission.CommissionActivity;
-import com.android.pos.report.inventory.InventoryReportActivity;
+import com.android.pos.report.credit.CreditActivity;
+import com.android.pos.report.inventory.InventoryActivity;
 import com.android.pos.report.product.ProductStatisticActivity;
+import com.android.pos.report.srvcharge.ServiceChargeActivity;
+import com.android.pos.report.tax.TaxActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.DbUtil;
@@ -273,7 +276,8 @@ public abstract class BaseActivity extends Activity
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS) ||
-			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CREDIT)) {
 			
 			mMenus.add(getString(R.string.menu_report));
 		}
@@ -294,6 +298,18 @@ public abstract class BaseActivity extends Activity
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
 				mMenus.add(getString(R.string.menu_report_cashflow));
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CREDIT)) {
+				mMenus.add(getString(R.string.menu_report_credit));
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TAX)) {
+				mMenus.add(getString(R.string.menu_report_tax));
+			}
+			
+			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_SERVICE_CHARGE)) {
+				mMenus.add(getString(R.string.menu_report_service_charge));
 			}
 			
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS)) {
@@ -497,9 +513,24 @@ public abstract class BaseActivity extends Activity
 			Intent intent = new Intent(this, CommissionActivity.class);
 			startActivity(intent);
 
+		} else if (getString(R.string.menu_report_tax).equals(menu)) {
+
+			Intent intent = new Intent(this, TaxActivity.class);
+			startActivity(intent);
+
+		} else if (getString(R.string.menu_report_service_charge).equals(menu)) {
+
+			Intent intent = new Intent(this, ServiceChargeActivity.class);
+			startActivity(intent);
+
 		} else if (getString(R.string.menu_report_cashflow).equals(menu)) {
 
 			Intent intent = new Intent(this, CashFlowActivity.class);
+			startActivity(intent);
+
+		} else if (getString(R.string.menu_report_credit).equals(menu)) {
+
+			Intent intent = new Intent(this, CreditActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_report_bills).equals(menu)) {
@@ -509,7 +540,7 @@ public abstract class BaseActivity extends Activity
 
 		} else if (getString(R.string.menu_report_inventory).equals(menu)) {
 
-			Intent intent = new Intent(this, InventoryReportActivity.class);
+			Intent intent = new Intent(this, InventoryActivity.class);
 			startActivity(intent);
 
 		} else if (getString(R.string.menu_favorite_customer).equals(menu) ||

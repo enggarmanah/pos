@@ -7,7 +7,7 @@ import java.util.Date;
 public class CommisionYearBean implements Serializable {
 
 	private Date year;
-	private Long amount;
+	private Float amount;
 
 	public Date getYear() {
 		return year;
@@ -17,11 +17,11 @@ public class CommisionYearBean implements Serializable {
 		this.year = year;
 	}
 
-	public Long getAmount() {
+	public Float getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Long amount) {
+	public void setAmount(Float amount) {
 		this.amount = amount;
 	}
 }

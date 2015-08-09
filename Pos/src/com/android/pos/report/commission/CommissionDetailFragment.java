@@ -26,6 +26,7 @@ public class CommissionDetailFragment extends BaseFragment implements Commission
 	
 	private TextView mInfoText;
 	private TextView mDateText;
+	private TextView mTotalText;
 	
 	protected ListView mEmployeeCommisionList;
 
@@ -74,6 +75,7 @@ public class CommissionDetailFragment extends BaseFragment implements Commission
 		
 		mDateText = (TextView) getView().findViewById(R.id.dateText);
 		mInfoText = (TextView) getView().findViewById(R.id.infoText);
+		mTotalText = (TextView) getView().findViewById(R.id.totalText);
 	}
 	
 	private void initBackButton() {
@@ -147,17 +149,19 @@ public class CommissionDetailFragment extends BaseFragment implements Commission
 			mCommisionDetailAdapter.notifyDataSetChanged();
 			
 			mEmployeeCommisionList.setAdapter(mCommisionDetailAdapter);
+			mTotalText.setText(CommonUtil.formatCurrency(getEmployeeCommissionTotal(mEmployeeCommisionDetails)));
 			
 		} else if (mCommisionMonth != null) {
 			
 			mEmployeeCommisions.clear();
 			
 			mEmployeeCommisions.addAll(mProductDaoService.getEmployeeCommisions(mCommisionMonth));
-			mInfoText.setText(getString(R.string.report_commision_amount));
+			mInfoText.setText(getString(R.string.report_commision));
 			
 			mCommisionAdapter.notifyDataSetChanged();
 			
 			mEmployeeCommisionList.setAdapter(mCommisionAdapter);
+			mTotalText.setText(CommonUtil.formatCurrency(getEmployeeCommissionTotal(mEmployeeCommisions)));
 			
 			getView().setVisibility(View.VISIBLE);
 		
@@ -184,5 +188,16 @@ public class CommissionDetailFragment extends BaseFragment implements Commission
 				mActionListener.onBackPressed();
 			}
 		};
+	}
+	
+	private Float getEmployeeCommissionTotal(List<EmployeeCommisionBean> commisions) {
+		
+		Float total = Float.valueOf(0);
+		
+		for (EmployeeCommisionBean commision : commisions) {
+			total += commision.getCommision();
+		}
+		
+		return total;
 	}
 }

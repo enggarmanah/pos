@@ -19,8 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class InventoryReportListFragment extends BaseFragment 
-	implements InventoryReportArrayAdapter.ItemActionListener {
+public class InventoryListFragment extends BaseFragment 
+	implements InventoryArrayAdapter.ItemActionListener {
 	
 	private TextView mTitleText;
 	
@@ -31,10 +31,10 @@ public class InventoryReportListFragment extends BaseFragment
 	
 	private Product mSelectedProduct;
 	
-	private InventoryReportArrayAdapter mAdapter;
-	private InventoryReportArrayAdapter mStockAlertAdapter;
+	private InventoryArrayAdapter mAdapter;
+	private InventoryArrayAdapter mStockAlertAdapter;
 	
-	private InventoryReportActionListener mActionListener;
+	private InventoryActionListener mActionListener;
 	
 	private boolean mIsLoadData = false;
 	private boolean mIsEndOfList = false;
@@ -71,13 +71,13 @@ public class InventoryReportListFragment extends BaseFragment
 			mProducts = mProductDaoService.getProducts(Constant.EMPTY_STRING, 0);
 		}
 		
-		mAdapter = new InventoryReportArrayAdapter(getActivity(), mProducts, this);
+		mAdapter = new InventoryArrayAdapter(getActivity(), mProducts, this);
 		
 		if (mStockAlertProducts == null) {
 			mStockAlertProducts = mProductDaoService.getBelowStockLimitProducts(Constant.EMPTY_STRING, 0);
 		}
 		
-		mStockAlertAdapter = new InventoryReportArrayAdapter(getActivity(), mStockAlertProducts, this);
+		mStockAlertAdapter = new InventoryArrayAdapter(getActivity(), mStockAlertProducts, this);
 		
 		return view;
 	}
@@ -115,7 +115,7 @@ public class InventoryReportListFragment extends BaseFragment
         super.onAttach(activity);
 
         try {
-            mActionListener = (InventoryReportActionListener) activity;
+            mActionListener = (InventoryActionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement InventoryReportActionListener");

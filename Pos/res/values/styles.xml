@@ -525,6 +525,16 @@
         <item name="android:textColor">@color/text_medium</item>
         <item name="android:background">@color/list_row_normal_background</item>
     </style>
+    
+    <style name="ListViewRowCreditCustomerTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_blue</item>
+        <item name="android:background">@color/list_row_normal_background</item>
+    </style>
 
     <style name="ListViewRowImageButtonBaseStyle">
         <item name="android:layout_width">34dp</item>
@@ -898,7 +908,7 @@
     <style name="PaymentRowStyle">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:background">@color/background</item>
+        <item name="android:background">@color/border_grey_light</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:paddingTop">0.5dp</item>
     </style>
@@ -907,6 +917,7 @@
         <item name="android:layout_height">0.5dp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:background">@color/border_grey_light</item>
+        <item name="android:layout_marginTop">10dp</item>
     </style>
     
     <style name="SectionDividerWhiteStyle">
@@ -1038,12 +1049,26 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center_vertical</item>
     </style>
-
+	
+    <style name="SectionBottomTextStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/section_header_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">0.5dp</item>
+        <item name="android:background">@color/payment_total_background</item>
+    </style>
+    
     <style name="SectionContentPanelStyle">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/background</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">10dp</item>
     </style>
 
     <style name="SectionSubContentPanelStyle">
@@ -1051,8 +1076,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/background</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">0dp</item>
     </style>
@@ -1107,7 +1130,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:padding">3dp</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:background">@drawable/selector_back_btn</item>
         <item name="android:src">@drawable/ic_arrow_back_black</item>
@@ -1162,7 +1185,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center_vertical|right</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">3dp</item>
         <item name="android:layout_marginRight">0dp</item>
         <item name="android:background">@drawable/selector_back_btn</item>
         <item name="android:src">@drawable/ic_view_list_black</item>

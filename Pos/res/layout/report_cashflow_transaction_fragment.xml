@@ -19,9 +19,9 @@
 	        android:orientation="horizontal"
 	        android:background="@color/background_blue_dark">
 	        <TextView
+	            android:id="@+id/headerText"
 	            style="@style/PopUpDialogHeaderStyle"
-	            android:gravity="start|center_vertical"
-	            android:text="@string/select_transaction" >
+	            android:gravity="start|center_vertical">
 	        </TextView>
 		    <TextView
 		        android:id="@+id/cancelBtn"
@@ -48,18 +48,5 @@
         style="@style/ListViewStyle"
         android:layout_height="350dp">
     </ListView>
-
-    <TextView
-        android:id="@+id/noTransactionText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:background="@color/dialog_button_background"
-        android:gravity="center"
-        android:text="@string/no_transaction"
-        android:textColor="@color/dialog_button_text"
-        android:textSize="18sp"
-        android:textStyle="bold" >
-    </TextView>
 
 </LinearLayout>

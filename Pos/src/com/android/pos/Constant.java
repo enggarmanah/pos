@@ -136,6 +136,8 @@ public class Constant {
 	public static final String SELECTED_ORDERS_FOR_PAYMENT = "SELECTED_ORDERS_FOR_PAYMENT";
 	public static final String SELECTED_ORDERS_FOR_NEW_ITEM = "SELECTED_ORDERS_FOR_NEW_ITEM";
 	
+	public static final String SELECTED_CREDIT_FOR_PAYMENT = "SELECTED_CREDIT_FOR_PAYMENT";
+	
 	public static final String CASHIER_STATE_CASHIER = "CASHIER_STATE_CASHIER";
 	public static final String CASHIER_STATE_ORDER_PAYMENT = "CASHIER_STATE_ORDER_PAYMENT";
 	public static final String CASHIER_STATE_ORDER_NEW_ITEM = "CASHIER_STATE_ORDER_NEW_ITEM";
@@ -169,6 +171,9 @@ public class Constant {
 	public static final String ACCESS_REPORT_INVENTORY = "RIVT";
 	public static final String ACCESS_REPORT_CASHFLOW = "RCFL";
 	public static final String ACCESS_REPORT_BILLS = "RBIL";
+	public static final String ACCESS_REPORT_CREDIT = "RCRE";
+	public static final String ACCESS_REPORT_TAX = "RTAX";
+	public static final String ACCESS_REPORT_SERVICE_CHARGE = "RSVC";
 	public static final String ACCESS_FAVORITE_CUSTOMER = "FVCS";
 	public static final String ACCESS_FAVORITE_SUPPLIER = "FVSP";
 	

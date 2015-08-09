@@ -32,6 +32,7 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 	TextView mPaymentTypeText;
 	TextView mTotalBillText;
 	TextView mPaymentText;
+	TextView mChangeLabelText;
 	TextView mChangeText;
 
 	Button mOkBtn;
@@ -88,6 +89,7 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 		mPaymentTypeText = (TextView) getView().findViewById(R.id.paymentTypeText);
 		mTotalBillText = (TextView) getView().findViewById(R.id.totalBillText);
 		mPaymentText = (TextView) getView().findViewById(R.id.paymentText);
+		mChangeLabelText = (TextView) getView().findViewById(R.id.changeLabelText);
 		mChangeText = (TextView) getView().findViewById(R.id.changeText);
 		mOkBtn = (Button) getView().findViewById(R.id.okBtn);
 		mCancelBtn = (Button) getView().findViewById(R.id.cancelBtn);
@@ -133,11 +135,24 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 		} else {
 			mCustomerPanel.setVisibility(View.GONE);
 		}
-
-		mPaymentTypeText.setText(CodeUtil.getPaymentTypeLabel(mPaymentType));
+		
+		String paymentTypeLabel = Constant.EMPTY_STRING;
+		String returnLabel = Constant.EMPTY_STRING;
+		
+		if (Constant.PAYMENT_TYPE_CREDIT.equals(mPaymentType)) {
+			paymentTypeLabel = getString(R.string.payment);
+			returnLabel = CodeUtil.getPaymentTypeLabel(mPaymentType);
+		} else {
+			paymentTypeLabel = CodeUtil.getPaymentTypeLabel(mPaymentType);
+			returnLabel = getString(R.string.change);
+		}
+		
+		mPaymentTypeText.setText(paymentTypeLabel);
+		mChangeLabelText.setText(returnLabel);
+		
 		mTotalBillText.setText(CommonUtil.formatCurrency(mTotalBill));
 		mPaymentText.setText(CommonUtil.formatCurrency(mPayment));
-		mChangeText.setText(CommonUtil.formatCurrency(mChange));
+		mChangeText.setText(CommonUtil.formatCurrency(Math.abs(mChange)));
 	}
 
 	private View.OnClickListener getOkBtnOnClickListener() {

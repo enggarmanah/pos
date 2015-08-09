@@ -261,8 +261,12 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 			mDeleteMenu.setVisible(false);
 		}
 		
+		afterPrepareOptionsMenu();
+		
 		return super.onPrepareOptionsMenu(menu);
 	}
+	
+	protected void afterPrepareOptionsMenu() {}
 
 	protected abstract View getSearchFragmentView();
 
@@ -425,7 +429,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 
 	protected abstract void refreshEditView();
 	
-	private void showNavigationMenu() {
+	protected void showNavigationMenu() {
 		
 		if (mSearchMenu == null) {
 			return;
@@ -448,7 +452,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		mIsOnEdit = false;
 	}
 	
-	private void showNavigationAndItemMenu() {
+	protected void showNavigationAndItemMenu() {
 		
 		enableEditFragmentInputFields(false);
 		
@@ -483,7 +487,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		mIsOnEdit = false;
 	}
 	
-	private void showEditMenu() {
+	protected void showEditMenu() {
 		
 		enableEditFragmentInputFields(true);
 		

@@ -14,6 +14,7 @@ import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashFlowYearBean;
 import com.android.pos.model.CashflowBean;
 import com.android.pos.model.SyncStatusBean;
+import com.android.pos.model.TransactionsBean;
 import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.DbUtil;
@@ -100,6 +101,41 @@ public class CashflowDaoService {
 		}
 		
 		return cashflows;
+	}
+	
+	public List<Cashflow> getCashflows(TransactionsBean transaction) {
+
+		QueryBuilder<Cashflow> qb = cashflowDao.queryBuilder();
+		qb.where(CashflowDao.Properties.TransactionId.eq(transaction.getRemote_id()), 
+				CashflowDao.Properties.Status.notEq(Constant.STATUS_DELETED)).orderAsc(CashflowDao.Properties.CashDate);
+		
+		Query<Cashflow> q = qb.build();
+		
+		ArrayList<Cashflow> cashflows = new ArrayList<Cashflow>();
+		
+		for (Cashflow cashflow : q.list()) {
+			cashflows.add(cashflow);
+		}
+		
+		return cashflows;
+	}
+	
+	public Float getTotalCreditPayments(TransactionsBean transaction) {
+
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String transactionId = String.valueOf(transaction.getRemote_id());
+		String status = Constant.STATUS_DELETED;
+		
+		Cursor cursor = db.rawQuery("SELECT SUM(cash_amount) FROM cashflow WHERE transaction_id = ? AND status <> ? ", new String[] { transactionId, status });
+			
+		cursor.moveToFirst();
+			
+		Float total = cursor.getFloat(0);
+		
+		cursor.close();
+		
+		return total;
 	}
 	
 	public List<CashflowBean> getCashflowForUpload() {
@@ -192,7 +228,7 @@ public class CashflowDaoService {
 		return (count > 0);
 	}
 	
-public List<CashFlowYearBean> getCashFlowYears() {
+	public List<CashFlowYearBean> getCashFlowYears() {
 		
 		ArrayList<CashFlowYearBean> cashFlowYears = new ArrayList<CashFlowYearBean>();
 		
@@ -207,9 +243,10 @@ public List<CashFlowYearBean> getCashFlowYears() {
 				+ "    FROM cashflow "
 				+ "    WHERE status = 'A' "
 				+ "   UNION "
-				+ "    SELECT transaction_date cash_date, total_amount cash_amount "
-				+ "    FROM transactions "
-				+ "    WHERE status = 'A' AND payment_type <> ? )"
+				+ "    SELECT transaction_date cash_date, cash_amount "
+				+ "    FROM (SELECT transaction_date, CASE payment_type WHEN ? THEN payment_amount ELSE total_amount END cash_amount "
+				+ "        FROM transactions "
+				+ "        WHERE status = 'A'))"
 				+ " GROUP BY strftime('%Y', cash_date/1000, 'unixepoch', 'localtime')", new String[] { paymentType });
 			
 		while(cursor.moveToNext()) {
@@ -245,9 +282,10 @@ public List<CashFlowYearBean> getCashFlowYears() {
 				+ "    FROM cashflow "
 				+ "    WHERE status = 'A' AND cash_date BETWEEN ? AND ? "
 				+ "   UNION "
-				+ "    SELECT transaction_date cash_date, total_amount cash_amount "
-				+ "    FROM transactions "
-				+ "    WHERE status = 'A' AND payment_type <> ? AND transaction_date BETWEEN ? AND ? )"
+				+ "    SELECT transaction_date cash_date, cash_amount "
+				+ "    FROM (SELECT transaction_date, CASE payment_type WHEN ? THEN payment_amount ELSE total_amount END cash_amount "
+				+ "        FROM transactions "
+				+ "        WHERE status = 'A' AND transaction_date BETWEEN ? AND ?))"
 				+ " GROUP BY strftime('%m-%Y', cash_date/1000, 'unixepoch', 'localtime')", new String[] { startDate, endDate, paymentType, startDate, endDate });
 			
 		while(cursor.moveToNext()) {
@@ -284,9 +322,10 @@ public List<CashFlowYearBean> getCashFlowYears() {
 				+ " UNION "
 				+ " SELECT null type, null bill_id, null transaction_id, cash_date, cash_amount, null remarks "
 				+ " FROM ("
-				+ "  SELECT strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') cash_date, SUM(total_amount) cash_amount "
-				+ "  FROM transactions "
-				+ "  WHERE status = 'A' AND payment_type <> ? AND transaction_date BETWEEN ? AND ? "
+				+ "  SELECT strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') cash_date, SUM(cash_amount) cash_amount "
+				+ "  FROM (SELECT transaction_date, CASE payment_type WHEN ? THEN payment_amount ELSE total_amount END cash_amount "
+				+ "        FROM transactions "
+				+ "        WHERE status = 'A' AND transaction_date BETWEEN ? AND ?) "
 				+ "  GROUP BY strftime('%d-%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'))"
 				+ " ) ORDER BY cash_date ", 
 				new String[] { startDate, endDate, paymentType, startDate, endDate });

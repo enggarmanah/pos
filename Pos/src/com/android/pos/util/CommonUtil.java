@@ -247,6 +247,11 @@ public class CommonUtil {
 		
 		return new SimpleDateFormat("dd MMM yyyy, HH:mm", getLocale());
 	}
+				
+	public static DateFormat getTimeFormat() {
+		
+		return new SimpleDateFormat("HH:mm", getLocale());
+	}
 	
 	public static DateFormat getDateMonthTimeFormat() {
 		
@@ -309,6 +314,17 @@ public class CommonUtil {
 		
 		cal.setTime(date);
 		cal.set(Calendar.DATE, 1);
+		
+		return cal.getTime();
+	}
+	
+	public static Date getEndDay(Date date) {
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(date);
+		cal.add(Calendar.DATE, 1);
+		cal.add(Calendar.MILLISECOND, -1);
 		
 		return cal.getTime();
 	}
@@ -437,6 +453,19 @@ public class CommonUtil {
 		
 		try {
 			dateStr = getDateTimeFormat().format(inputDate);
+		} catch (Exception e) {
+			// do nothing
+		}
+		
+		return dateStr;
+	}
+	
+	public static String formatTime(Date inputDate) {
+		
+		String dateStr = Constant.EMPTY_STRING;
+		
+		try {
+			dateStr = getTimeFormat().format(inputDate);
 		} catch (Exception e) {
 			// do nothing
 		}

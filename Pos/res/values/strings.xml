@@ -232,6 +232,18 @@
     <string name="report_inventory_product_stock">Jumlah</string>
    	<string name="report_inventory_stock">"Jumlah : %1$s"</string>
    	
+   	<string name="report_credit_title">Piutang</string>
+    <string name="report_credit_date">Tanggal</string>
+    <string name="report_credit_initial_payment">Pembayaran Awal</string>
+    <string name="report_credit_credit_payment">Pembayaran Cicilan</string>
+    <string name="report_credit_total_product_sold">Total Penjualan</string>
+    <string name="report_credit_total_payment">Total Pembayaran</string>
+    <string name="report_credit_credit_payments">Daftar Cicilan</string>
+    <string name="report_credit_product_sold">Daftar Penjualan</string>
+    <string name="report_credit_total">Total</string>
+    <string name="report_credit_add_payment">+ Bayar</string>
+    <string name="report_credit_add_payment_confirmation">Tambah Pembayaran ?</string>
+   	
     <string name="report_year">"Tahun %1$s"</string>
     <string name="report_total">"Total %1$s"</string>
 
@@ -239,7 +251,7 @@
     <string name="report_cashflow_total_bills">Total Pengeluaran</string>
     <string name="report_cashflow_total_amount">Pendapatan</string>
     <string name="report_cashflow_tax_amount">Pajak</string>
-    <string name="report_cashflow_service_charge_amount">Bea Servis</string>
+    <string name="report_cashflow_service_charge_amount">Service Charge</string>
     <string name="report_cashflow_expense">Pengeluaran</string>
     
     <string name="report_bill">Tagihan</string>
@@ -256,7 +268,7 @@
     
     <string name="report_bill_outstanding_title">Tagihan Belum Lunas</string>
     
-    <string name="report_commision_amount">Jumlah Komisi</string>
+    <string name="report_commision">Komisi</string>
     
     <string name="hint_percentage">Persentase %</string>
     <string name="hint_cost_price">Harga Beli Satuan</string>  
@@ -276,7 +288,7 @@
     <string name="delete_char">X</string>
     
     <string name="total">Total</string>
-    <string name="payment">Bayar&#160;</string>
+    <string name="payment">Bayar</string>
     <string name="payment_type">Tipe</string>
     <string name="change">Kembali</string>
     <string name="order">Pesan</string>
@@ -331,9 +343,12 @@
     <string name="search_bill">Cari Nota</string>
     <string name="select_bill">Pilih Nota</string>
     <string name="no_bill">Tanpa Nota</string>
-    <string name="search_transaction">Cari Piutang</string>
-    <string name="select_transaction">Pilih Piutang</string>
-    <string name="no_transaction">Tanpa Piutang</string>
+    <string name="search_credit">Cari Piutang</string>
+    <string name="select_credit">Pilih Piutang</string>
+    <string name="no_credit">Tanpa Piutang</string>
+    <string name="search_transaction">Cari Transaksi</string>
+    <string name="select_transaction">Pilih Transaksi</string>
+    <string name="no_transaction">Tanpa Transaksi</string>
     <string name="waitress">Pramusaji</string>
     
     <string name="transaction_daily">Transaksi Harian</string>
@@ -362,7 +377,7 @@
     <string name="print_sub_total">Sub Total</string>
 	<string name="print_negative">"- "</string>
 	<string name="print_tax">"Pajak "</string>
-	<string name="print_service_charge">"Bea Servis "</string>
+	<string name="print_service_charge">"Service Charge "</string>
 	<string name="print_total">Total</string>
 	<string name="print_return">Kembali</string>
 	<string name="print_remarks">"* "</string>
@@ -394,6 +409,7 @@
 	
 	<string name="payment_insufficient">Pembayaran tidak mencukupi</string>
 	<string name="payment_credit_without_customer">Pelanggan tidak boleh kosong untuk tipe pembayaran kredit</string>
+	<string name="payment_should_not_be_credit">Pembayaran melalui kredit harus kurang dari total transaksi</string>
     
     <string name="none_paired">Tidak ada printer yang terhubung</string>
     <string name="scanning">Scanning perangkat printer</string>
@@ -480,6 +496,9 @@
 	<string name="menu_report_inventory">Laporan Inventori</string>
 	<string name="menu_report_cashflow">Laporan Keuangan</string>
 	<string name="menu_report_bills">Laporan Tagihan</string>
+	<string name="menu_report_credit">Laporan Piutang</string>
+	<string name="menu_report_tax">Laporan Pajak</string>
+	<string name="menu_report_service_charge">Laporan Service Charge</string>
 	<string name="menu_favorite">Favorit</string>
 	<string name="menu_favorite_customer">Pelanggan Favorit</string>
 	<string name="menu_favorite_patient">Pasien Favorit</string>
@@ -509,6 +528,9 @@
 	<string name="menu_report_cashflow_order">J04</string>
 	<string name="menu_report_commision_order">J05</string>
 	<string name="menu_report_bills_order">J06</string>
+	<string name="menu_report_credit_order">J07</string>
+	<string name="menu_report_tax_order">J08</string>
+	<string name="menu_report_service_charge_order">J09</string>
 	<string name="menu_favorite_customer_order">K01</string>
 	<string name="menu_favorite_supplier_order">K02</string>
 	
@@ -559,7 +581,7 @@
 	<string name="cashflow_type_bank_deposit">Transfer Dana ke Bank</string>
 	<string name="cashflow_type_bank_withdrawal">Penarikan Dana dari Bank</string>
 	<string name="cashflow_type_bill_payment">Pembayaran Tagihan</string>
-	<string name="cashflow_type_invc_payment">Penerimaan Tagihan</string>
+	<string name="cashflow_type_invc_payment">Penerimaan Piutang</string>
 	<string name="cashflow_type_expense">Pengeluaran Lain-lain</string>
 		
 </resources>

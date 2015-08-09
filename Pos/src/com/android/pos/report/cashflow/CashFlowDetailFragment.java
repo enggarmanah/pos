@@ -19,7 +19,8 @@ import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashflowBean;
 import com.android.pos.util.CommonUtil;
 
-public class CashFlowDetailFragment extends BaseFragment {
+public class CashFlowDetailFragment extends BaseFragment 
+	implements CashFlowDetailArrayAdapter.ItemActionListener {
 	
 	private ImageButton mBackButton;
 	
@@ -46,7 +47,7 @@ public class CashFlowDetailFragment extends BaseFragment {
 			mCashflows = new ArrayList<CashflowBean>();
 		} 
 		
-		mAdapter = new CashFlowDetailArrayAdapter(getActivity(), mCashflows);
+		mAdapter = new CashFlowDetailArrayAdapter(getActivity(), mCashflows, this);
 		
 		return view;
 	}
@@ -160,5 +161,11 @@ public class CashFlowDetailFragment extends BaseFragment {
 				mActionListener.onBackPressed();
 			}
 		};
+	}
+	
+	@Override
+	public void onCashflowSelected(CashflowBean cashFlow) {
+		
+		mActionListener.onCashFlowSelected(cashFlow);
 	}
 }

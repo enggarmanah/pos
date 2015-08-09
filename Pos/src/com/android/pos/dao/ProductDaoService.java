@@ -615,7 +615,7 @@ public class ProductDaoService {
 			
 			Long employeeId = cursor.getLong(0);
 			String employeeName = cursor.getString(1);
-			Long commision = cursor.getLong(2);
+			Float commision = cursor.getFloat(2);
 			
 			EmployeeCommisionBean employeeCommision = new EmployeeCommisionBean();
 			
@@ -645,7 +645,7 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "yyyy");
-			Long value = cursor.getLong(1);
+			Float value = cursor.getFloat(1);
 			CommisionYearBean commisionYear = new CommisionYearBean();
 			commisionYear.setYear(date);
 			commisionYear.setAmount(value);
@@ -675,7 +675,7 @@ public class ProductDaoService {
 		while(cursor.moveToNext()) {
 			
 			Date date = CommonUtil.parseDate(cursor.getString(0), "MM-yyyy");
-			Long value = cursor.getLong(1);
+			Float value = cursor.getFloat(1);
 			CommisionMonthBean commisionMonth = new CommisionMonthBean();
 			commisionMonth.setMonth(date);
 			commisionMonth.setAmount(value);
@@ -706,7 +706,7 @@ public class ProductDaoService {
 			
 			Date transactionDate = CommonUtil.parseDate(cursor.getString(0), "dd-MM-yyyy hh:mm:ss");
 			String productName = cursor.getString(1);
-			Long commision = cursor.getLong(2);
+			Float commision = cursor.getFloat(2);
 			
 			EmployeeCommisionBean employeeCommision = new EmployeeCommisionBean();
 			

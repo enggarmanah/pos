@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class InventoryReportArrayAdapter extends ArrayAdapter<Product> {
+public class InventoryArrayAdapter extends ArrayAdapter<Product> {
 
 	private Context context;
 	private List<Product> mProducts;
@@ -31,9 +31,9 @@ public class InventoryReportArrayAdapter extends ArrayAdapter<Product> {
 		TextView productStockText;
 	}
 
-	public InventoryReportArrayAdapter(Context context, List<Product> products, ItemActionListener listener) {
+	public InventoryArrayAdapter(Context context, List<Product> products, ItemActionListener listener) {
 
-		super(context, R.layout.report_transaction_list_item, products);
+		super(context, R.layout.report_inventory_list_item, products);
 		
 		this.context = context;
 		this.mProducts = products;

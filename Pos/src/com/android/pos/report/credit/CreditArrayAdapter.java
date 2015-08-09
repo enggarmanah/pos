@@ -1,9 +1,9 @@
-package com.android.pos.popup.search;
+package com.android.pos.report.credit;
 
 import java.util.List;
 
 import com.android.pos.R;
-import com.android.pos.dao.Transactions;
+import com.android.pos.model.TransactionsBean;
 import com.android.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -13,15 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
+public class CreditArrayAdapter extends ArrayAdapter<TransactionsBean> {
 
 	private Context context;
-	private List<Transactions> transactions;
+	private List<TransactionsBean> transactions;
 	private ItemActionListener mCallback;
 
 	public interface ItemActionListener {
 
-		public void onTransactionsSelected(Transactions item);
+		public void onTransactionSelected(TransactionsBean item);
+		
+		public TransactionsBean getSelectedTransaction();
 	}
 
 	class ViewHolder {
@@ -31,9 +33,9 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 		TextView transactionSupplierText;
 	}
 
-	public TransactionArrayAdapter(Context context, List<Transactions> transactions, ItemActionListener listener) {
+	public CreditArrayAdapter(Context context, List<TransactionsBean> transactions, ItemActionListener listener) {
 
-		super(context, R.layout.popup_transaction_list_item, transactions);
+		super(context, R.layout.report_credit_list_item, transactions);
 		
 		this.context = context;
 		this.transactions = transactions;
@@ -43,7 +45,7 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		
-		final Transactions transaction = transactions.get(position);
+		final TransactionsBean transaction = transactions.get(position);
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -56,7 +58,7 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.popup_transaction_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.report_credit_list_item, parent, false);
 			
 			transactionNoText = (TextView) rowView.findViewById(R.id.transactionNoText);
 			transactionDateText = (TextView) rowView.findViewById(R.id.transactionDateText);
@@ -82,12 +84,14 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 			transactionAmountText = viewHolder.transactionSupplierText;
 		}
 		
-		transactionNoText.setText(transaction.getTransactionNo());
-		transactionDateText.setText(CommonUtil.formatDate(transaction.getTransactionDate()));
-		transactionCustomerText.setText(transaction.getCustomerName());
-		transactionAmountText.setText(CommonUtil.formatCurrency(transaction.getTotalAmount()));
+		Float outstandingAmount = transaction.getTotal_amount() - transaction.getPayment_amount() - transaction.getTotal_credit_payment();
 		
-		if (!CommonUtil.isEmpty(transaction.getCustomerName())) {
+		transactionNoText.setText(transaction.getTransaction_no());
+		transactionDateText.setText(CommonUtil.formatDate(transaction.getTransaction_date()));
+		transactionCustomerText.setText(transaction.getCustomer_name());
+		transactionAmountText.setText(CommonUtil.formatCurrency(outstandingAmount));
+		
+		if (!CommonUtil.isEmpty(transaction.getCustomer_name())) {
 			transactionCustomerText.setVisibility(View.VISIBLE);
 		} else {
 			transactionCustomerText.setVisibility(View.GONE);			
@@ -98,7 +102,7 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 		return rowView;
 	}
 	
-	private View.OnClickListener getItemOnClickListener(final Transactions transaction, final TextView itemNameView) {
+	private View.OnClickListener getItemOnClickListener(final TransactionsBean transaction, final TextView itemNameView) {
 		
 		return new View.OnClickListener() {
 			
@@ -107,7 +111,7 @@ public class TransactionArrayAdapter extends ArrayAdapter<Transactions> {
 				
 				v.setSelected(true);
 
-				mCallback.onTransactionsSelected(transaction);
+				mCallback.onTransactionSelected(transaction);
 			}
 		};
 	}

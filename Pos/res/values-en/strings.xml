@@ -232,6 +232,18 @@
     <string name="report_inventory_product_stock">Stock</string>
    	<string name="report_inventory_stock">"Total : %1$s"</string>
    	
+   	<string name="report_credit_title">Credit</string>
+    <string name="report_credit_date">Date</string>
+   	<string name="report_credit_initial_payment">Initial Payment</string>
+    <string name="report_credit_credit_payment">Credit Payment</string>
+    <string name="report_credit_total_product_sold">Total Product Sold</string>
+    <string name="report_credit_total_payment">Total Payment</string>
+    <string name="report_credit_credit_payments">Credit Payments</string>
+    <string name="report_credit_product_sold">Product Sold</string>
+    <string name="report_credit_total">Total</string>
+    <string name="report_credit_add_payment">+ Payment</string>
+    <string name="report_credit_add_payment_confirmation">Add Payment ?</string>
+    
     <string name="report_year">"Year %1$s"</string>
     <string name="report_total">"Total %1$s"</string>
 
@@ -256,7 +268,7 @@
     
     <string name="report_bill_outstanding_title">Outstanding Bill</string>
     
-    <string name="report_commision_amount">Total Commission</string>
+    <string name="report_commision">Commission</string>
     
     <string name="hint_percentage">Percentage %</string>
     <string name="hint_cost_price">Cost Price</string>  
@@ -276,7 +288,7 @@
     <string name="delete_char">X</string>
     
     <string name="total">Total</string>
-    <string name="payment">Payment&#160;</string>
+    <string name="payment">Payment</string>
     <string name="payment_type">Type</string>
     <string name="change">Return</string>
     <string name="order">Order</string>
@@ -331,9 +343,12 @@
     <string name="search_bill">Search Bills</string>
     <string name="select_bill">Select Bill</string>
     <string name="no_bill">No Receipt</string>
-	<string name="search_transaction">Search Credit</string>
-    <string name="select_transaction">Select Credit</string>
-    <string name="no_transaction">No Credit</string>
+	<string name="search_credit">Search Credit</string>
+    <string name="select_credit">Select Credit</string>
+    <string name="no_credit">No Credit</string>
+    <string name="search_transaction">Search Transaction</string>
+    <string name="select_transaction">Select Transaction</string>
+    <string name="no_transaction">No Transaction</string>
     <string name="waitress">Waitress</string>
     
     <string name="transaction_daily">Daily Transaction</string>
@@ -394,6 +409,7 @@
 	
 	<string name="payment_insufficient">Payment is not sufficient</string>
 	<string name="payment_credit_without_customer">Customer should not be empty when the payment type is Credit</string>
+	<string name="payment_should_not_be_credit">Payment by credit should be less than total transaction</string>
 	
     <string name="none_paired">There is no printer connected</string>
     <string name="scanning">Scanning printer  &#8230;</string>
@@ -479,6 +495,9 @@
 	<string name="menu_report_inventory">Inventory Report</string>
 	<string name="menu_report_cashflow">Cashflow Report</string>
 	<string name="menu_report_bills">Bills Report</string>
+	<string name="menu_report_credit">Credit Report</string>
+	<string name="menu_report_tax">Tax Report</string>
+	<string name="menu_report_service_charge">Service Charge Report</string>
 	<string name="menu_favorite">Favorites</string>
 	<string name="menu_favorite_customer">Favorite Customer</string>
 	<string name="menu_favorite_patient">Favorite Patient</string>
@@ -508,6 +527,9 @@
 	<string name="menu_report_cashflow_order">J04</string>
 	<string name="menu_report_commision_order">J05</string>
 	<string name="menu_report_bills_order">J06</string>
+	<string name="menu_report_credit_order">J07</string>
+	<string name="menu_report_tax_order">J08</string>
+	<string name="menu_report_service_charge_order">J09</string>
 	<string name="menu_favorite_customer_order">K01</string>
 	<string name="menu_favorite_supplier_order">K02</string>
 	
@@ -558,7 +580,7 @@
 	<string name="cashflow_type_bank_deposit">Funds Transfer to Bank</string>
 	<string name="cashflow_type_bank_withdrawal">Funds Withdrawal from Bank</string>
 	<string name="cashflow_type_bill_payment">Bill Payment</string>
-	<string name="cashflow_type_invc_payment">Invoice Payment</string>
+	<string name="cashflow_type_invc_payment">Credit Payment</string>
 	<string name="cashflow_type_expense">General Expense</string>
 		
 </resources>

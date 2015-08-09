@@ -23,7 +23,7 @@ import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Product;
 import com.android.pos.util.CommonUtil;
 
-public class InventoryReportDetailFragment extends BaseFragment {
+public class InventoryDetailFragment extends BaseFragment {
 	
 	private ImageButton mBackButton;
 	
@@ -38,9 +38,9 @@ public class InventoryReportDetailFragment extends BaseFragment {
 	private boolean mIsLoadData = false;
 	private boolean mIsEndOfList = false;
 	
-	private InventoryReportActionListener mActionListener;
+	private InventoryActionListener mActionListener;
 	
-	private InventoryReportDetailArrayAdapter mAdapter;
+	private InventoryDetailArrayAdapter mAdapter;
 	
 	private InventoryDaoService mInventoryDaoService = new InventoryDaoService();
 	
@@ -56,7 +56,7 @@ public class InventoryReportDetailFragment extends BaseFragment {
 		mProductNameText = (TextView) view.findViewById(R.id.productNameText);
 		mProductStockText = (TextView) view.findViewById(R.id.productStockText);
 		
-		mAdapter = new InventoryReportDetailArrayAdapter(getActivity(), mInventories);
+		mAdapter = new InventoryDetailArrayAdapter(getActivity(), mInventories);
 		
 		return view;
 	}
@@ -94,7 +94,7 @@ public class InventoryReportDetailFragment extends BaseFragment {
         super.onAttach(activity);
         
         try {
-            mActionListener = (InventoryReportActionListener) activity;
+            mActionListener = (InventoryActionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement InventoryReportActionListener");

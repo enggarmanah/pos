@@ -48,6 +48,7 @@
     <LinearLayout style="@style/PaymentSummaryRowStyle" >
 
         <TextView
+            android:id="@+id/changeLabelText"
             style="@style/PaymentSummaryRowLabelStyle"
             android:text="@string/change" />
 

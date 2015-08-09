@@ -16,7 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
+public class InventoryDetailArrayAdapter extends ArrayAdapter<Inventory> {
 
 	private Context context;
 	private List<Inventory> mInventories;
@@ -29,7 +29,7 @@ public class InventoryReportDetailArrayAdapter extends ArrayAdapter<Inventory> {
 		TextView supplierText;
 	}
 
-	public InventoryReportDetailArrayAdapter(Context context, List<Inventory> productStatistics) {
+	public InventoryDetailArrayAdapter(Context context, List<Inventory> productStatistics) {
 
 		super(context, R.layout.report_inventory_detail_list_item, productStatistics);
 		

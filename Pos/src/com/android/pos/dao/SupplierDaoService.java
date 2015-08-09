@@ -338,7 +338,7 @@ public class SupplierDaoService {
 		String supplierId = String.valueOf(supplier.getId());
 		String status = Constant.STATUS_DELETED;
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y', min(delivery_date)/1000, 'unixepoch', 'localtime') "
+		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y', min(inventory_date)/1000, 'unixepoch', 'localtime') "
 				+ " FROM "
 				+ "   inventory i "
 				+ " WHERE "
@@ -365,7 +365,7 @@ public class SupplierDaoService {
 		String supplierId = String.valueOf(supplier.getId());
 		String status = Constant.STATUS_DELETED;
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y', max(delivery_date)/1000, 'unixepoch', 'localtime') "
+		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y', max(inventory_date)/1000, 'unixepoch', 'localtime') "
 				+ " FROM "
 				+ "   inventory i "
 				+ " WHERE "

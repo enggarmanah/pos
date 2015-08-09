@@ -8,7 +8,7 @@ public class EmployeeCommisionBean implements Serializable {
 
 	private Long employee_id;
 	private String employee_name;
-	private Long commision;
+	private Float commision;
 	
 	private Date transaction_date;
 	private String product_name;
@@ -29,11 +29,11 @@ public class EmployeeCommisionBean implements Serializable {
 		this.employee_name = employee_name;
 	}
 
-	public Long getCommision() {
+	public Float getCommision() {
 		return commision;
 	}
 
-	public void setCommision(Long commision) {
+	public void setCommision(Float commision) {
 		this.commision = commision;
 	}
 

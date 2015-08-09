@@ -1,8 +1,10 @@
 package com.android.pos.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TransactionsBean {
+@SuppressWarnings("serial")
+public class TransactionsBean implements Serializable {
 
 	private Long id;
 	private Long remote_id;
@@ -32,6 +34,17 @@ public class TransactionsBean {
 	private String customer_name;	
 	private String status;
 	private Date sync_date;
+	
+	//only for Bean to capture Total Credit Payments
+	private Float total_credit_payment;
+	
+	public Float getTotal_credit_payment() {
+		return total_credit_payment;
+	}
+
+	public void setTotal_credit_payment(Float total_credit_payment) {
+		this.total_credit_payment = total_credit_payment;
+	}
 
 	public Long getId() {
 		return id;

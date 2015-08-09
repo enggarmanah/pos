@@ -22,10 +22,6 @@
         android:orientation="vertical"
         android:background="@color/background">
 		
-        <TextView 
-            android:id="@+id/discountBorder"
-            style="@style/SectionDividerStyle" />
-        
         <LinearLayout
             android:id="@+id/discountPanel"
             style="@style/PaymentRowStyle" >
@@ -39,10 +35,6 @@
                 style="@style/PaymentRowContentRightStyle" />
         </LinearLayout>
         
-        <TextView 
-            android:id="@+id/taxBorder"
-            style="@style/SectionDividerStyle" />
-         
         <LinearLayout
             android:id="@+id/taxPanel"
             style="@style/PaymentRowStyle" >
@@ -57,10 +49,6 @@
                 style="@style/PaymentRowContentRightStyle" />
         </LinearLayout>
 		
-        <TextView 
-            android:id="@+id/serviceChargeBorder"
-            style="@style/SectionDividerStyle" />
-            
         <LinearLayout
             android:id="@+id/serviceChargePanel"
             style="@style/PaymentRowStyle" >

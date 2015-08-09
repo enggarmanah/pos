@@ -23,8 +23,8 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-public class InventoryReportActivity extends BaseActivity 
-	implements InventoryReportActionListener, SearchView.OnQueryTextListener {
+public class InventoryActivity extends BaseActivity 
+	implements InventoryActionListener, SearchView.OnQueryTextListener {
 	
 	private SearchView searchView;
 	
@@ -37,8 +37,8 @@ public class InventoryReportActivity extends BaseActivity
 	
 	private String prevQuery = Constant.EMPTY_STRING;
 	
-	private InventoryReportListFragment mInventoryReportListFragment;
-	private InventoryReportDetailFragment mInventoryReportDetailFragment;
+	private InventoryListFragment mInventoryReportListFragment;
+	private InventoryDetailFragment mInventoryReportDetailFragment;
 	
 	boolean mIsMultiplesPane = false;
 	
@@ -93,19 +93,19 @@ public class InventoryReportActivity extends BaseActivity
 		
 		mIsMultiplesPane = getResources().getBoolean(R.bool.has_multiple_panes);
 
-		mInventoryReportListFragment = (InventoryReportListFragment) getFragmentManager().findFragmentByTag(mInventoryReportListFragmentTag);
+		mInventoryReportListFragment = (InventoryListFragment) getFragmentManager().findFragmentByTag(mInventoryReportListFragmentTag);
 		
 		if (mInventoryReportListFragment == null) {
-			mInventoryReportListFragment = new InventoryReportListFragment();
+			mInventoryReportListFragment = new InventoryListFragment();
 
 		} else {
 			removeFragment(mInventoryReportListFragment);
 		}
 		
-		mInventoryReportDetailFragment = (InventoryReportDetailFragment) getFragmentManager().findFragmentByTag(mInventoryReportDetailFragmentTag);
+		mInventoryReportDetailFragment = (InventoryDetailFragment) getFragmentManager().findFragmentByTag(mInventoryReportDetailFragmentTag);
 		
 		if (mInventoryReportDetailFragment == null) {
-			mInventoryReportDetailFragment = new InventoryReportDetailFragment();
+			mInventoryReportDetailFragment = new InventoryDetailFragment();
 
 		} else {
 			removeFragment(mInventoryReportDetailFragment);

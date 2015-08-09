@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -143,22 +142,6 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 											R.layout.cashier_spinner_selected_item);
 		
 		mPaymentTypeSp.setAdapter(paymentTypeArrayAdapter);
-		
-		mPaymentTypeSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				
-		    	mPaymentType = CodeBean.getNvlCode((CodeBean) mPaymentTypeSp.getSelectedItem());
-		    	
-		    	if (Constant.PAYMENT_TYPE_CREDIT.equals(mPaymentType)) {
-		    		mPaymentText.setText(CommonUtil.formatNumber(mTotalBill));
-		    	}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
 		
 		if (CommonUtil.isDecimalCurrency()) {
 			actionCBtn.setText(CommonUtil.getCurrencyDecimalSeparator());
@@ -331,11 +314,18 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 					return;
 				}
 				
-				if (mPayment >= mTotalBill) {
+				if (Constant.PAYMENT_TYPE_CREDIT.equals(mPaymentType) && mPayment >= mTotalBill) {
+					
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.payment_should_not_be_credit));
+					return;
+				}
+				
+				if (Constant.PAYMENT_TYPE_CREDIT.equals(mPaymentType) || mPayment >= mTotalBill) {
 				
 					mActionListener.onPaymentInfoProvided(mCustomer, mPaymentType, mTotalBill, mPayment);
 					
 					mPayment = Float.valueOf(0);
+					mPaymentType = null;
 					
 					dismiss();
 					

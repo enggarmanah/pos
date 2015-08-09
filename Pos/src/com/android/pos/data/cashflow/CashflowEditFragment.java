@@ -279,7 +279,9 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     @Override
     public Cashflow updateItem(Cashflow cashflow) {
 
-    	cashflow = mCashflowDaoService.getCashflow(cashflow.getId());
+    	if (cashflow.getId() != null) {
+    		cashflow = mCashflowDaoService.getCashflow(cashflow.getId());
+    	}
     	
     	this.mItem = cashflow;
     	

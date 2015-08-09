@@ -534,13 +534,21 @@ public class PrintUtil {
 		}
 		
 		String totalLabel = mActivity.getString(R.string.print_total);
-		String returnLabel = mActivity.getString(R.string.print_return);
 		
-		String paymentLabel =  CodeUtil.getPaymentTypeLabel(transaction.getPaymentType());
-
+		String paymentLabel =  Constant.EMPTY_STRING;
+		String returnLabel = Constant.EMPTY_STRING;
+		
+		if (Constant.PAYMENT_TYPE_CREDIT.equals(transaction.getPaymentType())) {
+			paymentLabel = mActivity.getString(R.string.payment);
+			returnLabel = CodeUtil.getPaymentTypeLabel(transaction.getPaymentType());
+		} else {
+			paymentLabel = CodeUtil.getPaymentTypeLabel(transaction.getPaymentType());
+			returnLabel = mActivity.getString(R.string.change);
+		}
+		
 		String totalText = CommonUtil.formatCurrency(transaction.getTotalAmount());
 		String paymentText = CommonUtil.formatCurrency(transaction.getPaymentAmount());
-		String returnText = CommonUtil.formatCurrency(transaction.getReturnAmount());
+		String returnText = CommonUtil.formatCurrency(Math.abs(transaction.getReturnAmount()));
 		
 		line.setLength(0);
 		

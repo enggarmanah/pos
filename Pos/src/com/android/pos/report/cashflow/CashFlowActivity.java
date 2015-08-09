@@ -6,6 +6,7 @@ import com.android.pos.R;
 import com.android.pos.base.activity.BaseActivity;
 import com.android.pos.model.CashFlowMonthBean;
 import com.android.pos.model.CashFlowYearBean;
+import com.android.pos.model.CashflowBean;
 import com.android.pos.util.CommonUtil;
 
 import android.os.Bundle;
@@ -15,8 +16,9 @@ import android.view.MenuItem;
 public class CashFlowActivity extends BaseActivity 
 	implements CashFlowActionListener {
 	
-	protected CashFlowListFragment mCashFlowListFragment;
-	protected CashFlowDetailFragment mCashFlowDetailFragment;
+	private CashFlowListFragment mCashFlowListFragment;
+	private CashFlowDetailFragment mCashFlowDetailFragment;
+	private CashFlowDailyDlgFragment mCashFlowDailyDlgFragment; 
 	
 	boolean mIsMultiplesPane = false;
 	
@@ -35,6 +37,7 @@ public class CashFlowActivity extends BaseActivity
 	
 	private String mCashFlowListFragmentTag = "cashFlowListFragmentTag";
 	private String mCashFlowDetailFragmentTag = "cashFlowDetailFragmentTag";
+	private String mCashFlowDailyDlgFragmentTag = "cashFlowDailyDlgFragmentTag";
 	
 	private Integer mPastDueBillsCount = 0;
 	private Integer mOutstandingBillsCount = 0;
@@ -110,6 +113,12 @@ public class CashFlowActivity extends BaseActivity
 
 		} else {
 			removeFragment(mCashFlowDetailFragment);
+		}
+		
+		mCashFlowDailyDlgFragment = (CashFlowDailyDlgFragment) getFragmentManager().findFragmentByTag(mCashFlowDailyDlgFragmentTag);
+		
+		if (mCashFlowDailyDlgFragment == null) {
+			mCashFlowDailyDlgFragment = new CashFlowDailyDlgFragment();
 		}
 	}
 
@@ -226,6 +235,21 @@ public class CashFlowActivity extends BaseActivity
 			replaceFragment(mCashFlowDetailFragment, mCashFlowDetailFragmentTag);
 			mCashFlowDetailFragment.setCashFlowMonth(cashFlowMonth);
 		}
+	}
+	
+	@Override
+	public void onCashFlowSelected(CashflowBean cashFlow) {
+		
+		if (cashFlow.getType() != null) {
+			return;
+		}
+		
+		if (mCashFlowDailyDlgFragment.isAdded()) {
+			return;
+		}
+		
+		mCashFlowDailyDlgFragment.setTransactionDate(cashFlow.getCash_date());
+		mCashFlowDailyDlgFragment.show(getFragmentManager(), mCashFlowDailyDlgFragmentTag);
 	}
 	
 	@Override

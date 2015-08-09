@@ -1,43 +1,50 @@
 package com.android.pos.data.cashflow;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Bills;
 import com.android.pos.dao.Cashflow;
 import com.android.pos.dao.Transactions;
+import com.android.pos.model.TransactionsBean;
 import com.android.pos.popup.search.BillDlgFragment;
 import com.android.pos.popup.search.BillSelectionListener;
-import com.android.pos.popup.search.TransactionDlgFragment;
-import com.android.pos.popup.search.TransactionSelectionListener;
+import com.android.pos.popup.search.CreditDlgFragment;
+import com.android.pos.popup.search.CreditSelectionListener;
+import com.android.pos.util.BeanUtil;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 public class CashflowMgtActivity extends BaseItemMgtActivity<CashflowSearchFragment, CashflowEditFragment, Cashflow> 
-	implements TransactionSelectionListener, BillSelectionListener {
+	implements CreditSelectionListener, BillSelectionListener {
 	
 	List<Cashflow> mInventories;
 	Cashflow mSelectedCashflow;
 	
-	private TransactionDlgFragment mTransactionDlgFragment;
+	private CreditDlgFragment mTransactionDlgFragment;
 	private BillDlgFragment mBillDlgFragment;
 	
 	private static String mTransactionDlgFragmentTag = "mTransactionDlgFragmentTag";
 	private static String mBillDlgFragmentTag = "mBillDlgFragmentTag";
 	
+	private boolean mIsCreditPayment = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		mTransactionDlgFragment = (TransactionDlgFragment) getFragmentManager().findFragmentByTag(mTransactionDlgFragmentTag);
+		mTransactionDlgFragment = (CreditDlgFragment) getFragmentManager().findFragmentByTag(mTransactionDlgFragmentTag);
 		
 		if (mTransactionDlgFragment == null) {
-			mTransactionDlgFragment = new TransactionDlgFragment();
+			mTransactionDlgFragment = new CreditDlgFragment();
 		}
 		
 		mBillDlgFragment = (BillDlgFragment) getFragmentManager().findFragmentByTag(mBillDlgFragmentTag);
@@ -45,6 +52,8 @@ public class CashflowMgtActivity extends BaseItemMgtActivity<CashflowSearchFragm
 		if (mBillDlgFragment == null) {
 			mBillDlgFragment = new BillDlgFragment();
 		}
+		
+		processExtras(getIntent().getExtras());
 	}
 	
 	@Override
@@ -55,6 +64,27 @@ public class CashflowMgtActivity extends BaseItemMgtActivity<CashflowSearchFragm
 		setTitle(getString(R.string.menu_cashflow));
 		setSelectedMenu(getString(R.string.menu_cashflow));
 	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		
+		super.onNewIntent(intent);
+		
+		Bundle extras = intent.getExtras();
+		
+		processExtras(extras);
+	}
+	
+	@Override
+	protected void afterPrepareOptionsMenu() {
+		
+		if (mIsCreditPayment) {
+			mIsCreditPayment = false;
+			
+			updateItem(mSelectedCashflow);
+			showEditMenu();
+		}
+	};
 	
 	@Override
 	protected CashflowSearchFragment getSearchFragmentInstance() {
@@ -204,9 +234,12 @@ public class CashflowMgtActivity extends BaseItemMgtActivity<CashflowSearchFragm
 		mTransactionDlgFragment.show(getFragmentManager(), mTransactionDlgFragmentTag);
 	}
 	
-	public void onTransactionSelected(Transactions transaction) {
+	public void onTransactionSelected(TransactionsBean transaction) {
 		
-		mEditFragment.setTransaction(transaction);
+		Transactions t = new Transactions();
+		BeanUtil.updateBean(t, transaction);
+		
+		mEditFragment.setTransaction(t);
 	}
 	
 	public void onSelectBill(boolean isMandatory) {
@@ -222,5 +255,21 @@ public class CashflowMgtActivity extends BaseItemMgtActivity<CashflowSearchFragm
 	public void onBillSelected(Bills bill) {
 		
 		mEditFragment.setBill(bill);
+	}
+	
+	private void processExtras(Bundle extras) {
+		
+		if (extras != null) {
+			
+			mIsCreditPayment = true;
+			
+			TransactionsBean transaction = (TransactionsBean) extras.getSerializable(Constant.SELECTED_CREDIT_FOR_PAYMENT);
+			
+			mSelectedCashflow = new Cashflow();
+			
+			mSelectedCashflow.setType(Constant.CASHFLOW_TYPE_INVC_PAYMENT);
+			mSelectedCashflow.setTransactionId(transaction.getRemote_id());
+			mSelectedCashflow.setCashDate(new Date());
+		}
 	}
 }

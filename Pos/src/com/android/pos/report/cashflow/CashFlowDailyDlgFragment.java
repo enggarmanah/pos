@@ -1,12 +1,15 @@
-package com.android.pos.popup.search;
+package com.android.pos.report.cashflow;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDaoService;
+import com.android.pos.popup.search.BaseSearchDlgFragment;
+import com.android.pos.util.CommonUtil;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,18 +22,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> implements TransactionArrayAdapter.ItemActionListener {
+public class CashFlowDailyDlgFragment extends BaseSearchDlgFragment<Transactions> implements CashFlowDailyArrayAdapter.ItemActionListener {
 	
+	TextView mHeaderText;
 	TextView mCancelBtn;
 	EditText mTransactionsSearchText;
 	ListView mTransactionsListView;
-	TextView mNoTransactionsText;
 	
-	TransactionSelectionListener mActionListener;
+	CashFlowActionListener mActionListener;
 	
-	TransactionArrayAdapter transactionArrayAdapter;
+	CashFlowDailyArrayAdapter transactionArrayAdapter;
 	
-	boolean mIsMandatory = false;
+	Date mTransactionDate;
 	
 	private TransactionsDaoService mTransactionsDaoService = new TransactionsDaoService();
 	
@@ -44,13 +47,13 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
         
         mItems = new ArrayList<Transactions>();
         
-        transactionArrayAdapter = new TransactionArrayAdapter(getActivity(), mItems, this);
+        transactionArrayAdapter = new CashFlowDailyArrayAdapter(getActivity(), mItems, this);
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.popup_transaction_fragment, container, false);
+		View view = inflater.inflate(R.layout.report_cashflow_transaction_fragment, container, false);
 
 		return view;
 	}
@@ -59,6 +62,11 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
 	public void onStart() {
 		
 		super.onStart();
+		
+		mHeaderText = (TextView) getView().findViewById(R.id.headerText);
+		mCancelBtn = (TextView) getView().findViewById(R.id.cancelBtn);
+		
+		mHeaderText.setText(CommonUtil.formatDate(mTransactionDate));
 		
 		mTransactionsSearchText = (EditText) getView().findViewById(R.id.transactionSearchText);
 		mTransactionsSearchText.setText(Constant.EMPTY_STRING);
@@ -72,7 +80,7 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
 				mQuery = s.toString();
 				
 				mItems.clear();
-				mItems.addAll(mTransactionsDaoService.getUnpaidTransactions(mQuery, 0));
+				mItems.addAll(mTransactionsDaoService.getTransactions(mQuery, mTransactionDate, 0));
 				transactionArrayAdapter.notifyDataSetChanged();
 			}
 			
@@ -86,20 +94,10 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
 		mTransactionsListView = (ListView) getView().findViewById(R.id.transactionListView);
 		mTransactionsListView.setAdapter(transactionArrayAdapter);
 		
-		mNoTransactionsText = (TextView) getView().findViewById(R.id.noTransactionText);
-		mNoTransactionsText.setOnClickListener(getNoTransactionsTextOnClickListener());
-		
-		mCancelBtn = (TextView) getView().findViewById(R.id.cancelBtn);
 		mCancelBtn.setOnClickListener(getCancelBtnOnClickListener());
 		
-		if (mIsMandatory) {
-			mNoTransactionsText.setVisibility(View.GONE);
-		} else {
-			mNoTransactionsText.setVisibility(View.VISIBLE);
-		}
-		
 		mItems.clear();
-		mItems.addAll(mTransactionsDaoService.getUnpaidTransactions(mQuery, 0));
+		mItems.addAll(mTransactionsDaoService.getTransactions(mQuery, mTransactionDate, 0));
 		transactionArrayAdapter.notifyDataSetChanged();
 	}
 	
@@ -108,7 +106,7 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
         super.onAttach(activity);
 
         try {
-            mActionListener = (TransactionSelectionListener) activity;
+            mActionListener = (CashFlowActionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement TransactionSelectionListener");
@@ -121,29 +119,15 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
 		super.onSaveInstanceState(outState);
 	}
 	
-	public void setMandatory(boolean isMandatory) {
-		
-		mIsMandatory = isMandatory;
-	}
-	
 	@Override
 	public void onTransactionsSelected(Transactions transaction) {
 		
 		dismiss();
-		mActionListener.onTransactionSelected(transaction);
 	}
 	
-	private View.OnClickListener getNoTransactionsTextOnClickListener() {
+	public void setTransactionDate(Date transactionDate) {
 		
-		return new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				mActionListener.onTransactionSelected(null);
-				dismiss();
-			}
-		};
+		mTransactionDate = transactionDate;
 	}
 	
 	private View.OnClickListener getCancelBtnOnClickListener() {
@@ -161,13 +145,13 @@ public class TransactionDlgFragment extends BaseSearchDlgFragment<Transactions> 
 	@Override
 	protected List<Transactions> getItems(String query) {
 		
-		return mTransactionsDaoService.getUnpaidTransactions(mQuery, 0);
+		return mTransactionsDaoService.getTransactions(mQuery, mTransactionDate, 0);
 	}
 	
 	@Override
 	protected List<Transactions> getNextItems(String query, int lastIndex) {
 		
-		return mTransactionsDaoService.getUnpaidTransactions(mQuery, lastIndex);
+		return mTransactionsDaoService.getTransactions(mQuery, mTransactionDate, lastIndex);
 	}
 	
 	@Override

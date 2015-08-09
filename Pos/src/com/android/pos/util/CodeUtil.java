@@ -107,7 +107,7 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.quantity_type_liter));
 		quantityType[2] = code;
 		
-		moduleAccess = new CodeBean[17];
+		moduleAccess = new CodeBean[20];
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_CASHIER);
@@ -194,22 +194,40 @@ public class CodeUtil {
 		moduleAccess[13] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_CREDIT);
+		code.setLabel(mContext.getString(R.string.menu_report_credit));
+		code.setOrder(mContext.getString(R.string.menu_report_credit_order));
+		moduleAccess[14] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.ACCESS_REPORT_BILLS);
 		code.setLabel(mContext.getString(R.string.menu_report_bills));
 		code.setOrder(mContext.getString(R.string.menu_report_bills_order));
-		moduleAccess[14] = code;
+		moduleAccess[15] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_TAX);
+		code.setLabel(mContext.getString(R.string.menu_report_tax));
+		code.setOrder(mContext.getString(R.string.menu_report_tax_order));
+		moduleAccess[16] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ACCESS_REPORT_SERVICE_CHARGE);
+		code.setLabel(mContext.getString(R.string.menu_report_service_charge));
+		code.setOrder(mContext.getString(R.string.menu_report_service_charge_order));
+		moduleAccess[17] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_FAVORITE_CUSTOMER);
 		code.setLabel(mContext.getString(R.string.menu_favorite_customer));
 		code.setOrder(mContext.getString(R.string.menu_favorite_customer_order));
-		moduleAccess[15] = code;
+		moduleAccess[18] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.ACCESS_FAVORITE_SUPPLIER);
 		code.setLabel(mContext.getString(R.string.menu_favorite_supplier));
 		code.setOrder(mContext.getString(R.string.menu_favorite_supplier_order));
-		moduleAccess[16] = code;
+		moduleAccess[19] = code;
 				
 		status = new CodeBean[2];
 		

@@ -52,10 +52,6 @@
             android:name="com.android.pos.auth.MerchantLoginActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
-            <intent-filter android:label="@string/app_name">
-            	<action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.auth.UserLoginActivity"
@@ -132,7 +128,7 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name="com.android.pos.report.inventory.InventoryReportActivity"
+            android:name="com.android.pos.report.inventory.InventoryActivity"
             android:launchMode="singleTask" >
         </activity>
         <activity
@@ -142,9 +138,25 @@
         <activity
             android:name="com.android.pos.report.commission.CommissionActivity"
             android:launchMode="singleTask" >
+            <intent-filter android:label="@string/app_name">
+            	<action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.android.pos.report.bills.BillsActivity"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.report.credit.CreditActivity"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.report.tax.TaxActivity"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.report.srvcharge.ServiceChargeActivity"
             android:launchMode="singleTask" >
         </activity>
         <activity

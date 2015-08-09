@@ -2,7 +2,7 @@ package com.android.pos.report.inventory;
 
 import com.android.pos.dao.Product;
 
-public interface InventoryReportActionListener {
+public interface InventoryActionListener {
 	
 	public void onProductSelected(Product product);
 	

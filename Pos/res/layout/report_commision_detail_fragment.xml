@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/LeftFragmentStyle"
     android:orientation="vertical">
 
-    <LinearLayout style="@style/SectionTopPanelStyle" >
+    <LinearLayout 
+        android:id="@+id/topPanel"
+        style="@style/SectionTopPanelStyle" >
 
 	    <ImageButton
 	        android:id="@+id/backButton"
@@ -24,9 +26,29 @@
 	        android:gravity="end|center_vertical" />
 	    
     </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/belowPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+		
+        <LinearLayout style="@style/PaymentRowTotalStyle" >
+            <TextView
+                android:text="@string/total"
+                style="@style/PaymentRowTotalContentLeftStyle" />
+
+            <TextView
+                android:id="@+id/totalText"
+                style="@style/PaymentRowTotalContentRightStyle" />
+        </LinearLayout>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/employeeCommisionList"
-        style="@style/ListViewStyle"/>
+        style="@style/ListViewStyle"
+        android:layout_above="@id/belowPanel"
+        android:layout_below="@id/topPanel"/>
 
-</LinearLayout>
+</RelativeLayout>

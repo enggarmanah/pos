@@ -36,9 +36,6 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 	private TextView mCashierText;
 	private TextView mCustomerText;
 	
-	private TextView mTaxBorder;
-	private TextView mServiceChargeBorder;
-	
 	private LinearLayout mTaxPanel;
 	private LinearLayout mServiceChargePanel;
 	
@@ -127,9 +124,6 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		
 		mTaxPanel = (LinearLayout) getView().findViewById(R.id.taxPanel);
 		mServiceChargePanel = (LinearLayout) getView().findViewById(R.id.serviceChargePanel);
-		
-		mTaxBorder = (TextView) getView().findViewById(R.id.taxBorder);
-		mServiceChargeBorder = (TextView) getView().findViewById(R.id.serviceChargeBorder);
 	}
 	
 	public void onStart() {
@@ -242,19 +236,14 @@ public class TransactionDetailFragment extends BaseFragment implements Transacti
 		mTaxText.setText(CommonUtil.formatCurrency(tax));
 		mServiceChargeText.setText(CommonUtil.formatCurrency(serviceCharge));
 		
-		mTaxBorder.setVisibility(View.VISIBLE);
 		mTaxPanel.setVisibility(View.VISIBLE);
+		mServiceChargePanel.setVisibility(View.VISIBLE);
 		
 		if (tax == 0) {
-			mTaxBorder.setVisibility(View.GONE);
 			mTaxPanel.setVisibility(View.GONE);
 		}
 		
-		mServiceChargeBorder.setVisibility(View.VISIBLE);
-		mServiceChargePanel.setVisibility(View.VISIBLE);
-		
 		if (serviceCharge == 0) {
-			mServiceChargeBorder.setVisibility(View.GONE);
 			mServiceChargePanel.setVisibility(View.GONE);
 		}
 		
