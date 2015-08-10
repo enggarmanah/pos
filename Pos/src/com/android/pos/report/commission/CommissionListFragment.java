@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
+import com.android.pos.dao.Employee;
 import com.android.pos.dao.ProductDaoService;
 import com.android.pos.model.CommisionMonthBean;
 import com.android.pos.model.CommisionYearBean;
@@ -33,6 +34,7 @@ public class CommissionListFragment extends BaseFragment
 	private List<CommisionYearBean> mCommisionYears;
 	private List<CommisionMonthBean> mCommisionMonths;
 	
+	private Employee mSelectedEmployee;
 	private CommisionYearBean mSelectedCommisionYear;
 	private CommisionMonthBean mSelectedCommisionMonth;
 	
@@ -142,6 +144,11 @@ public class CommissionListFragment extends BaseFragment
 		}
 	}
 	
+	public void setSelectedEmployee(Employee employee) {
+		
+		mSelectedEmployee = employee;
+	}
+	
 	public void setSelectedCommisionYear(CommisionYearBean transactionYear) {
 		
 		mSelectedCommisionYear = transactionYear;
@@ -205,7 +212,7 @@ public class CommissionListFragment extends BaseFragment
 		
 		mCommisionYears.clear();
 		
-		mCommisionYears.addAll(mProductDaoService.getCommisionYears());
+		mCommisionYears.addAll(mProductDaoService.getCommisionYears(mSelectedEmployee));
 		
 		if (!isViewInitialized()) {
 			return;
@@ -226,7 +233,7 @@ public class CommissionListFragment extends BaseFragment
 		
 		mCommisionMonths.clear();
 		
-		mCommisionMonths.addAll(mProductDaoService.getCommisionMonths(transactionYear));
+		mCommisionMonths.addAll(mProductDaoService.getCommisionMonths(transactionYear, mSelectedEmployee));
 		
 		if (!isViewInitialized()) {
 			return;

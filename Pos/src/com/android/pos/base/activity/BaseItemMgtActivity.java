@@ -650,6 +650,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		}
 	}
 	
+	public void onSelectEmployee(boolean isMandatory) {}
+	
 	public void onSelectProduct(boolean isMandatory) {}
 	
 	public void onSelectSupplier(boolean isMandatory) {}

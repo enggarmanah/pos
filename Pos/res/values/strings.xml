@@ -131,6 +131,8 @@
     <string name="field_login_id_fl">L</string>
     <string name="field_password">Password</string>
     <string name="field_password_fl">P</string>
+    <string name="field_employee">Pegawai</string>
+    <string name="field_employee_fl">P</string>
     <string name="field_period_start">Awal Akses</string>
     <string name="field_period_start_fl">A</string>
     <string name="field_period_end">Akhir Akses</string>
@@ -442,6 +444,7 @@
     <string name="user_role_cashier">Kasir</string>
 	<string name="user_role_admin">Admin</string>
 	<string name="user_role_waitress">Pramuniaga</string>
+	<string name="user_role_employee">Pegawai</string>
     
 	<string name="price_type_count_1">1 Tipe Harga</string>
 	<string name="price_type_count_2">2 Tipe Harga</string>

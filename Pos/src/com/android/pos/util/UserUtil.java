@@ -121,4 +121,13 @@ public class UserUtil {
 		
 		return isHasAccess;
 	}
+	
+	public static boolean isUserHasReportsAccess() {
+		
+		return isUserHasAccess(Constant.ACCESS_REPORT_BILLS) || isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW) ||
+			isUserHasAccess(Constant.ACCESS_REPORT_COMMISION) || isUserHasAccess(Constant.ACCESS_REPORT_CREDIT) ||
+			isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY) || isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC) || 
+			isUserHasAccess(Constant.ACCESS_REPORT_SERVICE_CHARGE) || isUserHasAccess(Constant.ACCESS_REPORT_TAX) ||
+			isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION);
+	}
 }

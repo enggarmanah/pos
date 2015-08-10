@@ -20,6 +20,7 @@ import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserDaoService;
 import com.android.pos.data.user.UserMgtActivity;
+import com.android.pos.report.commission.CommissionActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
@@ -119,9 +120,6 @@ public class UserLoginActivity extends Activity {
 					
 				} else {
 					
-					//Tracker t = CommonUtil.getTracker();
-					//t.send(new HitBuilders.EventBuilder().setCategory("CAT1").setAction("ACTION1").setLabel("LABEL1").build());
-					
 					User user = mUserDaoService.validateUser(mMerchant.getId(), loginId, password);
 					
 					if (user != null) {
@@ -136,6 +134,11 @@ public class UserLoginActivity extends Activity {
 						} else if (Constant.USER_ROLE_WAITRESS.equals(user.getRole())) {
 							
 							Intent intent = new Intent(context, WaitressActivity.class);
+							startActivity(intent);
+								
+						} else if (Constant.USER_ROLE_EMPLOYEE.equals(user.getRole())) {
+							
+							Intent intent = new Intent(context, CommissionActivity.class);
 							startActivity(intent);
 								
 						} else {

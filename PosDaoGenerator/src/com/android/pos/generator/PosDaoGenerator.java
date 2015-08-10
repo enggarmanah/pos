@@ -31,7 +31,7 @@ import de.greenrobot.daogenerator.ToMany;
 public class PosDaoGenerator {
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(44, "com.android.pos.dao");
+        Schema schema = new Schema(45, "com.android.pos.dao");
 
         configureDao(schema);
 
@@ -70,6 +70,7 @@ public class PosDaoGenerator {
         merchant.addFloatProperty("serviceChargePercentage");
         merchant.addBooleanProperty("isLogin");
         merchant.addStringProperty("status");
+        merchant.addStringProperty("locale");
         merchant.addStringProperty("uploadStatus");
         merchant.addStringProperty("createBy");
         merchant.addDateProperty("createDate");
@@ -187,7 +188,11 @@ public class PosDaoGenerator {
     	user.addStringProperty("userId");
     	user.addStringProperty("password");
     	user.addStringProperty("role");
-        user.addStringProperty("status");
+    	
+    	Property employeeId = user.addLongProperty("employeeId").getProperty();
+    	user.addToOne(employee, employeeId);
+    	
+    	user.addStringProperty("status");
         user.addStringProperty("uploadStatus");
         user.addStringProperty("createBy");
         user.addDateProperty("createDate");
@@ -268,7 +273,7 @@ public class PosDaoGenerator {
     	transactionItem.addFloatProperty("commision");
         transactionItem.addStringProperty("remarks");
     	
-    	Property employeeId = transactionItem.addLongProperty("employeeId").getProperty();
+    	employeeId = transactionItem.addLongProperty("employeeId").getProperty();
     	transactionItem.addToOne(employee, employeeId);
         
         ToMany transactionToTransItem = transactions.addToMany(transactionItem, transactionId);

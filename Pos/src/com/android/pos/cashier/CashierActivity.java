@@ -277,37 +277,55 @@ public class CashierActivity extends BaseActivity
 		mOrderFragment.setTransactionItems(mTransactionItems);
 		mOrderFragment.setDiscount(mDiscount);
 		
+		mProductCountDlgFragment = (CashierProductCountDlgFragment) getFragmentManager().findFragmentByTag(mProductCountDlgFragmentTag);
+		
 		if (mProductCountDlgFragment == null) {
 			mProductCountDlgFragment = new CashierProductCountDlgFragment();
 		}
-
+		
+		mPaymentDlgFragment = (CashierPaymentDlgFragment) getFragmentManager().findFragmentByTag(mPaymentDlgFragmentTag);
+		
 		if (mPaymentDlgFragment == null) {
 			mPaymentDlgFragment = new CashierPaymentDlgFragment();
 		}
 		
+		mOrderDlgFragment = (CashierOrderDlgFragment) getFragmentManager().findFragmentByTag(mOrderDlgFragmentTag);
+		
 		if (mOrderDlgFragment == null) {
 			mOrderDlgFragment = new CashierOrderDlgFragment();
 		}
-
+		
+		mPaymentSummaryDlgFragment = (CashierPaymentSummaryDlgFragment) getFragmentManager().findFragmentByTag(mPaymentSummaryDlgFragmentTag);
+		
 		if (mPaymentSummaryDlgFragment == null) {
 			mPaymentSummaryDlgFragment = new CashierPaymentSummaryDlgFragment();
 		}
+		
+		mOrderSummaryDlgFragment = (CashierOrderSummaryDlgFragment) getFragmentManager().findFragmentByTag(mOrderSummaryDlgFragmentTag);
 		
 		if (mOrderSummaryDlgFragment == null) {
 			mOrderSummaryDlgFragment = new CashierOrderSummaryDlgFragment();
 		}
 		
+		mDiscountPercentageDlgFragment = (CashierDiscountPercentageDlgFragment) getFragmentManager().findFragmentByTag(mDiscountPercentageDlgFragmentTag);
+		
 		if (mDiscountPercentageDlgFragment == null) {
 			mDiscountPercentageDlgFragment = new CashierDiscountPercentageDlgFragment();
 		}
+		
+		mDiscountNominalDlgFragment = (CashierDiscountNominalDlgFragment) getFragmentManager().findFragmentByTag(mDiscountNominalDlgFragmentTag);
 		
 		if (mDiscountNominalDlgFragment == null) {
 			mDiscountNominalDlgFragment = new CashierDiscountNominalDlgFragment();
 		}
 		
+		mCustomerDlgFragment = (CustomerDlgFragment) getFragmentManager().findFragmentByTag(mCustomerDlgFragmentTag);
+		
 		if (mCustomerDlgFragment == null) {
 			mCustomerDlgFragment = new CustomerDlgFragment();
 		}
+		
+		mEmployeeDlgFragment = (EmployeeDlgFragment) getFragmentManager().findFragmentByTag(mEmployeeDlgFragmentTag);
 		
 		if (mEmployeeDlgFragment == null) {
 			mEmployeeDlgFragment = new EmployeeDlgFragment();

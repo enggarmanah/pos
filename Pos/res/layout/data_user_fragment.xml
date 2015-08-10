@@ -34,7 +34,6 @@
                 style="@style/FormInputStyle" />
         </LinearLayout>
         
-        
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView
@@ -63,6 +62,22 @@
             <Spinner
                 android:id="@+id/roleSp"
                 style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
+        
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/field_employee_fl" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_employee" />
+
+            <EditText
+                android:id="@+id/employeeText"
+                style="@style/FormInputStyle" />
         </LinearLayout>
 
         <LinearLayout style="@style/FormRowStyle" >

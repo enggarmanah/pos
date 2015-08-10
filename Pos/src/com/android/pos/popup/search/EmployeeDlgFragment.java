@@ -32,6 +32,8 @@ public class EmployeeDlgFragment extends BaseSearchDlgFragment<Employee> impleme
 	
 	EmployeeArrayAdapter employeeArrayAdapter;
 	
+	boolean mIsMandatory = false;
+	
 	private EmployeeDaoService mEmployeeDaoService = new EmployeeDaoService();
 	
 	@Override
@@ -96,6 +98,12 @@ public class EmployeeDlgFragment extends BaseSearchDlgFragment<Employee> impleme
 		mCancelBtn = (TextView) getView().findViewById(R.id.cancelBtn);
 		mCancelBtn.setOnClickListener(getCancelBtnOnClickListener());
 		
+		if (mIsMandatory) {
+			mNoEmployeeText.setVisibility(View.GONE);
+		} else {
+			mNoEmployeeText.setVisibility(View.VISIBLE);
+		}
+		
 		mItems.clear();
 		mItems.addAll(mEmployeeDaoService.getEmployees(mQuery, 0));
 		employeeArrayAdapter.notifyDataSetChanged();
@@ -124,6 +132,11 @@ public class EmployeeDlgFragment extends BaseSearchDlgFragment<Employee> impleme
 		
 		dismiss();
 		mActionListener.onEmployeeSelected(employee);
+	}
+	
+	public void setMandatory(boolean isMandatory) {
+		
+		mIsMandatory = isMandatory;
 	}
 	
 	private View.OnClickListener getNoEmployeeTextOnClickListener() {

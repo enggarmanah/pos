@@ -6,6 +6,7 @@ public class UserBean extends BaseBean {
 	private String user_id;
 	private String password;
 	private String role;
+	private Long employee_id;
 	private String status;
 
 	public String getName() {
@@ -38,6 +39,14 @@ public class UserBean extends BaseBean {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public Long getEmployee_id() {
+		return employee_id;
+	}
+
+	public void setEmployee_id(Long employee_id) {
+		this.employee_id = employee_id;
 	}
 
 	public String getStatus() {

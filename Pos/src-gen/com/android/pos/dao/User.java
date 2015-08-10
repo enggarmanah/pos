@@ -21,6 +21,7 @@ public class User implements Serializable {
     private String userId;
     private String password;
     private String role;
+    private Long employeeId;
     private String status;
     private String uploadStatus;
     private String createBy;
@@ -37,6 +38,9 @@ public class User implements Serializable {
     private Merchant merchant;
     private Long merchant__resolvedKey;
 
+    private Employee employee;
+    private Long employee__resolvedKey;
+
     private List<Transactions> transactionsList;
     private List<UserAccess> userAccessList;
 
@@ -47,7 +51,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Long id, String refId, long merchantId, String name, String userId, String password, String role, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public User(Long id, String refId, long merchantId, String name, String userId, String password, String role, Long employeeId, String status, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.refId = refId;
         this.merchantId = merchantId;
@@ -55,6 +59,7 @@ public class User implements Serializable {
         this.userId = userId;
         this.password = password;
         this.role = role;
+        this.employeeId = employeeId;
         this.status = status;
         this.uploadStatus = uploadStatus;
         this.createBy = createBy;
@@ -123,6 +128,14 @@ public class User implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getStatus() {
@@ -198,6 +211,31 @@ public class User implements Serializable {
             this.merchant = merchant;
             merchantId = merchant.getId();
             merchant__resolvedKey = merchantId;
+        }
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public Employee getEmployee() {
+        Long __key = this.employeeId;
+        if (employee__resolvedKey == null || !employee__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            EmployeeDao targetDao = daoSession.getEmployeeDao();
+            Employee employeeNew = targetDao.load(__key);
+            synchronized (this) {
+                employee = employeeNew;
+            	employee__resolvedKey = __key;
+            }
+        }
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        synchronized (this) {
+            this.employee = employee;
+            employeeId = employee == null ? null : employee.getId();
+            employee__resolvedKey = employeeId;
         }
     }
 

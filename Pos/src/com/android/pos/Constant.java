@@ -16,6 +16,7 @@ public class Constant {
 	public static final String SYNC_TYPE_ORDERS = "SYNC_TYPE_ORDERS";
 	public static final String SYNC_TYPE_PRODUCTS = "SYNC_TYPE_PRODUCTS";
 	public static final String SYNC_TYPE_ALL = "SYNC_TYPE_ALL";
+	public static final String SYNC_TYPE_PARTIAL = "SYNC_TYPE_PARTIAL";
 	
 	public static final String EMPTY_STRING = "";
 	public static final String SPACE_STRING = " ";
@@ -36,6 +37,7 @@ public class Constant {
 	public static final String USER_ROLE_CASHIER = "C";
 	public static final String USER_ROLE_ADMIN = "A";
 	public static final String USER_ROLE_WAITRESS = "W";
+	public static final String USER_ROLE_EMPLOYEE = "E";
 	
 	public static final String PRODUCT_QUANTITY = "PRODUCT_QUANTITY";
 	public static final String PRODUCT_REVENUE = "PRODUCT_REVENUE";

@@ -28,6 +28,7 @@ public class MerchantBean {
 	private String printer_mini_font;
     private Integer printer_line_size;
     private String printer_required;
+    private String locale;
 	private String status;
 
 	protected Long remote_id;
@@ -229,6 +230,14 @@ public class MerchantBean {
 
 	public void setPrinter_required(String printer_required) {
 		this.printer_required = printer_required;
+	}
+	
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 	public String getStatus() {

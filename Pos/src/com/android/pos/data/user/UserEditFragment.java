@@ -9,6 +9,9 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
+import com.android.pos.base.listener.BaseItemListener;
+import com.android.pos.dao.Employee;
+import com.android.pos.dao.EmployeeDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserAccess;
 import com.android.pos.dao.UserAccessDaoService;
@@ -17,6 +20,7 @@ import com.android.pos.util.CodeUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +37,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
 	EditText mNameText;
 	EditText mUserIdText;
     EditText mPasswordText;
+    EditText mEmployeeText;
     Spinner mRoleSp;
     Spinner mStatusSp;
     
@@ -46,6 +51,9 @@ public class UserEditFragment extends BaseEditFragment<User> {
     
     private UserDaoService mUserDaoService = new UserDaoService();
     private UserAccessDaoService mUserAccessDaoService = new UserAccessDaoService();
+    private EmployeeDaoService mEmployeeDaoService = new EmployeeDaoService();
+    
+    BaseItemListener<User> mUserItemListener;
     
     LayoutInflater mInflater;
     ViewGroup mContainer;
@@ -68,6 +76,19 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	return view;
     }
     
+    @SuppressWarnings("unchecked")
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+        	mUserItemListener = (BaseItemListener<User>) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement BaseItemListener<T>");
+        }
+    }
+    
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -79,14 +100,19 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	mNameText = (EditText) view.findViewById(R.id.nameText);
     	mUserIdText = (EditText) view.findViewById(R.id.userIdText);
     	mPasswordText = (EditText) view.findViewById(R.id.passwordText);
+    	mEmployeeText = (EditText) view.findViewById(R.id.employeeText);
     	mRoleSp = (Spinner) view.findViewById(R.id.roleSp);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
     	accessRightPanel = (LinearLayout) view.findViewById(R.id.accessRightsPanel);
     	
+    	mEmployeeText.setFocusable(false);
+    	mEmployeeText.setOnClickListener(getEmployeeOnClickListener());
+    	
     	registerField(mNameText);
     	registerField(mUserIdText);
     	registerField(mPasswordText);
+    	registerField(mEmployeeText);
     	registerField(mRoleSp);
     	registerField(mStatusSp);
     	
@@ -115,6 +141,16 @@ public class UserEditFragment extends BaseEditFragment<User> {
     		mNameText.setText(user.getName());
     		mUserIdText.setText(user.getUserId());
     		mPasswordText.setText(user.getPassword());
+    		
+    		if (user.getEmployeeId() != null) {
+    			
+    			String employeeName = mEmployeeDaoService.getEmployee(user.getEmployeeId()).getName();
+    			mEmployeeText.setText(employeeName);
+    			
+    		} else {
+    			
+    			mEmployeeText.setText(Constant.EMPTY_STRING);
+    		} 
     		
     		mRoleSp.setSelection(roleIndex);
     		mStatusSp.setSelection(statusIndex);
@@ -265,6 +301,23 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	return true;
     }
     
+    public void setEmployee(Employee employee) {
+		
+    	if (mItem != null) {
+    		
+    		if (employee != null) {
+    			
+    			mItem.setEmployeeId(employee.getId());
+    			
+    		} else {
+    			
+    			mItem.setEmployee(null);	
+    		}
+    		
+    		updateView(mItem);
+    	}
+	}
+    
     @Override
     protected TextView getFirstField() {
     	
@@ -295,5 +348,26 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	for (ImageButton button : mCheckedButtons) {
     		button.setEnabled(isEnabled);
     	}
+    }
+    
+    private View.OnClickListener getEmployeeOnClickListener() {
+    	
+    	return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if (mEmployeeText.isEnabled()) {
+					
+					if (isEnableInputFields) {
+						
+						saveItem();
+						
+						boolean isMandatory = false;
+						mUserItemListener.onSelectEmployee(isMandatory);
+					}
+				}
+			}
+		};
     }
 }

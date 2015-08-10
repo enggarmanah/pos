@@ -44,7 +44,7 @@ public class CodeUtil {
 		
 		mContext = context;
 		
-		roles = new CodeBean[3];
+		roles = new CodeBean[4];
 		
 		CodeBean code = new CodeBean();
 		code.setCode(Constant.USER_ROLE_CASHIER);
@@ -57,9 +57,14 @@ public class CodeUtil {
 		roles[1] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.USER_ROLE_EMPLOYEE);
+		code.setLabel(mContext.getString(R.string.user_role_employee));
+		roles[2] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.USER_ROLE_ADMIN);
 		code.setLabel(mContext.getString(R.string.user_role_admin));
-		roles[2] = code;
+		roles[3] = code;
 		
 		priceTypeCount = new CodeBean[3];
 		

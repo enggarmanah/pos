@@ -130,6 +130,7 @@ public class BeanUtil {
 		bean.setPrinter_required(merchant.getPrinterRequired());
 		bean.setPrinter_mini_font(merchant.getPrinterMiniFont());
 		bean.setPrinter_line_size(merchant.getPrinterLineSize());
+		bean.setLocale(merchant.getLocale());
 		bean.setStatus(merchant.getStatus());
 		bean.setCreate_by(merchant.getCreateBy());
 		bean.setCreate_date(merchant.getCreateDate());
@@ -176,6 +177,7 @@ public class BeanUtil {
 			merchant.setPrinterLineSize(bean.getPrinter_line_size());
 		}
 		
+		merchant.setLocale(bean.getLocale());
 		merchant.setStatus(bean.getStatus());
 		merchant.setUploadStatus(Constant.STATUS_NO);
 		merchant.setCreateBy(bean.getCreate_by());
@@ -330,6 +332,7 @@ public class BeanUtil {
 		bean.setUser_id(user.getUserId());
 		bean.setPassword(user.getPassword());
 		bean.setRole(user.getRole());
+		bean.setEmployee_id(user.getEmployeeId());
 		bean.setStatus(user.getStatus());
 		bean.setCreate_by(user.getCreateBy());
 		bean.setCreate_date(user.getCreateDate());
@@ -348,6 +351,7 @@ public class BeanUtil {
 		user.setUserId(bean.getUser_id());
 		user.setPassword(bean.getPassword());
 		user.setRole(bean.getRole());
+		user.setEmployeeId(bean.getEmployee_id());
 		user.setStatus(bean.getStatus());
 		user.setUploadStatus(Constant.STATUS_NO);
 		user.setCreateBy(bean.getCreate_by());

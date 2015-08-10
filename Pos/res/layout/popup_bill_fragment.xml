@@ -41,7 +41,7 @@
         </EditText>
     </LinearLayout>
     
-    <LinearLayout style="@style/SectionDividerStyle"></LinearLayout>
+    <LinearLayout style="@style/SectionDividerNoSpaceStyle"></LinearLayout>
 
     <ListView
         android:id="@+id/billListView"

@@ -361,7 +361,7 @@ public class HttpAsyncManager {
 		executeNextTask();
 	}
 	
-	public void sync() {
+	public void syncAll() {
 		
 		startTime = new Date().getTime();
 		
@@ -374,38 +374,160 @@ public class HttpAsyncManager {
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
 		
 		mGetTasks.clear();
+		mGetTasks.add(Constant.TASK_GET_MERCHANT);
+		mGetTasks.add(Constant.TASK_GET_MERCHANT_ACCESS);
+		mGetTasks.add(Constant.TASK_GET_USER);
+		mGetTasks.add(Constant.TASK_GET_USER_ACCESS);
 		mGetTasks.add(Constant.TASK_GET_PRODUCT_GROUP);
+		mGetTasks.add(Constant.TASK_GET_PRODUCT);
 		mGetTasks.add(Constant.TASK_GET_DISCOUNT);
 		mGetTasks.add(Constant.TASK_GET_EMPLOYEE);
 		mGetTasks.add(Constant.TASK_GET_CUSTOMER);
-		mGetTasks.add(Constant.TASK_GET_PRODUCT);
-		mGetTasks.add(Constant.TASK_GET_USER);
-		mGetTasks.add(Constant.TASK_GET_USER_ACCESS);
+		mGetTasks.add(Constant.TASK_GET_SUPPLIER);
 		mGetTasks.add(Constant.TASK_GET_TRANSACTION);
 		mGetTasks.add(Constant.TASK_GET_TRANSACTION_ITEM);
-		mGetTasks.add(Constant.TASK_GET_SUPPLIER);
 		mGetTasks.add(Constant.TASK_GET_BILL);
 		mGetTasks.add(Constant.TASK_GET_CASHFLOW);
 		mGetTasks.add(Constant.TASK_GET_INVENTORY);
-		mGetTasks.add(Constant.TASK_GET_MERCHANT);
-		mGetTasks.add(Constant.TASK_GET_MERCHANT_ACCESS);
 		
 		mUpdateTasks.clear();
+		mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT);
+		mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT_ACCESS);
+		mUpdateTasks.add(Constant.TASK_UPDATE_USER);
+		mUpdateTasks.add(Constant.TASK_UPDATE_USER_ACCESS);
 		mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT_GROUP);
+		mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT);
 		mUpdateTasks.add(Constant.TASK_UPDATE_DISCOUNT);
 		mUpdateTasks.add(Constant.TASK_UPDATE_EMPLOYEE);
 		mUpdateTasks.add(Constant.TASK_UPDATE_CUSTOMER);
-		mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT);
-		mUpdateTasks.add(Constant.TASK_UPDATE_USER);
-		mUpdateTasks.add(Constant.TASK_UPDATE_USER_ACCESS);
+		mUpdateTasks.add(Constant.TASK_UPDATE_SUPPLIER);
 		mUpdateTasks.add(Constant.TASK_UPDATE_TRANSACTION);
 		mUpdateTasks.add(Constant.TASK_UPDATE_TRANSACTION_ITEM);
-		mUpdateTasks.add(Constant.TASK_UPDATE_SUPPLIER);
 		mUpdateTasks.add(Constant.TASK_UPDATE_BILL);
 		mUpdateTasks.add(Constant.TASK_UPDATE_CASHFLOW);
 		mUpdateTasks.add(Constant.TASK_UPDATE_INVENTORY);
+		
+		mTasks.addAll(getTaskWithUpdate(mUpdateTasks));
+		
+		mTasks.add(Constant.TASK_UPDATE_LAST_SYNC);
+		mTasks.add(Constant.TASK_COMPLETED);
+		
+		executeNextTask();
+	}
+	
+	public void syncPartial() {
+		
+		startTime = new Date().getTime();
+		
+		mTaskIndex = 0;
+		
+		mSyncType = Constant.SYNC_TYPE_PARTIAL;
+		
+		mTasks.clear();
+		
+		mTasks.add(Constant.TASK_GET_LAST_SYNC);
+		
+		mGetTasks.clear();
+		mGetTasks.add(Constant.TASK_GET_MERCHANT);
+		mGetTasks.add(Constant.TASK_GET_MERCHANT_ACCESS);
+		mGetTasks.add(Constant.TASK_GET_USER);
+		mGetTasks.add(Constant.TASK_GET_USER_ACCESS);
+		
+		if (UserUtil.isCashier() || UserUtil.isWaitress() || UserUtil.isUserHasReportsAccess() ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER) || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER) || 
+			UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
+			
+			mGetTasks.add(Constant.TASK_GET_PRODUCT_GROUP);
+			mGetTasks.add(Constant.TASK_GET_PRODUCT);
+			mGetTasks.add(Constant.TASK_GET_DISCOUNT);
+			mGetTasks.add(Constant.TASK_GET_EMPLOYEE);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
+			
+			mGetTasks.add(Constant.TASK_GET_CUSTOMER);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT) || 
+			UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) || UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+			
+			mGetTasks.add(Constant.TASK_GET_SUPPLIER);
+		}
+		
+		if (UserUtil.isCashier() || UserUtil.isWaitress() || UserUtil.isUserHasReportsAccess() ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER) || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
+			
+			mGetTasks.add(Constant.TASK_GET_TRANSACTION);
+			mGetTasks.add(Constant.TASK_GET_TRANSACTION_ITEM);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) || 
+			UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW) || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+			
+			mGetTasks.add(Constant.TASK_GET_BILL);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW)) {
+			
+			mGetTasks.add(Constant.TASK_GET_CASHFLOW);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+			
+			mGetTasks.add(Constant.TASK_GET_INVENTORY);
+		}
+		
+		mUpdateTasks.clear();
 		mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT);
 		mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT_ACCESS);
+		mUpdateTasks.add(Constant.TASK_UPDATE_USER);
+		mUpdateTasks.add(Constant.TASK_UPDATE_USER_ACCESS);
+		
+		if (UserUtil.isCashier() || UserUtil.isWaitress() || UserUtil.isUserHasReportsAccess() ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER) || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER) || 
+			UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
+			
+			mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT_GROUP);
+			mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT);
+			mUpdateTasks.add(Constant.TASK_UPDATE_DISCOUNT);
+			mUpdateTasks.add(Constant.TASK_UPDATE_EMPLOYEE);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
+			
+			mUpdateTasks.add(Constant.TASK_UPDATE_CUSTOMER);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT) || 
+			UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) || UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+			
+			mUpdateTasks.add(Constant.TASK_UPDATE_SUPPLIER);
+		}
+		
+		if (UserUtil.isCashier() || UserUtil.isWaitress() || UserUtil.isUserHasReportsAccess() ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER) || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
+			
+			mUpdateTasks.add(Constant.TASK_UPDATE_TRANSACTION);
+			mUpdateTasks.add(Constant.TASK_UPDATE_TRANSACTION_ITEM);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) || 
+			UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW) || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+			
+			mUpdateTasks.add(Constant.TASK_UPDATE_BILL);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW)) {
+			
+			mUpdateTasks.add(Constant.TASK_UPDATE_CASHFLOW);
+		}
+		
+		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+			
+			mUpdateTasks.add(Constant.TASK_UPDATE_INVENTORY);
+		}
 		
 		mTasks.addAll(getTaskWithUpdate(mUpdateTasks));
 		
@@ -783,6 +905,7 @@ public class HttpAsyncManager {
 				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
 				
 				//mSync.setLast_sync_date(mSyncDate);
+				
 				request.setSync(mSync);
 			}
 			

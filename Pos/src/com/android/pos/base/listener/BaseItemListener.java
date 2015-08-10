@@ -18,6 +18,8 @@ public interface BaseItemListener<T> {
 	
 	public void onDeleteCompleted();
 	
+	public void onSelectEmployee(boolean isMandatory);
+	
 	public void onSelectProduct(boolean isMandatory);
 	
 	public void onSelectSupplier(boolean isMandatory);

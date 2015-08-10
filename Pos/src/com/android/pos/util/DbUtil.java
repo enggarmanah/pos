@@ -360,6 +360,13 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'PAYMENT_TYPE' TEXT");
             }
             
+            // handle version 45 changes
+            if (oldVersion < 45) {
+            	
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'LOCALE' TEXT");
+            	db.execSQL("ALTER TABLE 'USER' ADD 'EMPLOYEE_ID' INTEGER");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

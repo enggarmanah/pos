@@ -5,19 +5,33 @@ import java.util.List;
 
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
+import com.android.pos.dao.Employee;
 import com.android.pos.dao.User;
+import com.android.pos.popup.search.EmployeeDlgFragment;
+import com.android.pos.popup.search.EmployeeSelectionListener;
 
 import android.os.Bundle;
 import android.view.View;
 
-public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, UserEditFragment, User> {
+public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, UserEditFragment, User> 
+	implements EmployeeSelectionListener {
 	
 	List<User> mUsers;
 	User mSelectedUser;
+			
+	private EmployeeDlgFragment mEmployeeDlgFragment;
+	
+	private static String mEmployeeDlgFragmentTag = "mEmployeeDlgFragmentTag";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		mEmployeeDlgFragment = (EmployeeDlgFragment) getFragmentManager().findFragmentByTag(mEmployeeDlgFragmentTag);
+		
+		if (mEmployeeDlgFragment == null) {
+			mEmployeeDlgFragment = new EmployeeDlgFragment();
+		}
 	}
 	
 	@Override
@@ -165,5 +179,22 @@ public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, Use
 	protected List<User> getItemsInstance() {
 		
 		return new ArrayList<User>();
+	}
+	
+	@Override
+	public void onSelectEmployee(boolean isMandatory) {
+		
+		if (mEmployeeDlgFragment.isAdded()) {
+			return;
+		}
+		
+		mEmployeeDlgFragment.setMandatory(isMandatory);
+		mEmployeeDlgFragment.show(getFragmentManager(), mEmployeeDlgFragmentTag);
+	}
+	
+	@Override
+	public void onEmployeeSelected(Employee employee) {
+		
+		mEditFragment.setEmployee(employee);
 	}
 }

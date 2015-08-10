@@ -631,16 +631,33 @@ public class ProductDaoService {
 		return employeeCommisions;
 	}
 	
-	public List<CommisionYearBean> getCommisionYears() {
+	public List<CommisionYearBean> getCommisionYears(Employee employee) {
 		
 		ArrayList<CommisionYearBean> commisionYears = new ArrayList<CommisionYearBean>();
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
-				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id "
-				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
+		String query = null; 
+		String[] parameters = null;
+		
+		if (employee != null) {
+			
+			query = "SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
+					+ " FROM transactions t, transaction_item ti "
+					+ " WHERE t.status = 'A' AND ti.employee_id = ? AND t._id = ti.transaction_id"
+					+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')";
+			
+			parameters = new String[] { employee.getId().toString() };
+			
+		} else {
+			
+			query = "SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
+					+ " FROM transactions t, transaction_item ti "
+					+ " WHERE t.status = 'A' AND t._id = ti.transaction_id "
+					+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')";
+		}
+		
+		Cursor cursor = db.rawQuery(query, parameters);
 			
 		while(cursor.moveToNext()) {
 			
@@ -657,7 +674,7 @@ public class ProductDaoService {
 		return commisionYears;
 	}
 	
-	public List<CommisionMonthBean> getCommisionMonths(CommisionYearBean commisionYear) {
+	public List<CommisionMonthBean> getCommisionMonths(CommisionYearBean commisionYear, Employee employee) {
 		
 		ArrayList<CommisionMonthBean> commisionMonths = new ArrayList<CommisionMonthBean>();
 		
@@ -666,11 +683,29 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
-				+ " FROM transactions t, transaction_item ti "
-				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
-				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
-				new String[] { startDate, endDate });
+		String query = null; 
+		String[] parameters = null;
+		
+		if (employee != null) {
+			
+			query = "SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
+					+ " FROM transactions t, transaction_item ti "
+					+ " WHERE t.status = 'A' AND ti.employee_id = ? AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+					+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ";
+			
+			parameters = new String[] { employee.getId().toString(), startDate, endDate };
+			
+		} else {
+			
+			query = "SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
+					+ " FROM transactions t, transaction_item ti "
+					+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
+					+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ";
+			
+			parameters = new String[] { startDate, endDate };
+		}
+		
+		Cursor cursor = db.rawQuery(query, parameters);
 		
 		while(cursor.moveToNext()) {
 			

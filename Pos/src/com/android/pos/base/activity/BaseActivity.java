@@ -622,17 +622,17 @@ public abstract class BaseActivity extends Activity
 				mHttpAsyncManager = new HttpAsyncManager(this);
 			}
 			
-			if (UserUtil.isWaitress()) {
-				mHttpAsyncManager.syncProducts();
-				
-			} else if (UserUtil.isCashier() || UserUtil.isAdmin()) {
-				mHttpAsyncManager.sync();
-				
-			} else if (UserUtil.isMerchant()) {
+			if (UserUtil.isMerchant()) {
 				mHttpAsyncManager.syncUsers();
 				
 			} else if (UserUtil.isRoot()) {
 				mHttpAsyncManager.syncMerchants();
+			
+			} else if (UserUtil.isAdmin()) {
+				mHttpAsyncManager.syncAll();
+				
+			} else {
+				mHttpAsyncManager.syncPartial();
 			}
 			
 		} else if (getString(R.string.menu_printer).equals(menu)) {

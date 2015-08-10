@@ -362,7 +362,11 @@ public class CashierPaymentDlgFragment extends DialogFragment {
 	private CodeBean[] getPaymentTypes() {
 		
 		HashMap<String, String> merchantPaymentTypes = new HashMap<String, String>();
-		String[] merchantPaymentTypeArray = MerchantUtil.getMerchant().getPaymentType().split(Constant.DATA_SEPARATOR);
+		String[] merchantPaymentTypeArray = null;
+		
+		if (MerchantUtil.getMerchant().getPaymentType() != null) {
+			merchantPaymentTypeArray = MerchantUtil.getMerchant().getPaymentType().split(Constant.DATA_SEPARATOR);
+		}
 		
 		if (merchantPaymentTypeArray != null) {
 			
