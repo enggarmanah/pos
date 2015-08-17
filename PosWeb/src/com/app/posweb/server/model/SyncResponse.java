@@ -12,11 +12,12 @@ public class SyncResponse {
 	protected String respDescription;
 	protected Date respDate;
 	
+	protected String sync_key;
+	
 	protected List<SyncStatus> status;
 	
 	protected List<String> taskHasUpdates;
 	
-	protected Sync sync;
 	protected Merchant merchant;
 	protected User user;
 	
@@ -38,6 +39,14 @@ public class SyncResponse {
 	protected List<UserAccess> userAccesses;
 	protected List<User> users;
 	
+	public String getSync_key() {
+		return sync_key;
+	}
+
+	public void setSync_key(String sync_key) {
+		this.sync_key = sync_key;
+	}
+
 	public String getRespCode() {
 		return respCode;
 	}
@@ -76,14 +85,6 @@ public class SyncResponse {
 
 	public void setStatus(List<SyncStatus> status) {
 		this.status = status;
-	}
-
-	public Sync getSync() {
-		return sync;
-	}
-
-	public void setSync(Sync sync) {
-		this.sync = sync;
 	}
 
 	public Merchant getMerchant() {

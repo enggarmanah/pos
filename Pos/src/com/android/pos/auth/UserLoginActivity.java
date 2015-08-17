@@ -1,12 +1,7 @@
 package com.android.pos.auth;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +15,7 @@ import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserDaoService;
 import com.android.pos.data.user.UserMgtActivity;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.report.commission.CommissionActivity;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.util.CommonUtil;
@@ -28,7 +24,7 @@ import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 import com.android.pos.waitress.WaitressActivity;
 
-public class UserLoginActivity extends Activity {
+public class UserLoginActivity extends BaseAuthActivity {
 
 	final Context context = this;
 	
@@ -40,8 +36,8 @@ public class UserLoginActivity extends Activity {
 	TextView mMerchantNameTxt;
 	TextView mMerchantAddrTxt;
 	
-	EditText mLoginIdTxt;
-	EditText mPasswordTxt;
+	EditText mLoginIdText;
+	EditText mPasswordText;
 	
 	Button mLoginBtn;
 	
@@ -54,11 +50,19 @@ public class UserLoginActivity extends Activity {
 		mMerchantNameTxt = (TextView) findViewById(R.id.merchantNameText);
 		mMerchantAddrTxt = (TextView) findViewById(R.id.merchantAddrText);
 		
-		mLoginIdTxt = (EditText) findViewById(R.id.loginIdText);
-		mPasswordTxt = (EditText) findViewById(R.id.passwordText);
+		mLoginIdText = (EditText) findViewById(R.id.loginIdText);
+		mPasswordText = (EditText) findViewById(R.id.passwordText);
 		
 		mLoginBtn = (Button) findViewById(R.id.loginBtn);
 		mLoginBtn.setOnClickListener(getLoginBtnOnClickListener());
+		
+		registerField(mLoginIdText);
+		registerField(mPasswordText);
+		
+		registerMandatoryField(new FormFieldBean(mLoginIdText, R.string.field_login_id));
+		registerMandatoryField(new FormFieldBean(mPasswordText, R.string.field_password));
+		
+		highlightMandatoryFields();
 		
 		mMerchantDaoService = new MerchantDaoService();
 		mUserDaoService = new UserDaoService();
@@ -96,10 +100,14 @@ public class UserLoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
+				if (!isValidated()) {
+					return;
+				}
+				
 				UserUtil.setMerchant(false);
 				
-				String loginId = mLoginIdTxt.getText().toString();
-				String password = mPasswordTxt.getText().toString();
+				String loginId = mLoginIdText.getText().toString();
+				String password = mPasswordText.getText().toString();
 				
 				Merchant merchant = mMerchantDaoService.validateMerchant(loginId, password);
 				
@@ -153,40 +161,12 @@ public class UserLoginActivity extends Activity {
 						
 						NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_user_authentication_error));
 		    			
-		    			mPasswordTxt.setText(Constant.EMPTY_STRING);
-		    			mPasswordTxt.requestFocus();
+		    			mPasswordText.setText(Constant.EMPTY_STRING);
+		    			mPasswordText.requestFocus();
 					}
 				}
 			}
 		};
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.user_login_menu, menu);
-
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-		case R.id.menu_item_exit:
-			
-			Intent intent = new Intent(context, MerchantLoginActivity.class);
-			intent.putExtra("logout", true);
-			startActivity(intent);
-			
-			return true;
-
-		default:
-			
-			return super.onOptionsItemSelected(item);
-		}
 	}
 	
 	@Override

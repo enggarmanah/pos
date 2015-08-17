@@ -3,6 +3,7 @@ package com.android.pos;
 public class Constant {
 	
 	public static final String ROOT = "root";
+	public static final String SYSTEM = "system";
 	
 	public static final int TIMEOUT = 60000;
 	
@@ -68,6 +69,11 @@ public class Constant {
 	public static final String FONT_SIZE_SMALL = "S";
 	
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 200;
+	
+	public static final String TASK_REGISTER_MERCHANT = "TASK_REGISTER_MERCHANT";
+	
+	public static final String TASK_GET_MERCHANT_BY_LOGIN_ID = "TASK_GET_MERCHANT_BY_ID";
+	public static final String TASK_RESET_PASSWORD = "TASK_RESET_PASSWORD";
 	
 	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	public static final String TASK_VALIDATE_USER = "TASK_VALIDATE_USER";
@@ -186,4 +192,9 @@ public class Constant {
 	public static final String CASHFLOW_TYPE_BILL_PAYMENT = "BILPAY";
 	public static final String CASHFLOW_TYPE_INVC_PAYMENT = "INVPAY";
 	public static final String CASHFLOW_TYPE_EXPENSE = "EXPENS";
+	
+	public static final String ERROR_INVALID_TOKEN = "ERR001";
+	public static final String ERROR_SERVICE_EXPIRED = "ERR002";
+	public static final String ERROR_COULD_NOT_OBTAINED_LOCK = "ERR003";
+	public static final String ERROR_REGISTER_MERCHANT_CONFLICT = "ERR004";
 }

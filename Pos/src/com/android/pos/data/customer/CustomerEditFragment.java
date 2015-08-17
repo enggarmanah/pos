@@ -1,6 +1,5 @@
 package com.android.pos.data.customer;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.CodeBean;
@@ -10,6 +9,7 @@ import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Customer;
 import com.android.pos.dao.CustomerDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
@@ -72,8 +72,7 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     	
     	enableInputFields(false);
     	
-    	mandatoryFields = new ArrayList<CustomerEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
     	
     	emailStatusArrayAdapter = new CodeSpinnerArrayAdapter(mEmailStatusSp, getActivity(), CodeUtil.getEmailStatus());
     	mEmailStatusSp.setAdapter(emailStatusArrayAdapter);

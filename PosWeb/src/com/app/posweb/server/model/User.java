@@ -11,6 +11,7 @@ public class User extends Base {
     private String user_id;
     private String password;
     private String role;
+    private Long employee_id;
     private String status;
 	
 	public void setBean(User bean) {
@@ -20,6 +21,7 @@ public class User extends Base {
 		this.user_id = bean.getUser_id();
 		this.password = bean.getPassword();
 		this.role = bean.getRole();
+		this.employee_id = bean.getEmployee_id();
 		this.status = bean.getStatus();
 	}
 
@@ -53,6 +55,14 @@ public class User extends Base {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public Long getEmployee_id() {
+		return employee_id;
+	}
+
+	public void setEmployee_id(Long employee_id) {
+		this.employee_id = employee_id;
 	}
 
 	public String getStatus() {

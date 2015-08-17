@@ -8,10 +8,14 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
+import com.app.posweb.server.model.Sync;
 import com.app.posweb.server.model.TransactionItem;
 import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.shared.Constant;
 
 public class TransactionItemDao {
+	
+	SyncDao syncDao = new SyncDao();
 	
 	public TransactionItem syncTransactionItem(TransactionItem transactionItem) {
 		
@@ -82,6 +86,8 @@ public class TransactionItemDao {
 	
 	public List<TransactionItem> getTransactionItems(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_TRANSACTION_ITEM);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT ti FROM Transactions AS t, TransactionItem AS ti WHERE  "
@@ -91,8 +97,8 @@ public class TransactionItemDao {
 		
 		TypedQuery<TransactionItem> query = em.createQuery(sql.toString(), TransactionItem.class);
 
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		List<TransactionItem> result = query.getResultList();
 		
@@ -103,6 +109,8 @@ public class TransactionItemDao {
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_TRANSACTION_ITEM);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT COUNT(ti.id) FROM Transactions AS t, TransactionItem AS ti WHERE  "
@@ -110,8 +118,8 @@ public class TransactionItemDao {
 		
 		Query query = em.createQuery(sql.toString());
 		
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		long count = (long) query.getSingleResult();
 		

@@ -9,9 +9,13 @@ import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
 import com.app.posweb.server.model.OrderItem;
+import com.app.posweb.server.model.Sync;
 import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.shared.Constant;
 
 public class OrderItemDao {
+	
+	SyncDao syncDao = new SyncDao();
 	
 	public OrderItem syncOrderItem(OrderItem orderItem) {
 		
@@ -103,6 +107,8 @@ public class OrderItemDao {
 	
 	public List<OrderItem> getOrderItems(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_ORDER_ITEM);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT oi FROM Orders AS o, OrderItem AS oi WHERE  "
@@ -112,8 +118,8 @@ public class OrderItemDao {
 		
 		TypedQuery<OrderItem> query = em.createQuery(sql.toString(), OrderItem.class);
 
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		List<OrderItem> result = query.getResultList();
 		
@@ -145,6 +151,8 @@ public class OrderItemDao {
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_ORDER_ITEM);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT COUNT(oi.id) FROM Orders AS o, OrderItem AS oi WHERE  "
@@ -152,8 +160,8 @@ public class OrderItemDao {
 		
 		Query query = em.createQuery(sql.toString());
 		
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		long count = (long) query.getSingleResult();
 		

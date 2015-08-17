@@ -287,6 +287,36 @@
                 android:hint="@string/hint_percentage"/>
         </LinearLayout>
         
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/security_question_fl" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/security_question"/>
+
+            <EditText
+                android:id="@+id/securityQuestionText"
+                style="@style/FormInputStyle"/>
+        </LinearLayout>
+        
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/security_answer_fl" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/security_answer"/>
+
+            <EditText
+                android:id="@+id/securityAnswerText"
+                style="@style/FormInputStyle"/>
+        </LinearLayout>
+        
         <LinearLayout 
             android:id="@+id/statusPanel"
             style="@style/FormRowStyle" >

@@ -1,6 +1,5 @@
 package com.android.pos.data.bills;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.CodeBean;
@@ -12,6 +11,7 @@ import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Bills;
 import com.android.pos.dao.BillsDaoService;
 import com.android.pos.dao.Supplier;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
@@ -117,8 +117,6 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     	registerField(mRemarksText);
     	
     	enableInputFields(false);
-    	
-    	mandatoryFields = new ArrayList<BillsEditFragment.FormField>();
     	
     	mBillAmountText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
     	
@@ -302,19 +300,19 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
 		
     	if (Constant.BILL_TYPE_PRODUCT_PURCHASE.equals(mBillType)) {
     		
-    		mandatoryFields.add(new FormField(mBillDate, R.string.field_bills_date));
-        	mandatoryFields.add(new FormField(mBillAmountText, R.string.field_total));
-        	mandatoryFields.add(new FormField(mDeliveryDate, R.string.field_delivery_date));
-        	mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
+    		mandatoryFields.add(new FormFieldBean(mBillDate, R.string.field_bills_date));
+        	mandatoryFields.add(new FormFieldBean(mBillAmountText, R.string.field_total));
+        	mandatoryFields.add(new FormFieldBean(mDeliveryDate, R.string.field_delivery_date));
+        	mandatoryFields.add(new FormFieldBean(mRemarksText, R.string.field_remarks));
     		
     	} else if (Constant.BILL_TYPE_EXPENSE.equals(mBillType)) {
     		
     		mSupplierPanel.setVisibility(View.GONE);
     		mDeliveryDatePanel.setVisibility(View.GONE);
     		
-    		mandatoryFields.add(new FormField(mBillDate, R.string.field_bills_date));
-        	mandatoryFields.add(new FormField(mBillAmountText, R.string.field_total));
-        	mandatoryFields.add(new FormField(mRemarksText, R.string.field_remarks));
+    		mandatoryFields.add(new FormFieldBean(mBillDate, R.string.field_bills_date));
+        	mandatoryFields.add(new FormFieldBean(mBillAmountText, R.string.field_total));
+        	mandatoryFields.add(new FormFieldBean(mRemarksText, R.string.field_remarks));
     	}
     	
     	highlightMandatoryFields();

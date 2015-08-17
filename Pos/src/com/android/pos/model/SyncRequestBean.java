@@ -6,14 +6,12 @@ import java.util.List;
 public class SyncRequestBean {
 
 	protected Long merchant_id;
-	protected String sync_type;
-	protected Date last_sync_date;
+	protected String sync_key;
 	protected Date sync_date;
 	protected String uuid;
 	
 	protected List<String> getRequests;
 	
-	protected SyncBean sync;
 	protected MerchantBean merchant;
 	protected UserBean user;
 	
@@ -43,20 +41,12 @@ public class SyncRequestBean {
 		this.merchant_id = merchant_id;
 	}
 	
-	public String getSync_type() {
-		return sync_type;
+	public String getSync_key() {
+		return sync_key;
 	}
 
-	public void setSync_type(String sync_type) {
-		this.sync_type = sync_type;
-	}
-
-	public Date getLast_sync_date() {
-		return last_sync_date;
-	}
-
-	public void setLast_sync_date(Date last_sync_date) {
-		this.last_sync_date = last_sync_date;
+	public void setSync_key(String sync_key) {
+		this.sync_key = sync_key;
 	}
 
 	public Date getSync_date() {
@@ -97,14 +87,6 @@ public class SyncRequestBean {
 
 	public void setUser(UserBean user) {
 		this.user = user;
-	}
-
-	public SyncBean getSync() {
-		return sync;
-	}
-
-	public void setSync(SyncBean sync) {
-		this.sync = sync;
 	}
 
 	public List<BillsBean> getBills() {

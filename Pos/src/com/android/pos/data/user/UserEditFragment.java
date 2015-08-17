@@ -16,6 +16,7 @@ import com.android.pos.dao.User;
 import com.android.pos.dao.UserAccess;
 import com.android.pos.dao.UserAccessDaoService;
 import com.android.pos.dao.UserDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
@@ -118,10 +119,9 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	
     	enableInputFields(false);
     	
-    	mandatoryFields = new ArrayList<UserEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
-    	mandatoryFields.add(new FormField(mUserIdText, R.string.field_price));
-    	mandatoryFields.add(new FormField(mPasswordText, R.string.field_password));
+    	mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormFieldBean(mUserIdText, R.string.field_price));
+    	mandatoryFields.add(new FormFieldBean(mPasswordText, R.string.field_password));
     	
     	roleArrayAdapter = new CodeSpinnerArrayAdapter(mRoleSp, getActivity(), CodeUtil.getRoles());
     	mRoleSp.setAdapter(roleArrayAdapter);

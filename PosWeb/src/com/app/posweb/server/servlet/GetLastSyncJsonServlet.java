@@ -1,6 +1,5 @@
 package com.app.posweb.server.servlet;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import com.app.posweb.server.dao.CashflowDao;
 import com.app.posweb.server.dao.CustomerDao;
 import com.app.posweb.server.dao.OrderItemDao;
 import com.app.posweb.server.dao.OrdersDao;
-import com.app.posweb.server.dao.SyncDao;
 import com.app.posweb.server.dao.DiscountDao;
 import com.app.posweb.server.dao.EmployeeDao;
 import com.app.posweb.server.dao.InventoryDao;
@@ -22,7 +20,6 @@ import com.app.posweb.server.dao.TransactionItemDao;
 import com.app.posweb.server.dao.TransactionsDao;
 import com.app.posweb.server.dao.UserAccessDao;
 import com.app.posweb.server.dao.UserDao;
-import com.app.posweb.server.model.Sync;
 import com.app.posweb.server.model.SyncRequest;
 import com.app.posweb.server.model.SyncResponse;
 import com.app.posweb.shared.Constant;
@@ -30,28 +27,34 @@ import com.app.posweb.shared.Constant;
 @SuppressWarnings("serial")
 public class GetLastSyncJsonServlet extends BaseJsonServlet {
 	
-	protected SyncResponse processRequest(SyncRequest request) throws IOException {
+	protected SyncResponse processRequest(SyncRequest request) {
 		
-		Sync sync = request.getSync();
-    	
-		SyncDao syncDao = new SyncDao();
-        
-        Sync bean = syncDao.getSync(sync);
-        
-        if (bean == null) {
-        	sync = syncDao.addSync(sync);
-        } else {
-        	sync = bean;
-        }
-        
-        if (request.getLast_sync_date() == null) {
-        	request.setLast_sync_date(sync.getLast_sync_date());
-        }
-        
-        SyncResponse response = new SyncResponse();         
-        
-        response.setRespCode(SyncResponse.SUCCESS);
-        response.setSync(sync);
+		MerchantDao merchantDao = new MerchantDao();
+		
+		SyncResponse response = new SyncResponse();
+		
+		boolean isAcquireLock = false;
+		
+		do {
+			
+			if (request.getMerchant_id() != -1) {
+				isAcquireLock = merchantDao.getSyncLock(request.getMerchant_id(), request.getUuid());
+			} else {
+				isAcquireLock = true;
+			}
+			
+			if (!isAcquireLock) {
+				
+				try {
+					Thread.sleep(30 * Constant.MILISECS);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		} while (!isAcquireLock);
+		
+		response.setRespCode(SyncResponse.SUCCESS);
         
         List<String> taskHasUpdates = new ArrayList<String>();
         
@@ -179,15 +182,11 @@ public class GetLastSyncJsonServlet extends BaseJsonServlet {
         		}
         	} else if (Constant.TASK_GET_MERCHANT.equals(task)) {
         		
-        		MerchantDao merchantDao = new MerchantDao();
-        		
         		if (merchantDao.hasUpdate(request)) {
         			
         			taskHasUpdates.add(task);
         		}
         	} else if (Constant.TASK_ROOT_GET_MERCHANT.equals(task)) {
-        		
-        		MerchantDao merchantDao = new MerchantDao();
         		
         		if (merchantDao.hasRootUpdate(request)) {
         			

@@ -1,6 +1,5 @@
 package com.android.pos.data.supplier;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.Constant;
@@ -8,6 +7,7 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Supplier;
 import com.android.pos.dao.SupplierDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
@@ -65,12 +65,11 @@ public class SupplierEditFragment extends BaseEditFragment<Supplier> {
     	
     	enableInputFields(false);
     	
-    	mandatoryFields = new ArrayList<SupplierEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
-    	mandatoryFields.add(new FormField(mTelephoneText, R.string.field_telephone));
-    	mandatoryFields.add(new FormField(mAddressText, R.string.field_address));
-    	mandatoryFields.add(new FormField(mPicNameText, R.string.field_pic_name));
-    	mandatoryFields.add(new FormField(mPicTelephoneText, R.string.field_pic_telephone));
+    	mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormFieldBean(mTelephoneText, R.string.field_telephone));
+    	mandatoryFields.add(new FormFieldBean(mAddressText, R.string.field_address));
+    	mandatoryFields.add(new FormFieldBean(mPicNameText, R.string.field_pic_name));
+    	mandatoryFields.add(new FormFieldBean(mPicTelephoneText, R.string.field_pic_telephone));
     }
     
     @Override

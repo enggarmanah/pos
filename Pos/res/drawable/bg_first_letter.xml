@@ -6,11 +6,11 @@
             <gradient
                 android:startColor="@color/background_blue_medium"
                 android:endColor="@color/background_blue_medium"
-                android:angle="270" />
+                android:angle="180" />
             <stroke
                 android:width="0.5dp"
                 android:color="@color/border_grey_dark" />
-            <corners android:topLeftRadius="5dp" android:bottomRightRadius="5dp"/>
+            <!-- <corners android:topLeftRadius="3dp" android:topRightRadius="3dp" android:bottomRightRadius="3dp" android:bottomLeftRadius="3dp"/> -->
         </shape>
     </item>
     

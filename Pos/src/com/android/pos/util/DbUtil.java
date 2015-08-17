@@ -31,7 +31,7 @@ public class DbUtil {
     
     public static class DbOpenHelper extends DaoMaster.DevOpenHelper {
     	
-    	public DbOpenHelper(Context context, String name, CursorFactory factory) {
+    	private DbOpenHelper(Context context, String name, CursorFactory factory) {
             
     		super(context, name, factory);
         }
@@ -367,6 +367,13 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'USER' ADD 'EMPLOYEE_ID' INTEGER");
             }
             
+            // handle version 46 changes
+            if (oldVersion < 46) {
+            	
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'SECURITY_QUESTION' TEXT");
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'SECURITY_ANSWER' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }
@@ -401,7 +408,11 @@ public class DbUtil {
     	return dbId;
     }
     
-    public static void switchDb(Long merchantId) {
+    public static void switchDb(Context ctx, Long merchantId) {
+    	
+    	if (ctx != null) {
+    		context = ctx;
+    	}
     	
     	if (merchantId == getDbId()) {
     		

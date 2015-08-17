@@ -74,6 +74,14 @@
         <item name="android:background">@color/background</item>
     </style>
     
+    <style name="RegistrationFragmentStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/background</item>
+    </style>
+    
     <style name="BorderFragmentStyle">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
@@ -626,6 +634,8 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_dark</item>
+        <item name="android:shadowColor">@color/text_dark</item>
+        <item name="android:shadowRadius">0</item>
         <item name="android:layout_marginTop">1dp</item>
         <item name="android:layout_marginLeft">15dp</item>
         <item name="android:background">@drawable/bg_first_letter</item>
@@ -1272,6 +1282,56 @@
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:singleLine">true</item>
+    </style>
+    
+    <style name="RegistrationTextStyle">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">305dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/input_text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:padding">7dp</item>
+ 	</style>
+ 	
+    <style name="RegistrationListStyle" parent="@style/RegistrationTextStyle">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:inputType">text</item>
+        <item name="android:background">@drawable/selector_spinner</item>
+    </style>
+    
+    <style name="RegistrationSpinnerRowTextStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_default</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="RegistrationSpinnerRowDropDownTextStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_default</item>
+        <item name="android:background">@color/list_row_normal_background</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:padding">7dp</item>
+    </style>
+    
+    <style name="RegistrationSpinnerRowDropDownTextSelectedStyle" parent="RegistrationSpinnerRowDropDownTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/list_row_selected_text</item>
+        <item name="android:background">@color/list_row_selected_background</item>
     </style>
 
 </resources>

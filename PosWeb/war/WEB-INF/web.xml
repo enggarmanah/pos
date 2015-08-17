@@ -6,6 +6,18 @@
 
 	<!-- Servlets -->
 	<servlet>
+		<servlet-name>merchantRegisterJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantRegisterJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>merchantGetByLoginIdJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantGetByLoginIdJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>merchantResetPasswordJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantResetPasswordJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>merchantValidateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.MerchantValidateJsonServlet</servlet-class>
 	</servlet>
@@ -170,6 +182,18 @@
 		<servlet-class>com.app.posweb.server.servlet.OrderItemUpdateJsonServlet</servlet-class>
 	</servlet>
 	
+	<servlet-mapping>
+		<servlet-name>merchantRegisterJsonServlet</servlet-name>
+		<url-pattern>/merchantRegisterJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantGetByLoginIdJsonServlet</servlet-name>
+		<url-pattern>/merchantGetByLoginIdJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantResetPasswordJsonServlet</servlet-name>
+		<url-pattern>/merchantResetPasswordJsonServlet</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>merchantValidateJsonServlet</servlet-name>
 		<url-pattern>/merchantValidateJsonServlet</url-pattern>

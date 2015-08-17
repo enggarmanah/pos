@@ -12,12 +12,13 @@ public class SyncResponseBean {
 	protected String respDescription;
 	protected Date respDate;
 	
+	protected String sync_key;
+	
 	protected List<SyncStatusBean> status;
 	
 	protected List<String> taskHasUpdates;
 	
 	protected MerchantBean merchant;
-	protected SyncBean sync;
 	protected UserBean user;
 	
 	protected List<BillsBean> bills;
@@ -38,6 +39,14 @@ public class SyncResponseBean {
 	protected List<UserAccessBean> userAccesses;
 	protected List<UserBean> users;
 	
+	public String getSync_key() {
+		return sync_key;
+	}
+
+	public void setSync_key(String sync_key) {
+		this.sync_key = sync_key;
+	}
+
 	public String getRespCode() {
 		return respCode;
 	}
@@ -70,14 +79,6 @@ public class SyncResponseBean {
 		this.merchant = merchant;
 	}
 
-	public SyncBean getSync() {
-		return sync;
-	}
-
-	public void setSync(SyncBean sync) {
-		this.sync = sync;
-	}
-	
 	public UserBean getUser() {
 		return user;
 	}

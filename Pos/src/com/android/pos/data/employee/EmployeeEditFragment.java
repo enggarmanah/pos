@@ -1,6 +1,5 @@
 package com.android.pos.data.employee;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.CodeBean;
@@ -10,6 +9,7 @@ import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.EmployeeDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
@@ -65,8 +65,7 @@ public class EmployeeEditFragment extends BaseEditFragment<Employee> {
     	
     	enableInputFields(false);
     	
-    	mandatoryFields = new ArrayList<EmployeeEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
     	
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getStatus());
     	mStatusSp.setAdapter(statusArrayAdapter);

@@ -44,6 +44,8 @@ public class Merchant implements Serializable {
     private Boolean isLogin;
     private String status;
     private String locale;
+    private String securityQuestion;
+    private String securityAnswer;
     private String uploadStatus;
     private String createBy;
     private java.util.Date createDate;
@@ -69,7 +71,7 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String refId, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer priceTypeCount, String priceLabel1, String priceLabel2, String priceLabel3, String discountType, String paymentType, Float taxPercentage, Float serviceChargePercentage, Boolean isLogin, String status, String locale, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String refId, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer priceTypeCount, String priceLabel1, String priceLabel2, String priceLabel3, String discountType, String paymentType, Float taxPercentage, Float serviceChargePercentage, Boolean isLogin, String status, String locale, String securityQuestion, String securityAnswer, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.refId = refId;
         this.name = name;
@@ -99,6 +101,8 @@ public class Merchant implements Serializable {
         this.isLogin = isLogin;
         this.status = status;
         this.locale = locale;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
         this.uploadStatus = uploadStatus;
         this.createBy = createBy;
         this.createDate = createDate;
@@ -344,6 +348,22 @@ public class Merchant implements Serializable {
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public String getSecurityAnswer() {
+        return securityAnswer;
+    }
+
+    public void setSecurityAnswer(String securityAnswer) {
+        this.securityAnswer = securityAnswer;
     }
 
     public String getUploadStatus() {

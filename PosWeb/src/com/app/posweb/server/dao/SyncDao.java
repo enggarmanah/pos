@@ -31,7 +31,7 @@ public class SyncDao {
 	
 	public Sync addSync(Sync bean) {
 		
-		bean.setLast_sync_date(ServerUtil.getStartDate());
+		bean.setLast_sync_date(ServerUtil.getSystemStartDate());
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
@@ -77,6 +77,44 @@ public class SyncDao {
 			
 		} catch (NoResultException e) {
 			// do nothing
+		}
+		
+		em.close();
+
+		return result;
+	}
+	
+	public Sync getSync(Long merchantId, String uuid, String syncType) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT s FROM Sync s ");
+		sql.append(" WHERE merchant_id = :merchantId ");
+		sql.append(" AND uuid = :uuid ");
+		sql.append(" AND sync_type = :syncType ");
+		
+		TypedQuery<Sync> query = em.createQuery(sql.toString(), Sync.class);
+		
+		query.setParameter("merchantId", merchantId);
+		query.setParameter("uuid", uuid);
+		query.setParameter("syncType", syncType);
+		
+		Sync result = null;
+		
+		try {
+			result = query.getSingleResult();
+			
+		} catch (NoResultException e) {
+			
+			Sync sync = new Sync();
+			
+			sync.setMerchant_id(merchantId);
+			sync.setUuid(uuid);
+			sync.setSync_type(syncType);
+			sync.setLast_sync_date(ServerUtil.getSystemStartDate());
+			
+			result = addSync(sync);
 		}
 		
 		em.close();

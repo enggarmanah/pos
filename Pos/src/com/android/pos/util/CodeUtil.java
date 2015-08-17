@@ -297,13 +297,13 @@ public class CodeUtil {
 		merchantTypes = new CodeBean[4];
 		
 		code = new CodeBean();
-		code.setCode(Constant.MERCHANT_TYPE_RESTO);
-		code.setLabel(mContext.getString(R.string.merchant_type_resto));
+		code.setCode(Constant.MERCHANT_TYPE_SHOP);
+		code.setLabel(mContext.getString(R.string.merchant_type_shop));
 		merchantTypes[0] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.MERCHANT_TYPE_SHOP);
-		code.setLabel(mContext.getString(R.string.merchant_type_shop));
+		code.setCode(Constant.MERCHANT_TYPE_RESTO);
+		code.setLabel(mContext.getString(R.string.merchant_type_resto));
 		merchantTypes[1] = code;
 		
 		code = new CodeBean();

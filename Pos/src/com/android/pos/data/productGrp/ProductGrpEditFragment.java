@@ -1,6 +1,5 @@
 package com.android.pos.data.productGrp;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.Constant;
@@ -8,6 +7,7 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
@@ -50,8 +50,7 @@ public class ProductGrpEditFragment extends BaseEditFragment<ProductGroup> {
     	
     	enableInputFields(false);
     	
-    	mandatoryFields = new ArrayList<ProductGrpEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
     }
     
     @Override

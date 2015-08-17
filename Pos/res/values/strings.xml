@@ -20,11 +20,24 @@
     <string name="login_merchant">Login ke TokoKu</string>
     <string name="login_user">Login</string>
     
-    <string name="merchant_id">ID Merchant</string>
+    <string name="merchant_id">Id Merchant</string>
     <string name="password">Password</string>
     
-    <string name="user_id">ID Pengguna</string>
-    <string name="pin">PIN</string>
+    <string name="user_id">Id Pengguna</string>
+    <string name="pin">Password</string>
+    
+    <string name="sign_up">Bikin Akun</string>
+    <string name="forgot_password">Lupa Password</string>
+    <string name="reset_password">Ganti Password</string>
+    <string name="separator">|</string>
+    
+    <string name="registration">Registrasi</string>
+    <string name="merchant_name">Nama Merchant</string>
+    <string name="security_question">Pertanyaan Rahasia</string>
+    <string name="security_question_fl">P</string>
+    <string name="security_answer">Jawaban Pertanyaan</string>
+    <string name="security_answer_fl">J</string>
+    <string name="password_confirm">Konfirmasi Password</string>
     
     <string name="info_quantity">Jumlah</string>
     <string name="info_revenue">Pendapatan</string>
@@ -34,6 +47,7 @@
     <string name="search">Cari</string>
     <string name="add">Tambah</string>
     <string name="alert">Perhatian</string>
+    <string name="notification">Notifikasi</string>
     <string name="ok">OK</string>
     <string name="cancel">Batal</string>
     <string name="delete">Hapus</string>
@@ -86,6 +100,9 @@
     
     <string name="msg_notification_search_action">Masukkan kata pencarian pada kolom di atas</string>
     <string name="msg_data_save_success">Data telah berhasil disimpan</string>
+    <string name="msg_register_user">Silahkan register akun pengguna untuk dapat mengakses fungsionalitas sistem</string>
+    <string name="msg_reset_password_success">Penggantian password telah berhasil !</string>
+    <string name="msg_merchant_registration_success">Registrasi merchant telah berhasil !</string>
     
     <string name="field_code">Kode</string>
     <string name="field_code_fl">K</string>
@@ -427,19 +444,23 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
     <string name="alert_empty_mandatory_field">"%1$s tidak boleh kosong"</string>
-    <string name="alert_server_not_connected">"Tidak dapat terhubung &#8230;!"</string>
-    <string name="alert_server_sync_error">"Error dalam sync data &#8230;!"</string>
-    <string name="alert_merchant_authentication_error">"ID Merchant atau password anda salah!"</string>
-    <string name="alert_user_authentication_error">"ID Pengguna atau password anda salah!"</string>
-    <string name="alert_data_no_more">"Tidak lagi terdapat data untuk ditampilkan!"</string>
+	<string name="alert_password_dont_match">"Password dan konfirmasi password tidak sama"</string>
+	<string name="alert_merchant_login_id_not_exist">"Login Id merchant tidak terdaftar"</string>
+	<string name="alert_security_answer_dont_match">"Jawaban pertanyaan tidak benar !"</string>
+	<string name="alert_server_not_connected">"Tidak dapat terhubung !"</string>
+    <string name="alert_server_sync_error">"Error melaksanakan singkronisasi data !"</string>
+    <string name="alert_merchant_authentication_error">"ID Merchant atau password anda salah !"</string>
+    <string name="alert_user_authentication_error">"ID Pengguna atau password anda salah !"</string>
+    <string name="alert_data_no_more">"Tidak lagi terdapat data untuk ditampilkan !"</string>
     <string name="alert_data_show_next">"Menampilkan data selanjutnya &#8230;"</string>
-    <string name="alert_please_choose_table_no">"Silahkan pilih No. Meja!"</string>
-    <string name="alert_customer_name_empty">"Nama pelanggan tidak boleh kosong!"</string>
+    <string name="alert_please_choose_table_no">"Silahkan pilih No. Meja !"</string>
+    <string name="alert_customer_name_empty">"Nama pelanggan tidak boleh kosong !"</string>
     <string name="alert_transaction_list_empty">"Daftar item penjualan masih kosong"</string>
-    <string name="alert_pic_required">"%1$s\nPIC dibutuhkan!"</string>
+    <string name="alert_pic_required">"%1$s\nPIC dibutuhkan !"</string>
     <string name="alert_order_list_empty">"Daftar item pesanan masih kosong"</string>
     <string name="alert_bluetooth_not_available">"Bluetooth tidak tersedia. Anda tidak dapat melakukan print nota"</string>
     <string name="alert_bluetooth_not_active">"Bluetooth tidak aktif. Mohon aktifkan bluetooth anda"</string>
+    <string name="alert_no_payment_type">"Tipe pembayaran harus dipilih"</string>
     
     <string name="user_role_cashier">Kasir</string>
 	<string name="user_role_admin">Admin</string>
@@ -537,6 +558,9 @@
 	<string name="menu_favorite_customer_order">K01</string>
 	<string name="menu_favorite_supplier_order">K02</string>
 	
+	<string name="task_register_merchant">"Melaksanakan registrasi &#8230;"</string>
+	<string name="task_get_merchant_by_login_id">"Mengecek merchant login Id &#8230;"</string>
+	<string name="task_reset_password">"Ganti password &#8230;"</string>
 	<string name="task_validate_merchant">"Melaksanakan validasi &#8230;"</string>
 	<string name="task_validate_user">"Melaksanakan validasi &#8230;"</string>
 	<string name="task_root_get_merchant">"Download data merchant &#8230;"</string>
@@ -586,5 +610,10 @@
 	<string name="cashflow_type_bill_payment">Pembayaran Tagihan</string>
 	<string name="cashflow_type_invc_payment">Penerimaan Piutang</string>
 	<string name="cashflow_type_expense">Pengeluaran Lain-lain</string>
-		
+	
+	<string name="error_invalid_token">Token tidak valid</string>
+	<string name="error_service_expired">Servis sync up data anda telah berakhir</string>
+	<string name="error_could_not_obtained_lock">Error singkronisasi data</string>
+	<string name="error_register_merchant_conflict">Login Id konflik dengan merchant yang lain. Silahkan pilih Login Id yang lain !</string>
+	
 </resources>

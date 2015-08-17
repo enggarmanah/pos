@@ -123,6 +123,8 @@ public class BeanUtil {
 		bean.setPrice_label_1(merchant.getPriceLabel1());
 		bean.setPrice_label_2(merchant.getPriceLabel2());
 		bean.setPrice_label_3(merchant.getPriceLabel3());
+		bean.setSecurity_question(merchant.getSecurityQuestion());
+		bean.setSecurity_answer(merchant.getSecurityAnswer());
 		bean.setDiscount_type(merchant.getDiscountType());
 		bean.setPayment_type(merchant.getPaymentType());
 		bean.setTax_percentage(merchant.getTaxPercentage());
@@ -131,6 +133,8 @@ public class BeanUtil {
 		bean.setPrinter_mini_font(merchant.getPrinterMiniFont());
 		bean.setPrinter_line_size(merchant.getPrinterLineSize());
 		bean.setLocale(merchant.getLocale());
+		bean.setSecurity_question(merchant.getSecurityQuestion());
+		bean.setSecurity_answer(merchant.getSecurityAnswer());
 		bean.setStatus(merchant.getStatus());
 		bean.setCreate_by(merchant.getCreateBy());
 		bean.setCreate_date(merchant.getCreateDate());
@@ -159,6 +163,8 @@ public class BeanUtil {
 		merchant.setPriceLabel1(bean.getPrice_label_1());
 		merchant.setPriceLabel2(bean.getPrice_label_2());
 		merchant.setPriceLabel3(bean.getPrice_label_3());
+		merchant.setSecurityQuestion(bean.getSecurity_question());
+		merchant.setSecurityAnswer(bean.getSecurity_answer());
 		merchant.setDiscountType(bean.getDiscount_type());
 		merchant.setPaymentType(bean.getPayment_type());
 		merchant.setTaxPercentage(bean.getTax_percentage());
@@ -178,6 +184,8 @@ public class BeanUtil {
 		}
 		
 		merchant.setLocale(bean.getLocale());
+		merchant.setSecurityQuestion(bean.getSecurity_question());
+		merchant.setSecurityAnswer(bean.getSecurity_answer());
 		merchant.setStatus(bean.getStatus());
 		merchant.setUploadStatus(Constant.STATUS_NO);
 		merchant.setCreateBy(bean.getCreate_by());

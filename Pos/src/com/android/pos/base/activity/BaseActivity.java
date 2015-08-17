@@ -250,7 +250,7 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(getString(R.string.menu_cashier));
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_WAITRESS)) {
+		if (UserUtil.isWaitress() || UserUtil.isUserHasAccess(Constant.ACCESS_WAITRESS)) {
 			mMenus.add(getString(R.string.menu_waitress));
 		}
 		
@@ -268,7 +268,7 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(getString(R.string.menu_user_access));
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
+		if (UserUtil.isWaitress() || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
 			mMenus.add(getString(R.string.menu_order));
 		}
 		

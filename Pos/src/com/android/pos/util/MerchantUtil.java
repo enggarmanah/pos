@@ -23,9 +23,9 @@ public class MerchantUtil {
 		
 		if (mMerchant == null && Config.isDebug() && !UserUtil.isRoot()) {
 			
-			Long merchantId = Long.valueOf(7);
+			Long merchantId = Long.valueOf(2);
 			
-			DbUtil.switchDb(merchantId);
+			DbUtil.switchDb(null, merchantId);
 			MerchantUtil.recreateDao();
 			
 			mMerchant = merchantDaoService.getMerchant(merchantId);

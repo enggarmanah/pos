@@ -20,6 +20,7 @@ import com.app.posweb.server.dao.SyncDao;
 import com.app.posweb.server.dao.MerchantDao;
 import com.app.posweb.server.model.SyncRequest;
 import com.app.posweb.server.model.SyncResponse;
+import com.app.posweb.shared.Constant;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -60,17 +61,32 @@ public abstract class BaseJsonServlet extends HttpServlet {
         	
         	syncResponse = new SyncResponse();
         	syncResponse.setRespCode(SyncResponse.ERROR);
-        	syncResponse.setRespDescription("Token request tidak valid!");
+        	syncResponse.setRespDescription(Constant.ERROR_INVALID_TOKEN);
         	
         } else if (!isByPassTokenValidation(servletPath) && !isActiveMerchant(syncRequest)) {
         	
         	syncResponse = new SyncResponse();
         	syncResponse.setRespCode(SyncResponse.ERROR);
-        	syncResponse.setRespDescription("Periode servis sync up data anda telah habis.\nSilahkan menghubungi marketing agen kami,\nuntuk memperbarui servis anda");
+        	syncResponse.setRespDescription(Constant.ERROR_SERVICE_EXPIRED);
         
         } else {
         	
-        	syncResponse = processRequest(syncRequest);
+        	MerchantDao merchantDao = new MerchantDao();
+    		boolean isAcquireLock = merchantDao.getSyncLock(syncRequest.getMerchant_id(), syncRequest.getUuid());
+        	
+        	if (!(this instanceof GetLastSyncJsonServlet || this instanceof UpdateLastSyncJsonServlet ||
+          		  this instanceof MerchantValidateJsonServlet || this instanceof MerchantRegisterJsonServlet || 
+          		  this instanceof MerchantGetByLoginIdJsonServlet || this instanceof MerchantResetPasswordJsonServlet || 
+          		  this instanceof UserValidateJsonServlet || syncRequest.getMerchant_id() == -1) && !isAcquireLock) {
+        		
+        		syncResponse = new SyncResponse();
+                syncResponse.setRespCode(SyncResponse.ERROR);
+                syncResponse.setRespDescription(Constant.ERROR_COULD_NOT_OBTAINED_LOCK);
+        	
+        	} else {
+        		
+        		syncResponse = processRequest(syncRequest);
+        	}
         }
 		
 		syncResponse.setRespDate(new Date());
@@ -95,8 +111,11 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		
 		if ("/getLastSyncJsonServlet".equals(path) || 
 			"/updateLastSyncJsonServlet".equals(path) ||
+			"/merchantRegisterJsonServlet".equals(path) ||
+			"/merchantResetPasswordJsonServlet".equals(path) ||
 			"/merchantValidateJsonServlet".equals(path) ||
 			"/userValidateJsonServlet".equals(path) ||
+			"/merchantGetByLoginIdJsonServlet".equals(path) ||
 			"/merchantGetAllJsonServlet".equals(path) ||
 			"/merchantAccessGetAllJsonServlet".equals(path) ||
 			"/userGetJsonServlet".equals(path)) {

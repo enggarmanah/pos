@@ -47,6 +47,8 @@ public class MerchantDaoService {
 	
 	public Merchant getMerchant(Long id) {
 		
+		System.out.println(DbUtil.getDb());
+		
 		return merchantDao.load(id);
 	}
 	

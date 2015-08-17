@@ -1,6 +1,5 @@
 package com.app.posweb.server.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,9 +9,13 @@ import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
 import com.app.posweb.server.model.Bills;
+import com.app.posweb.server.model.Sync;
 import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.shared.Constant;
 
 public class BillDao {
+	
+	SyncDao syncDao = new SyncDao();
 	
 	public Bills syncBills(Bills bill) {
 		
@@ -83,6 +86,8 @@ public class BillDao {
 	
 	public List<Bills> getBills(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_BILLS);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT c FROM Bills c WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
@@ -91,8 +96,8 @@ public class BillDao {
 		
 		TypedQuery<Bills> query = em.createQuery(sql.toString(), Bills.class);
 		
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		List<Bills> result = query.getResultList();
 		
@@ -103,38 +108,21 @@ public class BillDao {
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_BILLS);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT COUNT(c.id) FROM Bills c WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		long count = (long) query.getSingleResult();
 		
 		em.close();
 
 		return (count > 0);
-	}
-	
-	public void updateSyncDate(SyncRequest syncRequest, Date syncDate) {
-		
-		EntityManager em = PersistenceManager.getEntityManager();
-		
-		StringBuffer sql = new StringBuffer();
-		
-		sql.append("UPDATE Bills b SET sync_date = :syncDate WHERE merchant_id = :merchantId AND sync_date = :lastSyncDate ");
-		
-		Query query = em.createQuery(sql.toString());
-		
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getSync_date());
-		query.setParameter("syncDate", syncDate);
-		
-		query.executeUpdate();
-		
-		em.close();
 	}
 }

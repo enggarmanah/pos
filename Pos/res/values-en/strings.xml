@@ -20,11 +20,24 @@
     <string name="login_merchant">Login to TokoKu</string>
     <string name="login_user">Login</string>
     
-    <string name="merchant_id">ID Merchant</string>
+    <string name="merchant_id">Merchant Id</string>
     <string name="password">Password</string>
     
-    <string name="user_id">ID User</string>
-    <string name="pin">PIN</string>
+    <string name="user_id">User Id</string>
+    <string name="pin">Password</string>
+    
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="separator">|</string>
+    
+    <string name="registration">Registration</string>
+    <string name="merchant_name">Merchant Name</string>
+    <string name="security_question">Security Question</string>
+    <string name="security_question_fl">S</string>
+    <string name="security_answer">Security Answer</string>
+    <string name="security_answer_fl">S</string>
+    <string name="password_confirm">Retype Password</string>
     
     <string name="info_quantity">Total</string>
     <string name="info_revenue">Income</string>
@@ -34,6 +47,7 @@
     <string name="search">Search</string>
     <string name="add">Add</string>
     <string name="alert">Alert</string>
+    <string name="notification">Notification</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
@@ -86,6 +100,9 @@
     
     <string name="msg_notification_search_action">Please provide your search criteria on top</string>
     <string name="msg_data_save_success">Data has been saved</string>
+    <string name="msg_register_user">Please register user account to enable access to system functionality</string>
+    <string name="msg_reset_password_success">Reset password is successful !</string>
+    <string name="msg_merchant_registration_success">Merchant registration is successful !</string>
     
     <string name="field_code">Code</string>
     <string name="field_code_fl">C</string>
@@ -427,19 +444,24 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
     <string name="alert_empty_mandatory_field">"%1$s should not be empty"</string>
-    <string name="alert_server_not_connected">"Could not connect to Server!"</string>
-    <string name="alert_server_sync_error">"Error sync up &#8230;!"</string>
-    <string name="alert_merchant_authentication_error">"ID Merchant or password is incorrect!"</string>
-    <string name="alert_user_authentication_error">"ID user or password is incorrect!"</string>
-    <string name="alert_data_no_more">"There is no more data to show!"</string>
+    <string name="alert_password_dont_match">"Password and retype password don\'t match"</string>
+    <string name="alert_merchant_login_id_not_exist">"Merchant Login Id is not registered"</string>
+    <string name="alert_security_answer_dont_match">"Answer is incorrect !"</string>
+    <string name="alert_server_not_connected">"Could not connect to server !"</string>
+    <string name="alert_server_sync_error">"Error syncing up data to server !"</string>
+    <string name="alert_merchant_authentication_error">"ID Merchant or password is incorrect !"</string>
+    <string name="alert_user_authentication_error">"ID user or password is incorrect !"</string>
+    <string name="alert_data_no_more">"There is no more data to show !"</string>
     <string name="alert_data_show_next">"Show next list of data &#8230;"</string>
-    <string name="alert_please_choose_table_no">"Please choose table no!"</string>
-    <string name="alert_customer_name_empty">"Customer\'s name could not be empty!"</string>
+    <string name="alert_please_choose_table_no">"Please choose table no !"</string>
+    <string name="alert_customer_name_empty">"Customer\'s name could not be empty !"</string>
     <string name="alert_transaction_list_empty">"Transaction list is still empty"</string>
-    <string name="alert_pic_required">"%1$s\nPIC is required!"</string>
+    <string name="alert_pic_required">"%1$s\nPIC is required !"</string>
     <string name="alert_order_list_empty">"Order list is still empty"</string>
     <string name="alert_bluetooth_not_available">"Bluetooth is not available. Receipt could not be printed"</string>
     <string name="alert_bluetooth_not_active">"Bluetooth is not active. Please active your bluetooth"</string>
+    <string name="alert_no_payment_type">"Payment type must be selected"</string>
+    
     
     <string name="user_role_cashier">Cashier</string>
 	<string name="user_role_admin">Admin</string>
@@ -536,6 +558,9 @@
 	<string name="menu_favorite_customer_order">K01</string>
 	<string name="menu_favorite_supplier_order">K02</string>
 	
+	<string name="task_register_merchant">"Registering merchant &#8230;"</string>
+	<string name="task_get_merchant_by_login_id">"Checking merchant Login Id &#8230;"</string>
+	<string name="task_reset_password">"Reset password &#8230;"</string>
 	<string name="task_validate_merchant">"Authenticate merchant &#8230;"</string>
 	<string name="task_validate_user">"Authenticate user &#8230;"</string>
 	<string name="task_root_get_merchant">"Download merchant &#8230;"</string>
@@ -552,7 +577,7 @@
 	<string name="task_get_employee">"Download employee &#8230;"</string>
 	<string name="task_update_employee">"Upload employee &#8230;"</string>
 	<string name="task_get_customer">"Download customer &#8230;"</string>
-	<string name="task_update_customer">"Upload pelanggan &#8230;"</string>
+	<string name="task_update_customer">"Upload customer &#8230;"</string>
 	<string name="task_get_product">"Download product &#8230;"</string>
 	<string name="task_update_product">"Upload product &#8230;"</string>
 	<string name="task_get_user">"Download user &#8230;"</string>
@@ -585,5 +610,10 @@
 	<string name="cashflow_type_bill_payment">Bill Payment</string>
 	<string name="cashflow_type_invc_payment">Credit Payment</string>
 	<string name="cashflow_type_expense">General Expense</string>
-		
+	
+	<string name="error_invalid_token">Invalid token</string>
+	<string name="error_service_expired">Sync up data service has been expired</string>
+	<string name="error_could_not_obtained_lock">Data sync up error</string>
+	<string name="error_register_merchant_conflict">Login Id has been registered by other merchant. Choose other Login Id !</string>
+	
 </resources>

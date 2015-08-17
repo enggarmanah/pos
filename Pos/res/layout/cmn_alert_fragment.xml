@@ -7,7 +7,7 @@
 	
     <TextView
         style="@style/InfoDialogHeaderStyle"
-        android:text="@string/alert" />
+        android:text="@string/notification" />
 
     <TextView
     	android:id="@+id/confirmationText"

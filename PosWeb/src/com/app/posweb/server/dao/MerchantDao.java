@@ -1,5 +1,6 @@
 package com.app.posweb.server.dao;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,9 +11,13 @@ import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
 import com.app.posweb.server.model.Merchant;
+import com.app.posweb.server.model.Sync;
 import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.shared.Constant;
 
 public class MerchantDao {
+	
+	SyncDao syncDao = new SyncDao();
 	
 	public Merchant syncMerchant(Merchant merchant) {
 		
@@ -41,6 +46,15 @@ public class MerchantDao {
 		return bean;
 	}
 	
+	public Merchant registerMerchant(Merchant bean) {
+		
+		bean = addMerchant(bean);
+		bean.setRemote_id(bean.getId());
+		bean = updateMerchant(bean);
+
+		return bean;
+	}
+	
 	public Merchant updateMerchant(Merchant bean) {
 
 		EntityManager em = PersistenceManager.getEntityManager();
@@ -56,6 +70,7 @@ public class MerchantDao {
 	public Merchant getMerchant(Merchant merchant) {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
+		
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append(" SELECT m FROM Merchant m ");
@@ -79,18 +94,92 @@ public class MerchantDao {
 		return result;
 	}
 	
+	public boolean getSyncLock(Long merchantId, String uuid) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" UPDATE Merchant m SET last_sync_key = :lastSyncKey, last_sync_date = :lastSyncDate ");
+		sql.append(" WHERE remote_id = :remoteId AND (last_sync_key IS NULL or last_sync_key = 'NULL' or last_sync_key = :lastSyncKey or (last_sync_key IS NOT NULL and last_sync_date < :minSyncDate)) ");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE, -10); 
+		
+		query.setParameter("remoteId", merchantId);
+		query.setParameter("lastSyncKey", uuid);
+		query.setParameter("lastSyncDate", new Date());
+		query.setParameter("minSyncDate", cal.getTime());
+		
+		int result = query.executeUpdate();
+		
+		em.close();
+
+		return result == 1;
+	}
+	
+	public boolean releaseSyncLock(Long merchantId, String uuid) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" UPDATE Merchant m SET last_sync_key = 'NULL', last_sync_date = :lastSyncDate ");
+		sql.append(" WHERE remote_id = :remoteId AND last_sync_key = :lastSyncKey ");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("remoteId", merchantId);
+		query.setParameter("lastSyncKey", uuid);
+		query.setParameter("lastSyncDate", new Date());
+		
+		int result = query.executeUpdate();
+		
+		em.close();
+
+		return result == 1;
+	}
+	
 	public Merchant validateMerchant(Merchant merchant) {
 		
 		EntityManager em = PersistenceManager.getEntityManager();
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append(" SELECT m FROM Merchant m ");
-		sql.append(" WHERE login_id = :loginId AND password = :password");
+		sql.append(" WHERE LOWER(login_id) = :loginId AND password = :password");
 		
 		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
 		
-		query.setParameter("loginId", merchant.getLogin_id());
+		query.setParameter("loginId", merchant.getLogin_id().toLowerCase());
 		query.setParameter("password", merchant.getPassword());
+		
+		Merchant result = null;
+		
+		try {
+			result = query.getSingleResult();
+			
+		} catch (NoResultException e) {
+			// do nothing
+		}
+		
+		em.close();
+
+		return result;
+	}
+	
+	public Merchant getMerchant(String loginId) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT m FROM Merchant m ");
+		sql.append(" WHERE LOWER(login_id) = :loginId");
+		
+		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
+		
+		query.setParameter("loginId", loginId.toLowerCase());
 		
 		Merchant result = null;
 		
@@ -108,16 +197,18 @@ public class MerchantDao {
 	
 	public List<Merchant> getMerchants(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
-		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE sync_date >= :lastSyncDate AND remote_id = :merchantId");
+		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE sync_date > :lastSyncDate AND remote_id = :merchantId");
 		
 		sql.append(" ORDER BY m.name");
 		
 		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
 
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
 		
 		List<Merchant> result = query.getResultList();
 		
@@ -128,6 +219,8 @@ public class MerchantDao {
 	
 	public List<Merchant> getAllMerchants(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT m FROM Merchant m WHERE sync_date > :lastSyncDate");
@@ -136,7 +229,7 @@ public class MerchantDao {
 		
 		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
 
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		List<Merchant> result = query.getResultList();
 		
@@ -174,14 +267,16 @@ public class MerchantDao {
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM Merchant m WHERE remote_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		long count = (long) query.getSingleResult();
 		
@@ -192,49 +287,20 @@ public class MerchantDao {
 	
 	public boolean hasRootUpdate(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM Merchant m WHERE sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		long count = (long) query.getSingleResult();
 		
 		em.close();
 
 		return (count > 0);
-	}
-	
-	public void updateSyncDate(SyncRequest syncRequest, Date syncDate) {
-		
-		EntityManager em = PersistenceManager.getEntityManager();
-		
-		StringBuffer sql = new StringBuffer();
-		
-		if (syncRequest.getMerchant_id() != -1) {
-			sql.append("UPDATE MerchantAccess m SET sync_date = :syncDate WHERE remote_id = :merchantId AND sync_date = :lastSyncDate ");
-		} else {
-			sql.append("UPDATE MerchantAccess m SET sync_date = :syncDate WHERE sync_date = :lastSyncDate ");
-		}
-		
-		Query query = em.createQuery(sql.toString());
-		
-		if (syncRequest.getMerchant_id() != -1) {
-			
-			query.setParameter("merchantId", syncRequest.getMerchant_id());
-			query.setParameter("lastSyncDate", syncRequest.getSync_date());
-			query.setParameter("syncDate", syncDate);
-			
-		} else {
-			
-			query.setParameter("lastSyncDate", syncRequest.getSync_date());
-			query.setParameter("syncDate", syncDate);
-		}
-		
-		query.executeUpdate();
-		
-		em.close();
 	}
 }

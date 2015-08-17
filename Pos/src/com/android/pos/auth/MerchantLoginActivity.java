@@ -1,18 +1,16 @@
 package com.android.pos.auth;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.pos.Config;
 import com.android.pos.Constant;
 import com.android.pos.R;
-import com.android.pos.async.HttpAsyncListener;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.cashier.CashierActivity;
@@ -21,6 +19,7 @@ import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.data.merchant.MerchantMgtActivity;
 import com.android.pos.data.user.UserMgtActivity;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.report.transaction.TransactionActivity;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.DbUtil;
@@ -28,19 +27,14 @@ import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
-public class MerchantLoginActivity extends Activity implements HttpAsyncListener, LoginListener {
+public class MerchantLoginActivity extends BaseAuthActivity implements LoginListener {
 
-	final Context context = this;
-	private static HttpAsyncManager mHttpAsyncManager;
-	
-	private static ProgressDlgFragment mProgressDialog;
-	private MerchantDaoService mMerchantDaoService;
-	
-	private static Integer mProgress = 0;
-	
 	Button mLoginBtn;
-	EditText mLoginIdTxt;
-	EditText mPasswordTxt;
+	EditText mLoginIdText;
+	EditText mPasswordText;
+	
+	TextView mSignUpText;
+	TextView mForgotPasswordText;
 	
 	Merchant mMerchant;
 	
@@ -64,8 +58,22 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			mProgressDialog = new ProgressDlgFragment();
 		}
 		
-		mLoginIdTxt = (EditText) findViewById(R.id.loginIdText);
-		mPasswordTxt = (EditText) findViewById(R.id.passwordText);
+		mLoginIdText = (EditText) findViewById(R.id.loginIdText);
+		mPasswordText = (EditText) findViewById(R.id.passwordText);
+		
+		mSignUpText = (TextView) findViewById(R.id.signUpText);
+		mSignUpText.setOnClickListener(getSignUpTextOnClickListener());
+		
+		mForgotPasswordText = (TextView) findViewById(R.id.forgotPasswordText);
+		mForgotPasswordText.setOnClickListener(getForgotPasswordTextOnClickListener());
+				
+		registerField(mLoginIdText);
+		registerField(mPasswordText);
+		
+		registerMandatoryField(new FormFieldBean(mLoginIdText, R.string.field_login_id));
+		registerMandatoryField(new FormFieldBean(mPasswordText, R.string.field_password));
+		
+		highlightMandatoryFields();
 		
 		mLoginBtn = (Button) findViewById(R.id.loginBtn);
 		mLoginBtn.setOnClickListener(getLoginBtnOnClickListener());
@@ -82,12 +90,18 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		
 		if (isLogout) {
 			
-			DbUtil.switchDb(null);
+			DbUtil.switchDb(this, null);
 			
 			MerchantUtil.recreateDao();
 			
 			mMerchantDaoService = new MerchantDaoService();
-			mMerchantDaoService.logoutMerchant(MerchantUtil.getMerchant());
+			
+			mLoginIdText.setText(Constant.EMPTY_STRING);
+			mPasswordText.setText(Constant.EMPTY_STRING);
+			
+			if (MerchantUtil.getMerchant() != null) {
+				mMerchantDaoService.logoutMerchant(MerchantUtil.getMerchant());
+			}
 			
 			MerchantUtil.setMerchant(null);
 		
@@ -129,36 +143,21 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	}
 	
 	@Override
-	public void onStart() {
-		super.onStart();
-		activityVisible = true;
-		
-		if (mProgress == 100 && mProgressDialog.isVisible()) {
-			mProgressDialog.dismiss();
-		}
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		activityVisible = true;
-	}
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-	@Override
-	public void onPause() {
-		super.onPause();
-		activityVisible = false;
-	}
-	
-	@Override
-	public void onDestroy() {
-	    super.onDestroy();
-	}
-	
-	private static boolean activityVisible = false;
-	
-	public static boolean isActivityVisible() {
-		return activityVisible;
+		switch (item.getItemId()) {
+
+		case R.id.menu_item_exit:
+			
+			finish();
+			System.exit(0);
+			
+			return true;
+
+		default:
+			
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	private boolean isMerchantAuthenticated() {
@@ -167,7 +166,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 		
 		if (mMerchant != null) {
 			
-			DbUtil.switchDb(mMerchant.getId());
+			DbUtil.switchDb(this, mMerchant.getId());
 			
 			MerchantUtil.setMerchant(mMerchant);
 			Intent intent = new Intent(context, UserLoginActivity.class);
@@ -188,11 +187,12 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			@Override
 			public void onClick(View v) {
 				
-				String loginId = mLoginIdTxt.getText().toString();
-				String password = mPasswordTxt.getText().toString();
+				if (!isValidated()) {
+					return;
+				}
 				
-				mLoginIdTxt.setText(Constant.EMPTY_STRING);
-				mPasswordTxt.setText(Constant.EMPTY_STRING);
+				String loginId = mLoginIdText.getText().toString();
+				String password = mPasswordText.getText().toString();
 				
 				if (Constant.ROOT.equals(loginId)) {
 					
@@ -211,20 +211,20 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 					
 					if (mMerchant != null) {
 						
-						DbUtil.switchDb(mMerchant.getId());
+						DbUtil.switchDb(getApplicationContext(), mMerchant.getId());
 						
 						mMerchantDaoService = new MerchantDaoService();
 						mMerchant = mMerchantDaoService.validateMerchant(loginId, password);
 						
 						if (mMerchant != null) {
 							
-							DbUtil.switchDb(null);
+							DbUtil.switchDb(getApplicationContext(), null);
 							mMerchantDaoService = new MerchantDaoService();
 							
 							mMerchant.setIsLogin(true);
 							mMerchantDaoService.updateMerchant(mMerchant);
 							
-							DbUtil.switchDb(mMerchant.getId());
+							DbUtil.switchDb(getApplicationContext(), mMerchant.getId());
 							
 							MerchantUtil.setMerchant(mMerchant);
 							Intent intent = new Intent(context, UserLoginActivity.class);
@@ -234,7 +234,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 							
 							if (mMerchantDaoService.isEmptyDb()) {
 								
-								DbUtil.switchDb(null);
+								DbUtil.switchDb(getApplicationContext(), null);
 								mMerchantDaoService = new MerchantDaoService();
 								
 								MerchantUtil.recreateDao();
@@ -249,7 +249,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 								mHttpAsyncManager.validateMerchant(loginId, password);
 							
 							} else {
-								mPasswordTxt.setText(Constant.EMPTY_STRING);
+								mPasswordText.setText(Constant.EMPTY_STRING);
 								showFailedAuthenticationMessage();
 							}
 						}
@@ -266,6 +266,32 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 						mHttpAsyncManager.validateMerchant(loginId, password);
 					}
 				}
+			}
+		};
+	}
+		
+	private View.OnClickListener getSignUpTextOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(context, RegistrationActivity.class);
+				startActivity(intent);
+			}
+		};
+	}
+	
+	private View.OnClickListener getForgotPasswordTextOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(context, ForgotPasswordActivity.class);
+				startActivity(intent);
 			}
 		};
 	}
@@ -287,7 +313,7 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 				mMerchantDaoService.addMerchant(mMerchant);
 			}
 			
-			DbUtil.switchDb(mMerchant.getId());
+			DbUtil.switchDb(getApplicationContext(), mMerchant.getId());
 		
 			mHttpAsyncManager = new HttpAsyncManager(context);
 			mHttpAsyncManager.syncMerchant();
@@ -309,9 +335,19 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 			user.setUserId(Constant.ROOT);
 			user.setName(Constant.ROOT);
 			
-			MerchantUtil.setMerchant(null);
 			UserUtil.setMerchant(false);
 			UserUtil.setUser(user);
+			
+			DbUtil.switchDb(this, null);
+			
+			MerchantUtil.recreateDao();
+			
+			if (MerchantUtil.getMerchant() != null) {
+				
+				mMerchantDaoService = new MerchantDaoService();
+				mMerchantDaoService.logoutMerchant(MerchantUtil.getMerchant());
+				MerchantUtil.setMerchant(null);
+			}
 			
 			mHttpAsyncManager = new HttpAsyncManager(context);
 			mHttpAsyncManager.syncMerchants();
@@ -334,91 +370,29 @@ public class MerchantLoginActivity extends Activity implements HttpAsyncListener
 	}
 	
 	@Override
-	public void setSyncProgress(int progress) {
+	protected void onSyncCompleted() {
 		
-		mProgress = progress;
-		
-		if (mProgressDialog != null) {
-			
-			mProgressDialog.setProgress(progress);
-			
-			if (progress == 100) {
-				
-				new Handler().postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						if (isActivityVisible()) {
-							mProgressDialog.dismiss();
-						}
-						
-						// case when the login is root
-						if (UserUtil.isRoot()) {
-							return;
-						}
-						
-						mMerchantDaoService = new MerchantDaoService();
-						mMerchant = mMerchantDaoService.getMerchant(mMerchant.getId());
-						mMerchant.setIsLogin(true);
-						
-						mMerchantDaoService.updateMerchant(mMerchant);
-						
-						Intent intent = new Intent(context, UserLoginActivity.class);
-						startActivity(intent);
-					}
-				}, 500);
-			}
-		}
-	}
-	
-	@Override
-	public void setSyncMessage(String message) {
-		
-		if (mProgressDialog != null) {
-			
-			mProgressDialog.setMessage(message);
-		}
-	}
-	
-	@Override
-	public void onTimeOut() {
-		
-		mProgress = 100;
-		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
+		// case when the login is root
+		if (UserUtil.isRoot()) {
+			return;
 		}
 		
-		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_server_not_connected));
-	}
-	
-	@Override
-	public void onSyncError() {
+		mMerchantDaoService = new MerchantDaoService();
+		mMerchant = mMerchantDaoService.getMerchant(mMerchant.getId());
+		mMerchant.setIsLogin(true);
 		
-		mProgress = 100;
+		mMerchantDaoService.updateMerchant(mMerchant);
 		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
-		}
-		
-		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_server_sync_error));
-	}
-	
-	@Override
-	public void onSyncError(String message) {
-		
-		mProgress = 100;
-		
-		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
-		}
-		
-		NotificationUtil.setAlertMessage(getFragmentManager(), message);
+		Intent intent = new Intent(context, UserLoginActivity.class);
+		startActivity(intent);
 	}
 	
 	private void showFailedAuthenticationMessage() {
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_merchant_authentication_error));
+	}
+	
+	@Override
+	public void onBackPressed() {
 	}
 }

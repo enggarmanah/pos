@@ -1,6 +1,5 @@
 package com.android.pos.data.cashflow;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.CodeBean;
@@ -15,6 +14,7 @@ import com.android.pos.dao.Cashflow;
 import com.android.pos.dao.CashflowDaoService;
 import com.android.pos.dao.Transactions;
 import com.android.pos.dao.TransactionsDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
@@ -124,9 +124,8 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     	
     	enableInputFields(false);
     	
-    	mandatoryFields = new ArrayList<CashflowEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mCashDateText, R.string.field_date));
-    	mandatoryFields.add(new FormField(mCashAmountText, R.string.field_amount));
+    	mandatoryFields.add(new FormFieldBean(mCashDateText, R.string.field_date));
+    	mandatoryFields.add(new FormFieldBean(mCashAmountText, R.string.field_amount));
     	
     	mCashAmountText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
     	

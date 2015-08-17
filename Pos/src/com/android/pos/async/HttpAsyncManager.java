@@ -29,6 +29,8 @@ import com.android.pos.Constant;
 import com.android.pos.Installation;
 import com.android.pos.R;
 import com.android.pos.auth.LoginListener;
+import com.android.pos.auth.RegistrationListener;
+import com.android.pos.auth.ForgotPasswordListener;
 import com.android.pos.dao.BillsDaoService;
 import com.android.pos.dao.CashflowDaoService;
 import com.android.pos.dao.CustomerDaoService;
@@ -48,7 +50,6 @@ import com.android.pos.dao.TransactionsDaoService;
 import com.android.pos.dao.User;
 import com.android.pos.dao.UserAccessDaoService;
 import com.android.pos.dao.UserDaoService;
-import com.android.pos.model.SyncBean;
 import com.android.pos.model.MerchantBean;
 import com.android.pos.model.SyncRequestBean;
 import com.android.pos.model.SyncResponseBean;
@@ -67,8 +68,7 @@ public class HttpAsyncManager {
 	private static HttpPost httpPost;
 	
 	private Context mContext;
-	private SyncBean mSync;
-	private String mSyncType;
+	private Merchant mMerchant;
 	private String mLoginId;
 	private String mPassword;
 
@@ -102,6 +102,7 @@ public class HttpAsyncManager {
 	
 	private Long startTime;
 	private Date mSyncDate;
+	private String mSyncKey;
 	
 	static {
 		mapper = new ObjectMapper();
@@ -111,8 +112,6 @@ public class HttpAsyncManager {
 	public HttpAsyncManager(Context context) {
 
 		this.mContext = context;
-		
-		mSync = new SyncBean();
 		
 		mAsyncListener = (HttpAsyncListener) context;
 
@@ -140,6 +139,9 @@ public class HttpAsyncManager {
 		
 		taskMessage = new HashMap<String, String>();
 		
+		taskMessage.put(Constant.TASK_REGISTER_MERCHANT, context.getString(R.string.task_register_merchant));
+		taskMessage.put(Constant.TASK_GET_MERCHANT_BY_LOGIN_ID, context.getString(R.string.task_get_merchant_by_login_id));
+		taskMessage.put(Constant.TASK_RESET_PASSWORD, context.getString(R.string.task_reset_password));
 		taskMessage.put(Constant.TASK_VALIDATE_MERCHANT, context.getString(R.string.task_validate_merchant));
 		taskMessage.put(Constant.TASK_VALIDATE_USER, context.getString(R.string.task_validate_user));
 		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT, context.getString(R.string.task_root_get_merchant));
@@ -260,6 +262,49 @@ public class HttpAsyncManager {
 		executeNextTask();
 	}
 	
+	public void getMerchantByLoginId(String loginId) {
+		
+		startTime = new Date().getTime();
+		
+		mLoginId = loginId;
+		
+		mTaskIndex = 0;
+		
+		mTasks.clear();
+		mTasks.add(Constant.TASK_GET_MERCHANT_BY_LOGIN_ID);
+		
+		executeNextTask();
+	}
+	
+	public void resetPassword(String loginId, String password) {
+		
+		startTime = new Date().getTime();
+		
+		mLoginId = loginId;
+		mPassword = password;
+		
+		mTaskIndex = 0;
+		
+		mTasks.clear();
+		mTasks.add(Constant.TASK_RESET_PASSWORD);
+		
+		executeNextTask();
+	}
+	
+	public void registerMerchant(Merchant merchant) {
+		
+		startTime = new Date().getTime();
+		
+		mMerchant = merchant;
+		
+		mTaskIndex = 0;
+		
+		mTasks.clear();
+		mTasks.add(Constant.TASK_REGISTER_MERCHANT);
+		
+		executeNextTask();
+	}
+	
 	public void validateUser(String userId, String password) {
 		
 		startTime = new Date().getTime();
@@ -280,8 +325,6 @@ public class HttpAsyncManager {
 		startTime = new Date().getTime();
 		
 		mTaskIndex = 0;
-		
-		mSyncType = Constant.SYNC_TYPE_MERCHANTS;
 		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
@@ -307,8 +350,6 @@ public class HttpAsyncManager {
 		startTime = new Date().getTime();
 		
 		mTaskIndex = 0;
-		
-		mSyncType = Constant.SYNC_TYPE_MERCHANT;
 		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
@@ -339,8 +380,6 @@ public class HttpAsyncManager {
 		
 		mTaskIndex = 0;
 		
-		mSyncType = Constant.SYNC_TYPE_USERS;
-		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
 		
@@ -366,8 +405,6 @@ public class HttpAsyncManager {
 		startTime = new Date().getTime();
 		
 		mTaskIndex = 0;
-		
-		mSyncType = Constant.SYNC_TYPE_ALL;
 		
 		mTasks.clear();
 		
@@ -421,8 +458,6 @@ public class HttpAsyncManager {
 		
 		mTaskIndex = 0;
 		
-		mSyncType = Constant.SYNC_TYPE_PARTIAL;
-		
 		mTasks.clear();
 		
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
@@ -433,20 +468,11 @@ public class HttpAsyncManager {
 		mGetTasks.add(Constant.TASK_GET_USER);
 		mGetTasks.add(Constant.TASK_GET_USER_ACCESS);
 		
-		if (UserUtil.isCashier() || UserUtil.isWaitress() || UserUtil.isUserHasReportsAccess() ||
-			UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER) || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER) || 
-			UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
-			
-			mGetTasks.add(Constant.TASK_GET_PRODUCT_GROUP);
-			mGetTasks.add(Constant.TASK_GET_PRODUCT);
-			mGetTasks.add(Constant.TASK_GET_DISCOUNT);
-			mGetTasks.add(Constant.TASK_GET_EMPLOYEE);
-		}
-		
-		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
-			
-			mGetTasks.add(Constant.TASK_GET_CUSTOMER);
-		}
+		mGetTasks.add(Constant.TASK_GET_PRODUCT_GROUP);
+		mGetTasks.add(Constant.TASK_GET_PRODUCT);
+		mGetTasks.add(Constant.TASK_GET_DISCOUNT);
+		mGetTasks.add(Constant.TASK_GET_EMPLOYEE);
+		mGetTasks.add(Constant.TASK_GET_CUSTOMER);
 		
 		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT) || 
 			UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) || UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW) ||
@@ -455,7 +481,7 @@ public class HttpAsyncManager {
 			mGetTasks.add(Constant.TASK_GET_SUPPLIER);
 		}
 		
-		if (UserUtil.isCashier() || UserUtil.isWaitress() || UserUtil.isUserHasReportsAccess() ||
+		if (UserUtil.isCashier() || UserUtil.isEmployee() || UserUtil.isUserHasReportsAccess() ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER) || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
 			
 			mGetTasks.add(Constant.TASK_GET_TRANSACTION);
@@ -473,7 +499,7 @@ public class HttpAsyncManager {
 			mGetTasks.add(Constant.TASK_GET_CASHFLOW);
 		}
 		
-		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+		if (UserUtil.isCashier() || UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
 			
 			mGetTasks.add(Constant.TASK_GET_INVENTORY);
 		}
@@ -484,20 +510,11 @@ public class HttpAsyncManager {
 		mUpdateTasks.add(Constant.TASK_UPDATE_USER);
 		mUpdateTasks.add(Constant.TASK_UPDATE_USER_ACCESS);
 		
-		if (UserUtil.isCashier() || UserUtil.isWaitress() || UserUtil.isUserHasReportsAccess() ||
-			UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER) || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER) || 
-			UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
-			
-			mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT_GROUP);
-			mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT);
-			mUpdateTasks.add(Constant.TASK_UPDATE_DISCOUNT);
-			mUpdateTasks.add(Constant.TASK_UPDATE_EMPLOYEE);
-		}
-		
-		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
-			
-			mUpdateTasks.add(Constant.TASK_UPDATE_CUSTOMER);
-		}
+		mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT_GROUP);
+		mUpdateTasks.add(Constant.TASK_UPDATE_PRODUCT);
+		mUpdateTasks.add(Constant.TASK_UPDATE_DISCOUNT);
+		mUpdateTasks.add(Constant.TASK_UPDATE_EMPLOYEE);
+		mUpdateTasks.add(Constant.TASK_UPDATE_CUSTOMER);
 		
 		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT) || 
 			UserUtil.isUserHasAccess(Constant.ACCESS_BILLS) || UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW) ||
@@ -506,7 +523,7 @@ public class HttpAsyncManager {
 			mUpdateTasks.add(Constant.TASK_UPDATE_SUPPLIER);
 		}
 		
-		if (UserUtil.isCashier() || UserUtil.isWaitress() || UserUtil.isUserHasReportsAccess() ||
+		if (UserUtil.isCashier() || UserUtil.isEmployee() || UserUtil.isUserHasReportsAccess() ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER) || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
 			
 			mUpdateTasks.add(Constant.TASK_UPDATE_TRANSACTION);
@@ -524,7 +541,7 @@ public class HttpAsyncManager {
 			mUpdateTasks.add(Constant.TASK_UPDATE_CASHFLOW);
 		}
 		
-		if (UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+		if (UserUtil.isCashier() || UserUtil.isUserHasReportsAccess() || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
 			
 			mUpdateTasks.add(Constant.TASK_UPDATE_INVENTORY);
 		}
@@ -542,8 +559,6 @@ public class HttpAsyncManager {
 		startTime = new Date().getTime();
 		
 		mTaskIndex = 0;
-		
-		mSyncType = Constant.SYNC_TYPE_ORDERS;
 		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
@@ -569,8 +584,6 @@ public class HttpAsyncManager {
 		startTime = new Date().getTime();
 		
 		mTaskIndex = 0;
-		
-		mSyncType = Constant.SYNC_TYPE_PRODUCTS;
 		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_GET_LAST_SYNC);
@@ -684,12 +697,41 @@ public class HttpAsyncManager {
 			
 			request.setMerchant_id(merchantId);
 			request.setUuid(Installation.getInstallationId(mContext));
-			request.setLast_sync_date(mSync.getLast_sync_date());
+			request.setSync_key(mSyncKey);
 			request.setSync_date(mSyncDate);
 			
-			if (Constant.TASK_VALIDATE_MERCHANT.equals(tasks[0])) {
+			if (Constant.TASK_REGISTER_MERCHANT.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/merchantRegisterJsonServlet";
+
+				MerchantBean merchant = BeanUtil.getBean(mMerchant);
+				
+				request.setMerchant(merchant);
+
+			} else if (Constant.TASK_VALIDATE_MERCHANT.equals(tasks[0])) {
 				
 				url = Config.SERVER_URL + "/merchantValidateJsonServlet";
+
+				MerchantBean merchant = new MerchantBean();
+				
+				merchant.setLogin_id(mLoginId);
+				merchant.setPassword(mPassword);
+				
+				request.setMerchant(merchant);
+
+			} else if (Constant.TASK_GET_MERCHANT_BY_LOGIN_ID.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/merchantGetByLoginIdJsonServlet";
+
+				MerchantBean merchant = new MerchantBean();
+				
+				merchant.setLogin_id(mLoginId);
+				
+				request.setMerchant(merchant);
+
+			} else if (Constant.TASK_RESET_PASSWORD.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/merchantResetPasswordJsonServlet";
 
 				MerchantBean merchant = new MerchantBean();
 				
@@ -717,13 +759,6 @@ public class HttpAsyncManager {
 
 				url = Config.SERVER_URL + "/getLastSyncJsonServlet";
 
-				SyncBean sync = new SyncBean();
-				
-				sync.setMerchant_id(merchantId);
-				sync.setSync_type(mSyncType);
-				sync.setUuid(Installation.getInstallationId(mContext));
-				
-				request.setSync(sync);
 				request.setGetRequests(mGetTasks);
 
 			} else if (Constant.TASK_GET_ORDER.equals(tasks[0])) {
@@ -904,9 +939,7 @@ public class HttpAsyncManager {
 
 				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
 				
-				//mSync.setLast_sync_date(mSyncDate);
-				
-				request.setSync(mSync);
+				request.setGetRequests(mGetTasks);
 			}
 			
 			return POST(url, request);
@@ -921,11 +954,26 @@ public class HttpAsyncManager {
 				
 				if (SyncResponseBean.ERROR.equals(resp.getRespCode())) {
 					
-					mAsyncListener.onSyncError(resp.getRespDescription());
+					mAsyncListener.onSyncError(getErrorDescription(resp.getRespDescription()));
 					
 				} else if (SyncResponseBean.SUCCESS.equals(resp.getRespCode())) {
 					
-					if (Constant.TASK_VALIDATE_MERCHANT.equals(task)) {
+					if (Constant.TASK_REGISTER_MERCHANT.equals(task)) {
+						
+						MerchantBean bean =  resp.getMerchant();
+						
+						Merchant merchant = null;
+						
+						if (bean != null) {
+							
+							merchant = new Merchant();
+							BeanUtil.updateBean(merchant, bean);
+						}
+						
+						RegistrationListener mRegistrationListener = (RegistrationListener) mContext;
+						mRegistrationListener.onMerchantRegistered(merchant);
+						
+					} else if (Constant.TASK_VALIDATE_MERCHANT.equals(task)) {
 	
 						MerchantBean bean =  resp.getMerchant();
 						
@@ -939,6 +987,36 @@ public class HttpAsyncManager {
 						
 						LoginListener mLoginListener = (LoginListener) mContext;
 						mLoginListener.onMerchantValidated(merchant);
+						
+					} else if (Constant.TASK_GET_MERCHANT_BY_LOGIN_ID.equals(task)) {
+	
+						MerchantBean bean =  resp.getMerchant();
+						
+						Merchant merchant = null;
+						
+						if (bean != null) {
+							
+							merchant = new Merchant();
+							BeanUtil.updateBean(merchant, bean);
+						}
+						
+						ForgotPasswordListener mResetPasswordListener = (ForgotPasswordListener) mContext;
+						mResetPasswordListener.onMerchantRetrieved(merchant);
+						
+					}  else if (Constant.TASK_RESET_PASSWORD.equals(task)) {
+	
+						MerchantBean bean =  resp.getMerchant();
+						
+						Merchant merchant = null;
+						
+						if (bean != null) {
+							
+							merchant = new Merchant();
+							BeanUtil.updateBean(merchant, bean);
+						}
+						
+						ForgotPasswordListener mResetPasswordListener = (ForgotPasswordListener) mContext;
+						mResetPasswordListener.onMerchantRetrieved(merchant);
 						
 					} else if (Constant.TASK_VALIDATE_USER.equals(task)) {
 	
@@ -958,8 +1036,8 @@ public class HttpAsyncManager {
 						
 					} else if (Constant.TASK_GET_LAST_SYNC.equals(task)) {
 	
-						mSync = resp.getSync();
 						mSyncDate = resp.getRespDate();
+						mSyncKey = resp.getSync_key();
 						
 						mTasks.remove(0);
 						mTaskIndex--;
@@ -1110,8 +1188,6 @@ public class HttpAsyncManager {
 	
 					} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(task)) {
 	
-						mSync = resp.getSync();
-						
 						if (mContext instanceof LoginListener) {
 							
 							LoginListener mLoginListener = (LoginListener) mContext;
@@ -1216,5 +1292,25 @@ public class HttpAsyncManager {
 		}
 		
 		return result;
+	}
+	
+	public String getErrorDescription(String code) {
+		
+		String errorDesc = Constant.EMPTY_STRING;
+		
+		if (Constant.ERROR_INVALID_TOKEN.equals(code)) {
+			errorDesc = mContext.getString(R.string.error_invalid_token);
+		
+		} else if (Constant.ERROR_SERVICE_EXPIRED.equals(code)) {
+			errorDesc = mContext.getString(R.string.error_service_expired);
+		
+		} else if (Constant.ERROR_COULD_NOT_OBTAINED_LOCK.equals(code)) {
+			errorDesc = mContext.getString(R.string.error_could_not_obtained_lock);
+		
+		} else if (Constant.ERROR_REGISTER_MERCHANT_CONFLICT.equals(code)) {
+			errorDesc = mContext.getString(R.string.error_register_merchant_conflict);
+		}
+		
+		return errorDesc;
 	}
 }

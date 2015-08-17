@@ -15,7 +15,7 @@ public class ServerUtil {
 	
 	private static SimpleDateFormat dateTimeDtf = new SimpleDateFormat("dd/MM/yyyy kk:mm");
 	
-	public static Date getStartDate() {
+	public static Date getSystemStartDate() {
 		
 		return strTodateTime("01/01/2015 00:00");
 	}
@@ -115,69 +115,6 @@ public class ServerUtil {
 		int day = cal.get(Calendar.DAY_OF_WEEK);
 		
 		return day;
-	}
-	
-	public static String dateDayTimeToStr(Date date) {
-		
-		String strDate = "";
-		try {
-			
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(date);
-			int day = cal.get(Calendar.DAY_OF_WEEK);
-			String dayStr = "";
-			
-			switch (day) {
-				case Calendar.MONDAY: dayStr = "Senin";
-			    		break;
-				case Calendar.TUESDAY: dayStr = "Selasa";
-	    				break;
-				case Calendar.WEDNESDAY: dayStr = "Rabu";
-					    break;
-				case Calendar.THURSDAY: dayStr = "Kamis";
-			    		break;
-				case Calendar.FRIDAY: dayStr = "Jumat";
-						break;
-				case Calendar.SATURDAY: dayStr = "Sabtu";
-						break;
-				case Calendar.SUNDAY: dayStr = "Minggu";
-			    		break;
-			}
-			
-			strDate = dayStr + ", " + dateTimeDtf.format(date);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return strDate;
-	}
-	
-	public static String dayToStr(int day) {
-		
-		String dayStr = "";
-		try {
-			
-			switch (day) {
-				case Calendar.MONDAY: dayStr = "Senin";
-			    		break;
-				case Calendar.TUESDAY: dayStr = "Selasa";
-	    				break;
-				case Calendar.WEDNESDAY: dayStr = "Rabu";
-					    break;
-				case Calendar.THURSDAY: dayStr = "Kamis";
-			    		break;
-				case Calendar.FRIDAY: dayStr = "Jumat";
-						break;
-				case Calendar.SATURDAY: dayStr = "Sabtu";
-						break;
-				case Calendar.SUNDAY: dayStr = "Minggu";
-			    		break;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return dayStr;
 	}
 	
 	public static String timeToStr(int i) {

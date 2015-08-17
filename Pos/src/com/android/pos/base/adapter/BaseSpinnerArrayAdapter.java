@@ -14,9 +14,9 @@ public abstract class BaseSpinnerArrayAdapter<T> extends ArrayAdapter<T> {
 	protected Context context;
 	protected T[] options;
 	
-	int mListNormalLayout = R.layout.app_spinner_items; 
-	int mListSelectedLayout = R.layout.app_spinner_items_selected;
-	int mItemSelected = R.layout.app_spinner_selected_item;
+	protected int mListNormalLayout = R.layout.app_spinner_items; 
+	protected int mListSelectedLayout = R.layout.app_spinner_items_selected;
+	protected int mItemSelected = R.layout.app_spinner_selected_item;
 	
 	public BaseSpinnerArrayAdapter(Context context, T[] options) {
 		

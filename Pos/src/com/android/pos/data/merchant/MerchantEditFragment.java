@@ -15,6 +15,7 @@ import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantAccess;
 import com.android.pos.dao.MerchantAccessDaoService;
 import com.android.pos.dao.MerchantDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.model.PaymentTypeStatus;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
@@ -52,6 +53,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     EditText mPriceLabel1Text;
     EditText mPriceLabel2Text;
     EditText mPriceLabel3Text;
+    EditText mSecurityQuestionText;
+    EditText mSecurityAnswerText;
     
     LinearLayout mPriceLabel1Panel;
     LinearLayout mPriceLabel2Panel;
@@ -123,6 +126,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mPriceLabel1Text = (EditText) view.findViewById(R.id.priceLabel1Text);
     	mPriceLabel2Text = (EditText) view.findViewById(R.id.priceLabel2Text);
     	mPriceLabel3Text = (EditText) view.findViewById(R.id.priceLabel3Text);
+    	mSecurityQuestionText = (EditText) view.findViewById(R.id.securityQuestionText);
+    	mSecurityAnswerText = (EditText) view.findViewById(R.id.securityAnswerText);
     	mTaxText = (EditText) view.findViewById(R.id.taxText);
     	mServiceChargeText = (EditText) view.findViewById(R.id.serviceChargeText);
     	mPriceTypeCountSp = (Spinner) view.findViewById(R.id.priceTypeCountSp);
@@ -142,10 +147,11 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	accessRightRowPanel = (LinearLayout) view.findViewById(R.id.accessRightsRowPanel);
     	accessRightPanel = (LinearLayout) view.findViewById(R.id.accessRightsPanel);
     	
-    	registerRootField(mNameText);
+    	/*registerRootField(mNameText);
     	registerRootField(mTypeSp);
     	registerRootField(mAddressText);
-    	registerRootField(mTelephoneText);
+    	registerRootField(mTelephoneText);*/
+    	
     	registerRootField(mPeriodStartDate);
     	registerRootField(mPeriodEndDate);
     	
@@ -163,6 +169,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mPriceLabel1Text);
     	registerField(mPriceLabel2Text);
     	registerField(mPriceLabel3Text);
+    	registerField(mSecurityQuestionText);
+    	registerField(mSecurityAnswerText);
     	registerField(mTaxText);
     	registerField(mPriceTypeCountSp);
     	registerField(mDiscountTypeSp);
@@ -170,8 +178,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mStatusSp);
     	
     	enableInputFields(false);
-    	
-    	mandatoryFields = new ArrayList<MerchantEditFragment.FormField>();
     	
     	mPeriodStartDate.setOnClickListener(getDateFieldOnClickListener("startDatePicker"));
         mPeriodEndDate.setOnClickListener(getDateFieldOnClickListener("endDatePicker"));
@@ -221,6 +227,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mPriceLabel1Text.setText(merchant.getPriceLabel1());
     		mPriceLabel2Text.setText(merchant.getPriceLabel2());
     		mPriceLabel3Text.setText(merchant.getPriceLabel3());
+    		mSecurityQuestionText.setText(CommonUtil.getNvlString(merchant.getSecurityQuestion()));
+    		mSecurityAnswerText.setText(CommonUtil.getNvlString(merchant.getSecurityAnswer()));
     		
     		mTaxText.setText(CommonUtil.formatString(merchant.getTaxPercentage()));
     		mServiceChargeText.setText(CommonUtil.formatString(merchant.getServiceChargePercentage()));
@@ -370,6 +378,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	String priceLabel1 = mPriceLabel1Text.getText().toString();
     	String priceLabel2 = mPriceLabel2Text.getText().toString();
     	String priceLabel3 = mPriceLabel3Text.getText().toString();
+    	String securityQuestion = mSecurityQuestionText.getText().toString();
+    	String securityAnswer = mSecurityAnswerText.getText().toString();
     	String discountType = CodeBean.getNvlCode((CodeBean) mDiscountTypeSp.getSelectedItem());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
@@ -390,6 +400,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setPriceLabel1(priceLabel1);
     		mItem.setPriceLabel2(priceLabel2);
     		mItem.setPriceLabel3(priceLabel3);
+    		mItem.setSecurityQuestion(securityQuestion);
+    		mItem.setSecurityAnswer(securityAnswer);
     		mItem.setTaxPercentage(tax);
     		mItem.setServiceChargePercentage(serviceCharge);
     		mItem.setDiscountType(discountType);
@@ -476,6 +488,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 	        mPriceLabel1Text.getText().clear();
 	        mPriceLabel2Text.getText().clear();
 	        mPriceLabel3Text.getText().clear();
+	        mSecurityQuestionText.getText().clear();
+	        mSecurityAnswerText.getText().clear();
 	        mTaxText.getText().clear();
 	        mServiceChargeText.getText().clear();
 	        
@@ -575,24 +589,26 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mPriceLabel3Panel.setVisibility(View.GONE);
     	
 		mandatoryFields.clear();
-		mandatoryFields.add(new FormField(mNameText, R.string.field_name));
-    	mandatoryFields.add(new FormField(mAddressText, R.string.field_address));
-    	mandatoryFields.add(new FormField(mContactNameText, R.string.field_contact_name));
-    	mandatoryFields.add(new FormField(mContactTelephoneText, R.string.field_contact_telephone));
-    	mandatoryFields.add(new FormField(mLoginIdText, R.string.field_login_id));
-    	mandatoryFields.add(new FormField(mPasswordText, R.string.field_password));
-    	mandatoryFields.add(new FormField(mPeriodStartDate, R.string.field_period_start));
-    	mandatoryFields.add(new FormField(mPeriodEndDate, R.string.field_period_end));
-    	mandatoryFields.add(new FormField(mTaxText, R.string.field_tax_percentage));
-    	mandatoryFields.add(new FormField(mServiceChargeText, R.string.field_service_charge_percentage));
+		mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormFieldBean(mAddressText, R.string.field_address));
+    	mandatoryFields.add(new FormFieldBean(mContactNameText, R.string.field_contact_name));
+    	mandatoryFields.add(new FormFieldBean(mContactTelephoneText, R.string.field_contact_telephone));
+    	mandatoryFields.add(new FormFieldBean(mLoginIdText, R.string.field_login_id));
+    	mandatoryFields.add(new FormFieldBean(mPasswordText, R.string.field_password));
+    	mandatoryFields.add(new FormFieldBean(mPeriodStartDate, R.string.field_period_start));
+    	mandatoryFields.add(new FormFieldBean(mPeriodEndDate, R.string.field_period_end));
+    	mandatoryFields.add(new FormFieldBean(mTaxText, R.string.field_tax_percentage));
+    	mandatoryFields.add(new FormFieldBean(mServiceChargeText, R.string.field_service_charge_percentage));
+    	mandatoryFields.add(new FormFieldBean(mSecurityQuestionText, R.string.security_question));
+    	mandatoryFields.add(new FormFieldBean(mSecurityAnswerText, R.string.security_answer));
 		
     	if (priceTypeCount == 2) {
     		
     		mPriceLabel1Panel.setVisibility(View.VISIBLE);
     		mPriceLabel2Panel.setVisibility(View.VISIBLE);	
     		
-    		mandatoryFields.add(new FormField(mPriceLabel1Text, R.string.field_price_label_1));
-    		mandatoryFields.add(new FormField(mPriceLabel2Text, R.string.field_price_label_2));
+    		mandatoryFields.add(new FormFieldBean(mPriceLabel1Text, R.string.field_price_label_1));
+    		mandatoryFields.add(new FormFieldBean(mPriceLabel2Text, R.string.field_price_label_2));
     		
     	} else if (priceTypeCount == 3) {
     		
@@ -600,9 +616,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mPriceLabel2Panel.setVisibility(View.VISIBLE);	
     		mPriceLabel3Panel.setVisibility(View.VISIBLE);
     		
-    		mandatoryFields.add(new FormField(mPriceLabel1Text, R.string.field_price_label_1));
-    		mandatoryFields.add(new FormField(mPriceLabel2Text, R.string.field_price_label_2));
-    		mandatoryFields.add(new FormField(mPriceLabel3Text, R.string.field_price_label_3));
+    		mandatoryFields.add(new FormFieldBean(mPriceLabel1Text, R.string.field_price_label_1));
+    		mandatoryFields.add(new FormFieldBean(mPriceLabel2Text, R.string.field_price_label_2));
+    		mandatoryFields.add(new FormFieldBean(mPriceLabel3Text, R.string.field_price_label_3));
     	}
     	
     	highlightMandatoryFields();
@@ -640,5 +656,19 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	}
     	
     	return paymentTypeStatuses;
+    }
+    
+    protected boolean isValidated() {
+    	
+    	if (super.isValidated()) {
+    		if (CommonUtil.isEmpty(mItem.getPaymentType())) {
+    			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_no_payment_type));
+    			return false;
+    		} else {
+    			return true;
+    		}
+    	} else {
+    		return false;
+    	}
     }
 }

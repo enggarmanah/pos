@@ -1,6 +1,5 @@
 package com.android.pos.data.product;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.ProductGroup;
 import com.android.pos.dao.ProductGroupDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
@@ -132,9 +132,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	
     	enableInputFields(false);
     	
-    	mandatoryFields = new ArrayList<ProductEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
-    	mandatoryFields.add(new FormField(mPrice1Text, R.string.field_price));
+    	mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormFieldBean(mPrice1Text, R.string.field_price));
     	
     	mPrice1Text.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
     	mPrice2Text.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());

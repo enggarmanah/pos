@@ -1,6 +1,5 @@
 package com.android.pos.data.discount;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.Constant;
@@ -8,6 +7,7 @@ import com.android.pos.R;
 import com.android.pos.base.fragment.BaseEditFragment;
 import com.android.pos.dao.Discount;
 import com.android.pos.dao.DiscountDaoService;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
@@ -54,9 +54,8 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
         
         enableInputFields(false);
         
-        mandatoryFields = new ArrayList<DiscountEditFragment.FormField>();
-    	mandatoryFields.add(new FormField(mNameText, R.string.field_name));
-    	mandatoryFields.add(new FormField(mPercentageText, R.string.field_percentage));
+        mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
+    	mandatoryFields.add(new FormFieldBean(mPercentageText, R.string.field_percentage));
     }
     
     @Override

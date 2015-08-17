@@ -43,7 +43,14 @@ public class Merchant {
 	private String printer_mini_font;
     private Integer printer_line_size;
     private String printer_required;
+    private String locale;
+    private String security_question;
+    private String security_answer;
+    private String last_sync_key;
 	
+    @Temporal(TemporalType.TIMESTAMP)
+	protected Date last_sync_date;
+    
 	private String status;
 	
 	protected String create_by;
@@ -85,6 +92,9 @@ public class Merchant {
 		this.printer_required = bean.getPrinter_required();
 		this.printer_mini_font = bean.getPrinter_mini_font();
 		this.printer_line_size = bean.getPrinter_line_size();
+		this.locale = bean.getLocale();
+		this.security_question = bean.getSecurity_question();
+		this.security_answer = bean.getSecurity_answer();
 		this.status = bean.getStatus();
 
 		this.remote_id = bean.getRemote_id();
@@ -294,6 +304,46 @@ public class Merchant {
 
 	public void setPrinter_required(String printer_required) {
 		this.printer_required = printer_required;
+	}
+	
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+	
+	public String getSecurity_question() {
+		return security_question;
+	}
+
+	public void setSecurity_question(String security_question) {
+		this.security_question = security_question;
+	}
+
+	public String getSecurity_answer() {
+		return security_answer;
+	}
+
+	public void setSecurity_answer(String security_answer) {
+		this.security_answer = security_answer;
+	}
+
+	public String getLast_sync_key() {
+		return last_sync_key;
+	}
+
+	public void setLast_sync_key(String last_sync_key) {
+		this.last_sync_key = last_sync_key;
+	}
+
+	public Date getLast_sync_date() {
+		return last_sync_date;
+	}
+
+	public void setLast_sync_date(Date last_sync_date) {
+		this.last_sync_date = last_sync_date;
 	}
 
 	public String getStatus() {

@@ -7,6 +7,7 @@ import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.fragment.BaseFragment;
 import com.android.pos.base.listener.BaseItemListener;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
@@ -37,11 +38,11 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     
     protected boolean isEnableInputFields = false;
     
-    protected List<FormField> mandatoryFields;
+    protected List<FormFieldBean> mandatoryFields = new ArrayList<FormFieldBean>();
 	
 	protected boolean isValidated() {
     	
-    	for (FormField field : mandatoryFields) {
+    	for (FormFieldBean field : mandatoryFields) {
     		
     		View input = field.getField();
     		String value = null;
@@ -78,7 +79,7 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     		}
 		}
 		
-    	for (FormField field : mandatoryFields) {
+    	for (FormFieldBean field : mandatoryFields) {
     		
     		View input = field.getField();
     		String value = null;
@@ -404,33 +405,5 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     public void addItem(T item) {
     	
     	this.mItem = item;
-    }
-    
-    protected class FormField {
-
-		View field;
-		int label;
-		
-		public FormField(View field, int label) {
-			
-			this.field = field;
-			this.label = label;
-		}
-		
-		public View getField() {
-			return field;
-		}
-
-		public void setField(View field) {
-			this.field = field;
-		}
-
-		public int getLabel() {
-			return label;
-		}
-
-		public void setLabel(int label) {
-			this.label = label;
-		}
     }
 }

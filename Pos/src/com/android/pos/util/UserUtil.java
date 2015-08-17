@@ -22,7 +22,7 @@ public class UserUtil {
 		
 		if (mUser == null && Config.isDebug()) {
 			
-			DbUtil.switchDb(MerchantUtil.getMerchantId());
+			DbUtil.switchDb(null, MerchantUtil.getMerchantId());
 			
 			mUserDaoService = new UserDaoService();
 			mUserAccessDaoService = new UserAccessDaoService();
@@ -94,6 +94,15 @@ public class UserUtil {
 		}
 		
 		return Constant.USER_ROLE_WAITRESS.equals(getUser().getRole());
+	}
+	
+	public static boolean isEmployee() {
+		
+		if (getUser() == null) {
+			return false;
+		}
+		
+		return Constant.USER_ROLE_EMPLOYEE.equals(getUser().getRole());
 	}
 	
 	public static boolean isRoot() {

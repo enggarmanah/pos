@@ -6,14 +6,12 @@ import java.util.List;
 public class SyncRequest {
 
 	protected Long merchant_id;
-	protected String sync_type;
-	protected Date last_sync_date;
+	protected String sync_key;
 	protected Date sync_date;
 	protected String uuid;
 	
 	protected List<String> getRequests;
 	
-	protected Sync sync;
 	protected Merchant merchant;
 	protected User user;
 	
@@ -34,6 +32,14 @@ public class SyncRequest {
 	protected List<Transactions> transactions;
 	protected List<UserAccess> userAccesses;
 	protected List<User> users;
+	
+	public String getSync_key() {
+		return sync_key;
+	}
+
+	public void setSync_key(String sync_key) {
+		this.sync_key = sync_key;
+	}
 
 	public Long getMerchant_id() {
 		return merchant_id;
@@ -41,22 +47,6 @@ public class SyncRequest {
 
 	public void setMerchant_id(Long merchant_id) {
 		this.merchant_id = merchant_id;
-	}
-	
-	public String getSync_type() {
-		return sync_type;
-	}
-
-	public void setSync_type(String sync_type) {
-		this.sync_type = sync_type;
-	}
-
-	public Date getLast_sync_date() {
-		return last_sync_date;
-	}
-
-	public void setLast_sync_date(Date last_sync_date) {
-		this.last_sync_date = last_sync_date;
 	}
 	
 	public Date getSync_date() {
@@ -81,14 +71,6 @@ public class SyncRequest {
 
 	public void setGetRequests(List<String> getRequests) {
 		this.getRequests = getRequests;
-	}
-
-	public Sync getSync() {
-		return sync;
-	}
-
-	public void setSync(Sync sync) {
-		this.sync = sync;
 	}
 
 	public Merchant getMerchant() {

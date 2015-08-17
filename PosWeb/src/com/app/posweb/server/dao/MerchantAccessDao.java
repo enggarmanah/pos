@@ -1,6 +1,5 @@
 package com.app.posweb.server.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,9 +9,13 @@ import javax.persistence.TypedQuery;
 
 import com.app.posweb.server.PersistenceManager;
 import com.app.posweb.server.model.MerchantAccess;
+import com.app.posweb.server.model.Sync;
 import com.app.posweb.server.model.SyncRequest;
+import com.app.posweb.shared.Constant;
 
 public class MerchantAccessDao {
+	
+	SyncDao syncDao = new SyncDao();
 	
 	public MerchantAccess syncMerchantAccess(MerchantAccess merchantAccess) {
 		
@@ -83,6 +86,8 @@ public class MerchantAccessDao {
 	
 	public List<MerchantAccess> getMerchantAccesses(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT_ACCESS);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
@@ -91,8 +96,8 @@ public class MerchantAccessDao {
 		
 		TypedQuery<MerchantAccess> query = em.createQuery(sql.toString(), MerchantAccess.class);
 		
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		List<MerchantAccess> result = query.getResultList();
 		
@@ -103,6 +108,8 @@ public class MerchantAccessDao {
 	
 	public List<MerchantAccess> getAllMerchantAccesses(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT_ACCESS);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT m FROM MerchantAccess m WHERE sync_date > :lastSyncDate");
@@ -111,7 +118,7 @@ public class MerchantAccessDao {
 		
 		TypedQuery<MerchantAccess> query = em.createQuery(sql.toString(), MerchantAccess.class);
 		
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		List<MerchantAccess> result = query.getResultList();
 		
@@ -122,14 +129,16 @@ public class MerchantAccessDao {
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT_ACCESS);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE merchant_id = :merchantId AND sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		
-		query.setParameter("merchantId", syncRequest.getMerchant_id());
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("merchantId", sync.getMerchant_id());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		long count = (long) query.getSingleResult();
 		
@@ -140,49 +149,20 @@ public class MerchantAccessDao {
 	
 	public boolean hasRootUpdate(SyncRequest syncRequest) {
 		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT_ACCESS);
+		
 		EntityManager em = PersistenceManager.getEntityManager();
 		
 		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE sync_date > :lastSyncDate");
 		
 		Query query = em.createQuery(sql.toString());
 		
-		query.setParameter("lastSyncDate", syncRequest.getLast_sync_date());
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
 		long count = (long) query.getSingleResult();
 		
 		em.close();
 
 		return (count > 0);
-	}
-	
-	public void updateSyncDate(SyncRequest syncRequest, Date syncDate) {
-		
-		EntityManager em = PersistenceManager.getEntityManager();
-		
-		StringBuffer sql = new StringBuffer();
-		
-		if (syncRequest.getMerchant_id() != -1) {
-			sql.append("UPDATE MerchantAccess m SET sync_date = :syncDate WHERE merchant_id = :merchantId AND sync_date = :lastSyncDate ");
-		} else {
-			sql.append("UPDATE MerchantAccess m SET sync_date = :syncDate WHERE sync_date = :lastSyncDate ");
-		}
-		
-		Query query = em.createQuery(sql.toString());
-		
-		if (syncRequest.getMerchant_id() != -1) {
-			
-			query.setParameter("merchantId", syncRequest.getMerchant_id());
-			query.setParameter("lastSyncDate", syncRequest.getSync_date());
-			query.setParameter("syncDate", syncDate);
-			
-		} else {
-			
-			query.setParameter("lastSyncDate", syncRequest.getSync_date());
-			query.setParameter("syncDate", syncDate);
-		}
-		
-		query.executeUpdate();
-		
-		em.close();
 	}
 }

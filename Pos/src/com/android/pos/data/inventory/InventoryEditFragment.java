@@ -1,6 +1,5 @@
 package com.android.pos.data.inventory;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.android.pos.CodeBean;
@@ -15,6 +14,7 @@ import com.android.pos.dao.InventoryDaoService;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDaoService;
 import com.android.pos.dao.Supplier;
+import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CodeUtil;
 import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
@@ -122,8 +122,6 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	registerField(mRemarksText);
     	
     	enableInputFields(false);
-    	
-    	mandatoryFields = new ArrayList<InventoryEditFragment.FormField>();
     	
     	mProductCostPriceText.setOnFocusChangeListener(getCurrencyFieldOnFocusChangeListener());
     	mQuantityText.setOnFocusChangeListener(getNumberFieldOnFocusChangeListener());
@@ -364,28 +362,28 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
 		
 		if (Constant.INVENTORY_STATUS_PURCHASE.equals(mStatus)) {
 			
-			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
-	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
-	    	mandatoryFields.add(new FormField(mBillsReferenceNoText, R.string.field_bills_reference_no));
-	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+			mandatoryFields.add(new FormFieldBean(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormFieldBean(mBillsReferenceNoText, R.string.field_bills_reference_no));
+	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
 		
 		} else if (Constant.INVENTORY_STATUS_RETURN.equals(mStatus)) {
 			
 			mProductCostPricePanel.setVisibility(View.GONE);
 			
-			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
-	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
-	    	mandatoryFields.add(new FormField(mBillsReferenceNoText, R.string.field_bills_reference_no));
-	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+			mandatoryFields.add(new FormFieldBean(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormFieldBean(mBillsReferenceNoText, R.string.field_bills_reference_no));
+	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
 		
 		} else if (Constant.INVENTORY_STATUS_REPLACEMENT.equals(mStatus)) {
 			
 			mProductCostPricePanel.setVisibility(View.GONE);
 			
-			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
-	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
-	    	mandatoryFields.add(new FormField(mBillsReferenceNoText, R.string.field_bills_reference_no));
-	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+			mandatoryFields.add(new FormFieldBean(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormFieldBean(mBillsReferenceNoText, R.string.field_bills_reference_no));
+	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
 		
 		} else if (Constant.INVENTORY_STATUS_LOST.equals(mStatus)) {
 			
@@ -393,9 +391,9 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
 			mBillsReferenceNoPanel.setVisibility(View.GONE);
 			mSupplierPanel.setVisibility(View.GONE);
 			
-			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
-	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
-	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+			mandatoryFields.add(new FormFieldBean(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
 			
 		} else if (Constant.INVENTORY_STATUS_DAMAGE.equals(mStatus)) {
 			
@@ -403,9 +401,9 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
 			mBillsReferenceNoPanel.setVisibility(View.GONE);
 			mSupplierPanel.setVisibility(View.GONE);
 			
-			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
-	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
-	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+			mandatoryFields.add(new FormFieldBean(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
 			
 		}  else if (Constant.INVENTORY_STATUS_INITIAL_STOCK.equals(mStatus)) {
 			
@@ -413,9 +411,9 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
 			mBillsReferenceNoPanel.setVisibility(View.GONE);
 			mSupplierPanel.setVisibility(View.GONE);
 			
-			mandatoryFields.add(new FormField(mProductNameText, R.string.field_product));
-	    	mandatoryFields.add(new FormField(mQuantityText, R.string.field_quantity));
-	    	mandatoryFields.add(new FormField(mInventoryDate, R.string.field_delivery_date));
+			mandatoryFields.add(new FormFieldBean(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
+	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
 		}
 		
 		highlightMandatoryFields();
