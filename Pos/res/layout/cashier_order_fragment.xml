@@ -80,7 +80,8 @@
             android:background="@color/payment_btn_background"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="8dp" >
+            android:padding="8dp"
+            android:baselineAligned="false">
 
             <FrameLayout
                 android:id="@+id/paymentPanel"
@@ -112,11 +113,16 @@
                     android:text="@string/ok" />
             </FrameLayout>
             
-            <TextView
-                android:id="@+id/orderDivider"
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:background="@color/payment_btn_text" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent">
+                
+	            <TextView
+	                android:id="@+id/orderDivider"
+	                android:layout_width="1dp"
+	                android:layout_height="fill_parent"
+	                android:background="@color/payment_btn_text" />
+            </FrameLayout>
             
             <FrameLayout
                 android:id="@+id/orderPanel"
@@ -132,12 +138,17 @@
                     android:drawablePadding="10dp"
                     android:text="@string/order" />
             </FrameLayout>
-
-            <TextView
-                android:layout_width="1dp"
+			
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent">
+            	
+            	<TextView
+                android:layout_width="0.5dp"
                 android:layout_height="fill_parent"
-                android:background="@color/payment_btn_text" />
-
+                android:background="@color/payment_btn_text" />    
+            </FrameLayout>
+            
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

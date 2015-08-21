@@ -33,11 +33,13 @@
     
     <string name="registration">Registrasi</string>
     <string name="merchant_name">Nama Merchant</string>
-    <string name="security_question">Pertanyaan Rahasia</string>
-    <string name="security_question_fl">P</string>
-    <string name="security_answer">Jawaban Pertanyaan</string>
-    <string name="security_answer_fl">J</string>
-    <string name="password_confirm">Konfirmasi Password</string>
+    <string name="merchant_activation_title">Aktivasi Merchant</string>
+    <string name="merchant_activation_hint">Kode Aktivasi</string>
+    
+    <string name="forgot_password_login_id">Silahkan input Login Id anda</string>
+    
+    <string name="resend_activation_code">Kirim Ulang Kode Aktivasi</string>
+    <string name="resend_activation_code_info">Silahkan input email anda</string>
     
     <string name="info_quantity">Jumlah</string>
     <string name="info_revenue">Pendapatan</string>
@@ -102,7 +104,9 @@
     <string name="msg_data_save_success">Data telah berhasil disimpan</string>
     <string name="msg_register_user">Silahkan register akun pengguna untuk dapat mengakses fungsionalitas sistem</string>
     <string name="msg_reset_password_success">Penggantian password telah berhasil !</string>
+    <string name="msg_merchant_registration_info">Kode aktivasi akan dikirim ke email anda</string>
     <string name="msg_merchant_registration_success">Registrasi merchant telah berhasil !</string>
+    <string name="msg_merchant_activation_info">Kode aktivasi telah dikirim ke %1$s</string>
     
     <string name="field_code">Kode</string>
     <string name="field_code_fl">K</string>
@@ -148,12 +152,18 @@
     <string name="field_login_id_fl">L</string>
     <string name="field_password">Password</string>
     <string name="field_password_fl">P</string>
+    <string name="field_password_new">Password Baru</string>
+    <string name="field_password_new_fl">P</string>
+    <string name="field_password_confirm">Konfirmasi Password</string>
+    <string name="field_password_confirm_fl">K</string>
     <string name="field_employee">Pegawai</string>
     <string name="field_employee_fl">P</string>
     <string name="field_period_start">Awal Akses</string>
     <string name="field_period_start_fl">A</string>
     <string name="field_period_end">Akhir Akses</string>
     <string name="field_period_end_fl">A</string>
+    <string name="field_locale_fl">L</string>
+    <string name="field_locale">Kalender &amp; Mata Uang</string>
     <string name="field_tax_percentage">Pajak</string>
     <string name="field_tax_percentage_fl">P</string>
     <string name="field_service_charge_percentage">Bea Servis</string>
@@ -224,6 +234,10 @@
     <string name="field_customer">Pelanggan</string>
     <string name="field_amount_fl">J</string>
     <string name="field_amount">Jumlah</string>
+    <string name="field_security_question">Pertanyaan Rahasia</string>
+    <string name="field_security_question_fl">P</string>
+    <string name="field_security_answer">Jawaban Pertanyaan</string>
+    <string name="field_security_answer_fl">J</string>
     
     <string name="favorite_customer_title">Pelanggan</string>
     <string name="favorite_customer_quantity">Jumlah</string>
@@ -351,6 +365,10 @@
     <string name="search_employee">Cari Pegawai</string>
     <string name="select_employee">Pilih Pegawai</string>
     <string name="track_employee">Catat Pegawai</string>
+    <string name="search_locale">Cari Kalender &amp; Mata Uang</string>
+    <string name="select_locale">Pilih Kalender &amp; Mata Uang</string>
+    <string name="track_locale">Catat Kalender &amp; Mata Uang</string>
+    <string name="no_locale">Tanpa Seting Local</string>
     <string name="no_employee">Tanpa Pegawai</string>
     <string name="customer_name">Nama Pelanggan</string>
     <string name="search_product">Cari Produk</string>
@@ -444,13 +462,15 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
     <string name="alert_empty_mandatory_field">"%1$s tidak boleh kosong"</string>
+    <string name="alert_password_incorrect">"Password tidak benar"</string>
 	<string name="alert_password_dont_match">"Password dan konfirmasi password tidak sama"</string>
 	<string name="alert_merchant_login_id_not_exist">"Login Id merchant tidak terdaftar"</string>
 	<string name="alert_security_answer_dont_match">"Jawaban pertanyaan tidak benar !"</string>
 	<string name="alert_server_not_connected">"Tidak dapat terhubung !"</string>
     <string name="alert_server_sync_error">"Error melaksanakan singkronisasi data !"</string>
-    <string name="alert_merchant_authentication_error">"ID Merchant atau password anda salah !"</string>
-    <string name="alert_user_authentication_error">"ID Pengguna atau password anda salah !"</string>
+    <string name="alert_merchant_authentication_error">"ID Merchant atau password tidak benar !"</string>
+    <string name="alert_activation_code_incorrect">"Kode aktivasi tidak benar !"</string>
+    <string name="alert_user_authentication_error">"ID Pengguna atau password tidak benar !"</string>
     <string name="alert_data_no_more">"Tidak lagi terdapat data untuk ditampilkan !"</string>
     <string name="alert_data_show_next">"Menampilkan data selanjutnya &#8230;"</string>
     <string name="alert_please_choose_table_no">"Silahkan pilih No. Meja !"</string>
@@ -534,6 +554,7 @@
 	<string name="menu_reference_supplier">Supplier</string>	
 	<string name="menu_reference_discount">Diskon</string>
 	<string name="menu_printer">Printer</string>
+	<string name="menu_change_password">Ganti Password</string>
 	<string name="menu_exit">Keluar</string>
 	<string name="menu_sync">Sync</string>
 	
@@ -559,6 +580,7 @@
 	<string name="menu_favorite_supplier_order">K02</string>
 	
 	<string name="task_register_merchant">"Melaksanakan registrasi &#8230;"</string>
+	<string name="task_resend_activation_code">"Mengirim kode aktivasi &#8230;"</string>
 	<string name="task_get_merchant_by_login_id">"Mengecek merchant login Id &#8230;"</string>
 	<string name="task_reset_password">"Ganti password &#8230;"</string>
 	<string name="task_validate_merchant">"Melaksanakan validasi &#8230;"</string>
@@ -611,9 +633,10 @@
 	<string name="cashflow_type_invc_payment">Penerimaan Piutang</string>
 	<string name="cashflow_type_expense">Pengeluaran Lain-lain</string>
 	
-	<string name="error_invalid_token">Token tidak valid</string>
-	<string name="error_service_expired">Servis sync up data anda telah berakhir</string>
-	<string name="error_could_not_obtained_lock">Error singkronisasi data</string>
+	<string name="error_invalid_token">Token tidak valid !</string>
+	<string name="error_service_expired">Servis sync up data anda telah berakhir !</string>
+	<string name="error_could_not_obtained_lock">Error singkronisasi data !</string>
 	<string name="error_register_merchant_conflict">Login Id konflik dengan merchant yang lain. Silahkan pilih Login Id yang lain !</string>
+	<string name="error_invalid_app_cert">Certificate aplikasi tidak valid !</string>
 	
 </resources>

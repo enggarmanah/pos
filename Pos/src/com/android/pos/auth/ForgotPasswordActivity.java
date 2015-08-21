@@ -102,7 +102,7 @@ public class ForgotPasswordActivity extends BaseAuthActivity implements ForgotPa
 	@Override
 	public void onMerchantRetrieved(Merchant merchant) {
 		
-		mProgressDialog.dismiss();
+		mProgressDialog.dismissAllowingStateLoss();
 		
 		if (merchant != null) {		
 			

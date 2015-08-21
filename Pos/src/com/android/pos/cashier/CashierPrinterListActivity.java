@@ -197,7 +197,7 @@ public class CashierPrinterListActivity extends Activity {
             	return;
             }
     		
-    		//mProgressDialog.dismiss();
+    		//mProgressDialog.dismissAllowingStateLoss();
     		
             // Cancel discovery because it's costly and we're about to connect
             mBtAdapter.cancelDiscovery();
@@ -225,7 +225,7 @@ public class CashierPrinterListActivity extends Activity {
             String action = intent.getAction();
             
             if (mProgressDialog.isVisible()) {
-            	mProgressDialog.dismiss();
+            	mProgressDialog.dismissAllowingStateLoss();
             }
             
             // When discovery finds a device

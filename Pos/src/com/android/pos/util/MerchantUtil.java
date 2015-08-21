@@ -51,6 +51,11 @@ public class MerchantUtil {
 		mBelowStockLimitProductCount = null;
 		mPastDueBillsCount = null;
 		mOutstandingBillsCount = null;
+		
+		if (mMerchant != null) {
+			
+			CommonUtil.setLocale(CommonUtil.parseLocale(mMerchant.getLocale()));
+		}
 	}
 	
 	public static void recreateDao() {

@@ -71,6 +71,7 @@ public class Constant {
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 200;
 	
 	public static final String TASK_REGISTER_MERCHANT = "TASK_REGISTER_MERCHANT";
+	public static final String TASK_RESEND_ACTIVATION_CODE = "TASK_RESEND_ACTIVATION_CODE";
 	
 	public static final String TASK_GET_MERCHANT_BY_LOGIN_ID = "TASK_GET_MERCHANT_BY_ID";
 	public static final String TASK_RESET_PASSWORD = "TASK_RESET_PASSWORD";
@@ -197,4 +198,5 @@ public class Constant {
 	public static final String ERROR_SERVICE_EXPIRED = "ERR002";
 	public static final String ERROR_COULD_NOT_OBTAINED_LOCK = "ERR003";
 	public static final String ERROR_REGISTER_MERCHANT_CONFLICT = "ERR004";
+	public static final String ERROR_INVALID_APP_CERT = "ERR005";
 }

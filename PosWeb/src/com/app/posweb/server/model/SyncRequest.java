@@ -9,6 +9,7 @@ public class SyncRequest {
 	protected String sync_key;
 	protected Date sync_date;
 	protected String uuid;
+	protected String cert_dn;
 	
 	protected List<String> getRequests;
 	
@@ -65,6 +66,14 @@ public class SyncRequest {
 		this.uuid = uuid;
 	}
 	
+	public String getCert_dn() {
+		return cert_dn;
+	}
+
+	public void setCert_dn(String cert_dn) {
+		this.cert_dn = cert_dn;
+	}
+
 	public List<String> getGetRequests() {
 		return getRequests;
 	}

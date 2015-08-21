@@ -68,6 +68,16 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
+            android:name="com.android.pos.auth.MerchantActivationActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.auth.ResendActivationCodeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask" >
+        </activity>
+        <activity
             android:name="com.android.pos.auth.ForgotPasswordActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
@@ -81,6 +91,12 @@
             android:name="com.android.pos.auth.ForgotPasswordResetActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name="com.android.pos.password.ChangePasswordActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Dialog">
         </activity>
         <activity
             android:name="com.android.pos.cashier.CashierActivity"
@@ -188,7 +204,7 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name="com.android.pos.printer.PrinterSelectActivity"
+            android:name="com.android.pos.printer.PrinterConfigActivity"
             android:theme="@android:style/Theme.Dialog" 
             android:launchMode="singleTask" >
         </activity>

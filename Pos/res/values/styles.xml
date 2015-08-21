@@ -988,7 +988,7 @@
         <item name="android:background">@color/dialog_header_background</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/dialog_header_text</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
     
@@ -1333,5 +1333,12 @@
         <item name="android:textColor">@color/list_row_selected_text</item>
         <item name="android:background">@color/list_row_selected_background</item>
     </style>
+    
+    <style name="ForgotPasswordTextStyle" parent="RegistrationTextStyle">
+        <item name="android:fontFamily">"sans-serif"</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">7dp</item>
+ 	</style>
 
 </resources>

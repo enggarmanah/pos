@@ -27,7 +27,6 @@ public class ForgotPasswordValidateActivity extends BaseAuthActivity {
 
 	Merchant mMerchant;
 	
-	TextView mInfoText;
 	TextView mSecurityQuestionText;
 	
 	EditText mSecurityAnswerText;
@@ -57,13 +56,12 @@ public class ForgotPasswordValidateActivity extends BaseAuthActivity {
 		
 		setContentView(R.layout.auth_forgot_password_validate_activity);
 		
-		mInfoText = (TextView)  findViewById(R.id.infoText);
 		mSecurityQuestionText = (TextView)  findViewById(R.id.securityQuestionText);
 		mSecurityAnswerText = (EditText) findViewById(R.id.securityAnswerText);
 		
 		registerField(mSecurityAnswerText);
 		
-		registerMandatoryField(new FormFieldBean(mSecurityAnswerText, R.string.security_answer));
+		registerMandatoryField(new FormFieldBean(mSecurityAnswerText, R.string.field_security_answer));
 		
 		highlightMandatoryFields();
 		
@@ -72,11 +70,10 @@ public class ForgotPasswordValidateActivity extends BaseAuthActivity {
 		
 		mMerchant = MerchantUtil.getMerchant();
 		
-		String securityQuestion = mMerchant.getSecurityAnswer();
+		String securityQuestion = mMerchant.getSecurityQuestion();
 		securityQuestion += securityQuestion.contains("?") ? Constant.EMPTY_STRING : " ?";
 		
-		mInfoText.setText(mMerchant.getName());
-		mSecurityQuestionText.setText(mMerchant.getSecurityQuestion());
+		mSecurityQuestionText.setText(securityQuestion);
     }
 	
 	private View.OnClickListener getOkBtnOnClickListener() {

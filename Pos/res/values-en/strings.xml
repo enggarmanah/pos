@@ -33,11 +33,13 @@
     
     <string name="registration">Registration</string>
     <string name="merchant_name">Merchant Name</string>
-    <string name="security_question">Security Question</string>
-    <string name="security_question_fl">S</string>
-    <string name="security_answer">Security Answer</string>
-    <string name="security_answer_fl">S</string>
-    <string name="password_confirm">Retype Password</string>
+    <string name="merchant_activation_title">Merchant Activation</string>
+    <string name="merchant_activation_hint">Activation Code</string>
+    
+    <string name="forgot_password_login_id">Please provide your Login Id</string>
+    
+    <string name="resend_activation_code">Resend Activation Code</string>
+    <string name="resend_activation_code_info">Please provide your email</string>
     
     <string name="info_quantity">Total</string>
     <string name="info_revenue">Income</string>
@@ -102,7 +104,9 @@
     <string name="msg_data_save_success">Data has been saved</string>
     <string name="msg_register_user">Please register user account to enable access to system functionality</string>
     <string name="msg_reset_password_success">Reset password is successful !</string>
+    <string name="msg_merchant_registration_info">Activation code will be sent to registered email</string>
     <string name="msg_merchant_registration_success">Merchant registration is successful !</string>
+    <string name="msg_merchant_activation_info">Activation code has been sent to %1$s</string>
     
     <string name="field_code">Code</string>
     <string name="field_code_fl">C</string>
@@ -148,12 +152,18 @@
     <string name="field_login_id_fl">L</string>
     <string name="field_password">Password</string>
     <string name="field_password_fl">P</string>
+    <string name="field_password_new">New Password</string>
+    <string name="field_password_new_fl">N</string>
+    <string name="field_password_confirm">Retype Password</string>
+    <string name="field_password_confirm_fl">R</string>
     <string name="field_employee">Employee</string>
     <string name="field_employee_fl">E</string>
     <string name="field_period_start">Access Start</string>
     <string name="field_period_start_fl">A</string>
     <string name="field_period_end">Access End</string>
     <string name="field_period_end_fl">A</string>
+    <string name="field_locale_fl">L</string>
+    <string name="field_locale">Calendar &amp; Currency</string>
     <string name="field_tax_percentage">Tax</string>
     <string name="field_tax_percentage_fl">T</string>
     <string name="field_service_charge_percentage">Service Charge</string>
@@ -224,6 +234,10 @@
     <string name="field_customer">Customer</string>
     <string name="field_amount_fl">A</string>
     <string name="field_amount">Amount</string>
+    <string name="field_security_question">Security Question</string>
+    <string name="field_security_question_fl">S</string>
+    <string name="field_security_answer">Security Answer</string>
+    <string name="field_security_answer_fl">S</string>
     
     <string name="favorite_customer_title">Customer</string>
     <string name="favorite_customer_quantity">Total</string>
@@ -352,6 +366,10 @@
     <string name="select_employee">Select Employee</string>
     <string name="track_employee">Select Employee</string>
     <string name="no_employee">No Employee</string>
+    <string name="search_locale">Search Calendar &amp; Currency</string>
+    <string name="select_locale">Select Calendar &amp; Currency</string>
+    <string name="track_locale">Select Calendar &amp; Currency</string>
+    <string name="no_locale">No Local Setting</string>
     <string name="customer_name">Customer Name</string>
     <string name="search_product">Product Search</string>
     <string name="select_product">Select Product</string>
@@ -444,6 +462,7 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
     <string name="alert_empty_mandatory_field">"%1$s should not be empty"</string>
+    <string name="alert_password_incorrect">"Password is incorrect"</string>
     <string name="alert_password_dont_match">"Password and retype password don\'t match"</string>
     <string name="alert_merchant_login_id_not_exist">"Merchant Login Id is not registered"</string>
     <string name="alert_security_answer_dont_match">"Answer is incorrect !"</string>
@@ -451,6 +470,7 @@
     <string name="alert_server_sync_error">"Error syncing up data to server !"</string>
     <string name="alert_merchant_authentication_error">"ID Merchant or password is incorrect !"</string>
     <string name="alert_user_authentication_error">"ID user or password is incorrect !"</string>
+    <string name="alert_activation_code_incorrect">"Activation code is incorrect !"</string>
     <string name="alert_data_no_more">"There is no more data to show !"</string>
     <string name="alert_data_show_next">"Show next list of data &#8230;"</string>
     <string name="alert_please_choose_table_no">"Please choose table no !"</string>
@@ -534,6 +554,7 @@
 	<string name="menu_reference_supplier">Supplier</string>	
 	<string name="menu_reference_discount">Discount</string>
 	<string name="menu_printer">Printer</string>
+	<string name="menu_change_password">Change Password</string>
 	<string name="menu_exit">Exit</string>
 	<string name="menu_sync">Sync</string>
 	
@@ -559,6 +580,7 @@
 	<string name="menu_favorite_supplier_order">K02</string>
 	
 	<string name="task_register_merchant">"Registering merchant &#8230;"</string>
+	<string name="task_resend_activation_code">"Resend activation code &#8230;"</string>
 	<string name="task_get_merchant_by_login_id">"Checking merchant Login Id &#8230;"</string>
 	<string name="task_reset_password">"Reset password &#8230;"</string>
 	<string name="task_validate_merchant">"Authenticate merchant &#8230;"</string>
@@ -611,9 +633,10 @@
 	<string name="cashflow_type_invc_payment">Credit Payment</string>
 	<string name="cashflow_type_expense">General Expense</string>
 	
-	<string name="error_invalid_token">Invalid token</string>
-	<string name="error_service_expired">Sync up data service has been expired</string>
-	<string name="error_could_not_obtained_lock">Data sync up error</string>
+	<string name="error_invalid_token">Invalid token !</string>
+	<string name="error_service_expired">Sync up data service has been expired !</string>
+	<string name="error_could_not_obtained_lock">Data sync up error !</string>
 	<string name="error_register_merchant_conflict">Login Id has been registered by other merchant. Choose other Login Id !</string>
+	<string name="error_invalid_app_cert">Application certificate is not valid !</string>
 	
 </resources>

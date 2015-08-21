@@ -31,6 +31,7 @@ import com.android.pos.R;
 import com.android.pos.auth.LoginListener;
 import com.android.pos.auth.RegistrationListener;
 import com.android.pos.auth.ForgotPasswordListener;
+import com.android.pos.auth.ResendActivationCodeListener;
 import com.android.pos.dao.BillsDaoService;
 import com.android.pos.dao.CashflowDaoService;
 import com.android.pos.dao.CustomerDaoService;
@@ -55,6 +56,7 @@ import com.android.pos.model.SyncRequestBean;
 import com.android.pos.model.SyncResponseBean;
 import com.android.pos.model.UserBean;
 import com.android.pos.util.BeanUtil;
+import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -140,6 +142,7 @@ public class HttpAsyncManager {
 		taskMessage = new HashMap<String, String>();
 		
 		taskMessage.put(Constant.TASK_REGISTER_MERCHANT, context.getString(R.string.task_register_merchant));
+		taskMessage.put(Constant.TASK_RESEND_ACTIVATION_CODE, context.getString(R.string.task_resend_activation_code));
 		taskMessage.put(Constant.TASK_GET_MERCHANT_BY_LOGIN_ID, context.getString(R.string.task_get_merchant_by_login_id));
 		taskMessage.put(Constant.TASK_RESET_PASSWORD, context.getString(R.string.task_reset_password));
 		taskMessage.put(Constant.TASK_VALIDATE_MERCHANT, context.getString(R.string.task_validate_merchant));
@@ -172,6 +175,8 @@ public class HttpAsyncManager {
 		taskMessage.put(Constant.TASK_UPDATE_SUPPLIER, context.getString(R.string.task_update_supplier));
 		taskMessage.put(Constant.TASK_GET_BILL, context.getString(R.string.task_get_bill));
 		taskMessage.put(Constant.TASK_UPDATE_BILL, context.getString(R.string.task_update_bill));
+		taskMessage.put(Constant.TASK_GET_CASHFLOW, context.getString(R.string.task_get_cashflow));
+		taskMessage.put(Constant.TASK_UPDATE_CASHFLOW, context.getString(R.string.task_update_cashflow));
 		taskMessage.put(Constant.TASK_GET_INVENTORY, context.getString(R.string.task_get_inventory));
 		taskMessage.put(Constant.TASK_UPDATE_INVENTORY, context.getString(R.string.task_update_inventory));
 		taskMessage.put(Constant.TASK_GET_MERCHANT, context.getString(R.string.task_get_merchant));
@@ -301,6 +306,20 @@ public class HttpAsyncManager {
 		
 		mTasks.clear();
 		mTasks.add(Constant.TASK_REGISTER_MERCHANT);
+		
+		executeNextTask();
+	}
+	
+	public void resendActivationCode(Merchant merchant) {
+		
+		startTime = new Date().getTime();
+		
+		mMerchant = merchant;
+		
+		mTaskIndex = 0;
+		
+		mTasks.clear();
+		mTasks.add(Constant.TASK_RESEND_ACTIVATION_CODE);
 		
 		executeNextTask();
 	}
@@ -700,9 +719,19 @@ public class HttpAsyncManager {
 			request.setSync_key(mSyncKey);
 			request.setSync_date(mSyncDate);
 			
+			request.setCert_dn(CommonUtil.getCertDN(mContext));
+			
 			if (Constant.TASK_REGISTER_MERCHANT.equals(tasks[0])) {
 				
 				url = Config.SERVER_URL + "/merchantRegisterJsonServlet";
+
+				MerchantBean merchant = BeanUtil.getBean(mMerchant);
+				
+				request.setMerchant(merchant);
+
+			} else if (Constant.TASK_RESEND_ACTIVATION_CODE.equals(tasks[0])) {
+				
+				url = Config.SERVER_URL + "/merchantResendActivationCodeJsonServlet";
 
 				MerchantBean merchant = BeanUtil.getBean(mMerchant);
 				
@@ -972,6 +1001,21 @@ public class HttpAsyncManager {
 						
 						RegistrationListener mRegistrationListener = (RegistrationListener) mContext;
 						mRegistrationListener.onMerchantRegistered(merchant);
+						
+					} else if (Constant.TASK_RESEND_ACTIVATION_CODE.equals(task)) {
+						
+						MerchantBean bean =  resp.getMerchant();
+						
+						Merchant merchant = null;
+						
+						if (bean != null) {
+							
+							merchant = new Merchant();
+							BeanUtil.updateBean(merchant, bean);
+						}
+						
+						ResendActivationCodeListener mResendActivationCodeListener = (ResendActivationCodeListener) mContext;
+						mResendActivationCodeListener.onCodeSent(merchant);
 						
 					} else if (Constant.TASK_VALIDATE_MERCHANT.equals(task)) {
 	
@@ -1309,6 +1353,9 @@ public class HttpAsyncManager {
 		
 		} else if (Constant.ERROR_REGISTER_MERCHANT_CONFLICT.equals(code)) {
 			errorDesc = mContext.getString(R.string.error_register_merchant_conflict);
+		
+		} else if (Constant.ERROR_INVALID_APP_CERT.equals(code)) {
+			errorDesc = mContext.getString(R.string.error_invalid_app_cert);
 		}
 		
 		return errorDesc;

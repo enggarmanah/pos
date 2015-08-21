@@ -50,6 +50,9 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
         </EditText>
+        
+        <LinearLayout style="@style/SectionDividerNoSpaceStyle"></LinearLayout>
+        
     </LinearLayout>
 
     <ListView

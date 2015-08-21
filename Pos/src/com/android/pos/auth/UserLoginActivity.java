@@ -77,10 +77,28 @@ public class UserLoginActivity extends BaseAuthActivity {
 			intent.putExtra("logout", true);
 			startActivity(intent);
 			
+			MerchantUtil.setMerchant(null);
+			finish();
+			
 			return;
 		}
 		
 		MerchantUtil.setMerchant(mMerchant);
+		
+		if (Constant.STATUS_INACTIVE.equals(mMerchant.getStatus())) {
+			
+			Intent intent = new Intent(context, MerchantActivationActivity.class);
+			startActivity(intent);
+			
+			return;
+		}
+	}
+	
+	public void onStart() {
+		
+		super.onStart();
+		
+		mMerchant = MerchantUtil.getMerchant();
 		
 		String name = mMerchant.getName();
 		String contact = mMerchant.getAddress();
@@ -91,7 +109,7 @@ public class UserLoginActivity extends BaseAuthActivity {
 		
 		mMerchantNameTxt.setText(name);
 		mMerchantAddrTxt.setText(contact);
-    }
+	}
 	
 	private View.OnClickListener getLoginBtnOnClickListener() {
 		

@@ -28,5 +28,7 @@ public interface BaseItemListener<T> {
 	
 	public void onSelectTransaction(boolean isMandatory);
 	
+	public void onSelectLocale(boolean isMandatory);
+	
 	public void disableEditMenu();
 }

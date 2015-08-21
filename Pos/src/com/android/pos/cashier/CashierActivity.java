@@ -921,9 +921,9 @@ public class CashierActivity extends BaseActivity
 		updateTransactionItemsDiscount();
 		
 		if (Constant.DISCOUNT_TYPE_NOMINAL.equals(MerchantUtil.getMerchant().getDiscountType())) {
-			mDiscountNominalDlgFragment.dismiss();
+			mDiscountNominalDlgFragment.dismissAllowingStateLoss();
 		} else {
-			mDiscountPercentageDlgFragment.dismiss();
+			mDiscountPercentageDlgFragment.dismissAllowingStateLoss();
 		}
 	}
 	

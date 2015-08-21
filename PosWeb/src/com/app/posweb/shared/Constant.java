@@ -8,6 +8,8 @@ public class Constant {
 	public static final String APP_CALLBACK_URL_PROD = "http://posweb.appspot.com/verifyCredential";
 	public static final String APP_CALLBACK_URL_DEV = "http://posweb.appspot.com:8888/verifyCredential";
 	
+	public static final String APP_DEBUG_CERT_DN = "CN=Android Debug,O=Android,C=US";
+	
 	public static final String LINK_WEBSITE = "http://";
 	public static final String LINK_FACEBOOK = "http://www.facebook.com/";
 	public static final String LINK_TWITTER = "http://www.twitter.com/";
@@ -72,4 +74,5 @@ public class Constant {
 	public static final String ERROR_SERVICE_EXPIRED = "ERR002";
 	public static final String ERROR_COULD_NOT_OBTAINED_LOCK = "ERR003";
 	public static final String ERROR_REGISTER_MERCHANT_CONFLICT = "ERR004";
+	public static final String ERROR_INVALID_APP_CERT = "ERR005";
 }

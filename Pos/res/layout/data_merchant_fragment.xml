@@ -170,6 +170,21 @@
                 style="@style/FormInputDateStyle" />
         </LinearLayout>
         
+        <LinearLayout style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/field_locale_fl" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_locale" />
+
+            <EditText
+                android:id="@+id/localeText"
+                style="@style/FormInputDateStyle" />
+        </LinearLayout>
+        
         <LinearLayout 
             android:id="@+id/priceTypeCountPanel"
             style="@style/FormRowStyle" >
@@ -291,11 +306,11 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/security_question_fl" />
+                android:text="@string/field_security_question_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
-                android:text="@string/security_question"/>
+                android:text="@string/field_security_question"/>
 
             <EditText
                 android:id="@+id/securityQuestionText"
@@ -306,11 +321,11 @@
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
-                android:text="@string/security_answer_fl" />
+                android:text="@string/field_security_answer_fl" />
             
             <TextView
                 style="@style/FormTextStyle"
-                android:text="@string/security_answer"/>
+                android:text="@string/field_security_answer"/>
 
             <EditText
                 android:id="@+id/securityAnswerText"

@@ -22,6 +22,14 @@ import com.android.pos.dao.ProductGroup;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+
+import java.io.ByteArrayInputStream;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
 @SuppressLint("SimpleDateFormat")
 public class CommonUtil {
 	
@@ -33,6 +41,7 @@ public class CommonUtil {
 	public static Tracker tracker;
 	
 	private static Context mContext;
+	private static String mCertDN;
 	
 	public static void initTracker(Context context) {
 		
@@ -226,7 +235,26 @@ public class CommonUtil {
 	public static Locale getLocale() {
 		
 		if (locale == null) {
-			//locale = new Locale("id", "ID");
+			locale = Locale.getDefault();
+		}
+		
+		return locale;
+	}
+	
+	public static void setLocale(Locale newLocale) {
+		
+		locale = newLocale;
+	}
+	
+	public static Locale parseLocale(String localeStr) {
+		
+		String[] localeArray = !CommonUtil.isEmpty(localeStr) ? localeStr.split(",") : null;
+		
+		Locale locale = null;
+		
+		if (!CommonUtil.isEmpty(localeStr)) {
+			locale = new Locale(localeArray[0], localeArray[1]);
+		} else {
 			locale = Locale.getDefault();
 		}
 		
@@ -893,5 +921,30 @@ public class CommonUtil {
         }
         
         return symbol;
+	}
+	
+	public static String getCertDN(Context ctx) {
+		
+		if (!CommonUtil.isEmpty(mCertDN)) {
+			return mCertDN;
+		}
+		
+		try {
+			PackageInfo pinfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), PackageManager.GET_SIGNATURES);
+			Signature signatures[] = pinfo.signatures;
+
+			CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+			for (int i = 0; i < signatures.length; i++) {
+				ByteArrayInputStream stream = new ByteArrayInputStream(signatures[i].toByteArray());
+				X509Certificate cert = (X509Certificate) cf.generateCertificate(stream);
+
+				mCertDN = cert.getSubjectDN().getName();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mCertDN;
 	}
 }

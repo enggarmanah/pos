@@ -23,7 +23,6 @@
     
     <TextView
         android:id="@+id/merchantAddrText"
-        android:text="@string/login_user"
         android:layout_height="wrap_content"
         android:layout_width="300dp"
         android:fontFamily="sans-serif"

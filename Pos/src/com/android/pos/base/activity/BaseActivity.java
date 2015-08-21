@@ -29,7 +29,8 @@ import com.android.pos.data.user.UserMgtActivity;
 import com.android.pos.favorite.customer.CustomerActivity;
 import com.android.pos.favorite.supplier.SupplierActivity;
 import com.android.pos.order.OrderActivity;
-import com.android.pos.printer.PrinterSelectActivity;
+import com.android.pos.password.ChangePasswordActivity;
+import com.android.pos.printer.PrinterConfigActivity;
 import com.android.pos.report.bills.BillsActivity;
 import com.android.pos.report.cashflow.CashFlowActivity;
 import com.android.pos.report.commission.CommissionActivity;
@@ -121,7 +122,7 @@ public abstract class BaseActivity extends Activity
 		
 		if (mProgress == 100 && mProgressDialog.isVisible()) {
 			
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 			
 			onAsyncTaskCompleted();
 		}
@@ -381,6 +382,11 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(getString(R.string.menu_reference_supplier));
 		}
 		
+		if (!UserUtil.isRoot()) {
+			
+			mMenus.add(getString(R.string.menu_change_password));
+		}
+		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
 			
 			mMenus.add(getString(R.string.menu_printer));
@@ -637,7 +643,12 @@ public abstract class BaseActivity extends Activity
 			
 		} else if (getString(R.string.menu_printer).equals(menu)) {
 
-			Intent intent = new Intent(this, PrinterSelectActivity.class);
+			Intent intent = new Intent(this, PrinterConfigActivity.class);
+			startActivityForResult(intent, -1);
+			
+		} else if (getString(R.string.menu_change_password).equals(menu)) {
+
+			Intent intent = new Intent(this, ChangePasswordActivity.class);
 			startActivityForResult(intent, -1);
 			
 		} else if (getString(R.string.menu_exit).equals(menu)) {
@@ -827,7 +838,7 @@ public abstract class BaseActivity extends Activity
 						
 						if (isActivityVisible()) {
 							
-							mProgressDialog.dismiss();
+							mProgressDialog.dismissAllowingStateLoss();
 							
 							onAsyncTaskCompleted();
 						}
@@ -852,7 +863,7 @@ public abstract class BaseActivity extends Activity
 		mProgress = 100;
 		
 		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.server_cant_connect));
@@ -864,7 +875,7 @@ public abstract class BaseActivity extends Activity
 		mProgress = 100;
 		
 		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.server_sync_error));
@@ -876,7 +887,7 @@ public abstract class BaseActivity extends Activity
 		mProgress = 100;
 		
 		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), message);

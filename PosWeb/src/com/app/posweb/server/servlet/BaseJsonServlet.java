@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
+import com.app.posweb.server.ServerUtil;
 import com.app.posweb.server.dao.SyncDao;
 import com.app.posweb.server.dao.MerchantDao;
 import com.app.posweb.server.model.SyncRequest;
@@ -57,7 +58,13 @@ public abstract class BaseJsonServlet extends HttpServlet {
         
 		SyncRequest syncRequest = mapper.readValue(jsonRequest, SyncRequest.class);
 		
-		if (!isByPassTokenValidation(servletPath) && !isValidToken(syncRequest)) {
+		if (ServerUtil.isProductionEnvironment() && Constant.APP_DEBUG_CERT_DN.equals(syncRequest.getCert_dn())) {
+			
+			syncResponse = new SyncResponse();
+        	syncResponse.setRespCode(SyncResponse.ERROR);
+        	syncResponse.setRespDescription(Constant.ERROR_INVALID_APP_CERT);
+			
+		} else if (!isByPassTokenValidation(servletPath) && !isValidToken(syncRequest)) {
         	
         	syncResponse = new SyncResponse();
         	syncResponse.setRespCode(SyncResponse.ERROR);
@@ -77,7 +84,8 @@ public abstract class BaseJsonServlet extends HttpServlet {
         	if (!(this instanceof GetLastSyncJsonServlet || this instanceof UpdateLastSyncJsonServlet ||
           		  this instanceof MerchantValidateJsonServlet || this instanceof MerchantRegisterJsonServlet || 
           		  this instanceof MerchantGetByLoginIdJsonServlet || this instanceof MerchantResetPasswordJsonServlet || 
-          		  this instanceof UserValidateJsonServlet || syncRequest.getMerchant_id() == -1) && !isAcquireLock) {
+          		  this instanceof UserValidateJsonServlet || this instanceof MerchantResendActivationCodeJsonServlet || 
+          		  syncRequest.getMerchant_id() == -1) && !isAcquireLock) {
         		
         		syncResponse = new SyncResponse();
                 syncResponse.setRespCode(SyncResponse.ERROR);
@@ -112,6 +120,7 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		if ("/getLastSyncJsonServlet".equals(path) || 
 			"/updateLastSyncJsonServlet".equals(path) ||
 			"/merchantRegisterJsonServlet".equals(path) ||
+			"/merchantResendActivationCodeJsonServlet".equals(path) ||
 			"/merchantResetPasswordJsonServlet".equals(path) ||
 			"/merchantValidateJsonServlet".equals(path) ||
 			"/userValidateJsonServlet".equals(path) ||

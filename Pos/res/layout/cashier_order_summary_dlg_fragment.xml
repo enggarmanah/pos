@@ -60,7 +60,7 @@
             android:text="@string/ok" />
 
         <TextView
-            android:layout_width="1dp"
+            android:layout_width="0.5dp"
             android:layout_height="fill_parent"
             android:background="#AAA" />
 

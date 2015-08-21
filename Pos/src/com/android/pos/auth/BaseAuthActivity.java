@@ -57,7 +57,7 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
 		activityVisible = true;
 		
 		if (mProgress == 100 && mProgressDialog.isVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 	}
 	
@@ -114,7 +114,6 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
 	}
 	
 	protected void registerField(Object field) {
@@ -234,7 +233,7 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
 					public void run() {
 						
 						if (isActivityVisible()) {
-							mProgressDialog.dismiss();
+							mProgressDialog.dismissAllowingStateLoss();
 						}
 						
 						onSyncCompleted();
@@ -259,7 +258,7 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
 		mProgress = 100;
 		
 		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_server_not_connected));
@@ -271,7 +270,7 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
 		mProgress = 100;
 		
 		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_server_sync_error));
@@ -283,7 +282,7 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
 		mProgress = 100;
 		
 		if (isActivityVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 		
 		NotificationUtil.setAlertMessage(getFragmentManager(), message);

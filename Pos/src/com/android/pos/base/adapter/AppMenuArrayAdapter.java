@@ -107,13 +107,15 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		} else if (context.getString(R.string.menu_customer).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_person_black));
 		} else if (context.getString(R.string.menu_user_access).equals(menu)) {
-			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_vpn_key_black));
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_security_black));
 		} else if (context.getString(R.string.menu_sync).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_cached_black));
 		} else if (context.getString(R.string.menu_data_management).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_turned_in_not_black));
 		} else if (context.getString(R.string.menu_printer).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_print_black));
+		} else if (context.getString(R.string.menu_change_password).equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_vpn_key_black));
 		} else if (context.getString(R.string.menu_exit).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_exit_to_app_black));
 		} else {

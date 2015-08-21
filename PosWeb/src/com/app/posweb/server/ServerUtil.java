@@ -25,7 +25,7 @@ public class ServerUtil {
 		//SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyy");
 		//return sdf.format(new Date());
 		
-		return "";
+		return "1";
 	}
 	
 	public static String getCallbackUrl() {

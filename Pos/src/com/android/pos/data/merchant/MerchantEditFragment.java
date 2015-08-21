@@ -5,12 +5,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import com.android.pos.CodeBean;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
+import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantAccess;
 import com.android.pos.dao.MerchantAccessDaoService;
@@ -23,6 +25,7 @@ import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.NotificationUtil;
 import com.android.pos.util.UserUtil;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -48,6 +51,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     EditText mPasswordText;
     EditText mPeriodStartDate;
     EditText mPeriodEndDate;
+    EditText mLocaleText;
     EditText mTaxText;
     EditText mServiceChargeText;
     EditText mPriceLabel1Text;
@@ -80,6 +84,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     CodeSpinnerArrayAdapter discountTypeArrayAdapter;
     CodeSpinnerArrayAdapter priceTypeCountArrayAdapter;
     
+    BaseItemListener<Locale> mLocaleItemListener;
+    
     private MerchantDaoService mMerchantDaoService = new MerchantDaoService();
     private MerchantAccessDaoService mMerchantAccessDaoService = new MerchantAccessDaoService();
     
@@ -89,6 +95,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     View accessView;
     
     boolean mIsEnableInputFields;
+    
+    Locale mLocale;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -102,6 +110,19 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	initViewReference(view);
     	
     	return view;
+    }
+    
+    @SuppressWarnings("unchecked")
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+        	mLocaleItemListener = (BaseItemListener<Locale>) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement BaseItemListener<T>");
+        }
     }
     
     @Override
@@ -123,6 +144,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mPasswordText = (EditText) view.findViewById(R.id.passwordText);
     	mPeriodStartDate = (EditText) view.findViewById(R.id.periodStartDate);
     	mPeriodEndDate = (EditText) view.findViewById(R.id.periodEndDate);
+    	mLocaleText = (EditText) view.findViewById(R.id.localeText);
     	mPriceLabel1Text = (EditText) view.findViewById(R.id.priceLabel1Text);
     	mPriceLabel2Text = (EditText) view.findViewById(R.id.priceLabel2Text);
     	mPriceLabel3Text = (EditText) view.findViewById(R.id.priceLabel3Text);
@@ -134,6 +156,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mDiscountTypeSp = (Spinner) view.findViewById(R.id.discountTypeSp);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
+    	mLocaleText.setOnClickListener(getLocaleOnClickListener());
     	mPriceTypeCountSp.setOnItemSelectedListener(getPriceTypeCountOnItemSelectedListener());
     	
     	mStatusPanel = (LinearLayout) view.findViewById(R.id.statusPanel);
@@ -166,6 +189,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mPasswordText);
     	registerField(mPeriodStartDate);
     	registerField(mPeriodEndDate);
+    	registerField(mLocaleText);
     	registerField(mPriceLabel1Text);
     	registerField(mPriceLabel2Text);
     	registerField(mPriceLabel3Text);
@@ -224,6 +248,10 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mPasswordText.setText(merchant.getPassword());
     		mPeriodStartDate.setText(CommonUtil.formatDate(merchant.getPeriodStart()));
     		mPeriodEndDate.setText(CommonUtil.formatDate(merchant.getPeriodEnd()));
+    		
+    		Locale locale = CommonUtil.parseLocale(merchant.getLocale());
+    		mLocaleText.setText(locale.getDisplayName());
+    		
     		mPriceLabel1Text.setText(merchant.getPriceLabel1());
     		mPriceLabel2Text.setText(merchant.getPriceLabel2());
     		mPriceLabel3Text.setText(merchant.getPriceLabel3());
@@ -374,6 +402,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	Float serviceCharge = CommonUtil.parseFloat(mServiceChargeText.getText().toString());
     	Date startDate = CommonUtil.parseDate(mPeriodStartDate.getText().toString());
     	Date endDate = CommonUtil.parseDate(mPeriodEndDate.getText().toString());
+    	
+    	String locale = mLocale != null ? mLocale.getLanguage() + "," + mLocale.getCountry() : Constant.EMPTY_STRING;
+    	
     	Integer priceTypeCount = Integer.valueOf(CodeBean.getNvlCode((CodeBean) mPriceTypeCountSp.getSelectedItem()));
     	String priceLabel1 = mPriceLabel1Text.getText().toString();
     	String priceLabel2 = mPriceLabel2Text.getText().toString();
@@ -396,6 +427,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setPassword(password);
     		mItem.setPeriodStart(startDate);
     		mItem.setPeriodEnd(endDate);
+    		mItem.setLocale(locale);
     		mItem.setPriceTypeCount(priceTypeCount);
     		mItem.setPriceLabel1(priceLabel1);
     		mItem.setPriceLabel2(priceLabel2);
@@ -485,6 +517,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 	        mPasswordText.getText().clear();
 	        mPeriodStartDate.getText().clear();
 	        mPeriodEndDate.getText().clear();
+	        mLocaleText.getText().clear();
 	        mPriceLabel1Text.getText().clear();
 	        mPriceLabel2Text.getText().clear();
 	        mPriceLabel3Text.getText().clear();
@@ -580,6 +613,24 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 		};
     }
     
+    private View.OnClickListener getLocaleOnClickListener() {
+    	
+    	return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if (isEnableInputFields) {
+						
+					saveItem();
+					
+					boolean isMandatory = true;
+					mLocaleItemListener.onSelectLocale(isMandatory);
+				}
+			}
+		};
+    }
+    
     private void refreshVisibleField() {
     	
     	Integer priceTypeCount = Integer.valueOf(CodeBean.getNvlCode((CodeBean) mPriceTypeCountSp.getSelectedItem()));
@@ -591,16 +642,16 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 		mandatoryFields.clear();
 		mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormFieldBean(mAddressText, R.string.field_address));
-    	mandatoryFields.add(new FormFieldBean(mContactNameText, R.string.field_contact_name));
-    	mandatoryFields.add(new FormFieldBean(mContactTelephoneText, R.string.field_contact_telephone));
+    	//mandatoryFields.add(new FormFieldBean(mContactNameText, R.string.field_contact_name));
+    	//mandatoryFields.add(new FormFieldBean(mContactTelephoneText, R.string.field_contact_telephone));
     	mandatoryFields.add(new FormFieldBean(mLoginIdText, R.string.field_login_id));
     	mandatoryFields.add(new FormFieldBean(mPasswordText, R.string.field_password));
     	mandatoryFields.add(new FormFieldBean(mPeriodStartDate, R.string.field_period_start));
     	mandatoryFields.add(new FormFieldBean(mPeriodEndDate, R.string.field_period_end));
     	mandatoryFields.add(new FormFieldBean(mTaxText, R.string.field_tax_percentage));
     	mandatoryFields.add(new FormFieldBean(mServiceChargeText, R.string.field_service_charge_percentage));
-    	mandatoryFields.add(new FormFieldBean(mSecurityQuestionText, R.string.security_question));
-    	mandatoryFields.add(new FormFieldBean(mSecurityAnswerText, R.string.security_answer));
+    	mandatoryFields.add(new FormFieldBean(mSecurityQuestionText, R.string.field_security_question));
+    	mandatoryFields.add(new FormFieldBean(mSecurityAnswerText, R.string.field_security_answer));
 		
     	if (priceTypeCount == 2) {
     		
@@ -657,6 +708,20 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	return paymentTypeStatuses;
     }
+    
+    public void setLocale(Locale locale) {
+		
+    	mLocale = locale;
+    	
+    	if (mItem != null) {
+    		
+    		if (mLocale != null) {
+    			mItem.setLocale(mLocale.getISO3Language() + "," + mLocale.getISO3Country());
+    		}
+    		
+    		updateView(mItem);
+    	}
+	}
     
     protected boolean isValidated() {
     	

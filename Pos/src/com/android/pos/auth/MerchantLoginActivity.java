@@ -320,7 +320,7 @@ public class MerchantLoginActivity extends BaseAuthActivity implements LoginList
 			
 		} else {
 			
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 			showFailedAuthenticationMessage();
 		}
 	}
@@ -354,7 +354,7 @@ public class MerchantLoginActivity extends BaseAuthActivity implements LoginList
 			
 		} else {
 			
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 			showFailedAuthenticationMessage();
 		}
 	}

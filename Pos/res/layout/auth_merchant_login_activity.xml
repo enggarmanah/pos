@@ -61,7 +61,7 @@
 	        android:fontFamily="sans-serif-condensed"
 	        android:textSize="20sp"
 	        android:textStyle="bold"
-	        android:textColor="@color/text_dark"
+	        android:textColor="@color/text_blue_dark"
 	        android:singleLine="true"/>
         
         <TextView
@@ -84,10 +84,9 @@
 	        android:fontFamily="sans-serif-condensed"
 	        android:textSize="20sp"
 	        android:textStyle="bold"
-	        android:textColor="@color/text_dark"
+	        android:textColor="@color/text_blue_dark"
 	        android:singleLine="true"/>
         
     </LinearLayout>
-    
     
 </LinearLayout>

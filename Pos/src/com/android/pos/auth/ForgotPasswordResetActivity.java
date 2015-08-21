@@ -1,5 +1,6 @@
 package com.android.pos.auth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import com.android.pos.R;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.dao.Merchant;
-import com.android.pos.dao.MerchantAccessDaoService;
 import com.android.pos.dao.MerchantDaoService;
 import com.android.pos.model.FormFieldBean;
 import com.android.pos.util.CodeUtil;
@@ -33,12 +33,14 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 	EditText mPasswordText;
 	EditText mPasswordConfirmText;
 	
+	private static final String IS_RESET_SUCCESSFUL = "IS_RESET_SUCCESSFUL";
+	
 	List<Object> mInputFields = new ArrayList<Object>();
 	protected List<FormFieldBean> mMandatoryFields = new ArrayList<FormFieldBean>();
 	
 	Button mOkBtn;
 	
-	boolean mIsResetSuccessful = false;
+	Boolean mIsResetSuccessful = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,11 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 		DbUtil.initDb(this);
 		CodeUtil.initCodes(this);
 		
+		if (savedInstanceState != null) {
+			mIsResetSuccessful = (Boolean) savedInstanceState.getSerializable(IS_RESET_SUCCESSFUL);
+		}
+		
 		mMerchantDaoService = new MerchantDaoService();
-		mMerchantAccessDaoService = new MerchantAccessDaoService();
 		
 		mHttpAsyncManager = new HttpAsyncManager(context);
 		
@@ -68,7 +73,7 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 		registerField(mPasswordConfirmText);
 		
 		registerMandatoryField(new FormFieldBean(mPasswordText, R.string.password));
-		registerMandatoryField(new FormFieldBean(mPasswordConfirmText, R.string.password_confirm));
+		registerMandatoryField(new FormFieldBean(mPasswordConfirmText, R.string.field_password_confirm));
 		
 		highlightMandatoryFields();
 		
@@ -81,7 +86,17 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 		securityQuestion += securityQuestion.contains("?") ? Constant.EMPTY_STRING : " ?";
 		
 		mInfoText.setText(mMerchant.getName());
+		
+		updateView();
     }
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+
+		super.onSaveInstanceState(outState);
+
+		outState.putSerializable(IS_RESET_SUCCESSFUL, (Serializable) mIsResetSuccessful);
+	}
 	
 	private View.OnClickListener getOkBtnOnClickListener() {
 		
@@ -106,9 +121,7 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 						if (merchant != null) {
 							
 							DbUtil.switchDb(getApplicationContext(), mMerchant.getId());
-							
 							mMerchantDaoService = new MerchantDaoService();
-							mMerchantAccessDaoService = new MerchantAccessDaoService();
 							
 							merchant = mMerchantDaoService.getMerchantByLoginId(loginId);
 							
@@ -116,6 +129,7 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 							mMerchantDaoService.updateMerchant(merchant);
 							
 							DbUtil.switchDb(getApplicationContext(), null);
+							mMerchantDaoService = new MerchantDaoService();
 						}
 						
 						mHttpAsyncManager = new HttpAsyncManager(context);
@@ -123,6 +137,8 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 					}
 				
 				} else {
+					
+					MerchantUtil.setMerchant(null);
 					
 					Intent intent = new Intent(context, MerchantLoginActivity.class);
 					startActivity(intent);
@@ -159,13 +175,27 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 		if (merchant != null) {		
 			
 			mIsResetSuccessful = true;
-			
-			mInfoText.setText(getString(R.string.msg_reset_password_success));
-			
-			mPasswordText.setVisibility(View.GONE);
-			mPasswordConfirmText.setVisibility(View.GONE);
+			updateView();
 		}
 		
-		mProgressDialog.dismiss();
+		mProgressDialog.dismissAllowingStateLoss();
+	}
+	
+	private void updateView() {
+		
+		mInfoText.setText(getString(R.string.msg_reset_password_success));
+		
+		if (mIsResetSuccessful) {
+			
+			mInfoText.setVisibility(View.VISIBLE);
+			mPasswordText.setVisibility(View.GONE);
+			mPasswordConfirmText.setVisibility(View.GONE);
+		
+		} else {
+			
+			mInfoText.setVisibility(View.GONE);
+			mPasswordText.setVisibility(View.VISIBLE);
+			mPasswordConfirmText.setVisibility(View.VISIBLE);
+		}
 	}
 }

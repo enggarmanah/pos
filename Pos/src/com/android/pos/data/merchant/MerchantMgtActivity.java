@@ -2,22 +2,30 @@ package com.android.pos.data.merchant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.android.pos.R;
 import com.android.pos.async.HttpAsyncManager;
 import com.android.pos.async.ProgressDlgFragment;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Merchant;
+import com.android.pos.popup.search.LocaleDlgFragment;
+import com.android.pos.popup.search.LocaleSelectionListener;
 import com.android.pos.util.UserUtil;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragment, MerchantEditFragment, Merchant> {
+public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragment, MerchantEditFragment, Merchant>
+	implements LocaleSelectionListener {
 	
 	List<Merchant> mMerchants;
 	Merchant mSelectedMerchant;
+	
+	private LocaleDlgFragment mLocaleDlgFragment;
+	
+	private static String mLocaleDlgFragmentTag = "mLocaleDlgFragmentTag";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,12 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		
 		if (mProgressDialog == null) {
 			mProgressDialog = new ProgressDlgFragment();
+		}
+		
+		mLocaleDlgFragment = (LocaleDlgFragment) getFragmentManager().findFragmentByTag(mLocaleDlgFragmentTag);
+		
+		if (mLocaleDlgFragment == null) {
+			mLocaleDlgFragment = new LocaleDlgFragment();
 		}
 	}
 	
@@ -46,7 +60,7 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 		}
 		
 		if (mProgress == 100 && mProgressDialog.isVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 	}
 	
@@ -71,6 +85,23 @@ public class MerchantMgtActivity extends BaseItemMgtActivity<MerchantSearchFragm
 			
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public void onSelectLocale(boolean isMandatory) {
+		
+		if (mLocaleDlgFragment.isAdded()) {
+			return;
+		}
+		
+		mLocaleDlgFragment.setMandatory(isMandatory);
+		mLocaleDlgFragment.show(getFragmentManager(), mLocaleDlgFragmentTag);
+	}
+	
+	@Override
+	public void onLocaleSelected(Locale locale) {
+		
+		mEditFragment.setLocale(locale);
 	}
 	
 	@Override

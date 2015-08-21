@@ -18,8 +18,7 @@
             style="@style/PopUpDialogHeaderStyle"
             android:layout_width="fill_parent"
             android:gravity="start|center_vertical"
-            android:text="@string/printer_settings"
-            android:textSize="20sp" />
+            android:text="@string/printer_settings"/>
     </LinearLayout>
 
     <LinearLayout
@@ -83,7 +82,7 @@
             android:text="@string/ok" />
 
         <TextView
-            android:layout_width="1dp"
+            android:layout_width="0.5dp"
             android:layout_height="fill_parent"
             android:background="#AAA" />
 

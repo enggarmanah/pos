@@ -33,7 +33,7 @@ public class TemplateUtil {
         	VelocityContext context = new VelocityContext();
         	
         	String refId = merchant.getRef_id();
-        	String activationCode = refId.substring(refId.length()-4);
+        	String activationCode = refId.substring(refId.length()-6);
 
             context.put("merchant", merchant.getName());
             context.put("address", merchant.getAddress());

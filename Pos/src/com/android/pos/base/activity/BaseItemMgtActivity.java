@@ -100,7 +100,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 		}
 		
 		if (mProgress == 100 && mProgressDialog.isVisible()) {
-			mProgressDialog.dismiss();
+			mProgressDialog.dismissAllowingStateLoss();
 		}
 	}
 
@@ -659,6 +659,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	public void onSelectBill(boolean isMandatory) {}
 	
 	public void onSelectTransaction(boolean isMandatory) {}
+	
+	public void onSelectLocale(boolean isMandatory) {}
 	
 	@Override
 	protected void onAsyncTaskCompleted() {
