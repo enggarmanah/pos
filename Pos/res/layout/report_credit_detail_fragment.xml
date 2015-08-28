@@ -53,11 +53,12 @@
        
        <LinearLayout
             style="@style/SectionContentPanelStyle"
-            android:baselineAligned="false" >
+            android:baselineAligned="false"
+            android:paddingBottom="0dp">
 			
           	<LinearLayout
                 style="@style/SectionSubContentPanelStyle"
-                android:layout_weight="1" >
+                android:layout_weight="1">
 
                 <TextView
                     style="@style/SectionSubContentLabelTextStyle"
@@ -100,7 +101,8 @@
         
         <LinearLayout
             style="@style/SectionContentPanelStyle"
-            android:baselineAligned="false" >
+            android:baselineAligned="false"
+            android:paddingBottom="0dp">
 			
           	<LinearLayout
                 style="@style/SectionSubContentPanelStyle"

@@ -122,7 +122,7 @@ public class CashFlowDailyDlgFragment extends BaseSearchDlgFragment<Transactions
 	@Override
 	public void onTransactionsSelected(Transactions transaction) {
 		
-		dismiss();
+		//dismiss();
 	}
 	
 	public void setTransactionDate(Date transactionDate) {

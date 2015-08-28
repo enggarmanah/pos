@@ -195,16 +195,19 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 		if (selectedMenu != null && selectedMenu.equals(menu)) {
 			
 			menuText.setTextColor(context.getResources().getColor(R.color.text_dark));
-			rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_selected));
+			//rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_selected));
+			rowView.setBackground(context.getResources().getDrawable(R.drawable.bg_menu_selected));
 			
 		} else {
 			
 			if (isSubMenu) {
 				menuText.setTextColor(context.getResources().getColor(R.color.text_darkmed));
-				rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_sub));
+				//rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_sub));
+				rowView.setBackground(context.getResources().getDrawable(R.drawable.bg_menu_sub));
 			} else {
 				menuText.setTextColor(context.getResources().getColor(R.color.text_dark));
-				rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_normal));
+				//rowView.setBackgroundColor(context.getResources().getColor(R.color.menu_normal));
+				rowView.setBackground(context.getResources().getDrawable(R.drawable.bg_menu));
 			}
 		}
 

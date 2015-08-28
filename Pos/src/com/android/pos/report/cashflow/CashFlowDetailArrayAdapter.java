@@ -52,7 +52,7 @@ public class CashFlowDetailArrayAdapter extends ArrayAdapter<CashflowBean> {
 	
 	public CashFlowDetailArrayAdapter(Context context, List<CashflowBean> cashflows, ItemActionListener listener) {
 		
-		super(context, R.layout.bills_list_item, cashflows);
+		super(context, R.layout.cashflow_list_item, cashflows);
 
 		mContext = context;
 		mCashflows = cashflows;

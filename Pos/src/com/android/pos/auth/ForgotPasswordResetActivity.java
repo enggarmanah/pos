@@ -109,7 +109,7 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 					
 					if (isValidated()) {
 						
-						mProgressDialog.show(getFragmentManager(), mProgressDialogTag);
+						//mProgressDialog.show(getFragmentManager(), mProgressDialogTag);
 					
 						UserUtil.setMerchant(false);
 						
@@ -126,14 +126,19 @@ public class ForgotPasswordResetActivity extends BaseAuthActivity implements For
 							merchant = mMerchantDaoService.getMerchantByLoginId(loginId);
 							
 							merchant.setPassword(password);
+							merchant.setUploadStatus(Constant.STATUS_YES);
+							
 							mMerchantDaoService.updateMerchant(merchant);
 							
 							DbUtil.switchDb(getApplicationContext(), null);
 							mMerchantDaoService = new MerchantDaoService();
 						}
 						
-						mHttpAsyncManager = new HttpAsyncManager(context);
-						mHttpAsyncManager.resetPassword(loginId, password);
+						//mHttpAsyncManager = new HttpAsyncManager(context);
+						//mHttpAsyncManager.resetPassword(loginId, password);
+						
+						mIsResetSuccessful = true;
+						updateView();
 					}
 				
 				} else {

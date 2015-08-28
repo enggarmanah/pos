@@ -87,7 +87,8 @@
         android:background="#FFF"
         android:hint="@string/reservation_no"/>
     
-    <LinearLayout style="@style/SectionDividerStyle"/>
+    <LinearLayout style="@style/SectionDividerStyle"
+        android:layout_marginTop="10dp"/>
     
   	<LinearLayout
         android:id="@+id/waitressPanel"

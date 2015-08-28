@@ -112,7 +112,7 @@ public class InventorySearchArrayAdapter extends BaseSearchArrayAdapter<Inventor
 		if (selectedItem != null && getItemId(selectedItem) == getItemId(item)) {
 			
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
-			selectedView = rowView;
+			mSelectedView = rowView;
 			
 		} else {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));

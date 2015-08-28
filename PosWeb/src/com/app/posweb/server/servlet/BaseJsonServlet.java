@@ -58,7 +58,8 @@ public abstract class BaseJsonServlet extends HttpServlet {
         
 		SyncRequest syncRequest = mapper.readValue(jsonRequest, SyncRequest.class);
 		
-		if (ServerUtil.isProductionEnvironment() && Constant.APP_DEBUG_CERT_DN.equals(syncRequest.getCert_dn())) {
+		if ((ServerUtil.isProductionEnvironment() && Constant.APP_DEBUG_CERT_DN.equals(syncRequest.getCert_dn())) ||
+			(!ServerUtil.isProductionEnvironment() && !Constant.APP_DEBUG_CERT_DN.equals(syncRequest.getCert_dn()))) {
 			
 			syncResponse = new SyncResponse();
         	syncResponse.setRespCode(SyncResponse.ERROR);

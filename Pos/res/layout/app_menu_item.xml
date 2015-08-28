@@ -11,6 +11,8 @@
 	    android:minWidth="50dp"
 	    android:layout_gravity="center"
 	    android:gravity="center"
+	    android:layout_marginLeft="4dp"
+	    android:layout_marginStart="4dp"
 	    android:contentDescription="@string/none"/>
 	<TextView
 	    android:id="@+id/menuText"

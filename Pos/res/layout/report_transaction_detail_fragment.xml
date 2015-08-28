@@ -31,7 +31,7 @@
        
        <LinearLayout
             style="@style/SectionContentPanelStyle"
-            android:baselineAligned="false" >
+            android:baselineAligned="false">
 			
           	<LinearLayout
                 style="@style/SectionSubContentPanelStyle"

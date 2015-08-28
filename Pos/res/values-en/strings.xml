@@ -41,6 +41,8 @@
     <string name="resend_activation_code">Resend Activation Code</string>
     <string name="resend_activation_code_info">Please provide your email</string>
     
+    <string name="tap_to_select">Tap to select</string>
+    
     <string name="info_quantity">Total</string>
     <string name="info_revenue">Income</string>
     <string name="info_profit">Profit</string>

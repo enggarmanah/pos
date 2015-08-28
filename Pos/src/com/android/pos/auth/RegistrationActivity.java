@@ -338,6 +338,11 @@ public class RegistrationActivity extends BaseAuthActivity implements Registrati
 	        	merchantAccess.setUploadStatus(Constant.STATUS_YES);
 	        	merchantAccess.setStatus(Constant.STATUS_YES);
 	        	
+	        	merchantAccess.setCreateBy(mMerchant.getLoginId());
+	        	merchantAccess.setCreateDate(new Date());
+	        	merchantAccess.setUpdateBy(mMerchant.getLoginId());
+	        	merchantAccess.setUpdateDate(new Date());
+	        	
 	        	mMerchantAccessDaoService.addMerchantAccess(merchantAccess);
 	        }
 			

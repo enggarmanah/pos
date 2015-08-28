@@ -77,7 +77,7 @@
 
             <EditText
                 android:id="@+id/employeeText"
-                style="@style/FormInputStyle" />
+                style="@style/FormInputSelectStyle" />
         </LinearLayout>
 
         <LinearLayout style="@style/FormRowStyle" >

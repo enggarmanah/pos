@@ -151,11 +151,17 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     		int statusIndex = typeArrayAdapter.getPosition(cashflow.getType());
     		mTypeSp.setSelection(statusIndex);
     		
+    		mBillReferenceNoText.setText(Constant.EMPTY_STRING);
+    		mBillSupplierText.setText(Constant.EMPTY_STRING);
+    		
     		if (cashflow.getBillId() != null) {
     			Bills bill = mBillDaoService.getBills(cashflow.getBillId());
     			mBillReferenceNoText.setText(bill.getBillReferenceNo());
 				mBillSupplierText.setText(bill.getSupplierName());
     		}
+    		
+    		mTransactionNoText.setText(Constant.EMPTY_STRING);
+    		mTransactionCustomerText.setText(Constant.EMPTY_STRING);
     		
     		if (cashflow.getTransactionId() != null) {
     			Transactions transaction = mTransactionDaoService.getTransactions(cashflow.getTransactionId());

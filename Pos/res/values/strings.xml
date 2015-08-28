@@ -41,6 +41,8 @@
     <string name="resend_activation_code">Kirim Ulang Kode Aktivasi</string>
     <string name="resend_activation_code_info">Silahkan input email anda</string>
     
+    <string name="tap_to_select">Ketuk untuk memilih</string>
+    
     <string name="info_quantity">Jumlah</string>
     <string name="info_revenue">Pendapatan</string>
     <string name="info_profit">Laba</string>

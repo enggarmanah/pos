@@ -169,10 +169,10 @@
         <LinearLayout
             style="@style/SectionContentPanelStyle"
             android:baselineAligned="false"
-            android:paddingLeft="15dp"
-            android:paddingStart="15dp"
-            android:paddingRight="15dp"
-            android:paddingEnd="15dp">
+            android:paddingLeft="11dp"
+            android:paddingStart="11dp"
+            android:paddingRight="11dp"
+            android:paddingEnd="11dp">
 
             <TextView
             	style="@style/SectionSubFavoriteTitleTextStyle"

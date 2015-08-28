@@ -147,16 +147,15 @@
         <TextView style="@style/SectionDividerStyle" />
         
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            style="@style/SectionContentPanelStyle"
+            android:baselineAligned="false"
+            android:paddingBottom="0dp">
         	
             <TextView
 	       		android:id="@+id/billPaymentsText"
 		        style="@style/SectionBillsInfoTextStyle"
-		        android:layout_marginStart="15dp"
-		        android:layout_marginLeft="15dp"
+		        android:layout_marginStart="11dp"
+		        android:layout_marginLeft="11dp"
 		        android:text="@string/report_bill_payments" />
             	
 	     	<TextView

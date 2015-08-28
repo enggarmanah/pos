@@ -18,12 +18,12 @@
     <item>        
         <shape>
             <gradient
-                android:startColor="@color/button_back_normal"
-                android:endColor="@color/button_back_normal"
+                android:startColor="@color/button_back_normal_start"
+                android:endColor="@color/button_back_normal_end"
                 android:angle="270" />
             <stroke
                 android:width="0.5dp"
-                android:color="@color/border_dark" />
+                android:color="@color/border_black" />
             <corners android:radius="20dp" />
         </shape>
     </item>

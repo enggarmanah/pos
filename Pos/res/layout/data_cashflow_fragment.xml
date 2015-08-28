@@ -33,7 +33,7 @@
 
             <EditText
                 android:id="@+id/billReferenceNoText"
-                style="@style/FormInputStyle" />
+                style="@style/FormInputSelectStyle" />
         </LinearLayout>
         
         <LinearLayout 
@@ -68,7 +68,7 @@
 
             <EditText
                 android:id="@+id/transactionNoText"
-                style="@style/FormInputStyle" />
+                style="@style/FormInputSelectStyle" />
         </LinearLayout>
         
         <LinearLayout 

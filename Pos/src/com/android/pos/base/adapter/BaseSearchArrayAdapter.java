@@ -19,7 +19,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 	protected T selectedItem;
 	protected ItemActionListener<T> mCallback;
 
-	protected View selectedView;
+	protected View mSelectedView;
 
 	public interface ItemActionListener<T> {
 
@@ -107,7 +107,7 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 		if (selectedItem != null && getItemId(selectedItem) == getItemId(item)) {
 			
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
-			selectedView = rowView;
+			mSelectedView = rowView;
 			
 		} else {
 			rowView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
@@ -128,14 +128,15 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 				selectedItem = item;
 				v.setSelected(true);
 
-				if (selectedView != null) {
+				if (mSelectedView != null) {
 
-					selectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
+					mSelectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
+					mSelectedView.refreshDrawableState();
 				}
 
-				selectedView = v;
+				mSelectedView = v;
 
-				selectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
+				mSelectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_selected_background));
 
 				mCallback.onItemSelected(item);
 			}
@@ -146,9 +147,9 @@ public abstract class BaseSearchArrayAdapter<T> extends ArrayAdapter<T> {
 
 		selectedItem = null;
 		
-		if (selectedView != null) {
+		if (mSelectedView != null) {
 
-			selectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
+			mSelectedView.setBackgroundColor(context.getResources().getColor(R.color.list_row_normal_background));
 		}
 	}
 }

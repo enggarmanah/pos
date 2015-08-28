@@ -33,7 +33,7 @@
 
             <EditText
                 android:id="@+id/supplierNameText"
-                style="@style/FormInputStyle" />
+                style="@style/FormInputSelectStyle"/>
         </LinearLayout>
         
         <LinearLayout 

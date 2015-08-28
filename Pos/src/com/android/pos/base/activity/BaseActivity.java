@@ -216,7 +216,10 @@ public abstract class BaseActivity extends Activity
 			getString(R.string.menu_report_commision).equals(getSelectedMenu()) ||
 			getString(R.string.menu_report_inventory).equals(getSelectedMenu()) ||
 			getString(R.string.menu_report_product_statistic).equals(getSelectedMenu()) ||
-			getString(R.string.menu_report_transaction).equals(getSelectedMenu())) {
+			getString(R.string.menu_report_transaction).equals(getSelectedMenu()) ||
+			getString(R.string.menu_report_tax).equals(getSelectedMenu()) ||
+			getString(R.string.menu_report_service_charge).equals(getSelectedMenu()) ||
+			getString(R.string.menu_report_credit).equals(getSelectedMenu())) {
 			
 			Config.setMenuReportExpanded(true);
 		
@@ -278,7 +281,9 @@ public abstract class BaseActivity extends Activity
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY) ||
-			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CREDIT)) {
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CREDIT) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TAX) ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_SERVICE_CHARGE)) {
 			
 			mMenus.add(getString(R.string.menu_report));
 		}

@@ -68,7 +68,7 @@ public class Constant {
 	public static final String FONT_SIZE_REGULAR = "R";
 	public static final String FONT_SIZE_SMALL = "S";
 	
-	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 200;
+	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 25;
 	
 	public static final String TASK_REGISTER_MERCHANT = "TASK_REGISTER_MERCHANT";
 	public static final String TASK_RESEND_ACTIVATION_CODE = "TASK_RESEND_ACTIVATION_CODE";
