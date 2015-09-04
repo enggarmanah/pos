@@ -99,6 +99,8 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
     	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
     	mBillReferenceNoText = (EditText) view.findViewById(R.id.billReferenceNoText);
     	mBillSupplierText = (EditText) view.findViewById(R.id.billSupplierText);

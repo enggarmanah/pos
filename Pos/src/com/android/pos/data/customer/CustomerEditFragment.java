@@ -56,6 +56,8 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
         mNameText = (EditText) view.findViewById(R.id.nameText);
     	mTelephoneText = (EditText) view.findViewById(R.id.telephoneText);
     	mEmailText = (EditText) view.findViewById(R.id.emailText);

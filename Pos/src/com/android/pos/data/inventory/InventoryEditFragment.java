@@ -98,6 +98,8 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	mProductNameText = (EditText) view.findViewById(R.id.productNameText);
     	mProductCostPriceText = (EditText) view.findViewById(R.id.productCostPriceText);

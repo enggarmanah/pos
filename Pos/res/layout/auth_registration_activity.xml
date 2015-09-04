@@ -41,25 +41,29 @@
 	    <EditText
 	        android:id="@+id/nameText"
 	        android:hint="@string/merchant_name"
-	        style="@style/RegistrationTextStyle"/>
+	        style="@style/RegistrationTextStyle"
+	        android:text=""/>
 	    
 	    <EditText
 	        android:id="@+id/addressText"
 	        android:hint="@string/field_address"
 	        style="@style/RegistrationTextStyle"
-	        android:singleLine="false"/>
+	        android:singleLine="false"
+	        android:text=""/>
 	    
 	    <EditText
 	        android:id="@+id/telephoneText"
 	        android:hint="@string/field_telephone"
 	        style="@style/RegistrationTextStyle"
-	        android:inputType="phone"/>
+	        android:inputType="phone"
+	        android:text=""/>
 	    
 	    <EditText
 	        android:id="@+id/emailText"
 	        style="@style/RegistrationTextStyle"
 	        android:hint="@string/field_email"
-	        android:inputType="textEmailAddress"/>
+	        android:inputType="textEmailAddress"
+	        android:text=""/>
 	    
 	    <EditText
 	        android:id="@+id/localeText"
@@ -69,29 +73,34 @@
 	    <EditText
 	        android:id="@+id/loginIdText"
 	        android:hint="@string/field_login_id"
-	        style="@style/RegistrationTextStyle"/>
+	        style="@style/RegistrationTextStyle"
+	        android:text=""/>
 	    
 	    <EditText
 	        android:id="@+id/passwordText"
 	        android:hint="@string/password"
 	        android:inputType="textPassword"
-	        style="@style/RegistrationTextStyle"/>
+	        style="@style/RegistrationTextStyle"
+	        android:text=""/>
 	    
 	    <EditText
 	        android:id="@+id/passwordConfirmText"
 	        android:hint="@string/field_password_confirm"
 	        android:inputType="textPassword"
-	        style="@style/RegistrationTextStyle"/>
+	        style="@style/RegistrationTextStyle"
+	        android:text=""/>
 	    
 	    <EditText
 	        android:id="@+id/securityQuestionText"
 	        android:hint="@string/field_security_question"
-	        style="@style/RegistrationTextStyle"/>
+	        style="@style/RegistrationTextStyle"
+	        android:text=""/>
 	    
 	    <EditText
 	        android:id="@+id/securityAnswerText"
 	        android:hint="@string/field_security_answer"
-	        style="@style/RegistrationTextStyle"/>
+	        style="@style/RegistrationTextStyle"
+	        android:text=""/>
 	    
 	    <Button
 	        android:id="@+id/loginBtn"

@@ -87,6 +87,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
     	mPrice1Panel = (LinearLayout) view.findViewById(R.id.price1Panel);
     	mPrice2Panel = (LinearLayout) view.findViewById(R.id.price2Panel);
     	mPrice3Panel = (LinearLayout) view.findViewById(R.id.price3Panel);

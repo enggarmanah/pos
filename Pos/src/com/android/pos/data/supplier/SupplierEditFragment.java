@@ -49,6 +49,8 @@ public class SupplierEditFragment extends BaseEditFragment<Supplier> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
     	mNameText = (EditText) view.findViewById(R.id.nameText);
     	mTelephoneText = (EditText) view.findViewById(R.id.telephoneText);
     	mAddressText = (EditText) view.findViewById(R.id.addressText);

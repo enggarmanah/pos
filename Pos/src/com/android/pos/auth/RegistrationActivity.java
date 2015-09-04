@@ -356,6 +356,7 @@ public class RegistrationActivity extends BaseAuthActivity implements Registrati
 		
 		if (mIsRegistrationSuccessful) {
 			
+			mInfoText.setVisibility(View.VISIBLE);
 			mInfoText.setText(getString(R.string.msg_merchant_registration_success));
 			
 			mTypeSp.setVisibility(View.GONE);

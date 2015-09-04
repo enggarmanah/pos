@@ -46,6 +46,8 @@ public class DiscountEditFragment extends BaseEditFragment<Discount> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
         mNameText = (EditText) view.findViewById(R.id.nameText);
         mPercentageText = (EditText) view.findViewById(R.id.percentageText);	
     	

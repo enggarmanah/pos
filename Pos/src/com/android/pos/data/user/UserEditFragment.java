@@ -35,6 +35,8 @@ import android.widget.TextView;
 
 public class UserEditFragment extends BaseEditFragment<User> {
     
+	LinearLayout mEmployeeLayout;
+	
 	EditText mNameText;
 	EditText mUserIdText;
     EditText mPasswordText;
@@ -98,6 +100,10 @@ public class UserEditFragment extends BaseEditFragment<User> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
+    	mEmployeeLayout = (LinearLayout) view.findViewById(R.id.employeeLayout);
+    	
     	mNameText = (EditText) view.findViewById(R.id.nameText);
     	mUserIdText = (EditText) view.findViewById(R.id.userIdText);
     	mPasswordText = (EditText) view.findViewById(R.id.passwordText);
@@ -132,6 +138,14 @@ public class UserEditFragment extends BaseEditFragment<User> {
     
     @Override
     protected void updateView(User user) {
+    	
+    	int employeeCount = mEmployeeDaoService.getEmployees(Constant.EMPTY_STRING, 0).size();
+    	
+    	if (employeeCount != 0) {
+    		mEmployeeLayout.setVisibility(View.VISIBLE);
+    	} else {
+    		mEmployeeLayout.setVisibility(View.GONE);
+    	}
     	
     	if (user != null) {
     		

@@ -133,6 +133,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
         mNameText = (EditText) view.findViewById(R.id.nameText);
     	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
     	mAddressText = (EditText) view.findViewById(R.id.addressText);

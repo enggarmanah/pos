@@ -65,7 +65,8 @@
         </LinearLayout>
         
         
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout android:id="@+id/employeeLayout" 
+            style="@style/FormRowStyle">
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"

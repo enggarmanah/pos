@@ -47,9 +47,9 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     		View input = field.getField();
     		String value = null;
     		
-    		if (input instanceof TextView) {
+    		if (input instanceof EditText) {
     			
-    			TextView inputText = (TextView) input;
+    			EditText inputText = (EditText) input;
     			value = inputText.getText().toString();
     		}
     		
@@ -130,7 +130,11 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
         }
     }
     
-    protected abstract void initViewReference(View view);
+    protected void initViewReference(View view) {
+    	
+    	mInputFields.clear();
+    	mandatoryFields.clear();
+    }
     
     @Override
 	public void onSaveInstanceState(Bundle outState) {

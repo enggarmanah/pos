@@ -97,6 +97,8 @@ public class BillsEditFragment extends BaseEditFragment<Bills> {
     @Override
     protected void initViewReference(View view) {
         
+    	super.initViewReference(view);
+    	
     	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
     	
     	mSupplierNameText = (EditText) view.findViewById(R.id.supplierNameText);
