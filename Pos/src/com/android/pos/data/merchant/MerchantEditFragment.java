@@ -66,9 +66,11 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     
     Spinner mPriceTypeCountSp;
     Spinner mDiscountTypeSp;
+    Spinner mOrderTypeSp;
     Spinner mStatusSp;
     
     LinearLayout mStatusPanel;
+    LinearLayout orderTypePanel;
     LinearLayout paymentTypePanel;
     LinearLayout accessRightPanel;
     LinearLayout accessRightRowPanel;
@@ -82,6 +84,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
     CodeSpinnerArrayAdapter discountTypeArrayAdapter;
+    CodeSpinnerArrayAdapter orderTypeArrayAdapter;
     CodeSpinnerArrayAdapter priceTypeCountArrayAdapter;
     
     BaseItemListener<Locale> mLocaleItemListener;
@@ -156,10 +159,12 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mServiceChargeText = (EditText) view.findViewById(R.id.serviceChargeText);
     	mPriceTypeCountSp = (Spinner) view.findViewById(R.id.priceTypeCountSp);
     	mDiscountTypeSp = (Spinner) view.findViewById(R.id.discountTypeSp);
+    	mOrderTypeSp = (Spinner) view.findViewById(R.id.orderTypeSp);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
     	mLocaleText.setOnClickListener(getLocaleOnClickListener());
     	mPriceTypeCountSp.setOnItemSelectedListener(getPriceTypeCountOnItemSelectedListener());
+    	mTypeSp.setOnItemSelectedListener(getMerchantTypeItemSelectedListener());
     	
     	mStatusPanel = (LinearLayout) view.findViewById(R.id.statusPanel);
     	
@@ -167,6 +172,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mPriceLabel2Panel = (LinearLayout) view.findViewById(R.id.priceLabel2Panel);
     	mPriceLabel3Panel = (LinearLayout) view.findViewById(R.id.priceLabel3Panel);
     	
+    	orderTypePanel = (LinearLayout) view.findViewById(R.id.orderTypePanel);
     	paymentTypePanel = (LinearLayout) view.findViewById(R.id.paymentTypePanel);
     	
     	accessRightRowPanel = (LinearLayout) view.findViewById(R.id.accessRightsRowPanel);
@@ -200,6 +206,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerField(mTaxText);
     	registerField(mPriceTypeCountSp);
     	registerField(mDiscountTypeSp);
+    	registerField(mOrderTypeSp);
     	registerField(mServiceChargeText);
     	registerField(mStatusSp);
     	
@@ -216,6 +223,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	discountTypeArrayAdapter = new CodeSpinnerArrayAdapter(mDiscountTypeSp, getActivity(), CodeUtil.getDiscountTypes());
     	mDiscountTypeSp.setAdapter(discountTypeArrayAdapter);
+    	
+    	orderTypeArrayAdapter = new CodeSpinnerArrayAdapter(mOrderTypeSp, getActivity(), CodeUtil.getOrderTypes());
+    	mOrderTypeSp.setAdapter(orderTypeArrayAdapter);
     	
     	priceTypeCountArrayAdapter = new CodeSpinnerArrayAdapter(mPriceTypeCountSp, getActivity(), CodeUtil.getPriceTypeCount());
     	mPriceTypeCountSp.setAdapter(priceTypeCountArrayAdapter);
@@ -238,6 +248,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		int typeIndex = typeArrayAdapter.getPosition(merchant.getType());
     		int priceTypeCountIndex = priceTypeCountArrayAdapter.getPosition(String.valueOf(merchant.getPriceTypeCount()));
     		int discountTypeIndex = discountTypeArrayAdapter.getPosition(merchant.getDiscountType());
+    		int orderTypeIndex = orderTypeArrayAdapter.getPosition(merchant.getOrderType());
     		int statusIndex = statusArrayAdapter.getPosition(merchant.getStatus());
     		
     		mNameText.setText(merchant.getName());
@@ -266,6 +277,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mTypeSp.setSelection(typeIndex);
     		mPriceTypeCountSp.setSelection(priceTypeCountIndex);
     		mDiscountTypeSp.setSelection(discountTypeIndex);
+    		mOrderTypeSp.setSelection(orderTypeIndex);
     		mStatusSp.setSelection(statusIndex);
     		
     		if (!UserUtil.isRoot()) {
@@ -414,6 +426,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	String securityQuestion = mSecurityQuestionText.getText().toString();
     	String securityAnswer = mSecurityAnswerText.getText().toString();
     	String discountType = CodeBean.getNvlCode((CodeBean) mDiscountTypeSp.getSelectedItem());
+    	String orderType = CodeBean.getNvlCode((CodeBean) mOrderTypeSp.getSelectedItem());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
     	if (mItem != null) {
@@ -439,6 +452,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mItem.setTaxPercentage(tax);
     		mItem.setServiceChargePercentage(serviceCharge);
     		mItem.setDiscountType(discountType);
+    		mItem.setOrderType(orderType);
     		mItem.setStatus(status);
     		
     		mItem.setUploadStatus(Constant.STATUS_YES);
@@ -615,6 +629,22 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 		};
     }
     
+    private AdapterView.OnItemSelectedListener getMerchantTypeItemSelectedListener() {
+    	
+    	return new AdapterView.OnItemSelectedListener() {
+			
+        	@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				
+        		refreshVisibleField();
+        	}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		};
+    }
+    
     private View.OnClickListener getLocaleOnClickListener() {
     	
     	return new View.OnClickListener() {
@@ -636,6 +666,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     private void refreshVisibleField() {
     	
     	Integer priceTypeCount = Integer.valueOf(CodeBean.getNvlCode((CodeBean) mPriceTypeCountSp.getSelectedItem()));
+    	String merchantType = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
     	
     	mPriceLabel1Panel.setVisibility(View.GONE);
     	mPriceLabel2Panel.setVisibility(View.GONE);
@@ -644,8 +675,6 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
 		mandatoryFields.clear();
 		mandatoryFields.add(new FormFieldBean(mNameText, R.string.field_name));
     	mandatoryFields.add(new FormFieldBean(mAddressText, R.string.field_address));
-    	//mandatoryFields.add(new FormFieldBean(mContactNameText, R.string.field_contact_name));
-    	//mandatoryFields.add(new FormFieldBean(mContactTelephoneText, R.string.field_contact_telephone));
     	mandatoryFields.add(new FormFieldBean(mLoginIdText, R.string.field_login_id));
     	mandatoryFields.add(new FormFieldBean(mPasswordText, R.string.field_password));
     	mandatoryFields.add(new FormFieldBean(mPeriodStartDate, R.string.field_period_start));
@@ -672,6 +701,16 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mandatoryFields.add(new FormFieldBean(mPriceLabel1Text, R.string.field_price_label_1));
     		mandatoryFields.add(new FormFieldBean(mPriceLabel2Text, R.string.field_price_label_2));
     		mandatoryFields.add(new FormFieldBean(mPriceLabel3Text, R.string.field_price_label_3));
+    	}
+    	
+    	if (Constant.MERCHANT_TYPE_FOODS_N_BEVERAGES.equals(merchantType) ||
+    		Constant.MERCHANT_TYPE_GOODS_N_SERVICES.equals(merchantType)) {
+    		
+    		orderTypePanel.setVisibility(View.VISIBLE);
+    		
+    	} else {
+    		
+    		orderTypePanel.setVisibility(View.GONE);
     	}
     	
     	highlightMandatoryFields();

@@ -63,7 +63,13 @@ public class UserAccessDaoService {
 	
 	public UserAccess getUserAccess(Long id) {
 		
-		return userAccessDao.load(id);
+		UserAccess userAccess = userAccessDao.load(id);
+
+		if (userAccess != null) {
+			userAccessDao.detach(userAccess);
+		}
+		
+		return userAccess;
 	}
 	
 	public List<UserAccess> getUserAccessList(Long userId) {

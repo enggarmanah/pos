@@ -46,7 +46,13 @@ public class DiscountDaoService {
 	
 	public Discount getDiscount(Long id) {
 		
-		return discountDao.load(id);
+		Discount discount = discountDao.load(id);
+		
+		if (discount != null) {
+			discountDao.detach(discount);
+		}
+		
+		return discount;
 	}
 	
 	public List<Discount> getDiscounts() {

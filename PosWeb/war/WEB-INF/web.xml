@@ -3,8 +3,21 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
-
+	
+    
+	<welcome-file-list>
+		<welcome-file>home</welcome-file>
+	</welcome-file-list>
+    
 	<!-- Servlets -->
+	<servlet>
+		<servlet-name>homeServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.HomeServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>guideServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.GuideServlet</servlet-class>
+	</servlet>
 	<servlet>
 		<servlet-name>merchantRegisterJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.MerchantRegisterJsonServlet</servlet-class>
@@ -186,6 +199,14 @@
 		<servlet-class>com.app.posweb.server.servlet.OrderItemUpdateJsonServlet</servlet-class>
 	</servlet>
 	
+	<servlet-mapping>
+		<servlet-name>homeServlet</servlet-name>
+		<url-pattern>/home</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>guideServlet</servlet-name>
+		<url-pattern>/guide</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>merchantRegisterJsonServlet</servlet-name>
 		<url-pattern>/merchantRegisterJsonServlet</url-pattern>

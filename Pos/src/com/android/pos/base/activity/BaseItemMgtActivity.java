@@ -3,18 +3,6 @@ package com.android.pos.base.activity;
 import java.io.Serializable;
 import java.util.List;
 
-import com.android.pos.Constant;
-import com.android.pos.R;
-import com.android.pos.async.HttpAsyncListener;
-import com.android.pos.async.HttpAsyncManager;
-import com.android.pos.async.ProgressDlgFragment;
-import com.android.pos.base.activity.BaseActivity;
-import com.android.pos.base.listener.BaseItemListener;
-import com.android.pos.common.ConfirmDeleteDlgFragment;
-import com.android.pos.dao.Merchant;
-import com.android.pos.data.merchant.MerchantMgtActivity;
-import com.android.pos.util.UserUtil;
-
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
@@ -26,6 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
+
+import com.android.pos.Constant;
+import com.android.pos.R;
+import com.android.pos.async.HttpAsyncListener;
+import com.android.pos.async.HttpAsyncManager;
+import com.android.pos.async.ProgressDlgFragment;
+import com.android.pos.base.listener.BaseItemListener;
+import com.android.pos.common.ConfirmDeleteDlgFragment;
+import com.android.pos.dao.Merchant;
+import com.android.pos.data.merchant.MerchantMgtActivity;
+import com.android.pos.util.UserUtil;
 
 public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity 
 	implements BaseItemListener<T>, SearchView.OnQueryTextListener, HttpAsyncListener {
@@ -336,6 +335,7 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 				
 			} else {
 				showNavigationAndItemMenu();
+				updateEditFragmentItem(mSelectedItem);
 				refreshEditView();
 			}
 			
@@ -653,6 +653,8 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	public void onSelectEmployee(boolean isMandatory) {}
 	
 	public void onSelectProduct(boolean isMandatory) {}
+	
+	public void onSelectProductGroup(boolean isMandatory) {}
 	
 	public void onSelectSupplier(boolean isMandatory) {}
 	

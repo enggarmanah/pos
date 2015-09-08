@@ -22,6 +22,7 @@ public class MerchantBean {
 	private String price_label_2;
 	private String price_label_3;
 	private String discount_type;
+	private String order_type;
 	private String payment_type;
 	private Float tax_percentage;
 	private Float service_charge_percentage;
@@ -186,10 +187,18 @@ public class MerchantBean {
 		this.discount_type = discount_type;
 	}
 	
+	public String getOrder_type() {
+		return order_type;
+	}
+
+	public void setOrder_type(String order_type) {
+		this.order_type = order_type;
+	}
+
 	public String getPayment_type() {
 		return payment_type;
 	}
-
+	
 	public void setPayment_type(String payment_type) {
 		this.payment_type = payment_type;
 	}

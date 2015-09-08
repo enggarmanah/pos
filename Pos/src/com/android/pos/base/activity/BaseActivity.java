@@ -337,7 +337,7 @@ public abstract class BaseActivity extends Activity
 		
 			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER)) {
 				
-				if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+				if (Constant.MERCHANT_TYPE_MEDICAL_SERVICES.equals(MerchantUtil.getMerchantType())) {
 					mMenus.add(getString(R.string.menu_favorite_patient));
 				} else {
 					mMenus.add(getString(R.string.menu_favorite_customer));
@@ -363,7 +363,7 @@ public abstract class BaseActivity extends Activity
 		
 		if (UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
 			
-			if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+			if (Constant.MERCHANT_TYPE_MEDICAL_SERVICES.equals(MerchantUtil.getMerchantType())) {
 				mMenus.add(getString(R.string.menu_patient));
 			} else {
 				mMenus.add(getString(R.string.menu_customer));

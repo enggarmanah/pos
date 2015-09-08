@@ -49,7 +49,13 @@ public class InventoryDaoService {
 	
 	public Inventory getInventory(Long id) {
 		
-		return inventoryDao.load(id);
+		Inventory inventory = inventoryDao.load(id);
+		
+		if (inventory != null) {
+			inventoryDao.detach(inventory);
+		}
+		
+		return inventory;
 	}
 	
 	public List<Inventory> getInventories(String query, int lastIndex) {

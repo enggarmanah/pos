@@ -39,7 +39,13 @@ public class TransactionItemDaoService {
 	
 	public TransactionItem getTransactionItem(Long id) {
 		
-		return transactionItemDao.load(id);
+		TransactionItem transactionItem = transactionItemDao.load(id);
+		
+		if (transactionItem != null) {
+			transactionItemDao.detach(transactionItem);
+		}
+		
+		return transactionItem;
 	}
 	
 	public List<TransactionItemBean> getTransactionItemsForUpload() {

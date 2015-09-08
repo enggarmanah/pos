@@ -155,7 +155,7 @@ public class OrderDetailFragment extends BaseFragment implements OrderItemArrayA
 		
 		mAdapter.notifyDataSetChanged();
 		
-		if (Constant.ORDER_TYPE_DINE_IN.equals(orderType)) {
+		if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(orderType)) {
 			
 			mOrderInfo.setText(getString(R.string.order_table_no, orderReference));
 			

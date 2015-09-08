@@ -61,7 +61,13 @@ public class ProductDaoService {
 	
 	public Product getProduct(Long id) {
 		
-		return productDao.load(id);
+		Product product = productDao.load(id);
+		
+		if (product != null) {
+			productDao.detach(product);
+		}
+		
+		return product;
 	}
 	
 	public List<Product> getProducts(String query, int lastIndex) {

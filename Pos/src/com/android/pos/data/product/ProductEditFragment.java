@@ -1,13 +1,13 @@
 package com.android.pos.data.product;
 
 import java.util.Date;
-import java.util.List;
 
 import com.android.pos.CodeBean;
 import com.android.pos.Constant;
 import com.android.pos.R;
 import com.android.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.android.pos.base.fragment.BaseEditFragment;
+import com.android.pos.base.listener.BaseItemListener;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductDaoService;
@@ -19,6 +19,7 @@ import com.android.pos.util.CommonUtil;
 import com.android.pos.util.MerchantUtil;
 import com.android.pos.util.UserUtil;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,7 +35,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
 	EditText mCodeText;
 	EditText mNameText;
 	Spinner mTypeSp;
-	Spinner mProductGrpSp;
+	EditText mProductGroupText;
     
 	LinearLayout mPrice1Panel;
 	LinearLayout mPrice2Panel;
@@ -59,7 +60,6 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     EditText mMinStockText;
     Spinner mStatusSp;
     
-    ProductGrpSpinnerArrayAdapter productGrpArrayAdapter;
     CodeSpinnerArrayAdapter statusArrayAdapter;
     CodeSpinnerArrayAdapter typeArrayAdapter;
     CodeSpinnerArrayAdapter picRequiredArrayAdapter;
@@ -67,6 +67,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     
     private ProductDaoService mProductDaoService = new ProductDaoService();
     private ProductGroupDaoService mProductGroupDaoService = new ProductGroupDaoService();
+    
+    BaseItemListener<Product> mProductItemListener;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -77,6 +79,19 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	initViewReference(view);
     	
     	return view;
+    }
+    
+    @SuppressWarnings("unchecked")
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+        	mProductItemListener = (BaseItemListener<Product>) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement BaseItemListener<T>");
+        }
     }
     
     @Override
@@ -96,7 +111,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	mCodeText = (EditText) view.findViewById(R.id.codeText);
     	mNameText = (EditText) view.findViewById(R.id.nameText);
     	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
-    	mProductGrpSp = (Spinner) view.findViewById(R.id.productGrpSp);
+    	mProductGroupText = (EditText) view.findViewById(R.id.productGroupText);
     	mPrice1Label = (TextView) view.findViewById(R.id.priceLabel1Text);
     	mPrice1Text = (EditText) view.findViewById(R.id.price1Text);
     	mPrice2Label = (TextView) view.findViewById(R.id.priceLabel2Text);
@@ -114,10 +129,13 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	mMinStockText = (EditText) view.findViewById(R.id.minStockText);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
+    	mProductGroupText.setFocusable(false);
+    	mProductGroupText.setOnClickListener(getProductGroupOnClickListener());
+    	
     	registerField(mCodeText);
     	registerField(mNameText);
     	registerField(mTypeSp);
-    	registerField(mProductGrpSp);
+    	registerField(mProductGroupText);
     	registerField(mPrice1Text);
     	registerField(mPrice2Text);
     	registerField(mPrice3Text);
@@ -153,13 +171,10 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	linkDatePickerWithInputField("startDatePicker", mPromoStartDate);
     	linkDatePickerWithInputField("endDatePicker", mPromoEndDate);
     	
-    	boolean isResto = Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchant().getType());
+    	boolean isFnBMerchant = Constant.MERCHANT_TYPE_FOODS_N_BEVERAGES.equals(MerchantUtil.getMerchant().getType());
     	
-    	typeArrayAdapter = new CodeSpinnerArrayAdapter(mTypeSp, getActivity(), isResto ? CodeUtil.getRestoProductTypes() : CodeUtil.getProductTypes());
+    	typeArrayAdapter = new CodeSpinnerArrayAdapter(mTypeSp, getActivity(), isFnBMerchant ? CodeUtil.getFnBProductTypes() : CodeUtil.getProductTypes());
     	mTypeSp.setAdapter(typeArrayAdapter);
-    	
-    	productGrpArrayAdapter = new ProductGrpSpinnerArrayAdapter(mProductGrpSp, getActivity(), getProductGroups());
-    	mProductGrpSp.setAdapter(productGrpArrayAdapter);
     	
     	picRequiredArrayAdapter = new CodeSpinnerArrayAdapter(mPicRequiredSp, getActivity(), CodeUtil.getBooleans());
     	mPicRequiredSp.setAdapter(picRequiredArrayAdapter);
@@ -198,10 +213,19 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		}
     		
     		int typeIndex = typeArrayAdapter.getPosition(product.getType());
-    		int productGrpIndex = productGrpArrayAdapter.getPosition(String.valueOf(product.getProductGroupId()));
     		int statusIndex = statusArrayAdapter.getPosition(product.getStatus());
     		int picRequiredIndex = picRequiredArrayAdapter.getPosition(product.getPicRequired());
     		int quantityTypeIndex = quantityTypeArrayAdapter.getPosition(product.getQuantityType());
+    		
+    		if (product.getProductGroupId() != null) {
+    			
+    			String productGroupName = mProductGroupDaoService.getProductGroup(product.getProductGroupId()).getName();
+    			mProductGroupText.setText(productGroupName);
+    			
+    		} else {
+    			
+    			mProductGroupText.setText(Constant.EMPTY_STRING);
+    		}
     		
     		mCodeText.setText(product.getCode());
     		mNameText.setText(product.getName());
@@ -217,7 +241,6 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		mMinStockText.setText(CommonUtil.formatNumber(product.getMinStock()));
     		
     		mTypeSp.setSelection(typeIndex);
-    		mProductGrpSp.setSelection(productGrpIndex);
     		mStatusSp.setSelection(statusIndex);
     		mPicRequiredSp.setSelection(picRequiredIndex);
     		mQuantityTypeSp.setSelection(quantityTypeIndex);
@@ -236,7 +259,6 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	String code = mCodeText.getText().toString();
     	String name = mNameText.getText().toString();
     	String type = CodeBean.getNvlCode((CodeBean) mTypeSp.getSelectedItem());
-    	Long prodGrpId = CommonUtil.getNvlId((ProductGroup) mProductGrpSp.getSelectedItem());
     	
     	Float price1 = CommonUtil.parseFloatCurrency(mPrice1Text.getText().toString());
     	Float price2 = CommonUtil.parseFloatCurrency(mPrice2Text.getText().toString());
@@ -259,7 +281,6 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     		mItem.setCode(code);
     		mItem.setName(name);
     		mItem.setType(type);
-    		mItem.setProductGroupId(prodGrpId);
     		mItem.setPrice1(price1);
     		mItem.setPrice2(price2);
     		mItem.setPrice3(price3);
@@ -300,6 +321,7 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
         mProductDaoService.addProduct(mItem);
         
         mNameText.getText().clear();
+        mProductGroupText.getText().clear();
         mPrice1Text.getText().clear();
         mPrice2Text.getText().clear();
         mPrice3Text.getText().clear();
@@ -324,6 +346,23 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	return true;
     }
     
+    public void setProductGroup(ProductGroup productGroup) {
+		
+    	if (mItem != null) {
+    		
+    		if (productGroup != null) {
+    			
+    			mItem.setProductGroupId(productGroup.getId());
+    			
+    		} else {
+    			
+    			mItem.setProductGroup(null);	
+    		}
+    		
+    		updateView(mItem);
+    	}
+	}
+    
     @Override
     protected TextView getFirstField() {
     	
@@ -340,10 +379,24 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	return product;
     }
     
-    private ProductGroup[] getProductGroups() {
-
-		List<ProductGroup> list = mProductGroupDaoService.getProductGroups();
-
-		return list.toArray(new ProductGroup[list.size()]);
-	}
+    private View.OnClickListener getProductGroupOnClickListener() {
+    	
+    	return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if (mProductGroupText.isEnabled()) {
+					
+					if (isEnableInputFields) {
+						
+						saveItem();
+						
+						boolean isMandatory = false;
+						mProductItemListener.onSelectProductGroup(isMandatory);
+					}
+				}
+			}
+		};
+    }
 }

@@ -51,7 +51,13 @@ public class CustomerDaoService {
 	
 	public Customer getCustomer(Long id) {
 		
-		return customerDao.load(id);
+		Customer customer =  customerDao.load(id);
+		
+		if (customer != null) {
+			customerDao.detach(customer);
+		}
+		
+		return customer;
 	}
 	
 	public List<Customer> getCustomers(String query, int lastIndex) {

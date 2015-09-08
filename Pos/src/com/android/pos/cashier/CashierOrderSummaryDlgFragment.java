@@ -123,15 +123,15 @@ public class CashierOrderSummaryDlgFragment extends BaseDialogFragment {
 			return;
 		}
 		
-		if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType)) {
+		if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(mOrderType)) {
 			mOrderTypePanel.setVisibility(View.VISIBLE);
 			mOrderReferenceLabel.setText(getString(R.string.reservation_no));
 		
-		} else if (Constant.ORDER_TYPE_TAKEWAY.equals(mOrderType)) {
+		} else if (Constant.TXN_ORDER_TYPE_TAKEWAY.equals(mOrderType)) {
 			mOrderTypePanel.setVisibility(View.VISIBLE);
 			mOrderReferenceLabel.setText(getString(R.string.customer));
 		
-		} else if (Constant.ORDER_TYPE_SERVICE.equals(mOrderType)) {
+		} else if (Constant.TXN_ORDER_TYPE_SERVICE.equals(mOrderType)) {
 			mOrderTypePanel.setVisibility(View.GONE);
 			mOrderReferenceLabel.setText(getString(R.string.customer));
 			mOrderReferenceLabel.setMinHeight(CommonUtil.convertDpToPix(60));

@@ -49,7 +49,8 @@
                 style="@style/FormInputListStyle" />
         </LinearLayout>
         
-        <LinearLayout style="@style/FormRowStyle" >
+        <LinearLayout android:id="@+id/productGroupLayout" 
+            style="@style/FormRowStyle">
 
             <TextView
                 style="@style/FormTextFirstLetterStyle"
@@ -59,9 +60,9 @@
                 style="@style/FormTextStyle"
                 android:text="@string/field_group" />
 
-            <Spinner
-                android:id="@+id/productGrpSp"
-                style="@style/FormInputListStyle" />
+            <EditText
+                android:id="@+id/productGroupText"
+                style="@style/FormInputSelectStyle" />
         </LinearLayout>
         
         <LinearLayout 

@@ -358,13 +358,13 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			
 			if (mIsAddOn) {
 			
-				if (Constant.ORDER_TYPE_DINE_IN.equals(mSelectedOrder.getOrderType())) {
+				if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(mSelectedOrder.getOrderType())) {
 					header = getString(R.string.order_table_no_add_on, mSelectedOrder.getOrderReference());
 				} else {
 					header = getString(R.string.order_customer_add_on, mSelectedOrder.getOrderReference());
 				}
 			} else {
-				if (Constant.ORDER_TYPE_DINE_IN.equals(mSelectedOrder.getOrderType())) {
+				if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(mSelectedOrder.getOrderType())) {
 					header = getString(R.string.order_table_no, mSelectedOrder.getOrderReference());
 				} else {
 					header = getString(R.string.order_customer, mSelectedOrder.getOrderReference());
@@ -385,8 +385,8 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 	
 	private void initButtons() {
 		
-		if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchant().getType()) ||
-			Constant.MERCHANT_TYPE_BEAUTY_N_SPA.equals(MerchantUtil.getMerchant().getType())) {
+		if (Constant.MERCHANT_TYPE_FOODS_N_BEVERAGES.equals(MerchantUtil.getMerchant().getType()) ||
+			Constant.MERCHANT_TYPE_GOODS_N_SERVICES.equals(MerchantUtil.getMerchant().getType())) {
 			
 			hidePaymentButton();
 			hideOrderNewItemButton();
@@ -395,7 +395,11 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			if (Constant.CASHIER_STATE_CASHIER.equals(mCashierState)) {
 				
 				showPaymentButton();
-				showOrderButton();
+				
+				if (Constant.ORDER_TYPE_BEFORE_PAYMENT.equals(MerchantUtil.getMerchant().getOrderType())) {
+					
+					showOrderButton();
+				}
 			
 			} else if (Constant.CASHIER_STATE_ORDER_PAYMENT.equals(mCashierState)) {
 				

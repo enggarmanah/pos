@@ -27,7 +27,7 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 		
 		super.onStart();
 		
-		if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+		if (Constant.MERCHANT_TYPE_MEDICAL_SERVICES.equals(MerchantUtil.getMerchantType())) {
 			
 			setTitle(getString(R.string.menu_patient));
 			setSelectedMenu(getString(R.string.menu_patient));

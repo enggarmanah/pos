@@ -44,10 +44,10 @@ public class Constant {
 	public static final String PRODUCT_REVENUE = "PRODUCT_REVENUE";
 	public static final String PRODUCT_PROFIT = "PRODUCT_PROFIT";
 	
-	public static final String MERCHANT_TYPE_RESTO = "R";
-	public static final String MERCHANT_TYPE_BEAUTY_N_SPA = "B";
-	public static final String MERCHANT_TYPE_SHOP = "S";
-	public static final String MERCHANT_TYPE_CLINIC = "C";
+	public static final String MERCHANT_TYPE_GENERAL_GOODS = "GG";
+	public static final String MERCHANT_TYPE_GOODS_N_SERVICES = "GS";
+	public static final String MERCHANT_TYPE_FOODS_N_BEVERAGES = "FB";
+	public static final String MERCHANT_TYPE_MEDICAL_SERVICES = "MS";
 	
 	public static final String PAYMENT_TYPE_CASH = "CASH";
 	public static final String PAYMENT_TYPE_CREDIT_CARD = "CREDIT_CARD";
@@ -56,6 +56,10 @@ public class Constant {
 	
 	public static final String DISCOUNT_TYPE_NOMINAL = "N";
 	public static final String DISCOUNT_TYPE_PERCENTAGE = "P";
+	
+	public static final String ORDER_TYPE_NO = "N";
+	public static final String ORDER_TYPE_BEFORE_PAYMENT = "B";
+	public static final String ORDER_TYPE_AFTER_PAYMENT = "A";
 	
 	public static final String PRICE_TYPE_COUNT_1 = "1";
 	public static final String PRICE_TYPE_COUNT_2 = "2";
@@ -138,9 +142,9 @@ public class Constant {
 	
 	public static final String TASK_COMPLETED = "TASK_COMPLETED";
 	
-	public static final String ORDER_TYPE_DINE_IN = "DINE_IN";
-	public static final String ORDER_TYPE_TAKEWAY = "TAKE_AWAY";
-	public static final String ORDER_TYPE_SERVICE = "SERVICE";
+	public static final String TXN_ORDER_TYPE_DINE_IN = "DINE_IN";
+	public static final String TXN_ORDER_TYPE_TAKEWAY = "TAKE_AWAY";
+	public static final String TXN_ORDER_TYPE_SERVICE = "SERVICE";
 	
 	public static final String SELECTED_ORDERS_FOR_PAYMENT = "SELECTED_ORDERS_FOR_PAYMENT";
 	public static final String SELECTED_ORDERS_FOR_NEW_ITEM = "SELECTED_ORDERS_FOR_NEW_ITEM";
@@ -164,6 +168,7 @@ public class Constant {
 	public static final String INVENTORY_STATUS_LOST = "LOST";
 	public static final String INVENTORY_STATUS_DAMAGE = "DAMG";
 	public static final String INVENTORY_STATUS_INITIAL_STOCK = "INIT";
+	public static final String INVENTORY_STATUS_SELF_PRODUCTION = "SELF";
 	
 	public static final String ACCESS_CASHIER = "CASH";
 	public static final String ACCESS_WAITRESS = "WTRS";

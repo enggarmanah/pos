@@ -59,7 +59,13 @@ public class OrdersDaoService {
 	
 	public Orders getOrders(Long id) {
 		
-		return mOrdersDao.load(id);
+		Orders order = mOrdersDao.load(id);
+		
+		if (order != null) {
+			mOrdersDao.detach(order);
+		}
+		
+		return order;
 	}
 	
 	public List<OrdersBean> getOrdersForUpload() {

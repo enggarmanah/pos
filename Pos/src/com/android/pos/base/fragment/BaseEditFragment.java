@@ -358,6 +358,7 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     	} else {
     		
     		if (updateItem()) {
+    			updateView(mItem);
     			mItemListener.onUpdateCompleted();
     			showMessage(R.string.msg_data_save_success);
     		}

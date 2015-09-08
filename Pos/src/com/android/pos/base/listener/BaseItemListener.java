@@ -22,6 +22,8 @@ public interface BaseItemListener<T> {
 	
 	public void onSelectProduct(boolean isMandatory);
 	
+	public void onSelectProductGroup(boolean isMandatory);
+	
 	public void onSelectSupplier(boolean isMandatory);
 	
 	public void onSelectBill(boolean isMandatory);

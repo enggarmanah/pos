@@ -374,6 +374,12 @@ public class DbUtil {
             	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'SECURITY_ANSWER' TEXT");
             }
             
+            // handle version 47 changes
+            if (oldVersion < 47) {
+            	
+            	db.execSQL("ALTER TABLE 'MERCHANT' ADD 'ORDER_TYPE' TEXT");
+            }
+            
             //DaoMaster.dropAllTables(db, true);
             //onCreate(db);
         }

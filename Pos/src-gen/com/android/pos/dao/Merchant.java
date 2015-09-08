@@ -38,6 +38,7 @@ public class Merchant implements Serializable {
     private String priceLabel2;
     private String priceLabel3;
     private String discountType;
+    private String orderType;
     private String paymentType;
     private Float taxPercentage;
     private Float serviceChargePercentage;
@@ -71,7 +72,7 @@ public class Merchant implements Serializable {
         this.id = id;
     }
 
-    public Merchant(Long id, String refId, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer priceTypeCount, String priceLabel1, String priceLabel2, String priceLabel3, String discountType, String paymentType, Float taxPercentage, Float serviceChargePercentage, Boolean isLogin, String status, String locale, String securityQuestion, String securityAnswer, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
+    public Merchant(Long id, String refId, String name, String type, String address, String telephone, String contactName, String contactTelephone, String contactEmail, String loginId, String printerType, String printerAddress, String printerMiniFont, Integer printerLineSize, String printerRequired, String password, java.util.Date periodStart, java.util.Date periodEnd, Integer priceTypeCount, String priceLabel1, String priceLabel2, String priceLabel3, String discountType, String orderType, String paymentType, Float taxPercentage, Float serviceChargePercentage, Boolean isLogin, String status, String locale, String securityQuestion, String securityAnswer, String uploadStatus, String createBy, java.util.Date createDate, String updateBy, java.util.Date updateDate) {
         this.id = id;
         this.refId = refId;
         this.name = name;
@@ -95,6 +96,7 @@ public class Merchant implements Serializable {
         this.priceLabel2 = priceLabel2;
         this.priceLabel3 = priceLabel3;
         this.discountType = discountType;
+        this.orderType = orderType;
         this.paymentType = paymentType;
         this.taxPercentage = taxPercentage;
         this.serviceChargePercentage = serviceChargePercentage;
@@ -300,6 +302,14 @@ public class Merchant implements Serializable {
 
     public void setDiscountType(String discountType) {
         this.discountType = discountType;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 
     public String getPaymentType() {

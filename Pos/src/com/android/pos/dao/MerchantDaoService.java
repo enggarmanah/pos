@@ -49,7 +49,13 @@ public class MerchantDaoService {
 		
 		System.out.println(DbUtil.getDb());
 		
-		return merchantDao.load(id);
+		Merchant merchant = merchantDao.load(id);
+		
+		if (merchant != null) {
+			merchantDao.detach(merchant);
+		}
+		
+		return merchant;
 	}
 	
 	public Merchant validateMerchant(String loginId, String password) {

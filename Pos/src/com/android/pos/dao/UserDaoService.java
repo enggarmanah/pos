@@ -53,7 +53,13 @@ public class UserDaoService {
 	
 	public User getUser(Long id) {
 		
-		return userDao.load(id);
+		User user = userDao.load(id);
+		
+		if (user != null) {
+			userDao.detach(user);
+		}
+		
+		return user;
 	}
 	
 	public User validateUser(Long merchantId, String loginId, String password) {

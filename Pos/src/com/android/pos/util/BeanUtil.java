@@ -126,6 +126,7 @@ public class BeanUtil {
 		bean.setSecurity_question(merchant.getSecurityQuestion());
 		bean.setSecurity_answer(merchant.getSecurityAnswer());
 		bean.setDiscount_type(merchant.getDiscountType());
+		bean.setOrder_type(merchant.getOrderType());
 		bean.setPayment_type(merchant.getPaymentType());
 		bean.setTax_percentage(merchant.getTaxPercentage());
 		bean.setService_charge_percentage(merchant.getServiceChargePercentage());
@@ -166,6 +167,7 @@ public class BeanUtil {
 		merchant.setSecurityQuestion(bean.getSecurity_question());
 		merchant.setSecurityAnswer(bean.getSecurity_answer());
 		merchant.setDiscountType(bean.getDiscount_type());
+		merchant.setOrderType(bean.getOrder_type());
 		merchant.setPaymentType(bean.getPayment_type());
 		merchant.setTaxPercentage(bean.getTax_percentage());
 		merchant.setServiceChargePercentage(bean.getService_charge_percentage());

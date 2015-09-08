@@ -22,8 +22,8 @@
     <color name="border_blue_light">#c3d8ea</color>
     <color name="border_blue_dark">#356d9b</color>
     
-    <color name="menu_normal_start">#b4d1e8</color>
-    <color name="menu_normal_end">#dbe9f4</color>
+    <color name="menu_normal_start">#cee1f0</color>
+    <color name="menu_normal_end">#cee1f0</color>
     <color name="menu_sub_start">#cee1f0</color>
     <color name="menu_sub_end">#dbe9f4</color>
     <color name="menu_selected_start">#a7c7e8</color>

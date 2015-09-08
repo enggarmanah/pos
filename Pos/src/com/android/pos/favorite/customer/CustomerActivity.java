@@ -64,7 +64,7 @@ public class CustomerActivity extends BaseActivity
 		
 		super.onStart();
 		
-		if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+		if (Constant.MERCHANT_TYPE_MEDICAL_SERVICES.equals(MerchantUtil.getMerchantType())) {
 			
 			setTitle(getString(R.string.menu_favorite_patient));
 			setSelectedMenu(getString(R.string.menu_favorite_patient));

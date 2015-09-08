@@ -54,7 +54,13 @@ public class TransactionsDaoService {
 	
 	public Transactions getTransactions(Long id) {
 		
-		return mTransactionsDao.load(id);
+		Transactions transaction = mTransactionsDao.load(id);
+		
+		if (transaction != null) {
+			mTransactionsDao.detach(transaction);
+		}
+		
+		return transaction;
 	}
 	
 	public List<TransactionsBean> getUnpaidTransactions(String query, int lastIndex) {

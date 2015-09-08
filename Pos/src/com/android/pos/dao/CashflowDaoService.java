@@ -50,7 +50,13 @@ public class CashflowDaoService {
 	
 	public Cashflow getCashflow(Long id) {
 		
-		return cashflowDao.load(id);
+		Cashflow cashflow = cashflowDao.load(id);
+		
+		if (cashflow != null) {
+			cashflowDao.detach(cashflow);
+		}
+		
+		return cashflow;
 	}
 	
 	public List<Cashflow> getCashflows(String query, int lastIndex) {

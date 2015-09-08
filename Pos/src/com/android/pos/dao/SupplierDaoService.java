@@ -54,7 +54,13 @@ public class SupplierDaoService {
 	
 	public Supplier getSupplier(Long id) {
 		
-		return supplierDao.load(id);
+		Supplier supplier = supplierDao.load(id);
+		
+		if (supplier != null) { 
+			supplierDao.detach(supplier);
+		}
+		
+		return supplier;
 	}
 	
 	public List<Supplier> getSuppliers(String query, int lastIndex) {

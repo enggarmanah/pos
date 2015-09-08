@@ -204,7 +204,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			return;
 		}
 		
-		if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchantType())) {
+		if (Constant.MERCHANT_TYPE_FOODS_N_BEVERAGES.equals(MerchantUtil.getMerchantType())) {
 			mRemarksBtn.setVisibility(View.VISIBLE);
 		} else {
 			mRemarksBtn.setVisibility(View.GONE);

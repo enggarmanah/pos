@@ -33,7 +33,7 @@
     <EditText
         android:id="@+id/activationCodeText"
         android:hint="@string/merchant_activation_hint"
-        style="@style/ForgotPasswordTextStyle"/>
+        style="@style/CodeActivationTextStyle"/>
     
     <Button
         android:id="@+id/okBtn"

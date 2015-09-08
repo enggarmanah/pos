@@ -6,18 +6,32 @@ import java.util.List;
 import com.android.pos.R;
 import com.android.pos.base.activity.BaseItemMgtActivity;
 import com.android.pos.dao.Product;
+import com.android.pos.dao.ProductGroup;
+import com.android.pos.popup.search.ProductGroupDlgFragment;
+import com.android.pos.popup.search.ProductGroupSelectionListener;
 
 import android.os.Bundle;
 import android.view.View;
 
-public class ProductMgtActivity extends BaseItemMgtActivity<ProductSearchFragment, ProductEditFragment, Product> {
+public class ProductMgtActivity extends BaseItemMgtActivity<ProductSearchFragment, ProductEditFragment, Product>
+	implements ProductGroupSelectionListener {
 	
 	List<Product> mProducts;
 	Product mSelectedProduct;
 	
+	private ProductGroupDlgFragment mProductGroupDlgFragment;
+	
+	private static String mProductGroupDlgFragmentTag = "mProductGroupDlgFragmentTag";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		mProductGroupDlgFragment = (ProductGroupDlgFragment) getFragmentManager().findFragmentByTag(mProductGroupDlgFragmentTag);
+		
+		if (mProductGroupDlgFragment == null) {
+			mProductGroupDlgFragment = new ProductGroupDlgFragment();
+		}
 	}
 	
 	@Override
@@ -165,5 +179,22 @@ public class ProductMgtActivity extends BaseItemMgtActivity<ProductSearchFragmen
 	protected List<Product> getItemsInstance() {
 		
 		return new ArrayList<Product>();
+	}
+	
+	@Override
+	public void onSelectProductGroup(boolean isMandatory) {
+		
+		if (mProductGroupDlgFragment.isAdded()) {
+			return;
+		}
+		
+		mProductGroupDlgFragment.setMandatory(isMandatory);
+		mProductGroupDlgFragment.show(getFragmentManager(), mProductGroupDlgFragmentTag);
+	}
+	
+	@Override
+	public void onProductGroupSelected(ProductGroup productGroup) {
+		
+		mEditFragment.setProductGroup(productGroup);
 	}
 }

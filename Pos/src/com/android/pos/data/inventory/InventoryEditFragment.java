@@ -202,7 +202,8 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     			if (Constant.INVENTORY_STATUS_PURCHASE.equals(status) ||
     				Constant.INVENTORY_STATUS_REPLACEMENT.equals(status) ||
     				Constant.INVENTORY_STATUS_REFUND.equals(status) ||
-    				Constant.INVENTORY_STATUS_INITIAL_STOCK.equals(status)) {
+    				Constant.INVENTORY_STATUS_INITIAL_STOCK.equals(status) ||
+    				Constant.INVENTORY_STATUS_SELF_PRODUCTION.equals(status)) {
     				
     				mItem.setQuantity(quantity);
     			} else {
@@ -407,7 +408,8 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
 	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
 	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
 			
-		}  else if (Constant.INVENTORY_STATUS_INITIAL_STOCK.equals(mStatus)) {
+		}  else if (Constant.INVENTORY_STATUS_INITIAL_STOCK.equals(mStatus) ||
+				    Constant.INVENTORY_STATUS_SELF_PRODUCTION.equals(mStatus)) {
 			
 			mProductCostPricePanel.setVisibility(View.GONE);
 			mBillsReferenceNoPanel.setVisibility(View.GONE);

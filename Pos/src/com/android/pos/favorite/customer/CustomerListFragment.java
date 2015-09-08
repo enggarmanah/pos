@@ -74,7 +74,7 @@ public class CustomerListFragment extends BaseFragment
 		
 		mTitleText = (TextView) getView().findViewById(R.id.titleText);
 		
-		if (Constant.MERCHANT_TYPE_CLINIC.equals(MerchantUtil.getMerchantType())) {
+		if (Constant.MERCHANT_TYPE_MEDICAL_SERVICES.equals(MerchantUtil.getMerchantType())) {
 			
 			mTitleText.setText(getString(R.string.menu_favorite_patient));
 			

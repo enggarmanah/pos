@@ -113,8 +113,9 @@ public abstract class BaseSpinnerArrayAdapter<T> extends ArrayAdapter<T> {
 		if (label2Text != null) {
 			
 			if (getLabel2(option) != null) {
+				String label2 = getLabel2(option);
 				label2Text.setVisibility(View.VISIBLE);
-				label2Text.setText(getLabel2(option));
+				label2Text.setText(label2);
 			} else {
 				label2Text.setVisibility(View.GONE);
 			}

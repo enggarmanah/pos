@@ -759,7 +759,8 @@
     </style>
     
     <style name="CashierSpinnerRowDropDownTextStyle">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
@@ -771,11 +772,11 @@
     </style>
 	
     <style name="CashierSpinnerRowDropDownLeftTextStyle" parent="CashierSpinnerRowDropDownTextStyle">
-        <item name="android:layout_width">fill_parent</item>
     </style>
     
     <style name="CashierSpinnerRowDropDownRightTextStyle" parent="CashierSpinnerRowDropDownTextStyle">
         <item name="android:gravity">right</item>
+        <item name="android:textColor">@color/text_blue</item>
     </style>
     
     <style name="CashierSpinnerRowDropDownTextSelectedStyle" parent="CashierSpinnerRowDropDownTextStyle">
@@ -1328,6 +1329,14 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">7dp</item>
+ 	</style>
+ 	
+    <style name="CodeActivationTextStyle" parent="RegistrationTextStyle">
+        <item name="android:fontFamily">"sans-serif"</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">7dp</item>
+        <item name="android:inputType">numberPassword</item>
  	</style>
 
 </resources>

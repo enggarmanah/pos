@@ -49,7 +49,13 @@ public class EmployeeDaoService {
 	
 	public Employee getEmployee(Long id) {
 		
-		return employeeDao.load(id);
+		Employee employee = employeeDao.load(id);
+		
+		if (employee != null) {
+			employeeDao.detach(employee);
+		}
+		
+		return employee;
 	}
 	
 	public List<Employee> getEmployees(String query, int lastIndex) {

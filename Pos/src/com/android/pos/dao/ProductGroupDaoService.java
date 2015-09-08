@@ -52,7 +52,13 @@ public class ProductGroupDaoService {
 	
 	public ProductGroup getProductGroup(Long id) {
 		
-		return productGroupDao.load(id);
+		ProductGroup productGroup = productGroupDao.load(id);
+		
+		if (productGroup != null) {
+			productGroupDao.detach(productGroup);
+		}	
+		
+		return productGroup;
 	}
 	
 	public List<ProductGroup> getProductGroups() {

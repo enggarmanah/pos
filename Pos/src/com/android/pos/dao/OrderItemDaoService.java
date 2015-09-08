@@ -38,7 +38,13 @@ public class OrderItemDaoService {
 	
 	public OrderItem getOrderItem(Long id) {
 		
-		return mOrderItemDao.load(id);
+		OrderItem orderItem = mOrderItemDao.load(id);
+		
+		if (orderItem != null) {
+			mOrderItemDao.detach(orderItem);
+		}
+		
+		return orderItem;
 	}
 	
 	public List<OrderItemBean> getOrderItemsForUpload() {

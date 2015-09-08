@@ -270,6 +270,23 @@
                 style="@style/FormInputListStyle" />
         </LinearLayout>
         
+        <LinearLayout 
+            android:id="@+id/orderTypePanel"
+            style="@style/FormRowStyle" >
+
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/field_order_type_fl" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_order_type" />
+
+            <Spinner
+                android:id="@+id/orderTypeSp"
+                style="@style/FormInputListStyle" />
+        </LinearLayout>
+        
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView

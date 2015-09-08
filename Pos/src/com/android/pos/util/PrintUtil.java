@@ -395,7 +395,7 @@ public class PrintUtil {
 		
 			String orderType = mActivity.getString(R.string.print_order_type) + CodeUtil.getOrderTypeLabel(transaction.getOrderType());
 			
-			if (!Constant.ORDER_TYPE_SERVICE.equals(transaction.getOrderType())) {
+			if (!Constant.TXN_ORDER_TYPE_SERVICE.equals(transaction.getOrderType())) {
 				
 				line.setLength(0);
 				line.append(orderType);
@@ -405,7 +405,7 @@ public class PrintUtil {
 			
 			String orderReference = Constant.EMPTY_STRING;
 			
-			if (Constant.ORDER_TYPE_DINE_IN.equals(transaction.getOrderType())) {
+			if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(transaction.getOrderType())) {
 				orderReference = mActivity.getString(R.string.print_table_no) + transaction.getOrderReference();
 			} else {
 				orderReference = mActivity.getString(R.string.print_customer) + transaction.getOrderReference();
@@ -683,7 +683,7 @@ public class PrintUtil {
 		
 		String orderType = mActivity.getString(R.string.print_order_type) + CodeUtil.getOrderTypeLabel(order.getOrderType());
 		
-		if (!Constant.ORDER_TYPE_SERVICE.equals(order.getOrderType())) {
+		if (!Constant.TXN_ORDER_TYPE_SERVICE.equals(order.getOrderType())) {
 			
 			line.setLength(0);
 			line.append(orderType);
@@ -693,7 +693,7 @@ public class PrintUtil {
 		
 		String orderReference = Constant.EMPTY_STRING;
 		
-		if (Constant.ORDER_TYPE_DINE_IN.equals(order.getOrderType())) {
+		if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(order.getOrderType())) {
 			orderReference = mActivity.getString(R.string.print_table_no) + order.getOrderReference();
 		} else {
 			orderReference = mActivity.getString(R.string.print_customer) + order.getOrderReference();

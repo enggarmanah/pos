@@ -61,7 +61,13 @@ public class MerchantAccessDaoService {
 	
 	public MerchantAccess getMerchantAccess(Long id) {
 		
-		return merchantAccessDao.load(id);
+		MerchantAccess merchantAccess = merchantAccessDao.load(id);
+		
+		if (merchantAccess != null) {
+			merchantAccessDao.detach(merchantAccess);
+		}
+		
+		return merchantAccess;
 	}
 	
 	public List<MerchantAccess> getMerchantAccessList(Long merchantId) {

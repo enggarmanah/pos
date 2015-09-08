@@ -211,7 +211,7 @@ public class LocaleDlgFragment extends BaseSearchDlgFragment<Locale> implements 
 				if (CommonUtil.isEmpty(query)) {
 					locales.add(locale);
 					
-				} else if (displayName.startsWith(searchName)) {
+				} else if (displayName.contains(searchName)) {
 					locales.add(locale);
 				}
 			}

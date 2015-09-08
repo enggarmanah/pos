@@ -123,7 +123,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 		okBtn.setOnClickListener(getOkBtnOnClickListener());
 		cancelBtn.setOnClickListener(getCancelBtnOnClickListener());
 		
-		orderTypeArrayAdapter = new CodeSpinnerArrayAdapter(mOrderTypeSp, getActivity(), CodeUtil.getOrderTypes(),
+		orderTypeArrayAdapter = new CodeSpinnerArrayAdapter(mOrderTypeSp, getActivity(), CodeUtil.getFnBOrderTypes(),
 											R.layout.cashier_spinner_items, 
 											R.layout.cashier_spinner_items_selected, 
 											R.layout.cashier_spinner_selected_item);
@@ -184,7 +184,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 		
 		mTotalItem = CommonUtil.parseIntNumber(mTotalItemText.getText().toString());
 		
-		if (!Constant.ORDER_TYPE_SERVICE.equals(mOrderType)) {
+		if (!Constant.TXN_ORDER_TYPE_SERVICE.equals(mOrderType)) {
 			mOrderType = CodeBean.getNvlCode((CodeBean) mOrderTypeSp.getSelectedItem());
 		}
 			
@@ -244,15 +244,15 @@ public class CashierOrderDlgFragment extends DialogFragment {
 
 		if (mOrderType == null) {
 			
-			if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchantType())) {
-				mOrderType = Constant.ORDER_TYPE_DINE_IN;
+			if (Constant.MERCHANT_TYPE_FOODS_N_BEVERAGES.equals(MerchantUtil.getMerchantType())) {
+				mOrderType = Constant.TXN_ORDER_TYPE_DINE_IN;
 				
-			} else if (Constant.MERCHANT_TYPE_BEAUTY_N_SPA.equals(MerchantUtil.getMerchantType())) {
-				mOrderType = Constant.ORDER_TYPE_SERVICE;
+			} else if (Constant.MERCHANT_TYPE_GOODS_N_SERVICES.equals(MerchantUtil.getMerchantType())) {
+				mOrderType = Constant.TXN_ORDER_TYPE_SERVICE;
 			}
 		}
 		
-		if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType)) {
+		if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(mOrderType)) {
 			
 			mCustomerPanel.setVisibility(View.GONE);
 			mReservationNoText.setVisibility(View.VISIBLE);
@@ -260,7 +260,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 			
 			mReservationNoText.requestFocus();
 			
-		} else if (Constant.ORDER_TYPE_TAKEWAY.equals(mOrderType)) {
+		} else if (Constant.TXN_ORDER_TYPE_TAKEWAY.equals(mOrderType)) {
 			
 			mCustomerPanel.setVisibility(View.VISIBLE);
 			mReservationNoText.setVisibility(View.GONE);
@@ -268,7 +268,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 			
 			mCustomerText.requestFocus();
 		
-		} else if (Constant.ORDER_TYPE_SERVICE.equals(mOrderType)) {
+		} else if (Constant.TXN_ORDER_TYPE_SERVICE.equals(mOrderType)) {
 			
 			mCustomerText.setMinHeight(CommonUtil.convertDpToPix(60));
 			mCustomerPanel.setVisibility(View.VISIBLE);
@@ -278,7 +278,7 @@ public class CashierOrderDlgFragment extends DialogFragment {
 			mCustomerText.requestFocus();
 		}
 		
-		if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchantType())) {
+		if (Constant.MERCHANT_TYPE_FOODS_N_BEVERAGES.equals(MerchantUtil.getMerchantType())) {
 			mWaitressPanel.setVisibility(View.VISIBLE);
 		} else {
 			mWaitressPanel.setVisibility(View.GONE);
@@ -296,19 +296,19 @@ public class CashierOrderDlgFragment extends DialogFragment {
 				
 				String orderReference = Constant.EMPTY_STRING;
 				
-				if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType)) {
+				if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(mOrderType)) {
 					orderReference = CommonUtil.formatReservationNo(mReservationNo);
 				} else {
 					orderReference = mCustomerName;
 				}
 				
-				if (Constant.ORDER_TYPE_DINE_IN.equals(mOrderType) && CommonUtil.isEmpty(orderReference)) {
+				if (Constant.TXN_ORDER_TYPE_DINE_IN.equals(mOrderType) && CommonUtil.isEmpty(orderReference)) {
 				
 					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_please_choose_table_no));
 	    			
 	    			return;
 	    			
-				} else if (Constant.ORDER_TYPE_TAKEWAY.equals(mOrderType) && CommonUtil.isEmpty(orderReference)) {
+				} else if (Constant.TXN_ORDER_TYPE_TAKEWAY.equals(mOrderType) && CommonUtil.isEmpty(orderReference)) {
 				
 					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_customer_name_empty));
 	    			

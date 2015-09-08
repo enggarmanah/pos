@@ -59,7 +59,13 @@ public class BillsDaoService {
 	
 	public Bills getBills(Long id) {
 		
-		return billsDao.load(id);
+		Bills bills = billsDao.load(id);
+		
+		if (bills != null) {
+			billsDao.detach(bills);
+		}
+		
+		return bills;
 	}
 	
 	public List<Bills> getBills(String query, int lastIndex) {

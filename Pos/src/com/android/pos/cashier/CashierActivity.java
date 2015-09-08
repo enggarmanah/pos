@@ -883,11 +883,8 @@ public class CashierActivity extends BaseActivity
 			showMessage(getString(R.string.printer_cant_print));
 		}
 		
-		if (Constant.MERCHANT_TYPE_RESTO.equals(MerchantUtil.getMerchantType())) {
-		
-			String message = getString(R.string.confirm_print_customer_copy);
-			ConfirmationUtil.confirmTask(getFragmentManager(), this, ConfirmationUtil.PRINT_ORDER, message);
-		}
+		String message = getString(R.string.confirm_print_customer_copy);
+		ConfirmationUtil.confirmTask(getFragmentManager(), this, ConfirmationUtil.PRINT_ORDER, message);
 	}
 	
 	@Override

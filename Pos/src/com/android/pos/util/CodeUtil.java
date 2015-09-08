@@ -16,15 +16,16 @@ public class CodeUtil {
 	private static CodeBean[] productStatus;
 	private static CodeBean[] status;
 	private static CodeBean[] productTypes;
-	private static CodeBean[] restoProductTypes;
+	private static CodeBean[] fnBProductTypes;
 	private static CodeBean[] booleans;
 	private static CodeBean[] roles;
 	private static CodeBean[] emailStatus;
 	private static CodeBean[] priceTypeCount;
 	private static CodeBean[] quantityType;
 	private static CodeBean[] discountTypes;
-	private static CodeBean[] paymentTypes;
 	private static CodeBean[] orderTypes;
+	private static CodeBean[] paymentTypes;
+	private static CodeBean[] fnBorderTypes;
 	private static CodeBean[] billTypes;
 	private static CodeBean[] inventoryStatus;
 	private static CodeBean[] moduleAccess;
@@ -270,17 +271,17 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.product_type_service));
 		productTypes[1] = code;
 		
-		restoProductTypes = new CodeBean[2];
-		
-		code = new CodeBean();
-		code.setCode("P");
-		code.setLabel(mContext.getString(R.string.resto_product_type_goods));
-		restoProductTypes[0] = code;
+		fnBProductTypes = new CodeBean[2];
 		
 		code = new CodeBean();
 		code.setCode("M");
-		code.setLabel(mContext.getString(R.string.resto_product_type_menu));
-		restoProductTypes[1] = code;
+		code.setLabel(mContext.getString(R.string.fnb_product_type_self_made));
+		fnBProductTypes[0] = code;
+		
+		code = new CodeBean();
+		code.setCode("P");
+		code.setLabel(mContext.getString(R.string.fnb_product_type_purchased));
+		fnBProductTypes[1] = code;
 		
 		booleans = new CodeBean[2];
 		
@@ -297,23 +298,23 @@ public class CodeUtil {
 		merchantTypes = new CodeBean[4];
 		
 		code = new CodeBean();
-		code.setCode(Constant.MERCHANT_TYPE_SHOP);
-		code.setLabel(mContext.getString(R.string.merchant_type_shop));
+		code.setCode(Constant.MERCHANT_TYPE_GENERAL_GOODS);
+		code.setLabel(mContext.getString(R.string.merchant_type_general_goods));
 		merchantTypes[0] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.MERCHANT_TYPE_RESTO);
-		code.setLabel(mContext.getString(R.string.merchant_type_resto));
+		code.setCode(Constant.MERCHANT_TYPE_GOODS_N_SERVICES);
+		code.setLabel(mContext.getString(R.string.merchant_type_goods_and_service));
 		merchantTypes[1] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.MERCHANT_TYPE_BEAUTY_N_SPA);
-		code.setLabel(mContext.getString(R.string.merchant_type_beauty_spa));
+		code.setCode(Constant.MERCHANT_TYPE_FOODS_N_BEVERAGES);
+		code.setLabel(mContext.getString(R.string.merchant_type_food_and_beverage));
 		merchantTypes[2] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.MERCHANT_TYPE_CLINIC);
-		code.setLabel(mContext.getString(R.string.merchant_type_clinic));
+		code.setCode(Constant.MERCHANT_TYPE_MEDICAL_SERVICES);
+		code.setLabel(mContext.getString(R.string.merchant_type_medical_service));
 		merchantTypes[3] = code;
 			
 		cashflowTypes = new CodeBean[7];
@@ -376,6 +377,23 @@ public class CodeUtil {
 		code.setCode(Constant.DISCOUNT_TYPE_NOMINAL);
 		code.setLabel(mContext.getString(R.string.discount_type_amount));
 		discountTypes[1] = code;
+			
+		orderTypes = new CodeBean[3];
+		
+		code = new CodeBean();
+		code.setCode(Constant.ORDER_TYPE_NO);
+		code.setLabel(mContext.getString(R.string.order_type_no));
+		orderTypes[0] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ORDER_TYPE_BEFORE_PAYMENT);
+		code.setLabel(mContext.getString(R.string.order_type_before_payment));
+		orderTypes[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.ORDER_TYPE_AFTER_PAYMENT);
+		code.setLabel(mContext.getString(R.string.order_type_after_payment));
+		orderTypes[2] = code;
 		
 		paymentTypes = new CodeBean[4];
 		
@@ -399,17 +417,17 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.payment_type_credit));
 		paymentTypes[3] = code;
 		
-		orderTypes = new CodeBean[2];
+		fnBorderTypes = new CodeBean[2];
 		
 		code = new CodeBean();
-		code.setCode(Constant.ORDER_TYPE_DINE_IN);
+		code.setCode(Constant.TXN_ORDER_TYPE_DINE_IN);
 		code.setLabel(mContext.getString(R.string.order_type_dine_in));
-		orderTypes[0] = code;
+		fnBorderTypes[0] = code;
 		
 		code = new CodeBean();
-		code.setCode(Constant.ORDER_TYPE_TAKEWAY);
+		code.setCode(Constant.TXN_ORDER_TYPE_TAKEWAY);
 		code.setLabel(mContext.getString(R.string.order_type_take_away));
-		orderTypes[1] = code;
+		fnBorderTypes[1] = code;
 				
 		billTypes = new CodeBean[2];
 		
@@ -423,47 +441,42 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.bill_type_expense));
 		billTypes[1] = code;
 		
-		inventoryStatus = new CodeBean[6];
+		inventoryStatus = new CodeBean[7];
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_PURCHASE);
 		code.setLabel(mContext.getString(R.string.inventory_status_purchase));
 		inventoryStatus[0] = code;
 		
-		/* code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_SALE);
-		code.setLabel(mContext.getString(R.string.inventory_status_sale));
-		inventoryStatus[1] = code; */
-		
-		/* code = new CodeBean();
-		code.setCode(Constant.INVENTORY_STATUS_REFUND);
-		code.setLabel(mContext.getString(R.string.inventory_status_refund));
-		inventoryStatus[2] = code; */
+		code = new CodeBean();
+		code.setCode(Constant.INVENTORY_STATUS_SELF_PRODUCTION);
+		code.setLabel(mContext.getString(R.string.inventory_status_self_production));
+		inventoryStatus[1] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_RETURN);
 		code.setLabel(mContext.getString(R.string.inventory_status_return));
-		inventoryStatus[1] = code;
+		inventoryStatus[2] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_REPLACEMENT);
 		code.setLabel(mContext.getString(R.string.inventory_status_replacement));
-		inventoryStatus[2] = code;
+		inventoryStatus[3] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_LOST);
 		code.setLabel(mContext.getString(R.string.inventory_status_lost));
-		inventoryStatus[3] = code;
+		inventoryStatus[4] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_DAMAGE);
 		code.setLabel(mContext.getString(R.string.inventory_status_damage));
-		inventoryStatus[4] = code;
+		inventoryStatus[5] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_INITIAL_STOCK);
 		code.setLabel(mContext.getString(R.string.inventory_status_initial_stock));
-		inventoryStatus[5] = code;
+		inventoryStatus[6] = code;
 		
 		inventorystatusList = new ArrayList<CodeBean>(Arrays.asList(inventoryStatus));
 		
@@ -500,8 +513,8 @@ public class CodeUtil {
 		return productTypes;
 	}
 	
-	public static CodeBean[] getRestoProductTypes() {
-		return restoProductTypes;
+	public static CodeBean[] getFnBProductTypes() {
+		return fnBProductTypes;
 	}
 	
 	public static CodeBean[] getBooleans() {
@@ -528,12 +541,16 @@ public class CodeUtil {
 		return fontSizes;
 	}
 	
+	public static CodeBean[] getOrderTypes() {
+		return orderTypes;
+	}
+	
 	public static CodeBean[] getPaymentTypes() {
 		return paymentTypes;
 	}
 	
-	public static CodeBean[] getOrderTypes() {
-		return orderTypes;
+	public static CodeBean[] getFnBOrderTypes() {
+		return fnBorderTypes;
 	}
 	
 	public static CodeBean[] getBillTypes() {
@@ -584,7 +601,7 @@ public class CodeUtil {
 		
 		String label = Constant.EMPTY_STRING;
 		
-		for (CodeBean codeBean : orderTypes) {
+		for (CodeBean codeBean : fnBorderTypes) {
 			if (codeBean.getCode().equals(code)) {
 				label = codeBean.getLabel();
 				break;
