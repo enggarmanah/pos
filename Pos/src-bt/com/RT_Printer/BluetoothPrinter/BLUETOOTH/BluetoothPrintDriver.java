@@ -17,7 +17,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
-import com.android.pos.R;
+import com.tokoku.pos.R;
 
 public class BluetoothPrintDriver {
 	
@@ -53,7 +53,7 @@ public class BluetoothPrintDriver {
 	@SuppressLint({ "NewApi" })
 	public BluetoothPrintDriver(Context context, Handler handler) {
 		this.mAdapter = BluetoothAdapter.getDefaultAdapter();
-		mState = 0;
+		mState = STATE_NONE;
 		this.mContext = context;
 		this.mHandler = handler;
 	}
@@ -86,13 +86,13 @@ public class BluetoothPrintDriver {
 			this.mAcceptThread = new AcceptThread();
 			this.mAcceptThread.start();
 		}
-		setState(1);
+		setState(STATE_LISTEN);
 	}
 
 	public synchronized void connect(BluetoothDevice device) {
 		Log.d("BluetoothChatService", "connect to: " + device);
 
-		if ((mState == 2) && (this.mConnectThread != null)) {
+		if ((mState == STATE_CONNECTING) && (this.mConnectThread != null)) {
 			this.mConnectThread.cancel();
 			this.mConnectThread = null;
 		}
@@ -104,7 +104,7 @@ public class BluetoothPrintDriver {
 
 		this.mConnectThread = new ConnectThread(device);
 		this.mConnectThread.start();
-		setState(2);
+		setState(STATE_CONNECTING);
 	}
 
 	public synchronized void connected(BluetoothSocket socket, BluetoothDevice device) {
@@ -134,7 +134,7 @@ public class BluetoothPrintDriver {
 		msg.setData(bundle);
 		this.mHandler.sendMessage(msg);
 
-		setState(3);
+		setState(STATE_CONNECTED);
 	}
 
 	public synchronized void stop() {
@@ -151,13 +151,13 @@ public class BluetoothPrintDriver {
 			this.mAcceptThread.cancel();
 			this.mAcceptThread = null;
 		}
-		setState(0);
+		setState(STATE_NONE);
 	}
 
 	public void write(byte[] out) {
 		ConnectedThread r;
 		synchronized (this) {
-			if (mState != 3)
+			if (mState != STATE_CONNECTED)
 				return;
 			r = mConnectedThread;
 		}
@@ -167,7 +167,7 @@ public class BluetoothPrintDriver {
 	public void write2(byte[] out) throws IOException {
 		ConnectedThread r;
 		synchronized (this) {
-			if (mState != 3)
+			if (mState != STATE_CONNECTED)
 				return;
 			r = mConnectedThread;
 		}
@@ -178,7 +178,7 @@ public class BluetoothPrintDriver {
 	public static void BT_Write(String dataString) {
 		byte[] data = null;
 
-		if (mState != 3)
+		if (mState != STATE_CONNECTED)
 			return;
 		ConnectedThread r = mConnectedThread;
 		try {
@@ -193,7 +193,7 @@ public class BluetoothPrintDriver {
 	public static void BT_Write(String dataString, boolean bGBK) {
 		byte[] data = null;
 
-		if (mState != 3)
+		if (mState != STATE_CONNECTED)
 			return;
 		ConnectedThread r = mConnectedThread;
 
@@ -210,7 +210,7 @@ public class BluetoothPrintDriver {
 	}
 
 	public static void BT_Write(byte[] out) {
-		if (mState != 3)
+		if (mState != STATE_CONNECTED)
 			return;
 		ConnectedThread r = mConnectedThread;
 
@@ -218,7 +218,7 @@ public class BluetoothPrintDriver {
 	}
 
 	public static void BT_Write(byte[] out, int dataLen) {
-		if (mState != 3)
+		if (mState != STATE_CONNECTED)
 			return;
 		ConnectedThread r = mConnectedThread;
 
@@ -226,7 +226,7 @@ public class BluetoothPrintDriver {
 	}
 
 	private void connectionFailed() {
-		setState(1);
+		setState(STATE_LISTEN);
 
 		Message msg = this.mHandler.obtainMessage(5);
 		Bundle bundle = new Bundle();
@@ -236,7 +236,7 @@ public class BluetoothPrintDriver {
 	}
 
 	private void connectionLost() {
-		setState(0);
+		setState(STATE_NONE);
 
 		Message msg = this.mHandler.obtainMessage(5);
 		Bundle bundle = new Bundle();
@@ -246,7 +246,7 @@ public class BluetoothPrintDriver {
 	}
 
 	public static boolean IsNoConnection() {
-		if (mState != 3) {
+		if (mState != STATE_CONNECTED) {
 			return true;
 		}
 		return false;
@@ -254,7 +254,7 @@ public class BluetoothPrintDriver {
 
 	public static boolean InitPrinter() {
 		byte[] combyte = { 27, 64 };
-		if (mState != 3) {
+		if (mState != STATE_CONNECTED) {
 			return false;
 		}
 		BT_Write(combyte);

@@ -501,7 +501,13 @@ header .nav li a:hover, header .nav li a:focus {
 /* extras */
 .guide-info {
 	background: #fff !important;
-	min-height: 75px;
+	min-height: 90px;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+    text-align: center;
 }
 
 /*responsive setting*/

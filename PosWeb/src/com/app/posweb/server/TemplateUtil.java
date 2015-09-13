@@ -53,4 +53,29 @@ public class TemplateUtil {
 		
 		return w.toString();
 	}
+	
+	public static String getAcknowledgementMessage(String name, String subject, String message, String lang) {
+		
+		StringWriter w = new StringWriter();
+		
+		try
+        {
+        	VelocityContext context = new VelocityContext();
+        	
+        	context.put("name", name);
+            context.put("subject", subject);
+            context.put("message", message);
+
+            Template t = ve.getTemplate( "com/app/posweb/server/template/" + ("id".equals(lang) ? "feedback-id.vm" : "feedback.vm"));
+        	t.merge(context, w);
+        	
+        	System.out.println(" template : " + w );
+        }
+        catch(Exception e)
+        {
+        	log.log(Level.SEVERE, e.getMessage(), e);
+        }
+		
+		return w.toString();
+	}
 }

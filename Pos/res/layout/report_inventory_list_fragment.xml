@@ -19,9 +19,9 @@
             android:text="@string/report_inventory_product_stock"
             android:gravity="end|center_vertical" />
     </LinearLayout>
-
+       
     <ListView
-        android:id="@+id/billInfoList"
+        android:id="@+id/productList"
         style="@style/ListViewStyle"
         android:layout_below="@id/topPanel" >
     </ListView>

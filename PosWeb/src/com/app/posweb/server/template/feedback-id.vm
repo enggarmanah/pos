@@ -1,0 +1,36 @@
+<style>
+    @import url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2);
+	@font-face {
+	  font-family: "Open Sans";
+	  font-style: normal;
+	  font-weight: 400;
+	  src: local("Open Sans"), local("OpenSans"), url("https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2") format("woff2");
+	}
+</style>
+<div id="message">
+<br>
+<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Terima kasih atas pesan anda. Harap menunggu balasan dari kami.<br><br>
+</p>
+<table style="border-collapse: collapse;">
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Nama : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$name</td>
+	<tr>
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Subjek : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$subject</td>
+	<tr>
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Pesan : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$message</td>
+	<tr>
+</table>
+
+<br>
+<p style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Salam Hangat,<br><br>
+TokoKu Team - Cloud POS Solutions<br>
+https://www.pos-tokoku.com
+</p>
+</div>

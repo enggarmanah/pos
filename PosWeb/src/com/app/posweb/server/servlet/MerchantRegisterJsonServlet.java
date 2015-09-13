@@ -1,6 +1,7 @@
 package com.app.posweb.server.servlet;
 
 import java.io.IOException;
+import java.util.Date;
 
 import com.app.posweb.server.MailUtil;
 import com.app.posweb.server.dao.MerchantDao;
@@ -22,8 +23,11 @@ public class MerchantRegisterJsonServlet extends BaseJsonServlet {
         
         try {
         	
-        	Merchant merchant = merchantDao.registerMerchant(request.getMerchant());
-			response.setMerchant(merchant);
+        	Merchant merchant = request.getMerchant();
+        	merchant.setSync_date(new Date());
+        	merchantDao.registerMerchant(merchant);
+			
+        	response.setMerchant(merchant);
 			
 			MailUtil.sendConfirmationEmail(merchant);
 			

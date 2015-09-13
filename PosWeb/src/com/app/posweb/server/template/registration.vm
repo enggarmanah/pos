@@ -1,11 +1,49 @@
-<div id="message" style="float: left; width: 500px; border-left: 0px solid #555; padding: 25px 20px 25px 20px; font: normal 13px Tahoma; color: #444;">
-	Thank you for your registration, please refer below for your merchant details.
-	<div style="padding: 10px 0px 10px 0px; width: 500px; border: 0px solid #CCC; overflow: auto;">
-		<div style="float: left; width:110px; line-height: 16px;">Merchant :</div><div style="float: left; width:300px; line-height: 16px;">$merchant</div>
-		<div style="float: left; width:110px; line-height: 16px;">Address :</div><div style="float: left; width:300px; line-height: 16px;">$address</div>
-		<div style="float: left; width:110px; line-height: 16px;">Telephone :</div><div style="float: left; width:300px; line-height: 16px;">$telephone</div>
-		<div style="float: left; width:110px; line-height: 16px;">Login Id :</div><div style="float: left; width:300px; line-height: 16px;">$loginId</div>
-		<div style="float: left; width:110px; line-height: 16px;">&nbsp;</div><div style="float: left; width:300px; line-height: 16px;">&nbsp;</div>
-		<div style="float: left; width:110px; line-height: 16px;">Activation Code :</div><div style="float: left; width:300px; line-height: 16px;">$code</div>
-	</div>
+<style>
+    @import url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2);
+	@font-face {
+	  font-family: "Open Sans";
+	  font-style: normal;
+	  font-weight: 400;
+	  src: local("Open Sans"), local("OpenSans"), url("https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2") format("woff2");
+	}
+</style>
+<div id="message">
+<br>
+<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Welcome to TokoKu - Cloud POS Solutions.
+</p>
+<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+We have registered your merchant below into our system, your merchant activation code is <strong>$code</strong>
+</p>
+<table style="border-collapse: collapse;">
+	<tr>
+		<td width="85px" style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Merchant : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$merchant</td>
+	<tr>
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Address : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$address</td>
+	<tr>
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Telephone : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$telephone</td>
+	<tr>
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Login Id : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$loginId</td>
+	<tr>
+</table>
+
+<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+For more info please visit our website at <a href="https://www.pos-tokoku.com" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com</a> for more info.
+The guide for TokoKu App can be found at <a href="https://www.pos-tokoku.com/guide" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com/guide</a>.
+</p>
+<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+We hope that our product can give benefit to your business. Please email us at <span style="font: normal 14px 'Open Sans'; color: #438db0; important!">app.tokoku@gmail.com</span> if you have any inquiry.  
+</p>
+<br>
+<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Warm Regards,<br><br>
+TokoKu Team - Cloud POS Solutions
+</p>
 </div>

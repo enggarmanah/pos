@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">TokoKu</string>
+    <string name="app_name">POS - TokoKu</string>
     
     <string name="login_merchant">Login to TokoKu</string>
     <string name="login_user">Login</string>
@@ -287,7 +287,8 @@
     
     <string name="report_year">"Year %1$s"</string>
     <string name="report_total">"Total %1$s"</string>
-
+	
+    <string name="report_cashflow_total">Total Cashflow</string>
     <string name="report_cashflow_month">Month</string>
     <string name="report_cashflow_total_bills">Total Expense</string>
     <string name="report_cashflow_total_amount">Revenue</string>
@@ -643,7 +644,7 @@
 	<string name="cashflow_type_bank_deposit">Funds Transfer to Bank</string>
 	<string name="cashflow_type_bank_withdrawal">Funds Withdrawal from Bank</string>
 	<string name="cashflow_type_bill_payment">Bill Payment</string>
-	<string name="cashflow_type_invc_payment">Credit Payment</string>
+	<string name="cashflow_type_invc_payment">Customer Credit Payment</string>
 	<string name="cashflow_type_expense">General Expense</string>
 	
 	<string name="error_invalid_token">Invalid token !</string>

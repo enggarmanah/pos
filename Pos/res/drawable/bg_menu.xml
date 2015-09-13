@@ -9,12 +9,5 @@
                 android:angle="0" />
         </shape>
     </item>
-    <item android:top="-2dp" android:right="-2dp" android:left="-2dp">
-        <shape>
-            <stroke
-                android:width="0dp"
-                android:color="#8db9dc" />
-        </shape>
-    </item>
     
 </layer-list>

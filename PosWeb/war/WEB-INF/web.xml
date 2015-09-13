@@ -3,7 +3,16 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
-	
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>https</web-resource-name>
+			<url-pattern>/home</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
     
 	<welcome-file-list>
 		<welcome-file>home</welcome-file>
@@ -17,6 +26,10 @@
 	<servlet>
 		<servlet-name>guideServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.GuideServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>feedbackServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.FeedbackServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>merchantRegisterJsonServlet</servlet-name>
@@ -206,6 +219,10 @@
 	<servlet-mapping>
 		<servlet-name>guideServlet</servlet-name>
 		<url-pattern>/guide</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>feedbackServlet</servlet-name>
+		<url-pattern>/feedback</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>merchantRegisterJsonServlet</servlet-name>
