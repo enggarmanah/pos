@@ -58,7 +58,7 @@ public class MerchantDaoService {
 		return merchant;
 	}
 	
-	public Merchant validateMerchant(String loginId, String password) {
+	/* public Merchant validateMerchant(String loginId, String password) {
 		
 		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();
 		qb.where(MerchantDao.Properties.LoginId.eq(loginId), MerchantDao.Properties.Password.eq(password));
@@ -72,6 +72,33 @@ public class MerchantDaoService {
 			merchantDao.update(merchant);
 		}
 		
+		return merchant;
+	} */
+	
+	public Merchant validateMerchant(String loginId, String password) {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String status = Constant.STATUS_ACTIVE;
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM merchant "
+				+ " WHERE LOWER(login_id) = ? AND LOWER(password) = ? AND status = ? ",
+				new String[] { loginId.toLowerCase(CommonUtil.getLocale()), password.toLowerCase(CommonUtil.getLocale()), status });
+		
+		Merchant merchant = null;
+		
+		if (cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			merchant = getMerchant(id);
+			
+			merchant.setIsLogin(true);
+			merchantDao.update(merchant);
+		}
+		
+		cursor.close();
+
 		return merchant;
 	}
 	

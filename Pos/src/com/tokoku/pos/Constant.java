@@ -66,6 +66,7 @@ public class Constant {
 	public static final String PRICE_TYPE_COUNT_3 = "3";
 	
 	public static final String QUANTITY_TYPE_PIECE = "Pc";
+	public static final String QUANTITY_TYPE_KG = "K";
 	public static final String QUANTITY_TYPE_METER = "M";
 	public static final String QUANTITY_TYPE_LITER = "L";
 	
@@ -73,6 +74,7 @@ public class Constant {
 	public static final String FONT_SIZE_SMALL = "S";
 	
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 25;
+	public static int WAIT_FRAGMENT_TO_BE_ADDED_SLEEP_PERIOD = 25;
 	
 	public static final String TASK_REGISTER_MERCHANT = "TASK_REGISTER_MERCHANT";
 	public static final String TASK_RESEND_ACTIVATION_CODE = "TASK_RESEND_ACTIVATION_CODE";
@@ -198,6 +200,7 @@ public class Constant {
 	public static final String CASHFLOW_TYPE_BILL_PAYMENT = "BILPAY";
 	public static final String CASHFLOW_TYPE_INVC_PAYMENT = "INVPAY";
 	public static final String CASHFLOW_TYPE_EXPENSE = "EXPENS";
+	public static final String CASHFLOW_TYPE_REFUND = "REFUND";
 	
 	public static final String ERROR_INVALID_TOKEN = "ERR001";
 	public static final String ERROR_SERVICE_EXPIRED = "ERR002";

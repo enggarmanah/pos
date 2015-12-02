@@ -96,7 +96,7 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.font_size_regular));
 		fontSizes[1] = code;
 		
-		quantityType = new CodeBean[3];
+		quantityType = new CodeBean[4];
 		
 		code = new CodeBean();
 		code.setCode(Constant.QUANTITY_TYPE_PIECE);
@@ -104,14 +104,19 @@ public class CodeUtil {
 		quantityType[0] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.QUANTITY_TYPE_KG);
+		code.setLabel(mContext.getString(R.string.quantity_type_kg));
+		quantityType[1] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.QUANTITY_TYPE_METER);
 		code.setLabel(mContext.getString(R.string.quantity_type_meter));
-		quantityType[1] = code;
+		quantityType[2] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.QUANTITY_TYPE_LITER);
 		code.setLabel(mContext.getString(R.string.quantity_type_liter));
-		quantityType[2] = code;
+		quantityType[3] = code;
 		
 		moduleAccess = new CodeBean[20];
 		
@@ -317,7 +322,7 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.merchant_type_medical_service));
 		merchantTypes[3] = code;
 			
-		cashflowTypes = new CodeBean[7];
+		cashflowTypes = new CodeBean[8];
 		
 		code = new CodeBean();
 		code.setCode(Constant.CASHFLOW_TYPE_BILL_PAYMENT);
@@ -330,29 +335,34 @@ public class CodeUtil {
 		cashflowTypes[1] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.CASHFLOW_TYPE_REFUND);
+		code.setLabel(mContext.getString(R.string.cashflow_type_refund));
+		cashflowTypes[2] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.CASHFLOW_TYPE_INVC_PAYMENT);
 		code.setLabel(mContext.getString(R.string.cashflow_type_invc_payment));
-		cashflowTypes[2] = code;
+		cashflowTypes[3] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.CASHFLOW_TYPE_BANK_DEPOSIT);
 		code.setLabel(mContext.getString(R.string.cashflow_type_bank_deposit));
-		cashflowTypes[3] = code;
+		cashflowTypes[4] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.CASHFLOW_TYPE_BANK_WITHDRAWAL);
 		code.setLabel(mContext.getString(R.string.cashflow_type_bank_withdrawal));
-		cashflowTypes[4] = code;
+		cashflowTypes[5] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.CASHFLOW_TYPE_CAPITAL_IN);
 		code.setLabel(mContext.getString(R.string.cashflow_type_capital_in));
-		cashflowTypes[5] = code;
+		cashflowTypes[6] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.CASHFLOW_TYPE_CAPITAL_OUT);
 		code.setLabel(mContext.getString(R.string.cashflow_type_capital_out));
-		cashflowTypes[6] = code;
+		cashflowTypes[7] = code;
 		
 		emailStatus = new CodeBean[2];
 		
@@ -441,7 +451,7 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.bill_type_expense));
 		billTypes[1] = code;
 		
-		inventoryStatus = new CodeBean[7];
+		inventoryStatus = new CodeBean[8];
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_PURCHASE);
@@ -454,29 +464,34 @@ public class CodeUtil {
 		inventoryStatus[1] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.INVENTORY_STATUS_REFUND);
+		code.setLabel(mContext.getString(R.string.inventory_status_refund));
+		inventoryStatus[2] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_RETURN);
 		code.setLabel(mContext.getString(R.string.inventory_status_return));
-		inventoryStatus[2] = code;
+		inventoryStatus[3] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_REPLACEMENT);
 		code.setLabel(mContext.getString(R.string.inventory_status_replacement));
-		inventoryStatus[3] = code;
+		inventoryStatus[4] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_LOST);
 		code.setLabel(mContext.getString(R.string.inventory_status_lost));
-		inventoryStatus[4] = code;
+		inventoryStatus[5] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_DAMAGE);
 		code.setLabel(mContext.getString(R.string.inventory_status_damage));
-		inventoryStatus[5] = code;
+		inventoryStatus[6] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.INVENTORY_STATUS_INITIAL_STOCK);
 		code.setLabel(mContext.getString(R.string.inventory_status_initial_stock));
-		inventoryStatus[6] = code;
+		inventoryStatus[7] = code;
 		
 		inventorystatusList = new ArrayList<CodeBean>(Arrays.asList(inventoryStatus));
 		

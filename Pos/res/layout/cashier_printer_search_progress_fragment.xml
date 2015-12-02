@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="@string/scanning"
         android:gravity="center"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_big"
         android:textStyle="bold"
         android:padding="10dp">
     </TextView>

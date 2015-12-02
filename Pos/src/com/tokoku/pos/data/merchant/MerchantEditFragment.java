@@ -183,6 +183,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerRootField(mAddressText);
     	registerRootField(mTelephoneText);*/
     	
+    	registerRootField(mLoginIdText);
     	registerRootField(mPeriodStartDate);
     	registerRootField(mPeriodEndDate);
     	
@@ -511,7 +512,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	// new provided login id is conflict with some other merchant
     	if (merchant != null) {
     		
-    		NotificationUtil.setAlertMessage(getFragmentManager(), "Login Id konflik dengan merchant lain");
+    		NotificationUtil.setAlertMessage(getFragmentManager(), getActivity().getString(R.string.error_register_merchant_conflict));
     		
     	} else {
     		
@@ -558,9 +559,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	Merchant merchant = mMerchantDaoService.getMerchantByLoginId(mItem.getLoginId());
     	
     	// new provided login id is conflict with some other merchant
-    	if (merchant != null && merchant.getId() != mItem.getId()) {
+    	if (merchant != null && merchant.getId().longValue() != mItem.getId().longValue()) {
     		
-    		NotificationUtil.setAlertMessage(getFragmentManager(), "Login Id konflik dengan merchant lain");
+    		NotificationUtil.setAlertMessage(getFragmentManager(), getActivity().getString(R.string.error_register_merchant_conflict));
     	
     	} else {
     		
@@ -610,6 +611,15 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	for (ImageButton button : mAccessButtons) {
     		button.setEnabled(isEnabled);
+    	}
+    	
+    	// disable editing for demo account
+    	
+    	if (mItem != null && mItem.getId() == 2) {
+    		mNameText.setEnabled(false);
+    		mAddressText.setEnabled(false);
+    		mLoginIdText.setEnabled(false);
+    		mPasswordText.setEnabled(false);
     	}
     }
     

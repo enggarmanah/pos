@@ -15,7 +15,7 @@ public class NotificationUtil {
 		return mAlertDialog;
 	}
 	
-	public static void setAlertMessage(FragmentManager fragmentManager, String message) {
+	public static synchronized void setAlertMessage(FragmentManager fragmentManager, String message) {
 		
 		AlertDlgFragment mAlertDialog = getAlertDialogInstance();
 		
@@ -23,7 +23,13 @@ public class NotificationUtil {
 			return;
 		}
 		
-		mAlertDialog.show(fragmentManager, ALERT_DIALOG_FRAGMENT_TAG);
-		mAlertDialog.setAlertMessage(message);
+		try {
+		
+			mAlertDialog.show(fragmentManager, ALERT_DIALOG_FRAGMENT_TAG);
+			mAlertDialog.setAlertMessage(message);
+		
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		}
 	}
 }

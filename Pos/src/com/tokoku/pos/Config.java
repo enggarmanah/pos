@@ -4,12 +4,13 @@ public class Config {
 	
 	public static boolean isByPassLogin = false;
 	
-	//public static String SERVER_URL = "http://192.168.1.163:8888";
-	
+	//public static String SERVER_URL = "http://192.168.1.162:8888";
+	//public static String SERVER_URL = "http://192.168.88.45:8888";
 	//public static String SERVER_URL = "http://192.168.0.102:8888";
 	//public static String SERVER_URL = "http://20.194.21.242:8888";
 	//public static String SERVER_URL = "http://20.194.35.112:8888";
 	//public static String SERVER_URL = "http://192.168.1.192:8888";
+	//public static String SERVER_URL = "http://192.168.1.7:8888";
 	//public static String SERVER_URL = "http://10.188.16.112:8888";
 	
 	public static String SERVER_URL = "http://pos-tokoku.appspot.com";

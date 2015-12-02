@@ -8,7 +8,7 @@
     <TextView
         android:layout_height="50dp"
         android:layout_width="300dp"
-        android:textSize="18sp"
+        android:textSize="@dimen/dialog_header"
         android:textStyle="bold"
         android:textColor="@color/dialog_header_text"
         android:background="@color/dialog_header_background"
@@ -27,7 +27,7 @@
         android:id="@+id/noDiscountText"
         android:layout_height="50dp"
         android:layout_width="fill_parent"
-        android:textSize="18sp"
+        android:textSize="@dimen/field_text"
         android:textStyle="bold"
         android:textColor="@color/dialog_button_text"
         android:background="@color/dialog_button_background"

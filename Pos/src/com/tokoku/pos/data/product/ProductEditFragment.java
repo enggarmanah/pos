@@ -320,6 +320,8 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	
         mProductDaoService.addProduct(mItem);
         
+        CommonUtil.sendEvent(getString(R.string.event_cat_product), getString(R.string.event_act_registration));
+        
         mNameText.getText().clear();
         mProductGroupText.getText().clear();
         mPrice1Text.getText().clear();

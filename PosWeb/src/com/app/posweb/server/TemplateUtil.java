@@ -10,6 +10,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import com.app.posweb.server.model.Merchant;
+import com.app.posweb.shared.Constant;
 
 
 public class TemplateUtil {
@@ -24,7 +25,7 @@ public class TemplateUtil {
     	ve.init();
 	}
 	
-	public static String getNotificationMessage(Merchant merchant) {
+	public static String getRegistrationMessage(Merchant merchant) {
 		
 		StringWriter w = new StringWriter();
 		
@@ -40,11 +41,48 @@ public class TemplateUtil {
             context.put("telephone", merchant.getTelephone());
             context.put("loginId", merchant.getLogin_id());
             context.put("code", activationCode);
-
-            Template t = ve.getTemplate( "com/app/posweb/server/template/registration.vm" );
-        	t.merge(context, w);
+            
+            String template = Constant.EMPTY_STRING;
+            
+            if ("in,ID".equals(merchant.getLocale())) {
+            	template = "com/app/posweb/server/template/registration-id.vm";
+            } else {
+            	template = "com/app/posweb/server/template/registration.vm";
+            }
         	
-        	System.out.println(" template : " + w );
+            Template t = ve.getTemplate(template);
+            
+            t.merge(context, w);
+        	
+        	System.out.println(" registration template : " + w );
+        }
+        catch(Exception e)
+        {
+        	log.log(Level.SEVERE, e.getMessage(), e);
+        }
+		
+		return w.toString();
+	}
+	
+	public static String getNotificationMessage(Merchant merchant) {
+		
+		StringWriter w = new StringWriter();
+		
+		try
+        {
+        	VelocityContext context = new VelocityContext();
+        	
+        	context.put("merchant", merchant.getName());
+            context.put("address", merchant.getAddress());
+            context.put("telephone", merchant.getTelephone());
+            context.put("loginId", merchant.getLogin_id());
+            
+            String template = "com/app/posweb/server/template/notification.vm";
+            Template t = ve.getTemplate(template);
+            
+            t.merge(context, w);
+            
+            System.out.println(" notification template : " + w );
         }
         catch(Exception e)
         {

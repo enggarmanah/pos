@@ -162,8 +162,8 @@ public class BillsDetailFragment extends BaseFragment {
 		mReferenceNoText.setText(mBill.getBillReferenceNo());
 		mDateText.setText(CommonUtil.formatDate(mBill.getBillDate()));
 
-		Float totalAmount = mBill.getBillAmount();
-		Float paymentAmount = mBill.getPayment();
+		Float totalAmount = CommonUtil.getNvlFloat(mBill.getBillAmount());
+		Float paymentAmount = CommonUtil.getNvlFloat(mBill.getPayment());
 		Float outstandingAmount = totalAmount - paymentAmount;
 		
 		mSupplierText.setText(mBill.getSupplierName());

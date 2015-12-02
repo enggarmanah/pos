@@ -22,6 +22,7 @@ public class InventoryDetailArrayAdapter extends ArrayAdapter<Inventory> {
 	private List<Inventory> mInventories;
 	
 	class ViewHolder {
+		
 		ImageView flowImage;
 		TextView remarksText;
 		TextView inventoryDateText;

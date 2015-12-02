@@ -17,6 +17,18 @@
 <resources>
     <string name="app_name">POS - TokoKu</string>
     
+    <string name="event_cat_merchant">Merchant</string>
+    <string name="event_cat_user">User</string>
+    <string name="event_cat_product">Product</string>
+    <string name="event_act_registration">Registration</string>
+    <string name="event_act_activation">Activation</string>
+    
+    <string name="event_cat_transaction">Transaction</string>
+    <string name="event_act_payment">Payment</string>
+    
+    <string name="event_cat_task">Task</string>
+    <string name="event_act_sync">Sync</string>
+    
     <string name="login_merchant">Login to TokoKu</string>
     <string name="login_user">Login</string>
     
@@ -108,11 +120,13 @@
     
     <string name="msg_notification_search_action">Please provide your search criteria on top</string>
     <string name="msg_data_save_success">Data has been saved</string>
-    <string name="msg_register_user">Please register user account to enable access to system functionality</string>
+    <string name="msg_register_user">Select [+] below to register user account. Re-login with user account to enable full access to system functionality. </string>
+    <string name="msg_register_user_conflict">User Login Id should not be the same as Merchant Login Id. </string>
     <string name="msg_reset_password_success">Reset password is successful !</string>
     <string name="msg_merchant_registration_info">Activation code will be sent to registered email</string>
     <string name="msg_merchant_registration_success">Merchant registration is successful !</string>
     <string name="msg_merchant_activation_info">Activation code has been sent to %1$s</string>
+    <string name="msg_merchant_activation_info_contact_us">Activation code has been sent to your email. Please contact us at app.tokoku@gmail.com, if you havent received it.</string>
     
     <string name="field_code">Code</string>
     <string name="field_code_fl">C</string>
@@ -168,7 +182,7 @@
     <string name="field_period_start_fl">A</string>
     <string name="field_period_end">Service End</string>
     <string name="field_period_end_fl">A</string>
-    <string name="field_locale_fl">L</string>
+    <string name="field_locale_fl">C</string>
     <string name="field_locale">Calendar &amp; Currency</string>
     <string name="field_tax_percentage">Tax</string>
     <string name="field_tax_percentage_fl">T</string>
@@ -493,7 +507,7 @@
     <string name="alert_bluetooth_not_available">"Bluetooth is not available. Receipt could not be printed"</string>
     <string name="alert_bluetooth_not_active">"Bluetooth is not active. Please active your bluetooth"</string>
     <string name="alert_no_payment_type">"Payment type must be selected"</string>
-    
+    <string name="alert_sync_cancellation">"Synchronization has been cancelled. It may cause data integrity issue. It\'s advised to complete synchronization process."</string>
     
     <string name="user_role_cashier">Cashier</string>
 	<string name="user_role_admin">Admin</string>
@@ -505,6 +519,7 @@
 	<string name="price_type_count_3">3 Price Types</string>
 	
 	<string name="quantity_type_piece">Pc</string>
+	<string name="quantity_type_kg">Kg</string>
 	<string name="quantity_type_meter">Meter</string>
 	<string name="quantity_type_liter">Liter</string>
 	
@@ -646,6 +661,7 @@
 	<string name="cashflow_type_bill_payment">Bill Payment</string>
 	<string name="cashflow_type_invc_payment">Customer Credit Payment</string>
 	<string name="cashflow_type_expense">General Expense</string>
+	<string name="cashflow_type_refund">Refund</string>
 	
 	<string name="error_invalid_token">Invalid token !</string>
 	<string name="error_service_expired">Sync up data service has been expired !</string>

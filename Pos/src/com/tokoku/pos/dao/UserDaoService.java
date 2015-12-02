@@ -46,9 +46,13 @@ public class UserDaoService {
 	public void deleteUser(User user) {
 
 		User entity = userDao.load(user.getId());
-		entity.setStatus(Constant.STATUS_DELETED);
-		entity.setUploadStatus(Constant.STATUS_YES);
-		userDao.update(entity);
+		
+		if (entity != null) {
+			
+			entity.setStatus(Constant.STATUS_DELETED);
+			entity.setUploadStatus(Constant.STATUS_YES);
+			userDao.update(entity);
+		}
 	}
 	
 	public User getUser(Long id) {
@@ -62,7 +66,7 @@ public class UserDaoService {
 		return user;
 	}
 	
-	public User validateUser(Long merchantId, String loginId, String password) {
+	/*public User validateUser(String loginId, String password) {
 		
 		QueryBuilder<User> qb = userDao.queryBuilder();
 		
@@ -72,6 +76,30 @@ public class UserDaoService {
 		Query<User> q = qb.build();
 		User user = q.unique();
 		
+		return user;
+	}*/
+	
+	public User validateUser(String loginId, String password) {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		
+		String status = Constant.STATUS_ACTIVE;
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM user "
+				+ " WHERE LOWER(user_id) = ? AND LOWER(password) = ? AND status = ? ",
+				new String[] { loginId.toLowerCase(CommonUtil.getLocale()), password.toLowerCase(CommonUtil.getLocale()), status });
+		
+		User user = null;
+		
+		if (cursor.moveToNext()) {
+			
+			Long id = cursor.getLong(0);
+			user = getUser(id);
+		}
+		
+		cursor.close();
+
 		return user;
 	}
 	

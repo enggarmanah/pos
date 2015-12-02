@@ -108,11 +108,13 @@
     
     <string name="msg_notification_search_action">Masukkan kata pencarian pada kolom di atas</string>
     <string name="msg_data_save_success">Data telah berhasil disimpan</string>
-    <string name="msg_register_user">Silahkan register akun pengguna untuk dapat mengakses fungsionalitas sistem</string>
+    <string name="msg_register_user">Pilih tanda [+] di bawah untuk register akun pengguna. Login kembali dengan akun pengguna untuk dapat mengakses fungsionalitas lengkap sistem.</string>
+    <string name="msg_register_user_conflict">Akun Pengguna Login Id tidak boleh sama dengan Merchant Login Id.</string>
     <string name="msg_reset_password_success">Penggantian password telah berhasil !</string>
     <string name="msg_merchant_registration_info">Kode aktivasi akan dikirim ke email anda</string>
     <string name="msg_merchant_registration_success">Registrasi merchant telah berhasil !</string>
     <string name="msg_merchant_activation_info">Kode aktivasi telah dikirim ke %1$s</string>
+    <string name="msg_merchant_activation_info_contact_us">Kode aktivasi telah dikirim ke email anda. Hubungi kami via email app.tokoku@gmail.com, jika anda belum menerimanya.</string>
     
     <string name="field_code">Kode</string>
     <string name="field_code_fl">K</string>
@@ -493,6 +495,7 @@
     <string name="alert_bluetooth_not_available">"Bluetooth tidak tersedia. Anda tidak dapat melakukan print nota"</string>
     <string name="alert_bluetooth_not_active">"Bluetooth tidak aktif. Mohon aktifkan bluetooth anda"</string>
     <string name="alert_no_payment_type">"Tipe pembayaran harus dipilih"</string>
+    <string name="alert_sync_cancellation">"Proses singkronisasi telah dibatalkan. Dapat menyebabkan permasalahan integritas data. Disarankan untuk menyelesaikan proses singkronisasi."</string>
     
     <string name="user_role_cashier">Kasir</string>
 	<string name="user_role_admin">Admin</string>
@@ -504,6 +507,7 @@
 	<string name="price_type_count_3">3 Tipe Harga</string>
 	
 	<string name="quantity_type_piece">Pc</string>
+	<string name="quantity_type_kg">Kg</string>
 	<string name="quantity_type_meter">Meter</string>
 	<string name="quantity_type_liter">Liter</string>
 	
@@ -645,6 +649,7 @@
 	<string name="cashflow_type_bill_payment">Pembayaran Tagihan</string>
 	<string name="cashflow_type_invc_payment">Penerimaan Piutang</string>
 	<string name="cashflow_type_expense">Pengeluaran Lain-lain</string>
+	<string name="cashflow_type_refund">Refund Transaksi</string>
 	
 	<string name="error_invalid_token">Token tidak valid !</string>
 	<string name="error_service_expired">Servis sync up data anda telah berakhir !</string>

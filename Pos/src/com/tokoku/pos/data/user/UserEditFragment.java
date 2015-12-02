@@ -18,7 +18,9 @@ import com.tokoku.pos.dao.UserAccessDaoService;
 import com.tokoku.pos.dao.UserDaoService;
 import com.tokoku.pos.model.FormFieldBean;
 import com.tokoku.pos.util.CodeUtil;
+import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.MerchantUtil;
+import com.tokoku.pos.util.NotificationUtil;
 import com.tokoku.pos.util.UserUtil;
 
 import android.app.Activity;
@@ -158,8 +160,13 @@ public class UserEditFragment extends BaseEditFragment<User> {
     		
     		if (user.getEmployeeId() != null) {
     			
-    			String employeeName = mEmployeeDaoService.getEmployee(user.getEmployeeId()).getName();
-    			mEmployeeText.setText(employeeName);
+    			Employee employee = mEmployeeDaoService.getEmployee(user.getEmployeeId());
+    			
+    			if (employee != null) {
+    				
+    				String employeeName = employee.getName();
+    				mEmployeeText.setText(employeeName);
+    			}
     			
     		} else {
     			
@@ -233,8 +240,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     protected void saveItem() {
     	
     	String name = mNameText.getText().toString();
-    	String userId = mUserIdText.getText().toString();
-    	String password = mPasswordText.getText().toString();
+    	String userId = CommonUtil.trim(mUserIdText.getText().toString());
+    	String password = CommonUtil.trim(mPasswordText.getText().toString());
     	String role = CodeBean.getNvlCode((CodeBean) mRoleSp.getSelectedItem());
     	String status = CodeBean.getNvlCode((CodeBean) mStatusSp.getSelectedItem());
     	
@@ -288,6 +295,23 @@ public class UserEditFragment extends BaseEditFragment<User> {
     } 
     
     @Override
+    protected boolean isValidated() {
+    	
+    	boolean isValidated = super.isValidated();
+    	
+    	if (isValidated) {
+    		
+    		if (MerchantUtil.getLoginId().equals(mUserIdText.getText().toString())) {
+    			
+    			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.msg_register_user_conflict));
+    			isValidated = false;
+    		}
+    	}
+    	
+    	return isValidated;
+    }
+    
+    @Override
     protected boolean addItem() {
     	
         mUserDaoService.addUser(mItem);
@@ -297,6 +321,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
         	userAccess.setUser(mItem);
         	mUserAccessDaoService.addUserAccess(userAccess);
         }
+        
+        CommonUtil.sendEvent(getString(R.string.event_cat_user), getString(R.string.event_act_registration));
         
         mNameText.getText().clear();
         mUserIdText.getText().clear();
@@ -311,6 +337,13 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	
     	mUserDaoService.updateUser(mItem);
 		mUserAccessDaoService.updateUserAccess(mUserAccesses);
+		
+		User user = UserUtil.getUser();
+		
+		if (user.getId() == mItem.getId()) {
+			user = mUserDaoService.getUser(mItem.getId());
+			UserUtil.setUser(user);
+		}
     	
     	return true;
     }
@@ -361,6 +394,13 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	
     	for (ImageButton button : mCheckedButtons) {
     		button.setEnabled(isEnabled);
+    	}
+    	
+    	if (MerchantUtil.getMerchantId() == 2 && mItem != null && Long.valueOf(1).equals(mItem.getId())) {
+    		
+    		mNameText.setEnabled(false);
+    		mUserIdText.setEnabled(false);
+    		mPasswordText.setEnabled(false);
     	}
     }
     

@@ -113,7 +113,13 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	
 	private void saveDataFromView() {
 		
-		mQuantity = Float.valueOf(mQuantityText.getText().toString());
+		String quantityStr = "1";
+		
+		if (!CommonUtil.isEmpty(mQuantityText.getText().toString())) {
+			quantityStr = mQuantityText.getText().toString();
+		}
+		
+		mQuantity = Float.valueOf(quantityStr);
 	}
 	
 	public void setEmployee(Employee employee) {
@@ -253,7 +259,8 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			mPersonInChargeText.setVisibility(View.GONE);
 		}
 		
-		if (Constant.QUANTITY_TYPE_METER.equals(mProduct.getQuantityType()) ||
+		if (Constant.QUANTITY_TYPE_KG.equals(mProduct.getQuantityType()) ||
+			Constant.QUANTITY_TYPE_METER.equals(mProduct.getQuantityType()) ||
 			Constant.QUANTITY_TYPE_LITER.equals(mProduct.getQuantityType())) {
 			
 			mActionCBtn.setText(CommonUtil.getNumberDecimalSeparator());

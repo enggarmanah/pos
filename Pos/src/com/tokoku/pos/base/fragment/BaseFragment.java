@@ -9,7 +9,6 @@ public abstract class BaseFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 	}
-	
 		
 	public void showMessage(int resourceId) {
 		

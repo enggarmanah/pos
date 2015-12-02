@@ -28,7 +28,7 @@
         android:padding="10dp"
         android:text="@string/select_device"
         android:textColor="@color/header_text"
-        android:textSize="18sp"
+        android:textSize="@dimen/title_big_text"
         android:textStyle="bold" />
 
     <RelativeLayout
@@ -44,7 +44,7 @@
             android:padding="10dp"
             android:text="@string/paired_device"
             android:textColor="@color/text_dark"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_big"
             android:textStyle="bold"
             android:visibility="gone" />
 
@@ -63,7 +63,7 @@
                 android:padding="10dp"
                 android:text="@string/other_device"
                 android:textColor="@color/text_dark"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_big"
                 android:textStyle="bold"
                 android:visibility="gone" />
 

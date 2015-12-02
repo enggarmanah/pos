@@ -79,7 +79,7 @@ public class InventoryArrayAdapter extends ArrayAdapter<Product> {
 		productNameText.setText(product.getName());
 		productStockText.setText(CommonUtil.formatNumber(stock));
 		
-		if (product.getMinStock() != null && product.getStock() < product.getMinStock()) {
+		if (product.getStock() != null && product.getMinStock() != null && product.getStock() < product.getMinStock()) {
 			productStockText.setTextColor(context.getResources().getColor(R.color.text_red));
 		}
 		

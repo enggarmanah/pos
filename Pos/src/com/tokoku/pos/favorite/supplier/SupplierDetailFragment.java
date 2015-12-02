@@ -144,12 +144,12 @@ public class SupplierDetailFragment extends BaseFragment {
 			Date firstTransaction = mSupplierDaoService.getFirstInventory(mSupplier);
 			Date lastTransaction = mSupplierDaoService.getLastInventory(mSupplier);
 			
-			Long transactionsCount = mSupplierDaoService.getBillsCount(mSupplier);
-			Long productsCount = mSupplierDaoService.getProductsCount(mSupplier);
-			Long transactionAmount = mSupplierDaoService.getBillsAmount(mSupplier);
+			Long transactionsCount = CommonUtil.getNvlLong(mSupplierDaoService.getBillsCount(mSupplier));
+			Long productsCount = CommonUtil.getNvlLong(mSupplierDaoService.getProductsCount(mSupplier));
+			Long transactionAmount = CommonUtil.getNvlLong(mSupplierDaoService.getBillsAmount(mSupplier));
 			
-			Long minTransaction = mSupplierDaoService.getMinBill(mSupplier);
-			Long maxTransaction = mSupplierDaoService.getMaxBill(mSupplier);
+			Long minTransaction = CommonUtil.getNvlLong(mSupplierDaoService.getMinBill(mSupplier));
+			Long maxTransaction = CommonUtil.getNvlLong(mSupplierDaoService.getMaxBill(mSupplier));
 			Long averageAmount = transactionAmount / transactionsCount;
 			
 			long amonth = 60 * 60 * 24 * 30;

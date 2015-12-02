@@ -87,7 +87,10 @@ public class InventorySearchArrayAdapter extends BaseSearchArrayAdapter<Inventor
 		flowImage.setBackground(context.getResources().getDrawable(R.drawable.bg_flow_out));
 		
 		if (Constant.INVENTORY_STATUS_PURCHASE.equals(item.getStatus()) ||
-			Constant.INVENTORY_STATUS_REPLACEMENT.equals(item.getStatus())) {
+			Constant.INVENTORY_STATUS_REPLACEMENT.equals(item.getStatus()) ||
+			Constant.INVENTORY_STATUS_REFUND.equals(item.getStatus()) ||
+			Constant.INVENTORY_STATUS_INITIAL_STOCK.equals(item.getStatus()) ||
+			Constant.INVENTORY_STATUS_SELF_PRODUCTION.equals(item.getStatus())) {
 			
 			flowImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_arrow_forward_black));
 			flowImage.setBackground(context.getResources().getDrawable(R.drawable.bg_flow_in));

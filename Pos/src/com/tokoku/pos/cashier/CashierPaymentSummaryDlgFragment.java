@@ -106,6 +106,7 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 
 		try {
 			mActionListener = (CashierActionListener) activity;
+			
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString() + " must implement CashierActionListener");
 		}
@@ -123,7 +124,7 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 	}
 
 	private void refreshDisplay() {
-
+		
 		if (getView() == null) {
 			return;
 		}
@@ -162,6 +163,8 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 			@Override
 			public void onClick(View v) {
 				
+				//CommonUtil.setEvent(getString(R.string.event_cat_transaction), getString(R.string.event_act_payment));
+				
 				Transactions transaction = getTransaction();
 				
 				mActionListener.onPaymentCompleted(transaction);
@@ -171,7 +174,9 @@ public class CashierPaymentSummaryDlgFragment extends BaseDialogFragment {
 				}
 				
 				mActionListener.onClearTransaction();
-					
+				
+				CommonUtil.sendEvent(getString(R.string.event_cat_transaction), getString(R.string.event_act_payment));
+				
 				dismiss();
 			}
 		};

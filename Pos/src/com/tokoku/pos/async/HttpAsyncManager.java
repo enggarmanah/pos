@@ -243,9 +243,11 @@ public class HttpAsyncManager {
 		
 		boolean isCancelled = false;
 		
-		if (task.getStatus() == AsyncTask.Status.RUNNING) {
+		if (task != null && task.getStatus() == AsyncTask.Status.RUNNING) {
 			task.cancel(true);
 			abortHttpRequest();
+			isCancelled = true;
+		} else {
 			isCancelled = true;
 		}
 		

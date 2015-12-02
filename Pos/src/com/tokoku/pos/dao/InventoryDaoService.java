@@ -42,9 +42,12 @@ public class InventoryDaoService {
 	public void deleteInventory(Inventory inventory) {
 
 		Inventory entity = inventoryDao.load(inventory.getId());
-		entity.setStatus(Constant.STATUS_DELETED);
-		entity.setUploadStatus(Constant.STATUS_YES);
-		inventoryDao.update(entity);
+		
+		if (entity != null) {
+			entity.setStatus(Constant.STATUS_DELETED);
+			entity.setUploadStatus(Constant.STATUS_YES);
+			inventoryDao.update(entity);
+		}
 	}
 	
 	public Inventory getInventory(Long id) {

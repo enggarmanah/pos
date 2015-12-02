@@ -209,10 +209,10 @@ public class RegistrationActivity extends BaseAuthActivity implements Registrati
 						String address = mAddressText.getText().toString();
 						String telephone = mTelephoneText.getText().toString();
 						String email = mEmailText.getText().toString();
-						String loginId = mLoginIdText.getText().toString();
-						String password = mPasswordText.getText().toString();
+						String loginId = CommonUtil.trim(mLoginIdText.getText().toString());
+						String password = CommonUtil.trim(mPasswordText.getText().toString());
 						String securityQuestion = mSecurityQuestionText.getText().toString();
-						String securityAnswer = mSecurityAnswerText.getText().toString();
+						String securityAnswer = CommonUtil.trim(mSecurityAnswerText.getText().toString());
 						
 						Merchant merchant = new Merchant();
 						
@@ -347,6 +347,8 @@ public class RegistrationActivity extends BaseAuthActivity implements Registrati
 	        }
 			
 			updateView();
+			
+			CommonUtil.sendEvent(getString(R.string.event_cat_merchant), getString(R.string.event_act_registration));
 		}
 	}
 	

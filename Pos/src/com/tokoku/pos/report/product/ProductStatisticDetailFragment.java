@@ -143,8 +143,11 @@ public class ProductStatisticDetailFragment extends BaseFragment implements Prod
 			getView().setVisibility(View.VISIBLE);
 		
 		} else {
-		
-			getView().setVisibility(View.INVISIBLE);
+			
+			if (getView() != null) {
+				getView().setVisibility(View.INVISIBLE);
+			}
+			
 			return;
 		}
 		

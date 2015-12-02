@@ -76,7 +76,7 @@ http://www.templatemo.com/preview/templatemo_399_tamarillo
         <div id="main-slider" class="flexslider">
         <ul class="slides">
             <li class="row">
-                <img src="images/home_smartphone.jpg" alt="slider image 1" />
+                <img src="images/tokoku.jpg" alt="slider image 1" />
                 <div class="flex-caption col-lg-5 col-lg-push-1 hidden-xs">
                     <h3>Android POS App</h3> 
                     <p><%= StringsUtil.getString(lang, "slideshow_1") %></p>
@@ -84,7 +84,7 @@ http://www.templatemo.com/preview/templatemo_399_tamarillo
                 <div class="flex-button"><a target="_blank" href="https://www.youtube.com/watch?v=QQEMGK3UlUI"><%= StringsUtil.getString(lang, "view_demo") %></a></div>
             </li>
             <li class="row">
-                <img src="images/templatemo_banner_image_3.jpg" alt="slider image 3" />
+                <img src="images/tokoku.jpg" alt="slider image 3" />
                 <div class="flex-caption col-lg-5 col-lg-push-1 hidden-xs">
                     <h3>Cloud Solutions</h3> 
                     <p><%= StringsUtil.getString(lang, "slideshow_2") %></p> 
@@ -92,7 +92,7 @@ http://www.templatemo.com/preview/templatemo_399_tamarillo
                 <div class="flex-button"><a target="_blank" href="https://www.youtube.com/watch?v=QQEMGK3UlUI"><%= StringsUtil.getString(lang, "view_demo") %></a></div>
             </li>
             <li class="row">
-                <img src="images/templatemo_banner_image_2.jpg" alt="slider image 2" />
+                <img src="images/tokoku.jpg" alt="slider image 2" />
                 <div class="flex-caption col-lg-5 col-lg-push-1 hidden-xs">
                     <h3>Technology That Works For You</h3> 
                     <p><%= StringsUtil.getString(lang, "slideshow_3") %></p> 
@@ -509,7 +509,9 @@ http://www.templatemo.com/preview/templatemo_399_tamarillo
                     	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Jl. Merak 4 Gonilan Solo 57162, Indonesia<br />
                     <span class="glyphicon glyphicon-phone-alt"></span>&nbsp;&nbsp; Tel: +62 856-4745-3111<br />
                     <span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp; Email: app.tokoku@gmail.com<br />
-                    <span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp; Website: www.pos-tokoku.com
+                    <span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp; Website: www.pos-tokoku.com<br/>
+                    <span class="glyphicon"></span>&nbsp; &nbsp; &nbsp; &nbsp;Whatsapp: +62 856-4745-3111<br/>
+                    <span class="glyphicon"></span>&nbsp; &nbsp; &nbsp; &nbsp;Line: tokoku.solutions<br/>
                 </p>
                 <ul class="icon">
                     <li><a href="#"><img src="images/templatemo_icon_1.png" alt="Skype" /></a></li>

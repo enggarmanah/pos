@@ -43,7 +43,7 @@
             android:hint="@string/favorite_customer_transaction_search"
             android:textColorHint="#9397a4"
             android:textColor="@color/text_dark"
-            android:textSize="18sp"
+            android:textSize="@dimen/title_text"
             android:textStyle="bold"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

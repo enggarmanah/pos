@@ -200,13 +200,17 @@ public class MerchantLoginActivity extends BaseAuthActivity implements LoginList
 						return;
 					}
 					
+					mProgressDialog.setCancellationMessage(false);
 					mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 						
 					mHttpAsyncManager = new HttpAsyncManager(context);
 					mHttpAsyncManager.validateUser(loginId, password);
 					
 				} else {
-				
+					
+					DbUtil.switchDb(getApplicationContext(), null);
+					mMerchantDaoService = new MerchantDaoService();
+					
 					mMerchant = mMerchantDaoService.getMerchantByLoginId(loginId);
 					
 					if (mMerchant != null) {
@@ -243,6 +247,7 @@ public class MerchantLoginActivity extends BaseAuthActivity implements LoginList
 									return;
 								}
 								
+								mProgressDialog.setCancellationMessage(false);
 								mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 								
 								mHttpAsyncManager = new HttpAsyncManager(context);
@@ -260,6 +265,7 @@ public class MerchantLoginActivity extends BaseAuthActivity implements LoginList
 							return;
 						}
 						
+						mProgressDialog.setCancellationMessage(false);
 						mProgressDialog.show(getFragmentManager(), "progressDialogTag");
 						
 						mHttpAsyncManager = new HttpAsyncManager(context);

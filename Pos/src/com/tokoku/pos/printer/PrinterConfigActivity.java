@@ -107,6 +107,8 @@ public class PrinterConfigActivity extends BasePopUpActivity {
 			    	merchant.setPrinterMiniFont(printerMiniFont);
 					merchant.setPrinterLineSize(printerLineSize);
 					
+					PrintUtil.setPrinterLineSize(MerchantUtil.getMerchant().getPrinterLineSize());
+					
 					mMerchantDaoService.updateMerchant(merchant);
 					
 					MerchantUtil.setMerchant(merchant);

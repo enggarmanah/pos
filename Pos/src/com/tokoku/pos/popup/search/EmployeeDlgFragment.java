@@ -52,7 +52,7 @@ public class EmployeeDlgFragment extends BaseSearchDlgFragment<Employee> impleme
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
-		View view = inflater.inflate(R.layout.popup_locale_fragment, container, false);
+		View view = inflater.inflate(R.layout.popup_employee_fragment, container, false);
 
 		return view;
 	}

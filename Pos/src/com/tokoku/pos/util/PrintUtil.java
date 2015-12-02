@@ -326,8 +326,8 @@ public class PrintUtil {
 		// highlight
 		// BluetoothPrintDriver.SetBlackReversePrint((byte)0x01);
 
-		String spaces = "                                        ";
-		String divider = "----------------------------------------";
+		String spaces = "                                                                                                    ";
+		String divider = "---------------------------------------------------------------------------------------------------";
 		
 		StringBuffer line = new StringBuffer();
 		

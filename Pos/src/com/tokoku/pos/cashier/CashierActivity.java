@@ -1138,7 +1138,7 @@ public class CashierActivity extends BaseActivity
 				// Bluetooth is now enabled, so set up a chat session
 				PrintUtil.selectBluetoothPrinter();
 				
-				mSelectPrinterItem.setVisible(true);
+				setSelectPrinterVisible(true);
 				
 			} else {
 

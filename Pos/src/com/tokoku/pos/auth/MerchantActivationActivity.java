@@ -19,6 +19,7 @@ import com.tokoku.pos.dao.MerchantAccessDaoService;
 import com.tokoku.pos.dao.MerchantDaoService;
 import com.tokoku.pos.model.FormFieldBean;
 import com.tokoku.pos.util.CodeUtil;
+import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.DbUtil;
 import com.tokoku.pos.util.MerchantUtil;
 import com.tokoku.pos.util.NotificationUtil;
@@ -50,12 +51,18 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 		
 		setContentView(R.layout.auth_activation_activity);
 		
+	}
+	
+	private void initVariables() {
+		
 		mActivationInfoText = (TextView) findViewById(R.id.activationInfoText);
 		mResendActivationCodeText = (TextView) findViewById(R.id.resendActivationCodeText);
 		mActivationCodeText = (EditText) findViewById(R.id.activationCodeText);
 		
+		clearRegisteredFields();
 		registerField(mActivationCodeText);
 		
+		clearRegisteredMandatoryFields();
 		registerMandatoryField(new FormFieldBean(mActivationCodeText, R.string.merchant_activation_hint));
 		
 		highlightMandatoryFields();
@@ -64,15 +71,22 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 		mOkBtn.setOnClickListener(getOkBtnOnClickListener());
 		
 		mResendActivationCodeText.setOnClickListener(getResendActivationCodeTextOnClickListener());
-    }
+	}
 	
 	@Override
 	public void onStart() {
 		
 		super.onStart();
 		
+		initVariables();
+		
 		mMerchant = MerchantUtil.getMerchant();
-		mActivationInfoText.setText(getString(R.string.msg_merchant_activation_info, mMerchant.getContactEmail()));
+		
+		if (mMerchant != null) {
+			mActivationInfoText.setText(getString(R.string.msg_merchant_activation_info, mMerchant.getContactEmail()));
+		} else {
+			mActivationInfoText.setText(getString(R.string.msg_merchant_activation_info_contact_us));
+		}
 	}
 	
 	private View.OnClickListener getOkBtnOnClickListener() {
@@ -89,9 +103,14 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 					mMerchant = MerchantUtil.getMerchant();
 					
 					String activationCode = mActivationCodeText.getText().toString();
-					String correctCode = mMerchant.getRefId().substring(mMerchant.getRefId().length()-6);
 					
-					if (activationCode.equals(correctCode)) {
+					String correctCode4 = mMerchant.getRefId().substring(mMerchant.getRefId().length()-4);
+					String correctCode6 = mMerchant.getRefId().substring(mMerchant.getRefId().length()-6);
+					
+					boolean isEqual4 = correctCode4.equals(activationCode);
+					boolean isEqual6 = correctCode6.equals(activationCode);
+					
+					if (isEqual4 || isEqual6) {
 						
 						mMerchant.setStatus(Constant.STATUS_ACTIVE);
 			        	mMerchant.setUploadStatus(Constant.STATUS_YES);
@@ -116,6 +135,8 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 				        		mMerchantAccessDaoService.updateMerchantAccess(merchantAccess);
 				        	}
 				        }
+						
+						CommonUtil.sendEvent(getString(R.string.event_cat_merchant), getString(R.string.event_act_activation));
 						
 						Intent intent = new Intent(context, UserLoginActivity.class);
 						startActivity(intent);

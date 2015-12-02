@@ -29,7 +29,8 @@ public class MerchantRegisterJsonServlet extends BaseJsonServlet {
 			
         	response.setMerchant(merchant);
 			
-			MailUtil.sendConfirmationEmail(merchant);
+			MailUtil.sendRegistrationEmail(merchant);
+			MailUtil.sendNotificationEmail(merchant);
 			
 		} catch (Exception e) {
 			

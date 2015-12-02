@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.tokoku.pos.R;
 import com.tokoku.pos.Constant;
+import com.tokoku.pos.util.NotificationUtil;
 
 public class ProgressDlgFragment extends DialogFragment {
 	
@@ -23,6 +24,8 @@ public class ProgressDlgFragment extends DialogFragment {
 	
 	String mMessage = Constant.EMPTY_STRING;
 	int mProgress = 0;
+	
+	private boolean miShowCancellationMessage = true;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,15 +71,23 @@ public class ProgressDlgFragment extends DialogFragment {
 		mSyncMessage.setText(mMessage);
 		
 		if (getDialog() != null) {
+			
 			getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
 				
 				@Override
 				public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
 	
 					if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
+						
 						HttpAsyncManager.stopSyncTask();
 						dismiss();
+						
+						if (miShowCancellationMessage) {
+							NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_sync_cancellation));
+						}
+						
 						return true;
+			
 					} else {
 						return false;
 					}
@@ -114,5 +125,14 @@ public class ProgressDlgFragment extends DialogFragment {
 	    if (HttpAsyncManager.stopSyncTask()) {
 			super.onCancel(dialog);
 	    }
+	    
+	    if (miShowCancellationMessage) {
+	    	NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_sync_cancellation));
+	    }
+	}
+	
+	public void setCancellationMessage(boolean isShowCancellationMessage) {
+		
+		miShowCancellationMessage = isShowCancellationMessage;
 	}
 }

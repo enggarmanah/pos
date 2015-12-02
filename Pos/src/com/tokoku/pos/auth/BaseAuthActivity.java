@@ -121,10 +121,20 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
     	mInputFields.add(field);
     }
 	
+	protected void clearRegisteredFields() {
+		
+		mInputFields.clear();
+	}
+	
 	protected void registerMandatoryField(FormFieldBean formField) {
     	
     	mMandatoryFields.add(formField);
     }
+	
+	protected void clearRegisteredMandatoryFields() {
+		
+		mMandatoryFields.clear();
+	}
 	
 	protected boolean isValidated() {
     	

@@ -15,7 +15,7 @@
 	        android:id="@+id/productText"
 	        style="@style/PopUpDialogHeaderStyle"
 	        android:gravity="start|center_vertical"
-	        android:textSize="20sp"/>
+	        android:textSize="@dimen/title_big_text"/>
 	    <TextView
 	        android:id="@+id/remarksBtn"
 	        style="@style/RemarksBtnStyle"
@@ -40,7 +40,7 @@
         android:paddingLeft="15dp"
 		android:paddingRight="15dp"
 		android:textColor="@color/text_default"
-        android:textSize="20sp"
+        android:textSize="@dimen/title_big_text"
         android:textStyle="bold" 
         android:background="#FFF"
         android:layout_marginBottom="0.5dp"
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:gravity="center_vertical|start"
             android:text="@string/count"
-            android:textSize="22sp" />
+            android:textSize="@dimen/title_mega_text" />
 
         <TextView
             android:id="@+id/countText"
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:hint="@string/remarks"
-        android:textSize="20sp"
+        android:textSize="@dimen/title_big_text"
         android:textColor="@color/text_default"
         android:textStyle="bold"
         android:maxLength="30"

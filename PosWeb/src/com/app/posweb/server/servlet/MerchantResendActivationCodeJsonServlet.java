@@ -21,7 +21,7 @@ public class MerchantResendActivationCodeJsonServlet extends BaseJsonServlet {
         	Merchant merchant = request.getMerchant();
 			response.setMerchant(merchant);
 			
-			MailUtil.sendConfirmationEmail(merchant);
+			MailUtil.sendRegistrationEmail(merchant);
 			
 		} catch (Exception e) {
 			

@@ -148,12 +148,12 @@ public class MerchantDao {
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append(" SELECT m FROM Merchant m ");
-		sql.append(" WHERE LOWER(login_id) = :loginId AND password = :password");
+		sql.append(" WHERE LOWER(login_id) = :loginId AND LOWER(password) = :password");
 		
 		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
 		
 		query.setParameter("loginId", merchant.getLogin_id().toLowerCase());
-		query.setParameter("password", merchant.getPassword());
+		query.setParameter("password", merchant.getPassword().toLowerCase());
 		
 		Merchant result = null;
 		

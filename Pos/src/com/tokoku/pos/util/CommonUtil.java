@@ -18,6 +18,7 @@ import android.util.TypedValue;
 import com.android.pos.dao.Product;
 import com.android.pos.dao.ProductGroup;
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.tokoku.pos.Config;
 import com.tokoku.pos.Constant;
@@ -54,7 +55,7 @@ public class CommonUtil {
 		analytics = GoogleAnalytics.getInstance(context);
 	    analytics.setLocalDispatchPeriod(1800);
 
-	    tracker = analytics.newTracker("UA-64012601-1"); // Replace with actual tracker/property Id
+	    tracker = analytics.newTracker("UA-64012601-1"); 
 	    tracker.enableExceptionReporting(true);
 	    tracker.enableAdvertisingIdCollection(false);
 	    tracker.enableAutoActivityTracking(true);
@@ -63,6 +64,26 @@ public class CommonUtil {
 	public static Tracker getTracker() {
 		
 		return tracker;
+	}
+	
+	public static void sendEvent(final String category, final String action) {
+		
+		if (tracker == null) {
+			return;
+		}
+		
+		getTracker().send(new HitBuilders.EventBuilder().setCategory(category).setAction(action).build());
+		analytics.dispatchLocalHits();
+	}
+		
+	public static void sendEvent(final String category, final String action, final String label) {
+		
+		if (tracker == null) {
+			return;
+		}
+		
+		getTracker().send(new HitBuilders.EventBuilder().setCategory(category).setAction(action).setLabel(label).build());
+		analytics.dispatchLocalHits();
 	}
 	
 	public static String generateRefId() {
@@ -138,6 +159,15 @@ public class CommonUtil {
 		
 		if (value == null) {
 			return Float.valueOf(0);
+		} else {
+			return value;
+		}
+	}
+	
+	public static Long getNvlLong(Long value) {
+		
+		if (value == null) {
+			return Long.valueOf(0);
 		} else {
 			return value;
 		}
@@ -228,6 +258,15 @@ public class CommonUtil {
 		}
 		
 		return number;
+	}
+	
+	public static String trim(String str) {
+		
+		if (!isEmpty(str)) {
+			return str.trim(); 
+		} else {
+			return Constant.EMPTY_STRING;
+		}
 	}
 	
 	static Locale locale;

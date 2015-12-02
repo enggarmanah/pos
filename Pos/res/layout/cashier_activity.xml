@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:textColor="#EEE"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_big"
                 android:textStyle="bold" />
         </LinearLayout>
 

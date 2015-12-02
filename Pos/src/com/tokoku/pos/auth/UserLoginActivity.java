@@ -146,7 +146,7 @@ public class UserLoginActivity extends BaseAuthActivity {
 					
 				} else {
 					
-					User user = mUserDaoService.validateUser(mMerchant.getId(), loginId, password);
+					User user = mUserDaoService.validateUser(loginId, password);
 					
 					if (user != null) {
 						

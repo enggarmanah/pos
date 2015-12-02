@@ -13,7 +13,7 @@
 	    <TextView
 	        style="@style/PopUpDialogHeaderStyle"
 	        android:gravity="start|center_vertical"
-	        android:textSize="20sp"
+	        android:textSize="@dimen/title_big_text"
 	        android:text="@string/discount"/>
     </LinearLayout>
     
@@ -28,7 +28,7 @@
             style="@style/CashierNumberValueStyle"
             android:layout_width="wrap_content"
             android:gravity="center_vertical|start"
-            android:textSize="22sp" />
+            android:textSize="@dimen/title_mega_text" />
 
         <TextView
             android:id="@+id/discountText"

@@ -19,7 +19,7 @@
             android:gravity="center_vertical|start"
             android:text="@string/total"
             android:textColor="@color/dialog_header_text"
-            android:textSize="22sp"
+            android:textSize="@dimen/title_mega_text"
             android:textStyle="bold" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical|end"
             android:textColor="@color/dialog_header_text"
-            android:textSize="22sp"
+            android:textSize="@dimen/title_mega_text"
             android:textStyle="bold" />
     </LinearLayout>
 	
@@ -60,7 +60,7 @@
             android:hint="@string/customer"
             android:padding="12dp"
             android:textColor="@color/text_default"
-            android:textSize="20sp"
+            android:textSize="@dimen/title_big_text"
             android:textStyle="bold"
             android:singleLine="true"/>
         
@@ -81,14 +81,13 @@
         android:gravity="center"
         android:padding="12dp"
         android:textColor="@color/text_default"
-        android:textSize="20sp"
+        android:textSize="@dimen/title_big_text"
         android:textStyle="bold" 
         android:inputType="number"
         android:background="#FFF"
         android:hint="@string/reservation_no"/>
     
-    <LinearLayout style="@style/SectionDividerStyle"
-        android:layout_marginTop="10dp"/>
+    <LinearLayout style="@style/SectionDividerStyle"/>
     
   	<LinearLayout
         android:id="@+id/waitressPanel"
@@ -107,7 +106,7 @@
             android:hint="@string/waitress"
             android:padding="12dp"
             android:textColor="@color/text_default"
-            android:textSize="20sp"
+            android:textSize="@dimen/title_big_text"
             android:textStyle="bold"
             android:drawableRight="@drawable/ic_search_black"
             android:drawableEnd="@drawable/ic_search_black"

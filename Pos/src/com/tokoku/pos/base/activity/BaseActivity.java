@@ -41,6 +41,7 @@ import com.tokoku.pos.report.srvcharge.ServiceChargeActivity;
 import com.tokoku.pos.report.tax.TaxActivity;
 import com.tokoku.pos.report.transaction.TransactionActivity;
 import com.tokoku.pos.util.CodeUtil;
+import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.DbUtil;
 import com.tokoku.pos.util.MerchantUtil;
 import com.tokoku.pos.util.NotificationUtil;
@@ -250,11 +251,15 @@ public abstract class BaseActivity extends Activity
 		
 		UserUtil.getUser();
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
+		boolean isCashier = false;
+		
+		if (UserUtil.isCashier() || (!UserUtil.isWaitress() && UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER))) {
+			
+			isCashier = true;
 			mMenus.add(getString(R.string.menu_cashier));
 		}
 		
-		if (UserUtil.isWaitress() || UserUtil.isUserHasAccess(Constant.ACCESS_WAITRESS)) {
+		if (UserUtil.isWaitress() || (!isCashier && UserUtil.isUserHasAccess(Constant.ACCESS_WAITRESS))) {
 			mMenus.add(getString(R.string.menu_waitress));
 		}
 		
@@ -383,6 +388,7 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(getString(R.string.menu_reference_merchant));
 			mMenus.add(getString(R.string.menu_reference_product_group));
 			mMenus.add(getString(R.string.menu_reference_product));
+			mMenus.add(getString(R.string.menu_reference_discount));
 			mMenus.add(getString(R.string.menu_reference_employee));
 			mMenus.add(getString(R.string.menu_reference_supplier));
 		}
@@ -627,6 +633,8 @@ public abstract class BaseActivity extends Activity
 				return;
 			}
 			
+			CommonUtil.sendEvent(getString(R.string.event_cat_task), getString(R.string.event_act_sync));
+			
 			mProgressDialog.show(getFragmentManager(), progressDialogTag);
 			
 			if (mHttpAsyncManager == null) {
@@ -727,7 +735,7 @@ public abstract class BaseActivity extends Activity
 		}
 	}
 
-	protected void addFragment(Object fragment, String fragmentTag) {
+	protected synchronized void addFragment(Object fragment, String fragmentTag) {
 		
 		Fragment f = (Fragment) fragment;
 		
@@ -735,10 +743,15 @@ public abstract class BaseActivity extends Activity
 			return;
 		}
 		
-		getFragmentManager().beginTransaction().add(R.id.fragment_container, f, fragmentTag).commit();
+		try {
+			getFragmentManager().beginTransaction().add(R.id.fragment_container, f, fragmentTag).commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
-	protected void replaceFragment(Object fragment, String fragmentTag) {
+	protected synchronized void replaceFragment(Object fragment, String fragmentTag) {
 		
 		Fragment f = (Fragment) fragment;
 		
@@ -746,14 +759,18 @@ public abstract class BaseActivity extends Activity
 			return;
 		}
 		
-		getFragmentManager().beginTransaction().replace(R.id.fragment_container, f, fragmentTag).commit();
+		try {
+			getFragmentManager().beginTransaction().replace(R.id.fragment_container, f, fragmentTag).commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void removeFragment(Object fragment) {
 		
 		getFragmentManager().beginTransaction().remove((Fragment) fragment).commit();
 	}
-
+	
 	protected void afterFragmentRemoved() {
 	};
 
@@ -843,7 +860,9 @@ public abstract class BaseActivity extends Activity
 						
 						if (isActivityVisible()) {
 							
-							mProgressDialog.dismissAllowingStateLoss();
+							if (mProgressDialog != null) {
+								mProgressDialog.dismissAllowingStateLoss();
+							}
 							
 							onAsyncTaskCompleted();
 						}

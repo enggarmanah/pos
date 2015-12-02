@@ -23,7 +23,15 @@ public class ConfirmationUtil {
 	public static void confirmTask(FragmentManager fragmentManager, ConfirmListener listener, String task, String message) {
 		
 		ConfirmTaskDlgFragment mConfirmDialog = getConfirmDialogInstance();
-		mConfirmDialog.show(fragmentManager, CONFIRM_DIALOG_FRAGMENT_TAG);
-		mConfirmDialog.setConfirm(listener, task, message);
+		
+		try {
+			
+			mConfirmDialog.show(fragmentManager, CONFIRM_DIALOG_FRAGMENT_TAG);
+			mConfirmDialog.setConfirm(listener, task, message);
+		
+		} catch (IllegalStateException e) {
+			
+			e.printStackTrace();
+		}
 	}
 }

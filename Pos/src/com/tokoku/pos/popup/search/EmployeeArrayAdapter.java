@@ -32,7 +32,7 @@ public class EmployeeArrayAdapter extends ArrayAdapter<Employee> {
 
 	public EmployeeArrayAdapter(Context context, List<Employee> employees, ItemActionListener listener) {
 
-		super(context, R.layout.popup_locale_list_item, employees);
+		super(context, R.layout.popup_employee_list_item, employees);
 		
 		this.context = context;
 		this.employees = employees;
@@ -54,7 +54,7 @@ public class EmployeeArrayAdapter extends ArrayAdapter<Employee> {
 		
 		if (rowView == null) {
 
-			rowView = inflater.inflate(R.layout.popup_locale_list_item, parent, false);
+			rowView = inflater.inflate(R.layout.popup_employee_list_item, parent, false);
 			
 			nameText = (TextView) rowView.findViewById(R.id.nameText);
 			telephoneText = (TextView) rowView.findViewById(R.id.telephoneText);

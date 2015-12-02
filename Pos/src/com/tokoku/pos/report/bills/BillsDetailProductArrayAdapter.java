@@ -93,8 +93,8 @@ public class BillsDetailProductArrayAdapter extends ArrayAdapter<Inventory> {
 	    flowImage.setPadding(padding, padding, padding, padding);
 		
 	    productText.setText(inventory.getProductName());
-	    remarksText.setText(CommonUtil.formatNumber(inventory.getQuantity()) + "  x  " + CommonUtil.formatCurrency(inventory.getProductCostPrice()));
-		amountText.setText(CommonUtil.formatCurrency((inventory.getQuantity() * inventory.getProductCostPrice())));
+	    remarksText.setText(CommonUtil.formatNumber(CommonUtil.getNvlFloat(inventory.getQuantity())) + "  x  " + CommonUtil.formatCurrency(CommonUtil.getNvlFloat(inventory.getProductCostPrice())));
+		amountText.setText(CommonUtil.formatCurrency(CommonUtil.getNvlFloat(inventory.getQuantity()) * CommonUtil.getNvlFloat(inventory.getProductCostPrice())));
 		
 		return rowView;
 	}

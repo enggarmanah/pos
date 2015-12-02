@@ -43,6 +43,11 @@ public class MerchantUtil {
 		
 		return getMerchant() != null ? getMerchant().getType() : null;
 	}
+		
+	public static String getLoginId() {
+		
+		return getMerchant() != null ? getMerchant().getLoginId() : null;
+	}
 	
 	public static void setMerchant(Merchant merchant) {
 		

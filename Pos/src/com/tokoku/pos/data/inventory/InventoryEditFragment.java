@@ -261,7 +261,7 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
     	
     	// update product cost price
     	
-    	if (mItem.getProductCostPrice() != null || mItem.getProductCostPrice() == 0) {
+    	if (mItem.getProductCostPrice() != null && mItem.getProductCostPrice() != 0) {
     	
 	    	Product product = mProductDaoService.getProduct(mItem.getProductId());
 	    	product.setCostPrice(mItem.getProductCostPrice());
@@ -368,6 +368,16 @@ public class InventoryEditFragment extends BaseEditFragment<Inventory> {
 			mandatoryFields.add(new FormFieldBean(mProductNameText, R.string.field_product));
 	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
 	    	mandatoryFields.add(new FormFieldBean(mBillsReferenceNoText, R.string.field_bills_reference_no));
+	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
+		
+		} else if (Constant.INVENTORY_STATUS_REFUND.equals(mStatus)) {
+			
+			mProductCostPricePanel.setVisibility(View.GONE);
+			mBillsReferenceNoPanel.setVisibility(View.GONE);
+			mSupplierPanel.setVisibility(View.GONE);
+			
+			mandatoryFields.add(new FormFieldBean(mProductNameText, R.string.field_product));
+	    	mandatoryFields.add(new FormFieldBean(mQuantityText, R.string.field_quantity));
 	    	mandatoryFields.add(new FormFieldBean(mInventoryDate, R.string.field_delivery_date));
 		
 		} else if (Constant.INVENTORY_STATUS_RETURN.equals(mStatus)) {

@@ -10,10 +10,11 @@
 <div id="message">
 <br>
 <p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Welcome to TokoKu - Cloud POS Solutions.
+Selamat Datang di TokoKu - Sistem Kasir dengan Teknologi Cloud.
 </p>
 <p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-We have registered your merchant below into our system, your merchant activation code is <strong>$code</strong>
+Kami telah mendaftarkan merchant Anda di bawah ini ke dalam sistem kami, kode aktivasi Anda adalah
+<strong>$code</strong>
 </p>
 <table style="border-collapse: collapse;">
 	<tr>
@@ -21,11 +22,11 @@ We have registered your merchant below into our system, your merchant activation
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$merchant</td>
 	<tr>
 	<tr>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Address : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Alamat : &nbsp;</td>
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$address</td>
 	<tr>
 	<tr>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Telephone : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Telepon : &nbsp;</td>
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$telephone</td>
 	<tr>
 	<tr>
@@ -35,15 +36,15 @@ We have registered your merchant below into our system, your merchant activation
 </table>
 
 <p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-For more info please visit our website at <a href="https://www.pos-tokoku.com" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com</a> for more info.
-The guide for TokoKu App can be found at <a href="https://www.pos-tokoku.com/guide" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com/guide</a>.
+Untuk info lebih lanjut silahkan kunjungi website kami <a href="https://www.pos-tokoku.com?lang=id" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com</a>.
+Petunjuk penggunaan aplikasi TokoKu dapat diakses pada <a href="https://www.pos-tokoku.com/guide?lang=id" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com/guide</a>.
 </p>
 <p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-We hope that our product can give benefit to your business. Please email us at <span style="font: normal 14px 'Open Sans'; color: #438db0; important!">app.tokoku@gmail.com</span> if you have any inquiry.  
+Kami harap produk kami dapat bermanfaat untuk usaha anda. Harap email kami <span style="font: normal 14px 'Open Sans'; color: #438db0; important!">app.tokoku@gmail.com</span> jika anda membutuhkan bantuan.  
 </p>
 <br>
 <p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Warm Regards,<br><br><br>
+Salam Hangat,<br><br><br>
 TokoKu Team - Cloud POS Solutions<br><br>
 Whatsapp: +62 856-4745-3111<br>
 Line: tokoku.solutions<br>

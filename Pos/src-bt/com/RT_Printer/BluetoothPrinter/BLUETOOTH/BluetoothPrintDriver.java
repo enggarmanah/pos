@@ -821,7 +821,7 @@ public class BluetoothPrintDriver {
 			while (BluetoothPrintDriver.mState != 3) {
 				try {
 					socket = this.mmServerSocket.accept();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					mState = STATE_NONE;
 					Log.e("BluetoothChatService", "accept() failed", e);
 					break;
