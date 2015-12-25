@@ -105,6 +105,8 @@ public abstract class BaseJsonServlet extends HttpServlet {
 
 		response.setContentType("application/json");
 		
+		log.log(Level.INFO, "Processing Time before convert to JSON : " + (new Date().getTime() - start.getTime()));
+		
 		byte[] bytes = mapper.writeValueAsBytes(syncResponse);
 		
 		log.log(Level.INFO, "Processing Time : " + (new Date().getTime() - start.getTime()));
@@ -115,6 +117,8 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		log.log(Level.INFO, "Compress Size : " + bytes.length);
 		
 		response.getOutputStream().write(bytes);
+		
+		log.log(Level.INFO, "Processing Time final : " + (new Date().getTime() - start.getTime()));
 	}
 	
 	private boolean isByPassTokenValidation(String path) {

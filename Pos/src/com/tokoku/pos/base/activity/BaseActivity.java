@@ -3,8 +3,8 @@ package com.tokoku.pos.base.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tokoku.pos.R;
 import com.android.pos.dao.Product;
+import com.tokoku.pos.R;
 import com.tokoku.pos.Config;
 import com.tokoku.pos.Constant;
 import com.tokoku.pos.async.HttpAsyncListener;
@@ -821,22 +821,6 @@ public abstract class BaseActivity extends Activity
 		}
 	}
 	
-	protected void updateProductStock() {
-		
-		ProductDaoService productDaoService = new ProductDaoService();
-		InventoryDaoService inventoryDaoServie = new InventoryDaoService();
-		
-		List<Product> products = productDaoService.getProducts(Constant.PRODUCT_TYPE_GOODS);
-		
-		for (Product product : products) {
-			
-			Float quantity = inventoryDaoServie.getProductQuantity(product);
-			product.setStock(quantity);
-			
-			productDaoService.updateProduct(product);
-		}
-	}
-	
 	protected void onAsyncTaskCompleted() {}
 	
 	@Override
@@ -850,9 +834,6 @@ public abstract class BaseActivity extends Activity
 			
 			if (progress == 100) {
 				
-				// update product min stock count
-				updateProductStock();
-				
 				new Handler().postDelayed(new Runnable() {
 					
 					@Override
@@ -863,6 +844,9 @@ public abstract class BaseActivity extends Activity
 							if (mProgressDialog != null) {
 								mProgressDialog.dismissAllowingStateLoss();
 							}
+							
+							UpdateProductStockTask task = new UpdateProductStockTask();
+							task.execute();
 							
 							onAsyncTaskCompleted();
 						}
@@ -919,5 +903,45 @@ public abstract class BaseActivity extends Activity
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+	}
+	
+	private class UpdateProductStockTask extends AsyncTask<String, Integer, Boolean> {
+		
+		@Override
+		protected Boolean doInBackground(String... params) {
+			
+			ProductDaoService productDaoService = new ProductDaoService();
+			InventoryDaoService inventoryDaoServie = new InventoryDaoService();
+			
+			List<Product> products = productDaoService.getProducts(Constant.PRODUCT_TYPE_GOODS);
+			
+			if (products != null) {
+				
+				for (Product product : products) {
+					
+					Float quantity = inventoryDaoServie.getProductQuantity(product);
+					product.setStock(quantity);
+					
+					productDaoService.updateProduct(product);
+					
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			return true;
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... progress) {}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			
+			MerchantUtil.refreshBelowStockLimitProductCount();
+		}
 	}
 }

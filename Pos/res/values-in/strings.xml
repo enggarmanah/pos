@@ -115,6 +115,7 @@
     <string name="msg_merchant_registration_success">Registrasi merchant telah berhasil !</string>
     <string name="msg_merchant_activation_info">Kode aktivasi telah dikirim ke %1$s</string>
     <string name="msg_merchant_activation_info_contact_us">Kode aktivasi telah dikirim ke email anda. Hubungi kami via email app.tokoku@gmail.com, jika anda belum menerimanya.</string>
+    <string name="msg_refresh_data">Memperbarui data</string>
     
     <string name="field_code">Kode</string>
     <string name="field_code_fl">K</string>
@@ -353,6 +354,7 @@
     <string name="product_group">Kategori</string>
     <string name="product">Produk</string>
     <string name="product_below_min_stock">Produk Dibawah Min. Stok</string>
+    <string name="item">Item</string>
     
     <string name="select_discount">Pilih Diskon</string>
     <string name="discount">Diskon</string>
@@ -496,6 +498,8 @@
     <string name="alert_bluetooth_not_active">"Bluetooth tidak aktif. Mohon aktifkan bluetooth anda"</string>
     <string name="alert_no_payment_type">"Tipe pembayaran harus dipilih"</string>
     <string name="alert_sync_cancellation">"Proses singkronisasi telah dibatalkan. Dapat menyebabkan permasalahan integritas data. Disarankan untuk menyelesaikan proses singkronisasi."</string>
+    <string name="alert_refresh_cancellation">"Pembaruan data telah dibatalkan. Data yang ditampilkan bukan data terbaru."</string>
+    <string name="alert_demo_account">"Tidak dapat menghapus akun demo."</string>
     
     <string name="user_role_cashier">Kasir</string>
 	<string name="user_role_admin">Admin</string>

@@ -35,4 +35,10 @@
         android:title="@string/product_stock_alert"
         android:showAsAction="always">
     </item>
+    <item
+        android:id="@+id/menu_item_refresh"
+        android:icon="@drawable/ic_refresh_white"
+        android:title="@string/product_list"
+        android:showAsAction="ifRoom|collapseActionView">
+    </item>
 </menu>

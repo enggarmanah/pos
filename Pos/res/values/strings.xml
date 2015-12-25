@@ -127,6 +127,7 @@
     <string name="msg_merchant_registration_success">Merchant registration is successful !</string>
     <string name="msg_merchant_activation_info">Activation code has been sent to %1$s</string>
     <string name="msg_merchant_activation_info_contact_us">Activation code has been sent to your email. Please contact us at app.tokoku@gmail.com, if you havent received it.</string>
+    <string name="msg_refresh_data">Refreshing data</string>
     
     <string name="field_code">Code</string>
     <string name="field_code_fl">C</string>
@@ -365,6 +366,7 @@
     <string name="product_group">Product Group</string>
     <string name="product">Product</string>
     <string name="product_below_min_stock">Product Below Min. Stock</string>
+    <string name="item">Item</string>
     
     <string name="select_discount">Select Discount</string>
     <string name="discount">Discount</string>
@@ -508,6 +510,8 @@
     <string name="alert_bluetooth_not_active">"Bluetooth is not active. Please active your bluetooth"</string>
     <string name="alert_no_payment_type">"Payment type must be selected"</string>
     <string name="alert_sync_cancellation">"Synchronization has been cancelled. It may cause data integrity issue. It\'s advised to complete synchronization process."</string>
+    <string name="alert_refresh_cancellation">"Data refresh has been cancelled. Data shown may not be updated."</string>
+    <string name="alert_demo_account">"Could not delete demo account."</string>
     
     <string name="user_role_cashier">Cashier</string>
 	<string name="user_role_admin">Admin</string>

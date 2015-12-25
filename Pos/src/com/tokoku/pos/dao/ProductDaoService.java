@@ -305,6 +305,17 @@ public class ProductDaoService {
 		} 
 	}
 	
+	public void updateProductQuantity() {
+		
+		SQLiteDatabase db = DbUtil.getDb();
+		String status = Constant.STATUS_DELETED;
+		
+		db.execSQL("UPDATE product SET stock = (SELECT SUM(quantity) "
+				+ " FROM inventory "
+				+ " WHERE product_id = product._id AND status <> ?) ",
+				new String[] { status });
+	}
+	
 	public List<ProductStatisticBean> getProductStatisticsQuantity(TransactionMonthBean transactionMonth) {
 		
 		ArrayList<ProductStatisticBean> productStatistics = new ArrayList<ProductStatisticBean>();
@@ -347,7 +358,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT product_name, SUM(price - discount) revenue "
+		Cursor cursor = db.rawQuery("SELECT product_name, SUM((price - discount) * quantity) revenue "
 				+ " FROM transactions t, transaction_item ti "
 				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY product_name "
@@ -380,7 +391,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT product_name, SUM(price - discount - cost_price) profit "
+		Cursor cursor = db.rawQuery("SELECT product_name, SUM((price - discount - cost_price) * quantity) profit "
 				+ " FROM transactions t, transaction_item ti "
 				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY product_name "
@@ -436,7 +447,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price-discount) revenue "
+		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM((price-discount) * quantity) revenue "
 				+ " FROM transactions t, transaction_item ti "
 				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id "
 				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
@@ -462,7 +473,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price - discount - cost_price) profit "
+		Cursor cursor = db.rawQuery("SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM((price - discount - cost_price) * quantity) profit "
 				+ " FROM transactions t, transaction_item ti "
 				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id "
 				+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')", null);
@@ -521,7 +532,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price-discount) revenue "
+		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM((price-discount) * quantity) revenue "
 				+ " FROM transactions t, transaction_item ti "
 				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
@@ -551,7 +562,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(price - discount - cost_price) profit "
+		Cursor cursor = db.rawQuery("SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM((price - discount - cost_price) * quantity) profit "
 				+ " FROM transactions t, transaction_item ti "
 				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ", 
@@ -611,7 +622,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT ti.employee_id, e.name employee_name, SUM(commision) commision "
+		Cursor cursor = db.rawQuery("SELECT ti.employee_id, e.name employee_name, SUM(commision * quantity) commision "
 				+ " FROM transactions t, transaction_item ti, employee e "
 				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND ti.employee_id = e._id AND transaction_date BETWEEN ? AND ? "
 				+ " GROUP BY employee_name "
@@ -648,7 +659,7 @@ public class ProductDaoService {
 		
 		if (employee != null) {
 			
-			query = "SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
+			query = "SELECT strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision * quantity) commision "
 					+ " FROM transactions t, transaction_item ti "
 					+ " WHERE t.status = 'A' AND ti.employee_id = ? AND t._id = ti.transaction_id"
 					+ " GROUP BY strftime('%Y', transaction_date/1000, 'unixepoch', 'localtime')";
@@ -694,7 +705,7 @@ public class ProductDaoService {
 		
 		if (employee != null) {
 			
-			query = "SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision) commision "
+			query = "SELECT strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime'), SUM(commision * quantity) commision "
 					+ " FROM transactions t, transaction_item ti "
 					+ " WHERE t.status = 'A' AND ti.employee_id = ? AND t._id = ti.transaction_id AND transaction_date BETWEEN ? AND ? "
 					+ " GROUP BY strftime('%m-%Y', transaction_date/1000, 'unixepoch', 'localtime') ";
@@ -738,7 +749,7 @@ public class ProductDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
-		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y %H:%M:%S', transaction_date/1000, 'unixepoch', 'localtime'), p.name product_name, ti.commision "
+		Cursor cursor = db.rawQuery("SELECT strftime('%d-%m-%Y %H:%M:%S', transaction_date/1000, 'unixepoch', 'localtime'), p.name product_name, (ti.commision * quantity) commision "
 				+ " FROM transactions t, transaction_item ti, product p "
 				+ " WHERE t.status = 'A' AND t._id = ti.transaction_id AND ti.product_id = p._id AND employee_id = ? AND transaction_date BETWEEN ? AND ? "
 				+ " ORDER BY ti._id ASC ", new String[] { employeeIdStr, startDate, endDate });

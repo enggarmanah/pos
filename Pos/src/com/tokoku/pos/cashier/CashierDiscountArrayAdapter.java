@@ -65,7 +65,7 @@ public class CashierDiscountArrayAdapter extends ArrayAdapter<Discount> {
 		}
 		
 		String discountLabel = discount.getName(); 
-		float percentage = discount.getPercentage(); 
+		float percentage = CommonUtil.getNvlFloat(discount.getPercentage()); 
 		
 		if (percentage != 0) {
 			discountLabel = discountLabel + Constant.SPACE_STRING + context.getString(R.string.sign_negative) + Constant.SPACE_STRING + CommonUtil.formatPercentage(percentage);

@@ -33,6 +33,10 @@ Kami telah mendaftarkan merchant Anda di bawah ini ke dalam sistem kami, kode ak
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Login Id : &nbsp;</td>
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$loginId</td>
 	<tr>
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Password : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$password</td>
+	<tr>
 </table>
 
 <p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">

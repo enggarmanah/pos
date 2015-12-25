@@ -29,5 +29,14 @@ Merchant Registration
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Login Id : &nbsp;</td>
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$loginId</td>
 	<tr>
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Password : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$password</td>
+	<tr>
+	<tr>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Activation Code : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$code</td>
+	<tr>
+	
 </table>
 </div>

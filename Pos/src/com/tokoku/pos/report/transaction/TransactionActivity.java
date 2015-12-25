@@ -407,11 +407,11 @@ public class TransactionActivity extends BaseActivity
 				mUpItem.setVisible(true);
 				
 			} else if (mIsDisplayTransaction) {
-				mUpItem.setVisible(true);
 				
-				if (Constant.USER_ROLE_CASHIER.equals(UserUtil.getUser().getRole())) {
-					mPrintItem.setVisible(true);
-				} else if (Constant.USER_ROLE_ADMIN.equals(UserUtil.getUser().getRole())) {
+				mUpItem.setVisible(false);
+				mPrintItem.setVisible(true);
+				
+				if (Constant.USER_ROLE_ADMIN.equals(UserUtil.getUser().getRole())) {
 					mDeleteItem.setVisible(true);
 				}
 			}

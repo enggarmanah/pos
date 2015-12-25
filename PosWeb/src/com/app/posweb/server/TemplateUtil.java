@@ -34,12 +34,13 @@ public class TemplateUtil {
         	VelocityContext context = new VelocityContext();
         	
         	String refId = merchant.getRef_id();
-        	String activationCode = refId.substring(refId.length()-6);
+        	String activationCode = refId.substring(refId.length()-4);
 
             context.put("merchant", merchant.getName());
             context.put("address", merchant.getAddress());
             context.put("telephone", merchant.getTelephone());
             context.put("loginId", merchant.getLogin_id());
+            context.put("password", merchant.getPassword());
             context.put("code", activationCode);
             
             String template = Constant.EMPTY_STRING;
@@ -72,10 +73,15 @@ public class TemplateUtil {
         {
         	VelocityContext context = new VelocityContext();
         	
+        	String refId = merchant.getRef_id();
+        	String activationCode = refId.substring(refId.length()-4);
+        	
         	context.put("merchant", merchant.getName());
             context.put("address", merchant.getAddress());
             context.put("telephone", merchant.getTelephone());
             context.put("loginId", merchant.getLogin_id());
+            context.put("password", merchant.getPassword());
+            context.put("code", activationCode);
             
             String template = "com/app/posweb/server/template/notification.vm";
             Template t = ve.getTemplate(template);

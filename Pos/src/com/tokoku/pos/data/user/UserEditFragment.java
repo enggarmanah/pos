@@ -396,6 +396,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     		button.setEnabled(isEnabled);
     	}
     	
+    	// disable editing for demo account
+    	
     	if (MerchantUtil.getMerchantId() == 2 && mItem != null && Long.valueOf(1).equals(mItem.getId())) {
     		
     		mNameText.setEnabled(false);

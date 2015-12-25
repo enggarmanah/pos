@@ -75,6 +75,7 @@ public class Constant {
 	
 	public static int WAIT_FRAGMENT_TO_BE_REMOVED_SLEEP_PERIOD = 25;
 	public static int WAIT_FRAGMENT_TO_BE_ADDED_SLEEP_PERIOD = 25;
+	public static int PRODUCT_UPDATE_DELAY_PERIOD = 25;
 	
 	public static final String TASK_REGISTER_MERCHANT = "TASK_REGISTER_MERCHANT";
 	public static final String TASK_RESEND_ACTIVATION_CODE = "TASK_RESEND_ACTIVATION_CODE";

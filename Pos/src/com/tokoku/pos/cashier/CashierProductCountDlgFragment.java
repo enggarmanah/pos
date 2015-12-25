@@ -113,13 +113,20 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 	
 	private void saveDataFromView() {
 		
+		float quantity = 1; 
 		String quantityStr = "1";
 		
 		if (!CommonUtil.isEmpty(mQuantityText.getText().toString())) {
 			quantityStr = mQuantityText.getText().toString();
 		}
 		
-		mQuantity = Float.valueOf(quantityStr);
+		try {
+			quantity = Float.valueOf(quantityStr);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		
+		mQuantity = quantity;
 	}
 	
 	public void setEmployee(Employee employee) {

@@ -432,6 +432,8 @@ public class PrintUtil {
 		
 		List<TransactionItem> transactionItems = transaction.getTransactionItemList();
 		
+		float totalQuantity = 0;
+		
 		for (TransactionItem item : transactionItems) {
 			
 			if (item.getQuantity() != 0) {
@@ -445,6 +447,8 @@ public class PrintUtil {
 				float quantity = item.getQuantity();
 				float price = item.getPrice();
 				float total = quantity * price;
+				
+				totalQuantity += quantity;
 				
 				line.setLength(0);
 				
@@ -461,8 +465,6 @@ public class PrintUtil {
 				
 				line.append(quantityStr);
 				
-				//line.append(spaces.substring(0, 6 - quantityStr.length()));
-				
 				int size = quantityStr.length() <= 2 ? 2 : quantityStr.length();
 				line.append(spaces.substring(0, size - quantityStr.length()));
 				
@@ -477,7 +479,7 @@ public class PrintUtil {
 		
 		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + Constant.CR_STRING);
 		
-		String billLabel = mActivity.getString(R.string.print_sub_total);
+		String billLabel = CommonUtil.formatNumber(totalQuantity) + Constant.SPACE_STRING + mActivity.getString(R.string.item);
 		String billAmount = CommonUtil.formatCurrency(transaction.getBillAmount()); 
 		
 		line.setLength(0);

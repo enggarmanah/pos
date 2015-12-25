@@ -65,8 +65,6 @@ public class SupplierActivity extends BaseActivity
 		
 		setTitle(getString(R.string.menu_favorite_supplier));
 		setSelectedMenu(getString(R.string.menu_favorite_supplier));
-		
-		updateProductStock();
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {

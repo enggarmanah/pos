@@ -73,8 +73,6 @@ public class CustomerActivity extends BaseActivity
 			setTitle(getString(R.string.menu_favorite_customer));
 			setSelectedMenu(getString(R.string.menu_favorite_customer));
 		}
-		
-		updateProductStock();
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {

@@ -9,6 +9,8 @@ import com.android.pos.dao.User;
 import com.tokoku.pos.base.activity.BaseItemMgtActivity;
 import com.tokoku.pos.popup.search.EmployeeDlgFragment;
 import com.tokoku.pos.popup.search.EmployeeSelectionListener;
+import com.tokoku.pos.util.MerchantUtil;
+import com.tokoku.pos.util.NotificationUtil;
 
 import android.os.Bundle;
 import android.view.View;
@@ -166,7 +168,12 @@ public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, Use
 	@Override
 	public void deleteItem(User item) {
 		
-		mSearchFragment.onItemDeleted(item);
+		if (MerchantUtil.getMerchantId() == 2 && item != null && Long.valueOf(1).equals(item.getId())) {
+			
+			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_demo_account));
+		} else {
+			mSearchFragment.onItemDeleted(item);
+		}
 	}
 	
 	@Override

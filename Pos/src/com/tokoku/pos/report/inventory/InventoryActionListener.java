@@ -8,7 +8,7 @@ public interface InventoryActionListener {
 	
 	public void onProductUnselected();
 	
-	public void refreshProductStock();
+	public void cancelRefreshProductStock();
 	
 	public void onBackPressed();
 }

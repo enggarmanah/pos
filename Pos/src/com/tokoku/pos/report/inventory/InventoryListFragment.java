@@ -38,7 +38,6 @@ public class InventoryListFragment extends BaseFragment
 	
 	private boolean mIsLoadData = false;
 	private boolean mIsEndOfList = false;
-	private boolean mIsRefreshProductStock = false;
 	
 	private boolean mIsShowAllProducts = false;
 	private boolean mIsShowBelowStockLimitProducts = false;
@@ -95,12 +94,6 @@ public class InventoryListFragment extends BaseFragment
 		mProductList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		mProductList.setOnScrollListener(getListOnScrollListener());
 		
-		if (mIsRefreshProductStock) {
-			
-			mActionListener.refreshProductStock();
-			searchProduct(mQuery);
-		}
-		
 		if (mIsShowAllProducts) {
 			
 			mTitleText.setText(getString(R.string.product));
@@ -149,17 +142,6 @@ public class InventoryListFragment extends BaseFragment
 		
 		if (isViewInitialized()) {
 			updateContent();
-		}
-	}
-	
-	public void refreshProductStock() {
-		
-		mIsRefreshProductStock = true;
-		
-		if (isViewInitialized()) {
-			
-			mActionListener.refreshProductStock();
-			searchProduct(mQuery);
 		}
 	}
 	

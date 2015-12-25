@@ -1,17 +1,22 @@
 package com.tokoku.pos.report.inventory;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.tokoku.pos.R;
 import com.android.pos.dao.Product;
 import com.tokoku.pos.Constant;
 import com.tokoku.pos.base.activity.BaseActivity;
+import com.tokoku.pos.common.ProgressDlgFragment;
+import com.tokoku.pos.dao.InventoryDaoService;
+import com.tokoku.pos.dao.ProductDaoService;
 import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.MerchantUtil;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -26,11 +31,16 @@ import android.widget.TextView;
 public class InventoryActivity extends BaseActivity 
 	implements InventoryActionListener, SearchView.OnQueryTextListener {
 	
+	protected static ProgressDlgFragment mProgressDialog;
+	
+	protected static String mUpdateProductStockProgressDialogTag = "updateProductStockprogressDialogTag";
+	
 	private SearchView searchView;
 	
 	private MenuItem mSearchMenu;
 	private MenuItem mListMenu;
 	private MenuItem mAlertMenu;
+	private MenuItem mRefreshMenu;
 	
 	private TextView mAlertMenuText;
 	private ImageButton mAlertMenuBtn;
@@ -53,6 +63,7 @@ public class InventoryActivity extends BaseActivity
 	
 	private boolean mIsShowAllProducts = false;
 	private boolean mIsShowBelowStockLimitProducts = false;
+	private boolean mIsProductStockUpdateInProgress = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +77,14 @@ public class InventoryActivity extends BaseActivity
 		
 		initFragments();
 		
+		mProgressDialog = (ProgressDlgFragment) getFragmentManager().findFragmentByTag(mUpdateProductStockProgressDialogTag);
+		
+		if (mProgressDialog == null) {
+			mProgressDialog = new ProgressDlgFragment();
+		}
+		
+		mProgressDialog.setListener(this);
+		
 		initWaitAfterFragmentRemovedTask(mInventoryReportListFragmentTag, mInventoryReportDetailFragmentTag);
 	}
 	
@@ -76,15 +95,27 @@ public class InventoryActivity extends BaseActivity
 		
 		setTitle(getString(R.string.menu_report_inventory));
 		setSelectedMenu(getString(R.string.menu_report_inventory));
+	}
+	
+	protected void refreshProductStock() {
 		
-		mInventoryReportListFragment.refreshProductStock();
+		if (mIsProductStockUpdateInProgress) {
+			return;
+		}
+		
+		mIsProductStockUpdateInProgress = true;
+		
+		mProgressDialog.show(getFragmentManager(), mUpdateProductStockProgressDialogTag);
+		mProgressDialog.setMessage(getString(R.string.msg_refresh_data));
+		
+		UpdateProductStockTask task = new UpdateProductStockTask();
+		task.execute();
 	}
 	
 	@Override
-	public void refreshProductStock() {
+	public void cancelRefreshProductStock() {
 		
-		updateProductStock();
-		updateBelowStockLimitProduct();
+		mIsProductStockUpdateInProgress = false;
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {
@@ -164,6 +195,7 @@ public class InventoryActivity extends BaseActivity
 		mSearchMenu = menu.findItem(R.id.menu_item_search);
 		mListMenu = menu.findItem(R.id.menu_item_list);
 		mAlertMenu = menu.findItem(R.id.menu_item_alert);
+		mRefreshMenu = menu.findItem(R.id.menu_item_refresh);
 		
 		mAlertMenuText = (TextView) menu.findItem(R.id.menu_item_alert).getActionView().findViewById(R.id.menu_item_alert_text);
 		mAlertMenuBtn = (ImageButton) menu.findItem(R.id.menu_item_alert).getActionView().findViewById(R.id.menu_item_alert_icon);
@@ -246,6 +278,7 @@ public class InventoryActivity extends BaseActivity
 		boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		
 		mSearchMenu.setVisible(!isDrawerOpen);
+		mRefreshMenu.setVisible(!isDrawerOpen);
 		
 		if (mIsShowAllProducts) {
 			mAlertMenu.setVisible(!isDrawerOpen);
@@ -261,6 +294,12 @@ public class InventoryActivity extends BaseActivity
 		
 		switch (item.getItemId()) {
 			
+			case R.id.menu_item_refresh:
+				
+				refreshProductStock();
+				
+				return true;
+		
 			case R.id.menu_item_list:
 				
 				showInventoryList();
@@ -400,9 +439,66 @@ public class InventoryActivity extends BaseActivity
 		
 		super.onAsyncTaskCompleted();
 		
-		mInventoryReportListFragment.refreshProductStock();
-		
 		mInventoryReportListFragment.updateContent();
 		mInventoryReportDetailFragment.updateContent();
+	}
+	
+	private class UpdateProductStockTask extends AsyncTask<String, Integer, Boolean> {
+		
+		@Override
+		protected Boolean doInBackground(String... params) {
+			
+			ProductDaoService productDaoService = new ProductDaoService();
+			InventoryDaoService inventoryDaoServie = new InventoryDaoService();
+			
+			List<Product> products = productDaoService.getProducts(Constant.PRODUCT_TYPE_GOODS);
+			
+			if (products != null) {
+				
+				int i = 0;
+				
+				for (Product product : products) {
+					
+					Float quantity = inventoryDaoServie.getProductQuantity(product);
+					product.setStock(quantity);
+					
+					productDaoService.updateProduct(product);
+					publishProgress((int) ((i++ / (float) products.size()) * 100));
+					
+					if (!mIsProductStockUpdateInProgress) {
+						break;
+					}
+					
+					try {
+						Thread.sleep(Constant.PRODUCT_UPDATE_DELAY_PERIOD);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			if (mProgressDialog != null) {
+				mProgressDialog.dismissAllowingStateLoss();
+			}
+				
+			return true;
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... progress) {
+			int prg = progress[0];
+			
+			if (mProgressDialog != null) {
+				mProgressDialog.setProgress(prg);
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+		
+			updateBelowStockLimitProduct();
+			mIsProductStockUpdateInProgress = false;
+			mInventoryReportListFragment.searchProduct(prevQuery);
+		}
 	}
 }
