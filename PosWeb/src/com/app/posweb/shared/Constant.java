@@ -2,6 +2,9 @@ package com.app.posweb.shared;
 
 public class Constant {
 	
+	public static final int MIN_APP_VERSION = 14;
+	public static final boolean IS_SYSTEM_MAINTENANCE = false;
+	
 	public static final String ENV_STAGING = "Staging";
 	public static final String ENV_PRODUCTION = "Production";
 	
@@ -23,6 +26,8 @@ public class Constant {
 	public static final int HOUR_SECS = 3600;
 	public static final int MIN_SECS = 60;
 	public static final int MILISECS = 1000;
+	
+	public static final int SYNC_RECORD_LIMIT = 100;
 	
 	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	public static final String TASK_VALIDATE_USER = "TASK_VALIDATE_USER";
@@ -75,4 +80,6 @@ public class Constant {
 	public static final String ERROR_COULD_NOT_OBTAINED_LOCK = "ERR003";
 	public static final String ERROR_REGISTER_MERCHANT_CONFLICT = "ERR004";
 	public static final String ERROR_INVALID_APP_CERT = "ERR005";
+	public static final String ERROR_APP_UPDATE_REQUIRED = "ERR006";
+	public static final String ERROR_SYSTEM_MAINTENANCE = "ERR007";
 }

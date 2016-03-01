@@ -101,7 +101,7 @@ public class ProductGroupDaoService {
 		return list;
 	}
 	
-	public List<ProductGroupBean> getProductGroupsForUpload() {
+	public List<ProductGroupBean> getProductGroupsForUpload(int limit) {
 
 		QueryBuilder<ProductGroup> qb = productGroupDao.queryBuilder();
 		qb.where(ProductGroupDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(ProductGroupDao.Properties.Name);
@@ -109,8 +109,10 @@ public class ProductGroupDaoService {
 		Query<ProductGroup> q = qb.build();
 		
 		ArrayList<ProductGroupBean> productGroupBeans = new ArrayList<ProductGroupBean>();
+
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
 		
-		for (ProductGroup prdGroup : q.list()) {
+		for (ProductGroup prdGroup : q.list().subList(0, maxIndex)) {
 			
 			productGroupBeans.add(BeanUtil.getBean(prdGroup));
 		}
@@ -194,6 +196,11 @@ public class ProductGroupDaoService {
 	
 	public boolean hasUpdate() {
 		
+		return getProductGroupsForUploadCount() > 0;
+	}
+	
+	public long getProductGroupsForUploadCount() {
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM product_group WHERE upload_status = 'Y'", null);
@@ -204,7 +211,7 @@ public class ProductGroupDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 	
 	public List<ProductGroupStatisticBean> getProductGroupStatistics(Customer customer) {

@@ -440,6 +440,24 @@ public class DbUtil {
         daoSession = daoMaster.newSession();
         
         System.out.println("Open DB : " + db);
+        
+        /* db.execSQL("UPDATE 'BILLS' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'CASHFLOW' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'CUSTOMER' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'DISCOUNT' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'EMPLOYEE' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'INVENTORY' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'MERCHANT' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'MERCHANT_ACCESS' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'ORDER_ITEM' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'ORDERS' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'PRODUCT' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'PRODUCT_GROUP' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'SUPPLIER' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'TRANSACTION_ITEM' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'TRANSACTIONS' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'USER' set upload_status = 'Y'");
+        db.execSQL("UPDATE 'USER_ACCESS' set upload_status = 'Y'"); */
     }
     
     public static DaoSession getSession() {

@@ -99,7 +99,7 @@ public class UserDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<User> result = query.getResultList();
+		List<User> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
@@ -107,6 +107,11 @@ public class UserDao {
 	}
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getUsersCount(syncRequest) > 0;
+	}
+	
+	public long getUsersCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_USER);
 		
@@ -123,6 +128,6 @@ public class UserDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

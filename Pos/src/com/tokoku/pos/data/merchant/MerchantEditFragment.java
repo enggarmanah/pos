@@ -28,6 +28,7 @@ import com.tokoku.pos.util.UserUtil;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,7 +163,11 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mOrderTypeSp = (Spinner) view.findViewById(R.id.orderTypeSp);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
     	
-    	mLocaleText.setOnClickListener(getLocaleOnClickListener());
+    	// disable locale selection for demo account
+    	if (!UserUtil.isRoot() && MerchantUtil.getMerchantId() != Constant.DEMO_MERCHANT_ID) {
+    		mLocaleText.setOnClickListener(getLocaleOnClickListener());
+    	}
+    	
     	mPriceTypeCountSp.setOnItemSelectedListener(getPriceTypeCountOnItemSelectedListener());
     	mTypeSp.setOnItemSelectedListener(getMerchantTypeItemSelectedListener());
     	
@@ -236,6 +241,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	if (UserUtil.isRoot()) {
     		mStatusPanel.setVisibility(View.VISIBLE);
+    		mPasswordText.setInputType(InputType.TYPE_CLASS_TEXT);
 		} else {
 			mStatusPanel.setVisibility(View.GONE);
 		}
@@ -281,10 +287,11 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mOrderTypeSp.setSelection(orderTypeIndex);
     		mStatusSp.setSelection(statusIndex);
     		
-    		if (!UserUtil.isRoot()) {
+    		if (UserUtil.isRoot()) {
+    			// accessRightRowPanel.setVisibility(View.VISIBLE);
     			accessRightRowPanel.setVisibility(View.GONE);
     		} else {
-    			accessRightRowPanel.setVisibility(View.VISIBLE);
+    			accessRightRowPanel.setVisibility(View.GONE);
     		}
     		
     		paymentTypePanel.removeAllViews();
@@ -615,7 +622,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	
     	// disable editing for demo account
     	
-    	if (mItem != null && mItem.getId() == 2) {
+    	if (mItem != null && mItem.getId() == Constant.DEMO_MERCHANT_ID) {
     		mNameText.setEnabled(false);
     		mAddressText.setEnabled(false);
     		mLoginIdText.setEnabled(false);

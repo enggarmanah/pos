@@ -108,6 +108,11 @@ public class DiscountDao {
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
 		
+		return getDiscountsCount(syncRequest) > 0;
+	}
+	
+	public long getDiscountsCount(SyncRequest syncRequest) {
+		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_DISCOUNT);
 		
 		EntityManager em = PersistenceManager.getEntityManager();
@@ -119,10 +124,10 @@ public class DiscountDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		long count = (long) query.getSingleResult();
+		long count = (long) query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getSingleResult();
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

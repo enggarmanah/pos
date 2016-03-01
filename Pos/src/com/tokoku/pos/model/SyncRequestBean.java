@@ -11,6 +11,11 @@ public class SyncRequestBean {
 	protected String uuid;
 	protected String cert_dn;
 	
+	protected Integer appVersion;
+	
+	protected long index;
+	protected long resultCount;
+	
 	protected List<String> getRequests;
 	
 	protected MerchantBean merchant;
@@ -72,6 +77,30 @@ public class SyncRequestBean {
 
 	public void setCert_dn(String cert_dn) {
 		this.cert_dn = cert_dn;
+	}
+	
+	public Integer getAppVersion() {
+		return appVersion;
+	}
+
+	public void setAppVersion(Integer appVersion) {
+		this.appVersion = appVersion;
+	}
+
+	public long getIndex() {
+		return index;
+	}
+
+	public void setIndex(long index) {
+		this.index = index;
+	}
+
+	public long getResultCount() {
+		return resultCount;
+	}
+
+	public void setResultCount(long resultCount) {
+		this.resultCount = resultCount;
 	}
 
 	public List<String> getGetRequests() {

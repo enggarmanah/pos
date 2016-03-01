@@ -44,6 +44,18 @@ public class CommonUtil {
 	private static Context mContext;
 	private static String mCertDN;
 	
+	private static boolean isDemo = false;
+	
+	public static void setDemo(boolean status) {
+		
+		isDemo = status;
+	}
+	
+	public static boolean isDemo() {
+		
+		return isDemo;
+	}
+	
 	public static void initTracker(Context context) {
 		
 		mContext = context;
@@ -135,6 +147,13 @@ public class CommonUtil {
 		} else {
 			return true;
 		}
+	}
+	
+	public static int getMaxIndex(int recordCount, int limit) {
+		
+		System.out.println("record count : " + recordCount + " limit : " + limit);
+		
+		return recordCount > limit ? limit : recordCount;
 	}
 	
 	public static Long getNvlId(ProductGroup prdGroup) {
@@ -571,7 +590,7 @@ public class CommonUtil {
 		String dateStr = Constant.EMPTY_STRING;
 		
 		try {
-			dateStr = getDateTimeMiliSecondsFormat().format(inputDate);
+			dateStr = new SimpleDateFormat("yyyyMMddHHmmssSSS", parseLocale("in,ID")).format(inputDate);
 		} catch (Exception e) {
 			// do nothing
 		}

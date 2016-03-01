@@ -20,6 +20,8 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
@@ -105,6 +107,8 @@ public class HttpAsyncManager {
 	private Long startTime;
 	private Date mSyncDate;
 	private String mSyncKey;
+	private int mSyncRecordLimit;
+	private int mAppVersion;
 	
 	static {
 		mapper = new ObjectMapper();
@@ -116,6 +120,14 @@ public class HttpAsyncManager {
 		this.mContext = context;
 		
 		mAsyncListener = (HttpAsyncListener) context;
+		
+		try {
+			PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+			mAppVersion = pInfo.versionCode;
+			
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		mProductGroupDaoService = new ProductGroupDaoService();
 		mDiscountDaoService = new DiscountDaoService();
@@ -220,7 +232,25 @@ public class HttpAsyncManager {
 			handler.postDelayed(getTimeOutHandler(task), Constant.TIMEOUT);
 		}
 		
-		mTaskIndex++;    	
+		mTaskIndex++;  	
+	}
+	
+	private void getNextRecord(long index, long total) {
+		
+		mTaskIndex--;
+		
+		String taskName = mTasks.get(mTaskIndex);
+		String message = getMessage(mTasks.get(mTaskIndex));
+		
+		int progress = mTaskIndex * 100 / mTasks.size() + (int) (index / (float) total * 100 / mTasks.size());
+		
+		mAsyncListener.setSyncProgress(progress);
+		mAsyncListener.setSyncMessage(message + " " + (int) (index / (float) total * 100) + " %");
+		
+		task = new HttpAsyncTask();
+		task.execute(taskName, String.valueOf(index));
+		
+		mTaskIndex++; 
 	}
 	
 	public Runnable getTimeOutHandler(final HttpAsyncTask task) {
@@ -352,11 +382,13 @@ public class HttpAsyncManager {
 		
 		mGetTasks.clear();
 		mGetTasks.add(Constant.TASK_ROOT_GET_MERCHANT);
-		mGetTasks.add(Constant.TASK_ROOT_GET_MERCHANT_ACCESS);
+		// conflicting ID with other merchants
+		//mGetTasks.add(Constant.TASK_ROOT_GET_MERCHANT_ACCESS);
 		
 		mUpdateTasks.clear();
 		mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT);
-		mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT_ACCESS);
+		// conflicting ID with other merchants
+		//mUpdateTasks.add(Constant.TASK_UPDATE_MERCHANT_ACCESS);
 		
 		mTasks.addAll(getTaskWithUpdate(mUpdateTasks));
 		
@@ -700,11 +732,16 @@ public class HttpAsyncManager {
 	private class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
 		String task;
+		int index = 0;
 
 		@Override
-		protected String doInBackground(String... tasks) {
+		protected String doInBackground(String... params) {
 
-			task = tasks[0];
+			task = params[0];
+			
+			if (params.length >= 2) {
+				index = Integer.valueOf(params[1]);
+			}
 			
 			Long merchantId = null;
 			
@@ -722,10 +759,12 @@ public class HttpAsyncManager {
 			request.setUuid(Installation.getInstallationId(mContext));
 			request.setSync_key(mSyncKey);
 			request.setSync_date(mSyncDate);
+			request.setIndex(index);
+			request.setAppVersion(mAppVersion);
 			
 			request.setCert_dn(CommonUtil.getCertDN(mContext));
 			
-			if (Constant.TASK_REGISTER_MERCHANT.equals(tasks[0])) {
+			if (Constant.TASK_REGISTER_MERCHANT.equals(params[0])) {
 				
 				url = Config.SERVER_URL + "/merchantRegisterJsonServlet";
 
@@ -733,7 +772,7 @@ public class HttpAsyncManager {
 				
 				request.setMerchant(merchant);
 
-			} else if (Constant.TASK_RESEND_ACTIVATION_CODE.equals(tasks[0])) {
+			} else if (Constant.TASK_RESEND_ACTIVATION_CODE.equals(params[0])) {
 				
 				url = Config.SERVER_URL + "/merchantResendActivationCodeJsonServlet";
 
@@ -741,7 +780,7 @@ public class HttpAsyncManager {
 				
 				request.setMerchant(merchant);
 
-			} else if (Constant.TASK_VALIDATE_MERCHANT.equals(tasks[0])) {
+			} else if (Constant.TASK_VALIDATE_MERCHANT.equals(params[0])) {
 				
 				url = Config.SERVER_URL + "/merchantValidateJsonServlet";
 
@@ -752,7 +791,7 @@ public class HttpAsyncManager {
 				
 				request.setMerchant(merchant);
 
-			} else if (Constant.TASK_GET_MERCHANT_BY_LOGIN_ID.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_MERCHANT_BY_LOGIN_ID.equals(params[0])) {
 				
 				url = Config.SERVER_URL + "/merchantGetByLoginIdJsonServlet";
 
@@ -762,7 +801,7 @@ public class HttpAsyncManager {
 				
 				request.setMerchant(merchant);
 
-			} else if (Constant.TASK_RESET_PASSWORD.equals(tasks[0])) {
+			} else if (Constant.TASK_RESET_PASSWORD.equals(params[0])) {
 				
 				url = Config.SERVER_URL + "/merchantResetPasswordJsonServlet";
 
@@ -773,7 +812,7 @@ public class HttpAsyncManager {
 				
 				request.setMerchant(merchant);
 
-			} else if (Constant.TASK_VALIDATE_USER.equals(tasks[0])) {
+			} else if (Constant.TASK_VALIDATE_USER.equals(params[0])) {
 				
 				url = Config.SERVER_URL + "/userValidateJsonServlet";
 
@@ -784,191 +823,225 @@ public class HttpAsyncManager {
 				
 				request.setUser(user);
 
-			} else if (Constant.TASK_ROOT_GET_MERCHANT.equals(tasks[0])) {
+			} else if (Constant.TASK_ROOT_GET_MERCHANT.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/merchantGetAllJsonServlet";
 
-			} else if (Constant.TASK_GET_LAST_SYNC.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_LAST_SYNC.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/getLastSyncJsonServlet";
 
 				request.setGetRequests(mGetTasks);
 
-			} else if (Constant.TASK_GET_ORDER.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_ORDER.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/ordersGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_ORDER.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_ORDER.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/ordersUpdateJsonServlet";
 				
-				request.setOrders(mOrdersDaoService.getOrdersForUpload());
+				request.setIndex(0);
+				request.setResultCount(mOrdersDaoService.getOrdersForUploadCount());
+				request.setOrders(mOrdersDaoService.getOrdersForUpload(mSyncRecordLimit));
 
-			} else if (Constant.TASK_GET_ORDER_ITEM.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_ORDER_ITEM.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/orderItemGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_ORDER_ITEM.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_ORDER_ITEM.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/orderItemUpdateJsonServlet";
 				
-				request.setOrderItems(mOrderItemDaoService.getOrderItemsForUpload());
+				request.setIndex(0);
+				request.setResultCount(mOrderItemDaoService.getOrderItemsForUploadCount());
+				request.setOrderItems(mOrderItemDaoService.getOrderItemsForUpload(mSyncRecordLimit));
 
-			} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_PRODUCT_GROUP.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/productGroupGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_PRODUCT_GROUP.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/productGroupUpdateJsonServlet";
 				
-				request.setProductGroups(mProductGroupDaoService.getProductGroupsForUpload());
+				request.setIndex(0);
+				request.setResultCount(mProductGroupDaoService.getProductGroupsForUploadCount());
+				request.setProductGroups(mProductGroupDaoService.getProductGroupsForUpload(mSyncRecordLimit));
 				
-			} else if (Constant.TASK_GET_DISCOUNT.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_DISCOUNT.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/discountGetJsonServlet";
 
-			} else if (Constant.TASK_UPDATE_DISCOUNT.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_DISCOUNT.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/discountUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mDiscountDaoService.getDiscountsForUploadCount());
+				request.setDiscounts(mDiscountDaoService.getDiscountsForUpload(mSyncRecordLimit));
 
-				request.setDiscounts(mDiscountDaoService.getDiscountsForUpload());
-
-			} else if (Constant.TASK_GET_EMPLOYEE.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_EMPLOYEE.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/employeeGetJsonServlet";
 
-			} else if (Constant.TASK_UPDATE_EMPLOYEE.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_EMPLOYEE.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/employeeUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mEmployeeDaoService.getEmployeesForUploadCount());
+				request.setEmployees(mEmployeeDaoService.getEmployeesForUpload(mSyncRecordLimit));
 
-				request.setEmployees(mEmployeeDaoService.getEmployeesForUpload());
-
-			} else if (Constant.TASK_GET_CUSTOMER.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_CUSTOMER.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/customerGetJsonServlet";
 
-			} else if (Constant.TASK_UPDATE_CUSTOMER.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_CUSTOMER.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/customerUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mCustomerDaoService.getCustomersForUploadCount());
+				request.setCustomers(mCustomerDaoService.getCustomersForUpload(mSyncRecordLimit));
 
-				request.setCustomers(mCustomerDaoService.getCustomersForUpload());
-
-			} else if (Constant.TASK_GET_PRODUCT.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_PRODUCT.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/productGetJsonServlet";
 
-			} else if (Constant.TASK_UPDATE_PRODUCT.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_PRODUCT.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/productUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mProductDaoService.getProductsForUploadCount());
+				request.setProducts(mProductDaoService.getProductsForUpload(mSyncRecordLimit));
 
-				request.setProducts(mProductDaoService.getProductsForUpload());
-
-			} else if (Constant.TASK_GET_USER.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_USER.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/userGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_USER.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_USER.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/userUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mUserDaoService.getUsersForUploadCount());
+				request.setUsers(mUserDaoService.getUsersForUpload(mSyncRecordLimit));
 
-				request.setUsers(mUserDaoService.getUsersForUpload());
-
-			} else if (Constant.TASK_GET_USER_ACCESS.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_USER_ACCESS.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/userAccessGetJsonServlet";
 
-			} else if (Constant.TASK_UPDATE_USER_ACCESS.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_USER_ACCESS.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/userAccessUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mUserAccessDaoService.getUserAccessesForUploadCount());
+				request.setUserAccesses(mUserAccessDaoService.getUserAccessesForUpload(mSyncRecordLimit));
 
-				request.setUserAccesses(mUserAccessDaoService.getUserAccessesForUpload());
-
-			} else if (Constant.TASK_GET_TRANSACTION.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_TRANSACTION.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/transactionsGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_TRANSACTION.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_TRANSACTION.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/transactionsUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mTransactionsDaoService.getTransactionsForUploadCount());
+				request.setTransactions(mTransactionsDaoService.getTransactionsForUpload(mSyncRecordLimit));
 
-				request.setTransactions(mTransactionsDaoService.getTransactionsForUpload());
-
-			} else if (Constant.TASK_GET_TRANSACTION_ITEM.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_TRANSACTION_ITEM.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/transactionItemGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_TRANSACTION_ITEM.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_TRANSACTION_ITEM.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/transactionItemUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mTransactionItemDaoService.getTransactionItemsForUploadCount());
+				request.setTransactionItems(mTransactionItemDaoService.getTransactionItemsForUpload(mSyncRecordLimit));
 
-				request.setTransactionItems(mTransactionItemDaoService.getTransactionItemsForUpload());
-
-			} else if (Constant.TASK_GET_SUPPLIER.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_SUPPLIER.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/supplierGetJsonServlet";
 
-			} else if (Constant.TASK_UPDATE_SUPPLIER.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_SUPPLIER.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/supplierUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mSupplierDaoService.getSuppliersForUploadCount());
+				request.setSuppliers(mSupplierDaoService.getSuppliersForUpload(mSyncRecordLimit));
 
-				request.setSuppliers(mSupplierDaoService.getSuppliersForUpload());
-
-			} else if (Constant.TASK_GET_BILL.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_BILL.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/billGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_BILL.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_BILL.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/billUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mBillDaoService.getBillsForUploadCount());
+				request.setBills(mBillDaoService.getBillsForUpload(mSyncRecordLimit));
 
-				request.setBills(mBillDaoService.getBillsForUpload());
-
-			} else if (Constant.TASK_GET_CASHFLOW.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_CASHFLOW.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/cashflowGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_CASHFLOW.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_CASHFLOW.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/cashflowUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mCashflowDaoService.getCashflowsForUploadCount());
+				request.setCashflows(mCashflowDaoService.getCashflowForUpload(mSyncRecordLimit));
 
-				request.setCashflows(mCashflowDaoService.getCashflowForUpload());
-
-			} else if (Constant.TASK_GET_INVENTORY.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_INVENTORY.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/inventoryGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_INVENTORY.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_INVENTORY.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/inventoryUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mInventoryDaoService.getInventoriesForUploadCount());
+				request.setInventories(mInventoryDaoService.getInventoriesForUpload(mSyncRecordLimit));
 
-				request.setInventories(mInventoryDaoService.getInventoriesForUpload());
-
-			} else if (Constant.TASK_GET_MERCHANT.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_MERCHANT.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/merchantGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_MERCHANT.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_MERCHANT.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/merchantUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mMerchantDaoService.getMerchantsForUploadCount());
+				request.setMerchants(mMerchantDaoService.getMerchantsForUpload(mSyncRecordLimit));
 
-				request.setMerchants(mMerchantDaoService.getMerchantsForUpload());
-
-			} else if (Constant.TASK_ROOT_GET_MERCHANT_ACCESS.equals(tasks[0])) {
+			} else if (Constant.TASK_ROOT_GET_MERCHANT_ACCESS.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/merchantAccessGetAllJsonServlet";
 				
-			} else if (Constant.TASK_GET_MERCHANT_ACCESS.equals(tasks[0])) {
+			} else if (Constant.TASK_GET_MERCHANT_ACCESS.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/merchantAccessGetJsonServlet";
 				
-			} else if (Constant.TASK_UPDATE_MERCHANT_ACCESS.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_MERCHANT_ACCESS.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/merchantAccessUpdateJsonServlet";
+				
+				request.setIndex(0);
+				request.setResultCount(mMerchantAccessDaoService.getMerchantAccessesForUploadCount());
+				request.setMerchantAccesses(mMerchantAccessDaoService.getMerchantAccessesForUpload(mSyncRecordLimit));
 
-				request.setMerchantAccesses(mMerchantAccessDaoService.getMerchantAccessesForUpload());
-
-			} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(tasks[0])) {
+			} else if (Constant.TASK_UPDATE_LAST_SYNC.equals(params[0])) {
 
 				url = Config.SERVER_URL + "/updateLastSyncJsonServlet";
 				
@@ -1086,6 +1159,7 @@ public class HttpAsyncManager {
 	
 						mSyncDate = resp.getRespDate();
 						mSyncKey = resp.getSync_key();
+						mSyncRecordLimit = resp.getSyncRecordLimit();
 						
 						mTasks.remove(0);
 						mTaskIndex--;
@@ -1243,7 +1317,11 @@ public class HttpAsyncManager {
 						}
 					}
 					
-					executeNextTask();
+					if (resp.getNextIndex() > 0) {
+						getNextRecord(resp.getNextIndex(), resp.getResultCount());
+					} else {
+						executeNextTask();
+					}
 				}
 					
 			} catch (Exception e) {
@@ -1346,7 +1424,13 @@ public class HttpAsyncManager {
 		
 		String errorDesc = Constant.EMPTY_STRING;
 		
-		if (Constant.ERROR_INVALID_TOKEN.equals(code)) {
+		if (Constant.ERROR_SYSTEM_MAINTENANCE.equals(code)) {
+			errorDesc = mContext.getString(R.string.error_system_maintenance);
+		
+		} else if (Constant.ERROR_APP_UPDATE_REQUIRED.equals(code)) {
+			errorDesc = mContext.getString(R.string.error_app_update_required);
+		
+		} else if (Constant.ERROR_INVALID_TOKEN.equals(code)) {
 			errorDesc = mContext.getString(R.string.error_invalid_token);
 		
 		} else if (Constant.ERROR_SERVICE_EXPIRED.equals(code)) {
@@ -1360,6 +1444,9 @@ public class HttpAsyncManager {
 		
 		} else if (Constant.ERROR_INVALID_APP_CERT.equals(code)) {
 			errorDesc = mContext.getString(R.string.error_invalid_app_cert);
+		
+		} else { 
+			errorDesc = mContext.getString(R.string.error_general);
 		}
 		
 		return errorDesc;

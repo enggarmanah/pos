@@ -70,7 +70,7 @@ public class OrdersDaoService {
 		return order;
 	}
 	
-	public List<OrdersBean> getOrdersForUpload() {
+	public List<OrdersBean> getOrdersForUpload(int limit) {
 
 		QueryBuilder<Orders> qb = mOrdersDao.queryBuilder();
 		qb.where(OrdersDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(OrdersDao.Properties.Id);
@@ -79,7 +79,9 @@ public class OrdersDaoService {
 		
 		ArrayList<OrdersBean> orderBeans = new ArrayList<OrdersBean>();
 		
-		for (Orders order : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Orders order : q.list().subList(0, maxIndex)) {
 			
 			orderBeans.add(BeanUtil.getBean(order));
 		}
@@ -219,6 +221,11 @@ public class OrdersDaoService {
 	
 	public boolean hasUpdate() {
 		
+		return getOrdersForUploadCount() > 0;
+	}
+	
+	public long getOrdersForUploadCount() {
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM orders WHERE upload_status = 'Y'", null);
@@ -229,6 +236,6 @@ public class OrdersDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

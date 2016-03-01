@@ -18,6 +18,9 @@ public class TransactionsGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setTransactions(transactionDao.getTransactions(request));
         
+        response.setResultCount(transactionDao.getTransactionsCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

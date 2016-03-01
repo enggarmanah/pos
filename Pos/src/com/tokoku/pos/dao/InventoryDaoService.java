@@ -198,7 +198,7 @@ public class InventoryDaoService {
 		return quantity;
 	}
 	
-	public List<InventoryBean> getInventoriesForUpload() {
+	public List<InventoryBean> getInventoriesForUpload(int limit) {
 
 		QueryBuilder<Inventory> qb = inventoryDao.queryBuilder();
 		qb.where(InventoryDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(InventoryDao.Properties.InventoryDate);
@@ -207,7 +207,9 @@ public class InventoryDaoService {
 		
 		ArrayList<InventoryBean> inventoryBeans = new ArrayList<InventoryBean>();
 		
-		for (Inventory inventory : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Inventory inventory : q.list().subList(0, maxIndex)) {
 			
 			inventoryBeans.add(BeanUtil.getBean(inventory));
 		}
@@ -274,6 +276,11 @@ public class InventoryDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getInventoriesForUploadCount() > 0;
+	}
+	
+	public long getInventoriesForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -285,7 +292,7 @@ public class InventoryDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 	
 	public List<Inventory> getSupplierInventories(Supplier supplier, String query, int lastIndex) {

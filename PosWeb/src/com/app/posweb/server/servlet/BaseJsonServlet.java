@@ -52,23 +52,34 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		
 		String jsonRequest = uncompress(request.getInputStream());
 		
-		SyncResponse syncResponse = null;
-		
 		Date start = new Date();
-        
+		
 		SyncRequest syncRequest = mapper.readValue(jsonRequest, SyncRequest.class);
+		SyncResponse syncResponse = null;
 		
 		boolean isProdEnvironment = ServerUtil.isProductionEnvironment();
 		boolean isDebugCertDN = Constant.APP_DEBUG_CERT_DN.equals(syncRequest.getCert_dn());
 		
-		if ((isProdEnvironment && isDebugCertDN) ||
+		if (Constant.IS_SYSTEM_MAINTENANCE) {
+        	
+        	syncResponse = new SyncResponse();
+        	syncResponse.setRespCode(SyncResponse.ERROR);
+        	syncResponse.setRespDescription(Constant.ERROR_SYSTEM_MAINTENANCE);
+        	
+        } else if ((isProdEnvironment && isDebugCertDN) ||
 			(!isProdEnvironment && !isDebugCertDN)) {
 			
 			syncResponse = new SyncResponse();
         	syncResponse.setRespCode(SyncResponse.ERROR);
         	syncResponse.setRespDescription(Constant.ERROR_INVALID_APP_CERT);
 			
-		} else if (!isByPassTokenValidation(servletPath) && !isValidToken(syncRequest)) {
+		} else if (syncRequest.getAppVersion() == null || (syncRequest.getAppVersion().intValue() < Constant.MIN_APP_VERSION)) {
+        	
+        	syncResponse = new SyncResponse();
+        	syncResponse.setRespCode(SyncResponse.ERROR);
+        	syncResponse.setRespDescription(Constant.ERROR_APP_UPDATE_REQUIRED);
+        	
+        } else if (!isByPassTokenValidation(servletPath) && !isValidToken(syncRequest)) {
         	
         	syncResponse = new SyncResponse();
         	syncResponse.setRespCode(SyncResponse.ERROR);
@@ -105,11 +116,8 @@ public abstract class BaseJsonServlet extends HttpServlet {
 
 		response.setContentType("application/json");
 		
-		log.log(Level.INFO, "Processing Time before convert to JSON : " + (new Date().getTime() - start.getTime()));
-		
 		byte[] bytes = mapper.writeValueAsBytes(syncResponse);
 		
-		log.log(Level.INFO, "Processing Time : " + (new Date().getTime() - start.getTime()));
 		log.log(Level.INFO, "Response Size : " + bytes.length);
 		
 		bytes = compress(bytes);
@@ -118,7 +126,7 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		
 		response.getOutputStream().write(bytes);
 		
-		log.log(Level.INFO, "Processing Time final : " + (new Date().getTime() - start.getTime()));
+		log.log(Level.INFO, "Processing Time : " + (new Date().getTime() - start.getTime()));
 	}
 	
 	private boolean isByPassTokenValidation(String path) {
@@ -160,6 +168,19 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		MerchantDao merchantDao = new MerchantDao();
 		
 		return merchantDao.isActiveMerchant(syncRequest.getMerchant_id());
+	}
+	
+	protected long getNextIndex(long index, long resultCount) {
+		
+		long nextIndex = 0;
+		
+		if (resultCount > index + Constant.SYNC_RECORD_LIMIT) {
+        	nextIndex = index + Constant.SYNC_RECORD_LIMIT;
+        }
+		
+		System.out.println("Get Next Index : " + nextIndex + " / " + resultCount);
+		
+		return nextIndex;
 	}
 
 	protected abstract SyncResponse processRequest(SyncRequest request)

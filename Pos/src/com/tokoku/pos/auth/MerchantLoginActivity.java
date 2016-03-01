@@ -22,6 +22,7 @@ import com.tokoku.pos.data.user.UserMgtActivity;
 import com.tokoku.pos.model.FormFieldBean;
 import com.tokoku.pos.report.transaction.TransactionActivity;
 import com.tokoku.pos.util.CodeUtil;
+import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.DbUtil;
 import com.tokoku.pos.util.MerchantUtil;
 import com.tokoku.pos.util.NotificationUtil;
@@ -35,6 +36,7 @@ public class MerchantLoginActivity extends BaseAuthActivity implements LoginList
 	
 	TextView mSignUpText;
 	TextView mForgotPasswordText;
+	TextView mDemoText;
 	
 	Merchant mMerchant;
 	
@@ -66,6 +68,9 @@ public class MerchantLoginActivity extends BaseAuthActivity implements LoginList
 		
 		mForgotPasswordText = (TextView) findViewById(R.id.forgotPasswordText);
 		mForgotPasswordText.setOnClickListener(getForgotPasswordTextOnClickListener());
+		
+		mDemoText = (TextView) findViewById(R.id.demoText);
+		mDemoText.setOnClickListener(getDemoTextOnClickListener());
 				
 		registerField(mLoginIdText);
 		registerField(mPasswordText);
@@ -298,6 +303,23 @@ public class MerchantLoginActivity extends BaseAuthActivity implements LoginList
 				
 				Intent intent = new Intent(context, ForgotPasswordActivity.class);
 				startActivity(intent);
+			}
+		};
+	}
+	
+	private View.OnClickListener getDemoTextOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mLoginIdText.setText(Constant.DEMO_MERCHANT_LOGIN_ID);
+				mPasswordText.setText(Constant.DEMO_MERCHANT_PASSWORD);
+				
+				CommonUtil.setDemo(true);
+				
+				mLoginBtn.performClick();
 			}
 		};
 	}

@@ -18,6 +18,9 @@ public class BillGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setBills(billDao.getBills(request));
         
+        response.setResultCount(billDao.getBillsCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

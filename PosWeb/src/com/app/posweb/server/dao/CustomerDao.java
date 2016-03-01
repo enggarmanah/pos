@@ -99,7 +99,7 @@ public class CustomerDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<Customer> result = query.getResultList();
+		List<Customer> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
@@ -107,6 +107,11 @@ public class CustomerDao {
 	}
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getCustomersCount(syncRequest) > 0;
+	}
+	
+	public long getCustomersCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_CUSTOMER);
 		
@@ -123,6 +128,6 @@ public class CustomerDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

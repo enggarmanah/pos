@@ -47,7 +47,7 @@ public class OrderItemDaoService {
 		return orderItem;
 	}
 	
-	public List<OrderItemBean> getOrderItemsForUpload() {
+	public List<OrderItemBean> getOrderItemsForUpload(int limit) {
 		
 		QueryBuilder<OrderItem> qb = mOrderItemDao.queryBuilder();
 		qb.where(OrderItemDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(OrderItemDao.Properties.Id);
@@ -55,8 +55,10 @@ public class OrderItemDaoService {
 		Query<OrderItem> q = qb.build();
 		
 		ArrayList<OrderItemBean> orderItemBeans = new ArrayList<OrderItemBean>();
+
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
 		
-		for (OrderItem orderItem : q.list()) {
+		for (OrderItem orderItem : q.list().subList(0, maxIndex)) {
 			
 			orderItemBeans.add(BeanUtil.getBean(orderItem));
 		}
@@ -144,6 +146,11 @@ public class OrderItemDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getOrderItemsForUploadCount() > 0;
+	}
+	
+	public long getOrderItemsForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -155,6 +162,6 @@ public class OrderItemDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

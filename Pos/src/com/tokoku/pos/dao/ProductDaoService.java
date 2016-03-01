@@ -201,7 +201,7 @@ public class ProductDaoService {
 		return q.list();
 	}
 	
-	public List<ProductBean> getProductsForUpload() {
+	public List<ProductBean> getProductsForUpload(int limit) {
 
 		QueryBuilder<Product> qb = productDao.queryBuilder();
 		qb.where(ProductDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(ProductDao.Properties.Name);
@@ -210,7 +210,9 @@ public class ProductDaoService {
 		
 		ArrayList<ProductBean> productBeans = new ArrayList<ProductBean>();
 		
-		for (Product prdGroup : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Product prdGroup : q.list().subList(0, maxIndex)) {
 			
 			productBeans.add(BeanUtil.getBean(prdGroup));
 		}
@@ -584,6 +586,11 @@ public class ProductDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getProductsForUploadCount() > 0;
+	}
+	
+	public long getProductsForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -595,7 +602,7 @@ public class ProductDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 	
 	public Integer getBelowStockLimitProductCount() {

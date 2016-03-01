@@ -110,7 +110,7 @@ public class UserAccessDaoService {
 		return userAccessList;
 	}
 	
-	public List<UserAccessBean> getUserAccessesForUpload() {
+	public List<UserAccessBean> getUserAccessesForUpload(int limit) {
 
 		QueryBuilder<UserAccess> qb = userAccessDao.queryBuilder();
 		qb.where(UserAccessDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(UserAccessDao.Properties.Name);
@@ -119,7 +119,9 @@ public class UserAccessDaoService {
 		
 		ArrayList<UserAccessBean> userAccessBeans = new ArrayList<UserAccessBean>();
 		
-		for (UserAccess userAccess : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (UserAccess userAccess : q.list().subList(0, maxIndex)) {
 			
 			userAccessBeans.add(BeanUtil.getBean(userAccess));
 		}
@@ -199,6 +201,11 @@ public class UserAccessDaoService {
 	
 	public boolean hasUpdate() {
 		
+		return getUserAccessesForUploadCount() > 0;
+	}
+	
+	public long getUserAccessesForUploadCount() {
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM user_access WHERE upload_status = 'Y'", null);
@@ -209,6 +216,6 @@ public class UserAccessDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

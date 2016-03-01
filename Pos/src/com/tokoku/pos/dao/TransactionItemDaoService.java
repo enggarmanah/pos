@@ -48,7 +48,7 @@ public class TransactionItemDaoService {
 		return transactionItem;
 	}
 	
-	public List<TransactionItemBean> getTransactionItemsForUpload() {
+	public List<TransactionItemBean> getTransactionItemsForUpload(int limit) {
 		
 		QueryBuilder<TransactionItem> qb = transactionItemDao.queryBuilder();
 		qb.where(TransactionItemDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(TransactionItemDao.Properties.Id);
@@ -57,7 +57,9 @@ public class TransactionItemDaoService {
 		
 		ArrayList<TransactionItemBean> transactionItemBeans = new ArrayList<TransactionItemBean>();
 		
-		for (TransactionItem transactionItem : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (TransactionItem transactionItem : q.list().subList(0, maxIndex)) {
 			
 			transactionItemBeans.add(BeanUtil.getBean(transactionItem));
 		}
@@ -135,17 +137,22 @@ public class TransactionItemDaoService {
 	
 	public boolean hasUpdate() {
 		
+		return getTransactionItemsForUploadCount() > 0;
+	}
+	
+	public long getTransactionItemsForUploadCount() {
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM transaction_item WHERE upload_status = 'Y'", null);
 			
 		cursor.moveToFirst();
 			
-		Long count = cursor.getLong(0);
+		long count = cursor.getLong(0);
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 	
 	public List<TransactionItem> getCustomerTransactionItems(Customer customer, String query, int lastIndex) {

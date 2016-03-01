@@ -169,7 +169,7 @@ public class TransactionsDaoService {
 		return list;
 	}
 	
-	public List<TransactionsBean> getTransactionsForUpload() {
+	public List<TransactionsBean> getTransactionsForUpload(int limit) {
 
 		QueryBuilder<Transactions> qb = mTransactionsDao.queryBuilder();
 		qb.where(TransactionsDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(TransactionsDao.Properties.Id);
@@ -178,7 +178,9 @@ public class TransactionsDaoService {
 		
 		ArrayList<TransactionsBean> transactionsBeans = new ArrayList<TransactionsBean>();
 		
-		for (Transactions transaction : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Transactions transaction : q.list().subList(0, maxIndex)) {
 			
 			transactionsBeans.add(BeanUtil.getBean(transaction));
 		}
@@ -542,6 +544,11 @@ public List<TransactionYearBean> getTransactionServiceChargeYears() {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getTransactionsForUploadCount() > 0;
+	}
+	
+	public long getTransactionsForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -553,6 +560,6 @@ public List<TransactionYearBean> getTransactionServiceChargeYears() {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

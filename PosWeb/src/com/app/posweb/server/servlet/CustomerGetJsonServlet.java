@@ -18,6 +18,9 @@ public class CustomerGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setCustomers(customerDao.getCustomers(request));
         
+        response.setResultCount(customerDao.getCustomersCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

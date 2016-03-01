@@ -14,6 +14,10 @@ public class SyncResponseBean {
 	
 	protected String sync_key;
 	
+	protected long nextIndex;
+	protected long resultCount;
+	protected int syncRecordLimit;
+	
 	protected List<SyncStatusBean> status;
 	
 	protected List<String> taskHasUpdates;
@@ -69,6 +73,30 @@ public class SyncResponseBean {
 
 	public void setRespDate(Date respDate) {
 		this.respDate = respDate;
+	}
+	
+	public long getNextIndex() {
+		return nextIndex;
+	}
+
+	public void setNextIndex(long nextIndex) {
+		this.nextIndex = nextIndex;
+	}
+
+	public long getResultCount() {
+		return resultCount;
+	}
+
+	public void setResultCount(long resultCount) {
+		this.resultCount = resultCount;
+	}
+	
+	public int getSyncRecordLimit() {
+		return syncRecordLimit;
+	}
+
+	public void setSyncRecordLimit(int syncRecordLimit) {
+		this.syncRecordLimit = syncRecordLimit;
 	}
 
 	public MerchantBean getMerchant() {

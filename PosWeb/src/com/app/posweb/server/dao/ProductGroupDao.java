@@ -105,8 +105,13 @@ public class ProductGroupDao {
 
 		return result;
 	}
-	
+		
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getProductGroupsCount(syncRequest) > 0;
+	}
+	
+	public long getProductGroupsCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_PRODUCT_GROUP);
 		
@@ -119,10 +124,10 @@ public class ProductGroupDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		long count = (long) query.getSingleResult();
+		long count = (long) query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getSingleResult();
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

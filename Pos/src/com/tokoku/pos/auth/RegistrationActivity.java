@@ -233,7 +233,7 @@ public class RegistrationActivity extends BaseAuthActivity implements Registrati
 						
 						Calendar start = Calendar.getInstance();
 						Calendar end = Calendar.getInstance();
-						end.add(Calendar.MONTH, 3);
+						end.add(Calendar.MONTH, 1);
 						
 						merchant.setPrinterRequired(Constant.STATUS_INACTIVE);
 						merchant.setPrinterMiniFont(Constant.STATUS_YES);

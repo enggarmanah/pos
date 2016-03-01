@@ -3,6 +3,7 @@ package com.tokoku.pos.data.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tokoku.pos.Constant;
 import com.tokoku.pos.R;
 import com.android.pos.dao.Employee;
 import com.android.pos.dao.User;
@@ -168,7 +169,7 @@ public class UserMgtActivity extends BaseItemMgtActivity<UserSearchFragment, Use
 	@Override
 	public void deleteItem(User item) {
 		
-		if (MerchantUtil.getMerchantId() == 2 && item != null && Long.valueOf(1).equals(item.getId())) {
+		if (MerchantUtil.getMerchantId() == Constant.DEMO_MERCHANT_ID && item != null && Constant.DEMO_USER_ID == item.getId()) {
 			
 			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_demo_account));
 		} else {

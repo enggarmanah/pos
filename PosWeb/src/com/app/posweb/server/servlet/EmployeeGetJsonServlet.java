@@ -18,6 +18,9 @@ public class EmployeeGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setEmployees(employeeDao.getEmployees(request));
         
+        response.setResultCount(employeeDao.getEmployeesCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

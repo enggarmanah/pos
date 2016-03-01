@@ -17,6 +17,7 @@ import com.tokoku.pos.model.FormFieldBean;
 import com.tokoku.pos.util.CodeUtil;
 import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.MerchantUtil;
+import com.tokoku.pos.util.NotificationUtil;
 import com.tokoku.pos.util.UserUtil;
 
 import android.app.Activity;
@@ -314,6 +315,25 @@ public class ProductEditFragment extends BaseEditFragment<Product> {
     	
     	return product.getId(); 
     } 
+    
+    @Override
+    protected boolean isValidated() {
+    	
+    	boolean isValidated = super.isValidated();
+    	
+    	if (isValidated) {
+    		
+    		if ((mItem.getCostPrice() != null && mItem.getPrice1() != null && mItem.getPrice1() <= mItem.getCostPrice()) ||
+    			(mItem.getCostPrice() != null && mItem.getPrice2() != null && mItem.getPrice2() <= mItem.getCostPrice()) ||
+    			(mItem.getCostPrice() != null && mItem.getPrice3() != null && mItem.getPrice3() <= mItem.getCostPrice())) {
+    			
+    			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_product_price_issue));
+    			isValidated = false;
+    		}
+    	}
+    	
+    	return isValidated;
+    }
     
     @Override
     protected boolean addItem() {

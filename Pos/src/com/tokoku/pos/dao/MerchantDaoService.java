@@ -84,7 +84,7 @@ public class MerchantDaoService {
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM merchant "
 				+ " WHERE LOWER(login_id) = ? AND LOWER(password) = ? AND status = ? ",
-				new String[] { loginId.toLowerCase(CommonUtil.getLocale()), password.toLowerCase(CommonUtil.getLocale()), status });
+				new String[] { loginId.toLowerCase(CommonUtil.getLocale()).trim(), password.toLowerCase(CommonUtil.getLocale()).trim(), status });
 		
 		Merchant merchant = null;
 		
@@ -187,7 +187,7 @@ public class MerchantDaoService {
 		return list;
 	}
 	
-	public List<MerchantBean> getMerchantsForUpload() {
+	public List<MerchantBean> getMerchantsForUpload(int limit) {
 
 		QueryBuilder<Merchant> qb = merchantDao.queryBuilder();
 		qb.where(MerchantDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(MerchantDao.Properties.Name);
@@ -196,7 +196,9 @@ public class MerchantDaoService {
 		
 		ArrayList<MerchantBean> merchantBeans = new ArrayList<MerchantBean>();
 		
-		for (Merchant prdGroup : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Merchant prdGroup : q.list().subList(0, maxIndex)) {
 			
 			merchantBeans.add(BeanUtil.getBean(prdGroup));
 		}
@@ -264,6 +266,11 @@ public class MerchantDaoService {
 	
 	public boolean hasUpdate() {
 		
+		return getMerchantsForUploadCount() > 0;
+	}
+	
+	public long getMerchantsForUploadCount() {
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM merchant WHERE upload_status = 'Y'", null);
@@ -274,6 +281,6 @@ public class MerchantDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

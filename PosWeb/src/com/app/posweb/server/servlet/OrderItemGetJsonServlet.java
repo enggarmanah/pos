@@ -18,6 +18,9 @@ public class OrderItemGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setOrderItems(orderItemDao.getOrderItems(request));
         
+        response.setResultCount(orderItemDao.getOrderItemsCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

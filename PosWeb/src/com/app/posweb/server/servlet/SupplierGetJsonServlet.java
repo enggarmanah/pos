@@ -13,7 +13,10 @@ public class SupplierGetJsonServlet extends BaseJsonServlet {
     	
         SupplierDao supplierDao = new SupplierDao();
         
-        SyncResponse response = new SyncResponse();         
+        SyncResponse response = new SyncResponse();  
+        
+        response.setResultCount(request.getResultCount());
+        response.setNextIndex(getNextIndex(request.getIndex(), request.getResultCount()));
         
         response.setRespCode(SyncResponse.SUCCESS);
         response.setSuppliers(supplierDao.getSuppliers(request));

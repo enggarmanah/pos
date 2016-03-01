@@ -87,7 +87,7 @@ public class EmployeeDaoService {
 		return list;
 	}
 	
-	public List<EmployeeBean> getEmployeesForUpload() {
+	public List<EmployeeBean> getEmployeesForUpload(int limit) {
 
 		QueryBuilder<Employee> qb = employeeDao.queryBuilder();
 		qb.where(EmployeeDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(EmployeeDao.Properties.Name);
@@ -96,7 +96,9 @@ public class EmployeeDaoService {
 		
 		ArrayList<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
 		
-		for (Employee prdGroup : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Employee prdGroup : q.list().subList(0, maxIndex)) {
 			
 			employeeBeans.add(BeanUtil.getBean(prdGroup));
 		}
@@ -179,6 +181,11 @@ public class EmployeeDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getEmployeesForUploadCount() > 0;
+	}
+	
+	public long getEmployeesForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -190,6 +197,6 @@ public class EmployeeDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

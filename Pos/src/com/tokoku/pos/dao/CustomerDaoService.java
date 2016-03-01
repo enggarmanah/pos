@@ -89,7 +89,7 @@ public class CustomerDaoService {
 		return list;
 	}
 	
-	public List<CustomerBean> getCustomersForUpload() {
+	public List<CustomerBean> getCustomersForUpload(int limit) {
 
 		QueryBuilder<Customer> qb = customerDao.queryBuilder();
 		qb.where(CustomerDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(CustomerDao.Properties.Name);
@@ -98,7 +98,9 @@ public class CustomerDaoService {
 		
 		ArrayList<CustomerBean> customerBeans = new ArrayList<CustomerBean>();
 		
-		for (Customer prdGroup : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Customer prdGroup : q.list().subList(0, maxIndex)) {
 			
 			customerBeans.add(BeanUtil.getBean(prdGroup));
 		}
@@ -181,6 +183,11 @@ public class CustomerDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getCustomersForUploadCount() > 0;
+	}
+	
+	public long getCustomersForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -192,7 +199,7 @@ public class CustomerDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 	
 	public List<CustomerStatisticBean> getCustomerStatistics(String query, int lastIndex) {

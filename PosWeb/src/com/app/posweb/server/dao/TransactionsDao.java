@@ -99,7 +99,7 @@ public class TransactionsDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<Transactions> result = query.getResultList();
+		List<Transactions> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
@@ -107,6 +107,11 @@ public class TransactionsDao {
 	}
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getTransactionsCount(syncRequest) > 0;
+	}
+	
+	public long getTransactionsCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_TRANSACTIONS);
 		
@@ -123,6 +128,6 @@ public class TransactionsDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

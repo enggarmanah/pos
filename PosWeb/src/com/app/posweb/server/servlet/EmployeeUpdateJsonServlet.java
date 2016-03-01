@@ -42,6 +42,9 @@ public class EmployeeUpdateJsonServlet extends BaseJsonServlet {
         
         SyncResponse response = new SyncResponse();
         
+        response.setResultCount(request.getResultCount());
+        response.setNextIndex(getNextIndex(request.getIndex(), request.getResultCount()));
+        
         response.setRespCode(SyncResponse.SUCCESS);
         response.setStatus(syncStatusList);
         

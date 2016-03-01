@@ -99,14 +99,19 @@ public class UserAccessDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<UserAccess> result = query.getResultList();
+		List<UserAccess> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
 		return result;
 	}
-	
+		
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getUserAccessesCount(syncRequest) > 0;
+	}
+	
+	public long getUserAccessesCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_USER_ACCESS);
 		
@@ -123,6 +128,6 @@ public class UserAccessDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

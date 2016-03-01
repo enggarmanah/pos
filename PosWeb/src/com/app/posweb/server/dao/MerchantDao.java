@@ -210,7 +210,7 @@ public class MerchantDao {
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		query.setParameter("merchantId", sync.getMerchant_id());
 		
-		List<Merchant> result = query.getResultList();
+		List<Merchant> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
@@ -231,7 +231,7 @@ public class MerchantDao {
 
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<Merchant> result = query.getResultList();
+		List<Merchant> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
@@ -264,8 +264,13 @@ public class MerchantDao {
 
 		return (result != null);
 	}
-	
+			
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getMerchantsCount(syncRequest) > 0; 
+	}
+	
+	public long getMerchantsCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT);
 		
@@ -282,10 +287,15 @@ public class MerchantDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 	
 	public boolean hasRootUpdate(SyncRequest syncRequest) {
+		
+		return getAllMerchantsCount(syncRequest) > 0;
+	}
+	
+	public long getAllMerchantsCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT);
 		
@@ -301,6 +311,6 @@ public class MerchantDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

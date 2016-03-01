@@ -108,7 +108,7 @@ public class MerchantAccessDaoService {
 		return merchantAccessList;
 	}
 	
-	public List<MerchantAccessBean> getMerchantAccessesForUpload() {
+	public List<MerchantAccessBean> getMerchantAccessesForUpload(int limit) {
 
 		QueryBuilder<MerchantAccess> qb = merchantAccessDao.queryBuilder();
 		qb.where(MerchantAccessDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(MerchantAccessDao.Properties.Name);
@@ -116,8 +116,10 @@ public class MerchantAccessDaoService {
 		Query<MerchantAccess> q = qb.build();
 		
 		ArrayList<MerchantAccessBean> merchantAccessBeans = new ArrayList<MerchantAccessBean>();
+
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
 		
-		for (MerchantAccess merchantAccess : q.list()) {
+		for (MerchantAccess merchantAccess : q.list().subList(0, maxIndex)) {
 			
 			merchantAccessBeans.add(BeanUtil.getBean(merchantAccess));
 		}
@@ -190,6 +192,11 @@ public class MerchantAccessDaoService {
 	
 	public boolean hasUpdate() {
 		
+		return getMerchantAccessesForUploadCount() > 0;
+	}
+	
+	public long getMerchantAccessesForUploadCount() {
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM merchant_access WHERE upload_status = 'Y'", null);
@@ -200,6 +207,6 @@ public class MerchantAccessDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

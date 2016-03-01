@@ -18,6 +18,9 @@ public class ProductGroupGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setProductGroups(productGroupDao.getProductGroups(request));
         
+        response.setResultCount(productGroupDao.getProductGroupsCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

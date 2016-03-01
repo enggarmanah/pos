@@ -2,6 +2,7 @@ package com.tokoku.pos.base.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.android.pos.dao.Product;
 import com.tokoku.pos.R;
@@ -51,8 +52,10 @@ import com.tokoku.pos.waitress.WaitressActivity;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +67,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -87,7 +91,10 @@ public abstract class BaseActivity extends Activity
 	
 	protected AppMenuArrayAdapter mAppMenuArrayAdapter;
 	
+	protected LinearLayout mMainView;
+	
 	List<String> mMenus;
+	protected int mSyncIndex;
 	
 	private static boolean activityVisible = false;
 	
@@ -114,6 +121,8 @@ public abstract class BaseActivity extends Activity
 	public void onStart() {
 		
 		super.onStart();
+		
+		initMainView();
 		
 		activityVisible = true;
 		
@@ -195,9 +204,30 @@ public abstract class BaseActivity extends Activity
 				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
+			@Override
+			public void onDrawerSlide(View drawerView, float slideOffset) {
+
+				super.onDrawerSlide(drawerView, slideOffset);
+				
+				if (mMainView != null) {
+				
+					mMainView.setTranslationX(slideOffset * drawerView.getWidth());
+					mDrawerLayout.bringChildToFront(drawerView);
+					mDrawerLayout.requestLayout();
+				}
+			}
 		};
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
+	}
+	
+	private void initMainView() {
+		
+		mMainView = (LinearLayout) findViewById(R.id.mainView);
+		
+		if (mMainView == null) {
+			mMainView = (LinearLayout) findViewById(R.id.fragment_container);
+		}
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -264,6 +294,8 @@ public abstract class BaseActivity extends Activity
 		}
 		
 		mMenus.add(getString(R.string.menu_sync));
+		
+		mSyncIndex = mMenus.size() - 1;
 		
 		UserUtil.getUser();
 		
@@ -403,6 +435,8 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(getString(R.string.menu_printer));
 		}
 		
+		mMenus.add(getString(R.string.menu_help));
+		mMenus.add(getString(R.string.menu_guide));
 		mMenus.add(getString(R.string.menu_exit));
 		
 		mAppMenuArrayAdapter.notifyDataSetChanged();
@@ -462,7 +496,7 @@ public abstract class BaseActivity extends Activity
 		getActionBar().setTitle(title);
 	}
 
-	private void selectItem(int position) {
+	protected void selectItem(int position) {
 		
 		String menu = mMenus.get(position);
 		
@@ -663,6 +697,29 @@ public abstract class BaseActivity extends Activity
 
 			Intent intent = new Intent(this, ChangePasswordActivity.class);
 			startActivityForResult(intent, -1);
+			
+		} else if (getString(R.string.menu_help).equals(menu)) {
+			
+			String number = Constant.ADMIN_CONTACT;
+	        startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", number, null)));
+	        
+		} else if (getString(R.string.menu_guide).equals(menu)) {
+
+			try {
+				
+				String url = "https://www.pos-tokoku.com/guide";
+				
+				String lang = Locale.getDefault().getLanguage();
+				if ("in".equals(lang)) {
+					url = "https://www.pos-tokoku.com/guide?lang=id";
+				}
+				
+			    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			    startActivity(myIntent);
+			
+			} catch (ActivityNotFoundException e) {
+			    NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_install_browser));
+			}
 			
 		} else if (getString(R.string.menu_exit).equals(menu)) {
 			

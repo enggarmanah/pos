@@ -120,14 +120,19 @@ public class OrdersDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<Orders> result = query.getResultList();
+		List<Orders> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
 		return result;
 	}
-	
+		
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getOrdersCount(syncRequest) > 0;
+	}
+	
+	public long getOrdersCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_ORDERS);
 		
@@ -144,6 +149,6 @@ public class OrdersDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

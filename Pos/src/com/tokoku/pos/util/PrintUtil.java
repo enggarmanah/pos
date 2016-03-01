@@ -479,7 +479,8 @@ public class PrintUtil {
 		
 		BluetoothPrintDriver.BT_Write(divider.substring(0, mPrinterLineSize) + Constant.CR_STRING);
 		
-		String billLabel = CommonUtil.formatNumber(totalQuantity) + Constant.SPACE_STRING + mActivity.getString(R.string.item);
+		String billLabel = CommonUtil.formatNumber(transactionItems.size()) + Constant.SPACE_STRING + mActivity.getString(R.string.product_short) + Constant.SPACE_STRING +
+ 						   CommonUtil.formatNumber(totalQuantity) + Constant.SPACE_STRING + mActivity.getString(R.string.item);
 		String billAmount = CommonUtil.formatCurrency(transaction.getBillAmount()); 
 		
 		line.setLength(0);

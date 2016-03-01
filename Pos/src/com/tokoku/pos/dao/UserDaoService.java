@@ -88,7 +88,7 @@ public class UserDaoService {
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM user "
 				+ " WHERE LOWER(user_id) = ? AND LOWER(password) = ? AND status = ? ",
-				new String[] { loginId.toLowerCase(CommonUtil.getLocale()), password.toLowerCase(CommonUtil.getLocale()), status });
+				new String[] { loginId.toLowerCase(CommonUtil.getLocale()).trim(), password.toLowerCase(CommonUtil.getLocale()).trim(), status });
 		
 		User user = null;
 		
@@ -132,7 +132,7 @@ public class UserDaoService {
 		return list;
 	}
 	
-	public List<UserBean> getUsersForUpload() {
+	public List<UserBean> getUsersForUpload(int limit) {
 
 		QueryBuilder<User> qb = userDao.queryBuilder();
 		qb.where(UserDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(UserDao.Properties.Name);
@@ -140,8 +140,10 @@ public class UserDaoService {
 		Query<User> q = qb.build();
 		
 		ArrayList<UserBean> userBeans = new ArrayList<UserBean>();
+
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
 		
-		for (User user : q.list()) {
+		for (User user : q.list().subList(0, maxIndex)) {
 			
 			userBeans.add(BeanUtil.getBean(user));
 		}
@@ -236,6 +238,11 @@ public class UserDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getUsersForUploadCount() > 0;
+	}
+	
+	public long getUsersForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -247,6 +254,6 @@ public class UserDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

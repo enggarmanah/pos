@@ -18,6 +18,9 @@ public class MerchantGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setMerchants(merchantDao.getMerchants(request));
         
+        response.setResultCount(merchantDao.getMerchantsCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

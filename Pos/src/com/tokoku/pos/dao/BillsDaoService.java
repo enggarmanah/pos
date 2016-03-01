@@ -361,7 +361,7 @@ public class BillsDaoService {
 		return list;
 	}
 	
-	public List<BillsBean> getBillsForUpload() {
+	public List<BillsBean> getBillsForUpload(int limit) {
 
 		QueryBuilder<Bills> qb = billsDao.queryBuilder();
 		qb.where(BillsDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(BillsDao.Properties.DeliveryDate);
@@ -370,7 +370,9 @@ public class BillsDaoService {
 		
 		ArrayList<BillsBean> billsBeans = new ArrayList<BillsBean>();
 		
-		for (Bills bills : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Bills bills : q.list().subList(0, maxIndex)) {
 			
 			billsBeans.add(BeanUtil.getBean(bills));
 		}
@@ -548,6 +550,11 @@ public class BillsDaoService {
 	
 	public boolean hasUpdate() {
 		
+		return getBillsForUploadCount() > 0;
+	}
+	
+	public long getBillsForUploadCount() {
+		
 		SQLiteDatabase db = DbUtil.getDb();
 		
 		Cursor cursor = db.rawQuery("SELECT COUNT(_id) FROM bills WHERE upload_status = 'Y'", null);
@@ -558,6 +565,6 @@ public class BillsDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

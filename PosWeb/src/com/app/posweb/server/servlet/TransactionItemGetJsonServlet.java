@@ -8,8 +8,8 @@ import com.app.posweb.server.model.SyncResponse;
  
 @SuppressWarnings("serial")
 public class TransactionItemGetJsonServlet extends BaseJsonServlet {
- 
-    protected SyncResponse processRequest(SyncRequest request) throws IOException {
+	
+	protected SyncResponse processRequest(SyncRequest request) throws IOException {
     	
         TransactionItemDao transactionItemDao = new TransactionItemDao();
         
@@ -17,6 +17,9 @@ public class TransactionItemGetJsonServlet extends BaseJsonServlet {
         
         response.setRespCode(SyncResponse.SUCCESS);
         response.setTransactionItems(transactionItemDao.getTransactionItems(request));
+
+        response.setResultCount(transactionItemDao.getTransactionItemsCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
         
         return response;
     }

@@ -55,6 +55,7 @@ public class GetLastSyncJsonServlet extends BaseJsonServlet {
 		} while (!isAcquireLock);
 		
 		response.setRespCode(SyncResponse.SUCCESS);
+		response.setSyncRecordLimit(Constant.SYNC_RECORD_LIMIT);
         
         List<String> taskHasUpdates = new ArrayList<String>();
         

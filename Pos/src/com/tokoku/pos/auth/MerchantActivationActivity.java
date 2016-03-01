@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,7 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 	
 	TextView mActivationInfoText;
 	TextView mResendActivationCodeText;
+	TextView mHelpText;
 	
 	EditText mActivationCodeText;
 	
@@ -57,6 +59,7 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 		
 		mActivationInfoText = (TextView) findViewById(R.id.activationInfoText);
 		mResendActivationCodeText = (TextView) findViewById(R.id.resendActivationCodeText);
+		mHelpText = (TextView) findViewById(R.id.helpText);
 		mActivationCodeText = (EditText) findViewById(R.id.activationCodeText);
 		
 		clearRegisteredFields();
@@ -71,6 +74,7 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 		mOkBtn.setOnClickListener(getOkBtnOnClickListener());
 		
 		mResendActivationCodeText.setOnClickListener(getResendActivationCodeTextOnClickListener());
+		mHelpText.setOnClickListener(getHelpTextOnClickListener());
 	}
 	
 	@Override
@@ -163,6 +167,19 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 				startActivity(intent);
 				
 				finish();
+			}
+		};
+	}
+		
+	private View.OnClickListener getHelpTextOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				String number = Constant.ADMIN_CONTACT;
+		        startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", number, null)));
 			}
 		};
 	}

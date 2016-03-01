@@ -26,6 +26,7 @@ import com.tokoku.pos.util.UserUtil;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,6 +137,10 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	
     	statusArrayAdapter = new CodeSpinnerArrayAdapter(mStatusSp, getActivity(), CodeUtil.getStatus());
     	mStatusSp.setAdapter(statusArrayAdapter);
+    	
+    	if (UserUtil.isMerchant()) {
+    		mPasswordText.setInputType(InputType.TYPE_CLASS_TEXT);
+		}
     }
     
     @Override
@@ -398,7 +403,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	
     	// disable editing for demo account
     	
-    	if (MerchantUtil.getMerchantId() == 2 && mItem != null && Long.valueOf(1).equals(mItem.getId())) {
+    	if (MerchantUtil.getMerchantId() == Constant.DEMO_MERCHANT_ID && 
+    		mItem != null && Long.valueOf(Constant.DEMO_USER_ID).equals(mItem.getId())) {
     		
     		mNameText.setEnabled(false);
     		mUserIdText.setEnabled(false);

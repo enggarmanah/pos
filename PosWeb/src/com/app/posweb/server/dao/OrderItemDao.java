@@ -121,7 +121,7 @@ public class OrderItemDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<OrderItem> result = query.getResultList();
+		List<OrderItem> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
@@ -151,6 +151,11 @@ public class OrderItemDao {
 	
 	public boolean hasUpdate(SyncRequest syncRequest) {
 		
+		return getOrderItemsCount(syncRequest) > 0;
+	}
+	
+	public long getOrderItemsCount(SyncRequest syncRequest) {
+		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_ORDER_ITEM);
 		
 		EntityManager em = PersistenceManager.getEntityManager();
@@ -167,6 +172,6 @@ public class OrderItemDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

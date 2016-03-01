@@ -18,6 +18,9 @@ public class InventoryGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setInventories(inventoryDao.getInventories(request));
         
+        response.setResultCount(inventoryDao.getInventoriesCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

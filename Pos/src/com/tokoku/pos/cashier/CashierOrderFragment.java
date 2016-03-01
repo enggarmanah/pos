@@ -274,13 +274,13 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			
 			String label = mDiscount.getName();
 			
-			if (mDiscount.getPercentage() != 0) {
+			if (mDiscount.getPercentage() != null && mDiscount.getPercentage() != 0) {
 				label = label + " " + CommonUtil.formatPercentage(mDiscount.getPercentage());
 			}
 			
 			mDiscountLabelText.setText(label);
 			
-			if (mDiscount.getPercentage() != 0) {
+			if (mDiscount.getPercentage() != null && mDiscount.getPercentage() != 0) {
 				discount = mDiscount.getPercentage() * totalBill / 100;
 			} else {
 				discount = mDiscount.getAmount();
@@ -288,7 +288,8 @@ public class CashierOrderFragment extends BaseFragment implements CashierOrderAr
 			
 			mDiscountText.setText("- " + CommonUtil.formatCurrency(discount));
 				
-			if (mDiscount.getPercentage() == 0 && mDiscount.getAmount() == 0) {
+			if (mDiscount.getPercentage() != null && mDiscount.getAmount() != null && 
+				mDiscount.getPercentage() == 0 && mDiscount.getAmount() == 0) {
 
 				mDiscountLabelText.setText(getString(R.string.no_discount));
 				mDiscountText.setText(Constant.EMPTY_STRING);

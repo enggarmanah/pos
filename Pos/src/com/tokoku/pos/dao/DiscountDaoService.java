@@ -95,7 +95,7 @@ public class DiscountDaoService {
 		return list;
 	}
 	
-	public List<DiscountBean> getDiscountsForUpload() {
+	public List<DiscountBean> getDiscountsForUpload(int limit) {
 
 		QueryBuilder<Discount> qb = discountDao.queryBuilder();
 		qb.where(DiscountDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(DiscountDao.Properties.Name);
@@ -104,7 +104,9 @@ public class DiscountDaoService {
 		
 		ArrayList<DiscountBean> discountBeans = new ArrayList<DiscountBean>();
 		
-		for (Discount prdGroup : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Discount prdGroup : q.list().subList(0, maxIndex)) {
 			
 			discountBeans.add(BeanUtil.getBean(prdGroup));
 		}
@@ -171,6 +173,11 @@ public class DiscountDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getDiscountsForUploadCount() > 0;
+	}
+	
+	public long getDiscountsForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -182,6 +189,6 @@ public class DiscountDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 }

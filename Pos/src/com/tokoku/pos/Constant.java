@@ -11,6 +11,17 @@ public class Constant {
 	
 	public static final String QUERY_LIMIT = "50";
 	
+	public static final String ADMIN_NAME = "Tokoku Solutions";
+	public static final String ADMIN_CONTACT = "+6285647453111";
+	public static final String ADMIN_EMAIL = "app.tokoku@gmail.com";
+	
+	public static final long DEMO_MERCHANT_ID = 1672;
+	public static final String DEMO_MERCHANT_LOGIN_ID = "berjaya";
+	public static final String DEMO_MERCHANT_PASSWORD = "mart";
+	public static final long DEMO_USER_ID = 1;
+	public static final String DEMO_USER_LOGIN_ID = "Fahmi";
+	public static final String DEMO_USER_PASSWORD = "123456";
+	
 	public static final String SYNC_TYPE_MERCHANTS = "SYNC_TYPE_MERCHANTS";
 	public static final String SYNC_TYPE_MERCHANT = "SYNC_TYPE_MERCHANT";
 	public static final String SYNC_TYPE_USERS = "SYNC_TYPE_USERS";
@@ -208,4 +219,6 @@ public class Constant {
 	public static final String ERROR_COULD_NOT_OBTAINED_LOCK = "ERR003";
 	public static final String ERROR_REGISTER_MERCHANT_CONFLICT = "ERR004";
 	public static final String ERROR_INVALID_APP_CERT = "ERR005";
+	public static final String ERROR_APP_UPDATE_REQUIRED = "ERR006";
+	public static final String ERROR_SYSTEM_MAINTENANCE = "ERR007";
 }

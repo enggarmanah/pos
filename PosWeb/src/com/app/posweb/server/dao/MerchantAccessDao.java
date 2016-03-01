@@ -99,7 +99,7 @@ public class MerchantAccessDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<MerchantAccess> result = query.getResultList();
+		List<MerchantAccess> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
@@ -120,14 +120,40 @@ public class MerchantAccessDao {
 		
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<MerchantAccess> result = query.getResultList();
+		List<MerchantAccess> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
 		return result;
 	}
 	
+	public long getAllMerchantAccessesCount(SyncRequest syncRequest) {
+		
+		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT_ACCESS);
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		
+		StringBuffer sql = new StringBuffer("SELECT count(m.id) FROM MerchantAccess m WHERE sync_date > :lastSyncDate");
+		
+		sql.append(" ORDER BY m.id");
+		
+		Query query = em.createQuery(sql.toString());
+		
+		query.setParameter("lastSyncDate", sync.getLast_sync_date());
+		
+		long count = (long) query.getSingleResult();
+		
+		em.close();
+
+		return count;
+	}
+	
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getMerchantAccessesCount(syncRequest) > 0;
+	}
+	
+	public long getMerchantAccessesCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT_ACCESS);
 		
@@ -140,29 +166,15 @@ public class MerchantAccessDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		long count = (long) query.getSingleResult();
+		long count = (long) query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getSingleResult();
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 	
 	public boolean hasRootUpdate(SyncRequest syncRequest) {
 		
-		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT_ACCESS);
-		
-		EntityManager em = PersistenceManager.getEntityManager();
-		
-		StringBuffer sql = new StringBuffer("SELECT COUNT(m.id) FROM MerchantAccess m WHERE sync_date > :lastSyncDate");
-		
-		Query query = em.createQuery(sql.toString());
-		
-		query.setParameter("lastSyncDate", sync.getLast_sync_date());
-		
-		long count = (long) query.getSingleResult();
-		
-		em.close();
-
-		return (count > 0);
+		return getAllMerchantAccessesCount(syncRequest) > 0;
 	}
 }

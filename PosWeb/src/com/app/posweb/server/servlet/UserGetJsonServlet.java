@@ -18,6 +18,9 @@ public class UserGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setUsers(userDao.getUsers(request));
         
+        response.setResultCount(userDao.getUsersCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

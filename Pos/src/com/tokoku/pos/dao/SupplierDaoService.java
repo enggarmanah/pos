@@ -92,7 +92,7 @@ public class SupplierDaoService {
 		return list;
 	}
 	
-	public List<SupplierBean> getSuppliersForUpload() {
+	public List<SupplierBean> getSuppliersForUpload(int limit) {
 
 		QueryBuilder<Supplier> qb = supplierDao.queryBuilder();
 		qb.where(SupplierDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(SupplierDao.Properties.Name);
@@ -101,7 +101,9 @@ public class SupplierDaoService {
 		
 		ArrayList<SupplierBean> supplierBeans = new ArrayList<SupplierBean>();
 		
-		for (Supplier supplier : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Supplier supplier : q.list().subList(0, maxIndex)) {
 			
 			supplierBeans.add(BeanUtil.getBean(supplier));
 		}
@@ -197,6 +199,11 @@ public class SupplierDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getSuppliersForUploadCount() > 0;
+	}
+	
+	public long getSuppliersForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -208,7 +215,7 @@ public class SupplierDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 	
 	public List<SupplierStatisticBean> getSupplierStatistics(String query, int lastIndex) {

@@ -13,7 +13,7 @@
         android:textStyle="bold"
         android:textColor="@color/text_blue_dark"
         android:singleLine="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="0dp"
         android:padding="0dp"
         android:layout_marginBottom="20dp"/>
     
@@ -51,6 +51,29 @@
         <TextView
             android:id="@+id/resendActivationCodeText"
 	        android:text="@string/resend_activation_code"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:fontFamily="sans-serif-condensed"
+	        android:textSize="@dimen/auth_sub_title"
+	        android:textStyle="bold"
+	        android:textColor="@color/text_blue_dark"
+	        android:singleLine="true"/>
+        
+        <TextView
+	        android:text="@string/separator"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:fontFamily="sans-serif-condensed"
+        	android:textSize="@dimen/auth_sub_title"
+	        android:textStyle="bold"
+	        android:textColor="@color/text_blue_dark"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp"
+	        android:singleLine="true"/>
+        
+        <TextView
+            android:id="@+id/helpText"
+	        android:text="@string/menu_help"
 	        android:layout_height="wrap_content"
 	        android:layout_width="wrap_content"
 	        android:fontFamily="sans-serif-condensed"

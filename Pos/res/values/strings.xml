@@ -77,6 +77,7 @@
     
     <string name="sync">Sync</string>
     <string name="exit">Exit</string>
+    <string name="logout">Logout</string>
 
     <string name="status_active">Active</string>
     <string name="status_inactive">Inactive</string>
@@ -125,7 +126,7 @@
     <string name="msg_reset_password_success">Reset password is successful !</string>
     <string name="msg_merchant_registration_info">Activation code will be sent to registered email</string>
     <string name="msg_merchant_registration_success">Merchant registration is successful !</string>
-    <string name="msg_merchant_activation_info">Activation code has been sent to %1$s</string>
+    <string name="msg_merchant_activation_info">Activation code has been sent to %1$s \n\nPlease contact us at +62 856 4745 3111 / app.tokoku@gmail.com, if you havent received it.</string>
     <string name="msg_merchant_activation_info_contact_us">Activation code has been sent to your email. Please contact us at app.tokoku@gmail.com, if you havent received it.</string>
     <string name="msg_refresh_data">Refreshing data</string>
     
@@ -366,6 +367,7 @@
     <string name="product_group">Product Group</string>
     <string name="product">Product</string>
     <string name="product_below_min_stock">Product Below Min. Stock</string>
+    <string name="product_short">Prd</string>
     <string name="item">Item</string>
     
     <string name="select_discount">Select Discount</string>
@@ -460,8 +462,8 @@
 	<string name="server_cant_connect">"Could not connect to Server!"</string>
 	<string name="server_sync_error">"Could not sync to Server!"</string>
 	
-	<string name="order_submit_ok">"Order has been submitted!"</string>
-	<string name="order_download_ok">"Order has been downloaded!"</string>
+	<string name="order_submit_ok">"Order has been submitted"</string>
+	<string name="order_download_ok">"Order has been downloaded"</string>
 	
 	<string name="printer_cant_connect">"Could not connect to Printer"</string>
 	<string name="printer_connection_lost">"Printer is disconnected"</string>
@@ -512,6 +514,8 @@
     <string name="alert_sync_cancellation">"Synchronization has been cancelled. It may cause data integrity issue. It\'s advised to complete synchronization process."</string>
     <string name="alert_refresh_cancellation">"Data refresh has been cancelled. Data shown may not be updated."</string>
     <string name="alert_demo_account">"Could not delete demo account."</string>
+    <string name="alert_product_price_issue">"Product price is lesser or equal than product cost"</string>
+    <string name="alert_install_browser">"Please install browser to view user guide."</string>
     
     <string name="user_role_cashier">Cashier</string>
 	<string name="user_role_admin">Admin</string>
@@ -554,6 +558,8 @@
 	<string name="inventory_status_damage">"Product Damaged"</string>
 	<string name="inventory_status_initial_stock">"Initial Stock"</string>
 	
+	<string name="demo">Demo</string>
+	
 	<string name="menu_user">User</string>
 	<string name="menu_cashier">Cashier</string>
 	<string name="menu_waitress">Waitress</string>
@@ -566,7 +572,11 @@
 	<string name="menu_cashflow">Cashflow</string>
 	<string name="menu_user_access">User Access</string>
 	<string name="menu_bills">Bills</string>
-	<string name="menu_report">Reports</string>					
+	<string name="menu_report">Reports</string>
+	
+	<string name="menu_help">Contact Support</string>
+	<string name="menu_guide">Guide</string>		
+				
 	<string name="menu_report_transaction">Transaction Report</string>
 	<string name="menu_report_product_statistic">Sales Report</string>
 	<string name="menu_report_commision">Commission Report</string>
@@ -667,10 +677,14 @@
 	<string name="cashflow_type_expense">General Expense</string>
 	<string name="cashflow_type_refund">Refund</string>
 	
+	<string name="error_general">System error, please contact admin app.tokoku@gmail.com !</string>
+	<string name="error_system_maintenance">System is under maintenance, please try again later !</string>
+	<string name="error_app_update_required">Please update app from Google Play !</string>
 	<string name="error_invalid_token">Invalid token !</string>
 	<string name="error_service_expired">Sync up data service has been expired !</string>
 	<string name="error_could_not_obtained_lock">Data sync up error !</string>
 	<string name="error_register_merchant_conflict">Login Id has been registered by other merchant. Choose other Login Id !</string>
 	<string name="error_invalid_app_cert">Application certificate is not valid !</string>
+	
 	
 </resources>

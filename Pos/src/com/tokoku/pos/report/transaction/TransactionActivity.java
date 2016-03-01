@@ -84,6 +84,14 @@ public class TransactionActivity extends BaseActivity
 
 		setTitle(getString(R.string.menu_report_transaction));
 		setSelectedMenu(getString(R.string.menu_report_transaction));
+		
+		// handle demo option
+		
+		if (CommonUtil.isDemo()) {
+			
+			selectItem(mSyncIndex);
+			CommonUtil.setDemo(false);
+		}
 	}
 	
 	private void initInstanceState(Bundle savedInstanceState) {

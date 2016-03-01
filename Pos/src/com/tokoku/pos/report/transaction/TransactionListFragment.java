@@ -255,12 +255,12 @@ public class TransactionListFragment extends BaseFragment
 		mSelectedTransactionDay = null;
 		mSelectedTransactionMonth = null;
 		
-		mTransactionMonths.clear();
-		mTransactionMonths.addAll(mTransactionDaoService.getTransactionMonths(transactionYear));
-		
 		if (!isViewInitialized()) {
 			return;
 		}
+		
+		mTransactionMonths.clear();
+		mTransactionMonths.addAll(mTransactionDaoService.getTransactionMonths(transactionYear));
 		
 		setBackButtonVisible(true);
 		

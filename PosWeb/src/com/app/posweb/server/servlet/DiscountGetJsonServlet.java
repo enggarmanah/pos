@@ -18,6 +18,9 @@ public class DiscountGetJsonServlet extends BaseJsonServlet {
         response.setRespCode(SyncResponse.SUCCESS);
         response.setDiscounts(discountDao.getDiscounts(request));
         
+        response.setResultCount(discountDao.getDiscountsCount(request));
+        response.setNextIndex(getNextIndex(request.getIndex(), response.getResultCount()));
+        
         return response;
     }
 }

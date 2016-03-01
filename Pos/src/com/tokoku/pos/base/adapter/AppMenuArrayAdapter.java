@@ -116,6 +116,10 @@ public class AppMenuArrayAdapter extends ArrayAdapter<String> {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_print_black));
 		} else if (context.getString(R.string.menu_change_password).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_vpn_key_black));
+		} else if (context.getString(R.string.menu_help).equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_chat_bubble_outline_black));
+		} else if (context.getString(R.string.menu_guide).equals(menu)) {
+			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_info_outline_black));
 		} else if (context.getString(R.string.menu_exit).equals(menu)) {
 			menuImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_exit_to_app_black));
 		} else {

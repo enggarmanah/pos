@@ -21,6 +21,10 @@ public class SyncResponse {
 	protected Merchant merchant;
 	protected User user;
 	
+	protected long nextIndex;
+	protected long resultCount;
+	protected int syncRecordLimit;
+	
 	protected List<Bills> bills;
 	protected List<Customer> customers;
 	protected List<Cashflow> cashflows;
@@ -69,6 +73,30 @@ public class SyncResponse {
 
 	public void setRespDate(Date respDate) {
 		this.respDate = respDate;
+	}
+	
+	public long getNextIndex() {
+		return nextIndex;
+	}
+
+	public void setNextIndex(long nextIndex) {
+		this.nextIndex = nextIndex;
+	}
+
+	public long getResultCount() {
+		return resultCount;
+	}
+
+	public void setResultCount(long resultCount) {
+		this.resultCount = resultCount;
+	}
+	
+	public int getSyncRecordLimit() {
+		return syncRecordLimit;
+	}
+
+	public void setSyncRecordLimit(int syncRecordLimit) {
+		this.syncRecordLimit = syncRecordLimit;
 	}
 
 	public List<String> getTaskHasUpdates() {

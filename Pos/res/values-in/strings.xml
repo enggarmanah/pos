@@ -32,7 +32,7 @@
     <string name="separator">|</string>
     
     <string name="registration">Registrasi</string>
-    <string name="merchant_name">Nama Merchant</string>
+    <string name="merchant_name">Nama Toko / Usaha</string>
     <string name="merchant_activation_title">Aktivasi Merchant</string>
     <string name="merchant_activation_hint">Kode Aktivasi</string>
     
@@ -65,7 +65,9 @@
     
     <string name="sync">Sync</string>
     <string name="exit">Keluar</string>
-
+	<string name="logout">Keluar</string>
+    
+    
     <string name="status_active">Aktif</string>
     <string name="status_inactive">Tidak Aktif</string>
     
@@ -84,10 +86,10 @@
     <string name="fnb_product_type_purchased">Hasil Pembelian</string>
     <string name="fnb_product_type_self_made">Buatan Sendiri</string>
     
-    <string name="merchant_type_general_goods">General Goods</string>
-    <string name="merchant_type_goods_and_service">Goods &amp; Services</string>
-    <string name="merchant_type_food_and_beverage">Foods &amp; Beverages</string>
-    <string name="merchant_type_medical_service">Medical Services</string>
+    <string name="merchant_type_general_goods">Barang</string>
+    <string name="merchant_type_goods_and_service">Barang &amp; Jasa</string>
+    <string name="merchant_type_food_and_beverage">Makanan &amp; Minuman</string>
+    <string name="merchant_type_medical_service">Klinik / Apotek</string>
     
     <string name="discount_type_percent">Persentase</string>
     <string name="discount_type_amount">Nominal</string>
@@ -113,7 +115,7 @@
     <string name="msg_reset_password_success">Penggantian password telah berhasil !</string>
     <string name="msg_merchant_registration_info">Kode aktivasi akan dikirim ke email anda</string>
     <string name="msg_merchant_registration_success">Registrasi merchant telah berhasil !</string>
-    <string name="msg_merchant_activation_info">Kode aktivasi telah dikirim ke %1$s</string>
+    <string name="msg_merchant_activation_info">Kode aktivasi telah dikirim ke %1$s \n\nCek folder spam, jika anda belum menerimanya. \n\nHubungi kami di 0856 4745 3111 / app.tokoku@gmail.com untuk bantuan</string>
     <string name="msg_merchant_activation_info_contact_us">Kode aktivasi telah dikirim ke email anda. Hubungi kami via email app.tokoku@gmail.com, jika anda belum menerimanya.</string>
     <string name="msg_refresh_data">Memperbarui data</string>
     
@@ -445,11 +447,11 @@
 	
 	<string name="favorite_average_transaction">"%1$d,%2$s Bulan"</string>
 	
-	<string name="server_cant_connect">"Tidak dapat terhubung &#8230;!"</string>
-	<string name="server_sync_error">"Error dalam sync data &#8230;!"</string>
+	<string name="server_cant_connect">"Tidak dapat terhubung!"</string>
+	<string name="server_sync_error">"Error dalam sync data!"</string>
 	
-	<string name="order_submit_ok">"Pesanan telah berhasil disubmit &#8230;!"</string>
-	<string name="order_download_ok">"Pesanan telah berhasil didownload &#8230;!"</string>
+	<string name="order_submit_ok">"Pesanan telah berhasil disubmit"</string>
+	<string name="order_download_ok">"Pesanan telah berhasil didownload"</string>
 	
 	<string name="printer_cant_connect">"Tidak dapat terhubung ke Printer"</string>
 	<string name="printer_connection_lost">"Koneksi ke Printer telah terputus"</string>
@@ -500,6 +502,8 @@
     <string name="alert_sync_cancellation">"Proses singkronisasi telah dibatalkan. Dapat menyebabkan permasalahan integritas data. Disarankan untuk menyelesaikan proses singkronisasi."</string>
     <string name="alert_refresh_cancellation">"Pembaruan data telah dibatalkan. Data yang ditampilkan bukan data terbaru."</string>
     <string name="alert_demo_account">"Tidak dapat menghapus akun demo."</string>
+    <string name="alert_product_price_issue">"Harga jual produk sama atau lebih rendah dari harga beli"</string>
+    <string name="alert_install_browser">"Mohon install web browser untuk melihat petunjuk penggunaan sistem."</string>
     
     <string name="user_role_cashier">Kasir</string>
 	<string name="user_role_admin">Admin</string>
@@ -542,6 +546,8 @@
 	<string name="inventory_status_damage">"Produk Rusak"</string>
 	<string name="inventory_status_initial_stock">"Stok Awal"</string>
 	
+	<string name="demo">Demo</string>
+	
 	<string name="menu_user">User</string>
 	<string name="menu_cashier">Kasir</string>
 	<string name="menu_waitress">Pramuniaga</string>
@@ -554,7 +560,11 @@
 	<string name="menu_cashflow">Keuangan</string>
 	<string name="menu_user_access">Hak Akses</string>
 	<string name="menu_bills">Tagihan</string>
-	<string name="menu_report">Laporan</string>					
+	<string name="menu_report">Laporan</string>	
+					
+	<string name="menu_help">Hubungi Admin</string>
+	<string name="menu_guide">Petunjuk</string>
+	
 	<string name="menu_report_transaction">Laporan Transaksi</string>
 	<string name="menu_report_product_statistic">Laporan Penjualan</string>
 	<string name="menu_report_commision">Laporan Komisi</string>
@@ -655,10 +665,13 @@
 	<string name="cashflow_type_expense">Pengeluaran Lain-lain</string>
 	<string name="cashflow_type_refund">Refund Transaksi</string>
 	
+	<string name="error_general">Sistem Error, Silahkan kontak admin app.tokoku@gmail.com !</string>
+	<string name="error_system_maintenance">Sistem dalam perbaikan, mohon coba beberapa saat lagi !</string>
+	<string name="error_app_update_required">Silahkan update aplikasi dari Google Play !</string>
 	<string name="error_invalid_token">Token tidak valid !</string>
 	<string name="error_service_expired">Servis sync up data anda telah berakhir !</string>
 	<string name="error_could_not_obtained_lock">Error singkronisasi data !</string>
 	<string name="error_register_merchant_conflict">Login Id konflik dengan merchant yang lain. Silahkan pilih Login Id yang lain !</string>
-	<string name="error_invalid_app_cert">Certificate aplikasi tidak valid !</string>
+	<string name="error_invalid_app_cert">Sertifikat aplikasi tidak valid !</string>
 	
 </resources>

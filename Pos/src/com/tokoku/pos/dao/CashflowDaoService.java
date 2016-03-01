@@ -145,7 +145,7 @@ public class CashflowDaoService {
 		return total;
 	}
 	
-	public List<CashflowBean> getCashflowForUpload() {
+	public List<CashflowBean> getCashflowForUpload(int limit) {
 
 		QueryBuilder<Cashflow> qb = cashflowDao.queryBuilder();
 		qb.where(CashflowDao.Properties.UploadStatus.eq(Constant.STATUS_YES)).orderAsc(CashflowDao.Properties.CashDate);
@@ -154,7 +154,9 @@ public class CashflowDaoService {
 		
 		ArrayList<CashflowBean> cashflowBeans = new ArrayList<CashflowBean>();
 		
-		for (Cashflow cashflow : q.list()) {
+		int maxIndex = CommonUtil.getMaxIndex(q.list().size(), limit);
+		
+		for (Cashflow cashflow : q.list().subList(0, maxIndex)) {
 			
 			cashflowBeans.add(BeanUtil.getBean(cashflow));
 		}
@@ -221,6 +223,11 @@ public class CashflowDaoService {
 	}
 	
 	public boolean hasUpdate() {
+	
+		return getCashflowsForUploadCount() > 0;
+	}
+	
+	public long getCashflowsForUploadCount() {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
@@ -232,7 +239,7 @@ public class CashflowDaoService {
 		
 		cursor.close();
 		
-		return (count > 0);
+		return count;
 	}
 	
 	public List<CashFlowYearBean> getCashFlowYears() {

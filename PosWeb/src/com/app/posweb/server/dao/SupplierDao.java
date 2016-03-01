@@ -99,14 +99,18 @@ public class SupplierDao {
 		query.setParameter("merchantId", sync.getMerchant_id());
 		query.setParameter("lastSyncDate", sync.getLast_sync_date());
 		
-		List<Supplier> result = query.getResultList();
+		List<Supplier> result = query.setFirstResult((int) syncRequest.getIndex()).setMaxResults(Constant.SYNC_RECORD_LIMIT).getResultList();
 		
 		em.close();
 
 		return result;
 	}
-	
 	public boolean hasUpdate(SyncRequest syncRequest) {
+		
+		return getSuppliersCount(syncRequest) > 0;
+	}
+	
+	public long getSuppliersCount(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_SUPPLIER);
 		
@@ -123,6 +127,6 @@ public class SupplierDao {
 		
 		em.close();
 
-		return (count > 0);
+		return count;
 	}
 }

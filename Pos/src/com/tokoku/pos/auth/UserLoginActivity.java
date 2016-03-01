@@ -39,6 +39,10 @@ public class UserLoginActivity extends BaseAuthActivity {
 	EditText mLoginIdText;
 	EditText mPasswordText;
 	
+	TextView mDemoText;
+	TextView mLogoutText;
+	TextView mSeparatorText;
+	
 	Button mLoginBtn;
 	
 	@Override
@@ -53,8 +57,41 @@ public class UserLoginActivity extends BaseAuthActivity {
 		mLoginIdText = (EditText) findViewById(R.id.loginIdText);
 		mPasswordText = (EditText) findViewById(R.id.passwordText);
 		
+		mDemoText = (TextView) findViewById(R.id.demoText);
+		mLogoutText = (TextView) findViewById(R.id.logoutText);
+		mSeparatorText = (TextView) findViewById(R.id.separatorText);
+		
 		mLoginBtn = (Button) findViewById(R.id.loginBtn);
 		mLoginBtn.setOnClickListener(getLoginBtnOnClickListener());
+		
+		if (MerchantUtil.getMerchantId().longValue() != Constant.DEMO_MERCHANT_ID) {
+			
+			mDemoText.setVisibility(View.INVISIBLE);
+			mSeparatorText.setVisibility(View.INVISIBLE);
+			mLogoutText.setVisibility(View.INVISIBLE);
+		}
+		
+		mDemoText.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mLoginIdText.setText(Constant.DEMO_USER_LOGIN_ID);
+				mPasswordText.setText(Constant.DEMO_USER_PASSWORD);
+				mLoginBtn.performClick();
+			}
+		});
+		
+		mLogoutText.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(context, MerchantLoginActivity.class);
+				intent.putExtra("logout", true);
+				startActivity(intent);
+			}
+		});
 		
 		registerField(mLoginIdText);
 		registerField(mPasswordText);
@@ -109,6 +146,13 @@ public class UserLoginActivity extends BaseAuthActivity {
 		
 		mMerchantNameTxt.setText(name);
 		mMerchantAddrTxt.setText(contact);
+		
+		if (CommonUtil.isDemo()) {
+			
+			mLoginIdText.setText(Constant.DEMO_USER_LOGIN_ID);
+			mPasswordText.setText(Constant.DEMO_USER_PASSWORD);
+			mLoginBtn.performClick();
+		}
 	}
 	
 	private View.OnClickListener getLoginBtnOnClickListener() {

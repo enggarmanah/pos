@@ -11,10 +11,15 @@ public class SyncRequest {
 	protected String uuid;
 	protected String cert_dn;
 	
+	protected Integer appVersion;
+	
 	protected List<String> getRequests;
 	
 	protected Merchant merchant;
 	protected User user;
+	
+	protected long index;
+	protected long resultCount;
 	
 	protected List<Bills> bills;
 	protected List<Customer> customers;
@@ -72,6 +77,30 @@ public class SyncRequest {
 
 	public void setCert_dn(String cert_dn) {
 		this.cert_dn = cert_dn;
+	}
+	
+	public Integer getAppVersion() {
+		return appVersion;
+	}
+
+	public void setAppVersion(Integer appVersion) {
+		this.appVersion = appVersion;
+	}
+
+	public long getIndex() {
+		return index;
+	}
+
+	public void setIndex(long index) {
+		this.index = index;
+	}
+	
+	public long getResultCount() {
+		return resultCount;
+	}
+
+	public void setResultCount(long resultCount) {
+		this.resultCount = resultCount;
 	}
 
 	public List<String> getGetRequests() {
