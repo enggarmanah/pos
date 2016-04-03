@@ -448,6 +448,7 @@ public class CashierActivity extends BaseActivity
 				int searchSrcTextId = getResources().getIdentifier("android:id/search_src_text", null, null);
 				EditText searchEditText = (EditText) mSearchView.findViewById(searchSrcTextId);
 				searchEditText.setHint(getString(R.string.search_product));
+				searchEditText.setHintTextColor(getResources().getColor(R.color.search_hint_color));
 	
 				return true;
 				

@@ -13,6 +13,8 @@
     <color name="section_header_background">#aac8e1</color>
     <color name="section_header_text">#31343a</color>
     
+    <color name="search_hint_color">#DDD</color>
+    
     <color name="border_black">#555</color>
     <color name="border_dark">#666</color>
     <color name="border_grey">#AAA</color>

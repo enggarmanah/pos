@@ -2,7 +2,9 @@ package com.tokoku.pos.data.user;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.tokoku.pos.R;
 import com.android.pos.dao.Employee;
@@ -30,6 +32,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -54,6 +57,12 @@ public class UserEditFragment extends BaseEditFragment<User> {
     
     CodeSpinnerArrayAdapter roleArrayAdapter;
     CodeSpinnerArrayAdapter statusArrayAdapter;
+    
+    HashMap<UserAccess, ImageButton> mAllAccessRights = new HashMap<UserAccess, ImageButton>();
+    HashMap<UserAccess, ImageButton> mCashierAccessRights = new HashMap<UserAccess, ImageButton>();
+    HashMap<UserAccess, ImageButton> mWaitressAccessRights = new HashMap<UserAccess, ImageButton>();
+    HashMap<UserAccess, ImageButton> mEmployeeAccessRights = new HashMap<UserAccess, ImageButton>();
+    HashMap<UserAccess, ImageButton> mAdminAccessRights = new HashMap<UserAccess, ImageButton>();
     
     private UserDaoService mUserDaoService = new UserDaoService();
     private UserAccessDaoService mUserAccessDaoService = new UserAccessDaoService();
@@ -118,6 +127,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     	
     	mEmployeeText.setFocusable(false);
     	mEmployeeText.setOnClickListener(getEmployeeOnClickListener());
+    	
+    	mRoleSp.setOnItemSelectedListener(getRoleOnItemSelectedListener());
     	
     	registerField(mNameText);
     	registerField(mUserIdText);
@@ -196,6 +207,8 @@ public class UserEditFragment extends BaseEditFragment<User> {
     			
     			checkedButton.setEnabled(mIsEnableInputFields);
     			mCheckedButtons.add(checkedButton);
+    			
+    			initDefaultAccessRights(userAccess, checkedButton);
     			
     			char c = 8226;
     			
@@ -429,6 +442,89 @@ public class UserEditFragment extends BaseEditFragment<User> {
 						mUserItemListener.onSelectEmployee(isMandatory);
 					}
 				}
+			}
+		};
+    }
+    
+    private void initDefaultAccessRights(UserAccess userAccess, ImageButton checkedBtn) {
+    	
+    	mAllAccessRights.put(userAccess, checkedBtn);
+    	
+    	if (Constant.ACCESS_CASHIER.equals(userAccess.getCode()) || Constant.ACCESS_ORDER.equals(userAccess.getCode()) || Constant.ACCESS_REPORT_TRANSACTION.equals(userAccess.getCode())) {
+    		
+    		mCashierAccessRights.put(userAccess, checkedBtn);
+    	}
+    	
+    	if (Constant.ACCESS_WAITRESS.equals(userAccess.getCode()) || Constant.ACCESS_ORDER.equals(userAccess.getCode())) {
+    		
+    		mWaitressAccessRights.put(userAccess, checkedBtn);
+    	}
+    	
+    	if (Constant.ACCESS_REPORT_COMMISION.equals(userAccess.getCode())) {
+    		
+    		mWaitressAccessRights.put(userAccess, checkedBtn);
+    	}
+    	
+    	if (!Constant.ACCESS_WAITRESS.equals(userAccess.getCode()) && !Constant.ACCESS_ORDER.equals(userAccess.getCode())) {
+    		
+    		mAdminAccessRights.put(userAccess, checkedBtn);
+    	}
+    }
+    
+    private AdapterView.OnItemSelectedListener getRoleOnItemSelectedListener() {
+    	
+    	return new AdapterView.OnItemSelectedListener() {
+    		
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				
+		    	CodeBean codeBean = (CodeBean) mRoleSp.getSelectedItem();
+		    	
+		    	Set<UserAccess> keys = mAllAccessRights.keySet();
+		    	HashMap<UserAccess, ImageButton> accessRights = mAllAccessRights;
+		    	
+		    	for (UserAccess userAccess : keys) {
+	    			
+	    			ImageButton checkedBtn = accessRights.get(userAccess);
+	    			
+	    			userAccess.setStatus(Constant.STATUS_INACTIVE);
+	    			checkedBtn.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_clear_black));
+	    		}
+		    	
+		    	if (Constant.USER_ROLE_CASHIER.equals(codeBean.getCode())) {
+		    		
+		    		keys = mCashierAccessRights.keySet();
+		    		accessRights = mCashierAccessRights;
+		    	
+		    	} else if (Constant.USER_ROLE_WAITRESS.equals(codeBean.getCode())) {
+		    		
+		    		keys = mWaitressAccessRights.keySet();
+		    		accessRights = mWaitressAccessRights;
+		    	
+		    	} else if (Constant.USER_ROLE_EMPLOYEE.equals(codeBean.getCode())) {
+		    		
+		    		keys = mEmployeeAccessRights.keySet();
+		    		accessRights = mEmployeeAccessRights;
+		    	
+		    	} else if (Constant.USER_ROLE_ADMIN.equals(codeBean.getCode())) {
+		    		
+		    		keys = mAdminAccessRights.keySet();
+		    		accessRights = mAdminAccessRights;
+		    	}
+		    	
+		    	if (keys == null) { return; }
+		    	
+		    	for (UserAccess userAccess : keys) {
+	    			
+	    			ImageButton checkedBtn = accessRights.get(userAccess);
+	    			
+	    			userAccess.setStatus(Constant.STATUS_ACTIVE);
+	    			checkedBtn.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_black));
+	    		}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		};
     }
