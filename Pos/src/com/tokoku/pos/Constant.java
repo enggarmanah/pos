@@ -77,6 +77,8 @@ public class Constant {
 	public static final String PRICE_TYPE_COUNT_3 = "3";
 	
 	public static final String QUANTITY_TYPE_PIECE = "Pc";
+	public static final String QUANTITY_TYPE_PACK = "Pack";
+	public static final String QUANTITY_TYPE_DOZEN = "Dz";
 	public static final String QUANTITY_TYPE_KG = "K";
 	public static final String QUANTITY_TYPE_METER = "M";
 	public static final String QUANTITY_TYPE_LITER = "L";

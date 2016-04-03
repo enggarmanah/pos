@@ -96,7 +96,7 @@ public class CodeUtil {
 		code.setLabel(mContext.getString(R.string.font_size_regular));
 		fontSizes[1] = code;
 		
-		quantityType = new CodeBean[4];
+		quantityType = new CodeBean[6];
 		
 		code = new CodeBean();
 		code.setCode(Constant.QUANTITY_TYPE_PIECE);
@@ -104,19 +104,29 @@ public class CodeUtil {
 		quantityType[0] = code;
 		
 		code = new CodeBean();
+		code.setCode(Constant.QUANTITY_TYPE_PACK);
+		code.setLabel(mContext.getString(R.string.quantity_type_pack));
+		quantityType[1] = code;
+		
+		code = new CodeBean();
+		code.setCode(Constant.QUANTITY_TYPE_DOZEN);
+		code.setLabel(mContext.getString(R.string.quantity_type_dozen));
+		quantityType[2] = code;
+		
+		code = new CodeBean();
 		code.setCode(Constant.QUANTITY_TYPE_KG);
 		code.setLabel(mContext.getString(R.string.quantity_type_kg));
-		quantityType[1] = code;
+		quantityType[3] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.QUANTITY_TYPE_METER);
 		code.setLabel(mContext.getString(R.string.quantity_type_meter));
-		quantityType[2] = code;
+		quantityType[4] = code;
 		
 		code = new CodeBean();
 		code.setCode(Constant.QUANTITY_TYPE_LITER);
 		code.setLabel(mContext.getString(R.string.quantity_type_liter));
-		quantityType[3] = code;
+		quantityType[5] = code;
 		
 		moduleAccess = new CodeBean[20];
 		

@@ -24,6 +24,8 @@ import com.tokoku.pos.async.ProgressDlgFragment;
 import com.tokoku.pos.base.listener.BaseItemListener;
 import com.tokoku.pos.common.ConfirmDeleteDlgFragment;
 import com.tokoku.pos.data.merchant.MerchantMgtActivity;
+import com.tokoku.pos.util.MerchantUtil;
+import com.tokoku.pos.util.NotificationUtil;
 import com.tokoku.pos.util.UserUtil;
 
 public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity 
@@ -355,6 +357,12 @@ public abstract class BaseItemMgtActivity<S, E, T> extends BaseActivity
 	protected abstract String getItemName(T item);
 	
 	private void confirmDelete(final T item) {
+		
+		if (MerchantUtil.getMerchantId() == Constant.DEMO_MERCHANT_ID) {
+			
+			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_demo_account));
+			return;
+		}
 		
 		if (mConfirmDeleteFragment.isAdded()) {
 			return;

@@ -575,7 +575,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mMerchantDaoService.updateMerchant(mItem);
     		mMerchantAccessDaoService.updateMerchantAccess(mMerchantAccesses);
     		
-    		if (MerchantUtil.getMerchantId().longValue() == mItem.getId().longValue()) {
+    		if (MerchantUtil.getMerchantId() != null && // if root merchant id is null
+    			MerchantUtil.getMerchantId().longValue() == mItem.getId().longValue()) {
+    			
     			MerchantUtil.setMerchant(mItem);
     		}
     		

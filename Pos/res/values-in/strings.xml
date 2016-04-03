@@ -501,7 +501,7 @@
     <string name="alert_no_payment_type">"Tipe pembayaran harus dipilih"</string>
     <string name="alert_sync_cancellation">"Proses singkronisasi telah dibatalkan. Dapat menyebabkan permasalahan integritas data. Disarankan untuk menyelesaikan proses singkronisasi."</string>
     <string name="alert_refresh_cancellation">"Pembaruan data telah dibatalkan. Data yang ditampilkan bukan data terbaru."</string>
-    <string name="alert_demo_account">"Tidak dapat menghapus akun demo."</string>
+    <string name="alert_demo_account">"Tidak dapat menghapus data di akun demo."</string>
     <string name="alert_product_price_issue">"Harga jual produk sama atau lebih rendah dari harga beli"</string>
     <string name="alert_install_browser">"Mohon install web browser untuk melihat petunjuk penggunaan sistem."</string>
     
@@ -515,6 +515,8 @@
 	<string name="price_type_count_3">3 Tipe Harga</string>
 	
 	<string name="quantity_type_piece">Pc</string>
+	<string name="quantity_type_pack">Pak/Bungkus</string>
+	<string name="quantity_type_dozen">Lusin</string>
 	<string name="quantity_type_kg">Kg</string>
 	<string name="quantity_type_meter">Meter</string>
 	<string name="quantity_type_liter">Liter</string>

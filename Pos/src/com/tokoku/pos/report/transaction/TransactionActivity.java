@@ -14,6 +14,7 @@ import com.tokoku.pos.model.TransactionDayBean;
 import com.tokoku.pos.model.TransactionMonthBean;
 import com.tokoku.pos.model.TransactionYearBean;
 import com.tokoku.pos.util.CommonUtil;
+import com.tokoku.pos.util.MerchantUtil;
 import com.tokoku.pos.util.NotificationUtil;
 import com.tokoku.pos.util.PrintUtil;
 import com.tokoku.pos.util.UserUtil;
@@ -242,6 +243,12 @@ public class TransactionActivity extends BaseActivity
 				return true;
 				
 			case R.id.menu_item_delete:
+				
+				if (MerchantUtil.getMerchantId() == Constant.DEMO_MERCHANT_ID) {
+					
+					NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_demo_account));
+					return true;
+				}
 				
 				if (mTransactionDeleteFragment.isAdded()) {
 					return true;

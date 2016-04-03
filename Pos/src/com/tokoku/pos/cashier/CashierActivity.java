@@ -52,6 +52,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -442,7 +443,11 @@ public class CashierActivity extends BaseActivity
 	
 				doSearch(Constant.EMPTY_STRING);
 	
-				showMessage(R.string.msg_notification_search_action);
+				//showMessage(R.string.msg_notification_search_action);
+				
+				int searchSrcTextId = getResources().getIdentifier("android:id/search_src_text", null, null);
+				EditText searchEditText = (EditText) mSearchView.findViewById(searchSrcTextId);
+				searchEditText.setHint(getString(R.string.search_product));
 	
 				return true;
 				

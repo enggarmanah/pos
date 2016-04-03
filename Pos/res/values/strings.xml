@@ -513,7 +513,7 @@
     <string name="alert_no_payment_type">"Payment type must be selected"</string>
     <string name="alert_sync_cancellation">"Synchronization has been cancelled. It may cause data integrity issue. It\'s advised to complete synchronization process."</string>
     <string name="alert_refresh_cancellation">"Data refresh has been cancelled. Data shown may not be updated."</string>
-    <string name="alert_demo_account">"Could not delete demo account."</string>
+    <string name="alert_demo_account">"Delete is not allowed under demo account."</string>
     <string name="alert_product_price_issue">"Product price is lesser or equal than product cost"</string>
     <string name="alert_install_browser">"Please install browser to view user guide."</string>
     
@@ -527,6 +527,8 @@
 	<string name="price_type_count_3">3 Price Types</string>
 	
 	<string name="quantity_type_piece">Pc</string>
+	<string name="quantity_type_pack">Pack</string>
+	<string name="quantity_type_dozen">Dozen</string>
 	<string name="quantity_type_kg">Kg</string>
 	<string name="quantity_type_meter">Meter</string>
 	<string name="quantity_type_liter">Liter</string>
