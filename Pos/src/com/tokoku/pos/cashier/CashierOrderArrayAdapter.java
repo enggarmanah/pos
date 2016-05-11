@@ -3,7 +3,9 @@ package com.tokoku.pos.cashier;
 import java.util.List;
 
 import com.tokoku.pos.R;
+import com.android.pos.dao.Product;
 import com.android.pos.dao.TransactionItem;
+import com.tokoku.pos.dao.ProductDaoService;
 import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.UserUtil;
 
@@ -19,6 +21,8 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 	private Context context;
 	private List<TransactionItem> transactionItems;
 	private ItemActionListener mCallback;
+	
+	private ProductDaoService mProductDaoService = new ProductDaoService();
 
 	public interface ItemActionListener {
 
@@ -27,6 +31,7 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 
 	class ViewHolder {
 		TextView quantityText;
+		TextView unitText;
 		TextView nameText;
 		TextView picText;
 		TextView priceText;
@@ -88,8 +93,10 @@ public class CashierOrderArrayAdapter extends ArrayAdapter<TransactionItem> {
 			totalProductPrice = viewHolder.totalPriceText;
 		}
 		
+		Product product = mProductDaoService.getProduct(transactionItem.getProductId());
+		
 		productQuantity.setText(CommonUtil.formatNumber(transactionItem.getQuantity()));
-		productName.setText(transactionItem.getProductName());
+		productName.setText(transactionItem.getProductName() + "  [" + CommonUtil.getShortUnitName(product.getQuantityType()) + "]");
 		
 		if (transactionItem.getEmployeeId() != null) {
 			

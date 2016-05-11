@@ -167,11 +167,13 @@ public class ProductDaoService {
 		if (productGroup == null) {
 			qb.where(qb.and(qb.or(ProductDao.Properties.Name.like("%" + query + "%"), 
 					              ProductDao.Properties.Code.like("%" + query + "%")),
+					ProductDao.Properties.Status.notEq(Constant.STATUS_INACTIVE),
 					ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED))).orderAsc(ProductDao.Properties.Name);
 		} else {
 			qb.where(qb.and(qb.or(ProductDao.Properties.Name.like("%" + query + "%"), 
 		              			  ProductDao.Properties.Code.like("%" + query + "%")),
 		              ProductDao.Properties.ProductGroupId.eq(productGroup.getId()),
+		              ProductDao.Properties.Status.notEq(Constant.STATUS_INACTIVE),
 		              ProductDao.Properties.Status.notEq(Constant.STATUS_DELETED))).orderAsc(ProductDao.Properties.Name);
 		}
 

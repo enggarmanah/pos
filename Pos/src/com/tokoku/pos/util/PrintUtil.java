@@ -14,11 +14,13 @@ import com.tokoku.pos.R;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.OrderItem;
 import com.android.pos.dao.Orders;
+import com.android.pos.dao.Product;
 import com.android.pos.dao.TransactionItem;
 import com.android.pos.dao.Transactions;
 import com.tokoku.pos.Constant;
 import com.tokoku.pos.cashier.CashierActivity;
 import com.tokoku.pos.cashier.CashierPrinterListActivity;
+import com.tokoku.pos.dao.ProductDaoService;
 
 public class PrintUtil {
 
@@ -58,6 +60,7 @@ public class PrintUtil {
 	private static BluetoothPrintDriver mChatService = null;
 	
 	private static CashierActivity mActivity;
+	private static ProductDaoService mProductDaoService;
 	
 	public static void reset() {
 		
@@ -151,6 +154,10 @@ public class PrintUtil {
 	}
 	
 	public static void selectBluetoothPrinter() {
+		
+		if (mActivity == null) {
+			return;
+		}
 		
 		setupChat();
 		
@@ -300,6 +307,8 @@ public class PrintUtil {
 	}
 	
 	public static void printTransaction(Transactions transaction) throws Exception {
+		
+		mProductDaoService = new ProductDaoService();
 
 		BluetoothPrintDriver.WakeUpPritner();
 		
@@ -468,7 +477,9 @@ public class PrintUtil {
 				int size = quantityStr.length() <= 2 ? 2 : quantityStr.length();
 				line.append(spaces.substring(0, size - quantityStr.length()));
 				
-				line.append(" x @ ");
+				Product product = mProductDaoService.getProduct(item.getProductId());
+				
+				line.append(" " + CommonUtil.getShortUnitName(product.getQuantityType()) + " x @ ");
 				line.append(priceStr);
 				line.append(spaces.substring(0, mPrinterLineSize - line.toString().length() - totalStr.length()));
 				line.append(totalStr);

@@ -44,7 +44,7 @@ public class InventoryListFragment extends BaseFragment
 	
 	private String mQuery = Constant.EMPTY_STRING;
 	
-	private ProductDaoService mProductDaoService = new ProductDaoService();
+	private ProductDaoService mProductDaoService;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,8 @@ public class InventoryListFragment extends BaseFragment
 		}
 		
 		super.onCreate(savedInstanceState);
+		
+		mProductDaoService = new ProductDaoService();
 	}
 	
 	@Override

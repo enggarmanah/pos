@@ -234,6 +234,7 @@ public class TransactionActivity extends BaseActivity
 					try {
 						PrintUtil.printTransaction(mSelectedTransaction);
 					} catch (Exception e) {
+						e.printStackTrace();
 						showMessage(getString(R.string.printer_cant_print));
 					}
 				} else {

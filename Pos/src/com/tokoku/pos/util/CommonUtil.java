@@ -22,6 +22,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.tokoku.pos.Config;
 import com.tokoku.pos.Constant;
+import com.tokoku.pos.R;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -979,6 +980,32 @@ public class CommonUtil {
         }
         
         return symbol;
+	}
+	
+	public static String getShortUnitName(String quantityType) {
+		
+		String shortDesc = Constant.EMPTY_STRING;
+		
+		if (Constant.QUANTITY_TYPE_DOZEN.equals(quantityType)) {
+			shortDesc = mContext.getString(R.string.quantity_type_dozen_short);
+		
+		} else if (Constant.QUANTITY_TYPE_KG.equals(quantityType)) {
+			shortDesc = mContext.getString(R.string.quantity_type_kg_short);
+		
+		} else if (Constant.QUANTITY_TYPE_LITER.equals(quantityType)) {
+			shortDesc = mContext.getString(R.string.quantity_type_liter_short);
+		
+		} else if (Constant.QUANTITY_TYPE_METER.equals(quantityType)) {
+			shortDesc = mContext.getString(R.string.quantity_type_meter_short);
+		
+		} else if (Constant.QUANTITY_TYPE_PACK.equals(quantityType)) {
+			shortDesc = mContext.getString(R.string.quantity_type_pack_short);
+		
+		} else if (Constant.QUANTITY_TYPE_PIECE.equals(quantityType)) {
+			shortDesc = mContext.getString(R.string.quantity_type_piece_short);
+		}
+		
+		return shortDesc;
 	}
 	
 	public static String getCertDN(Context ctx) {

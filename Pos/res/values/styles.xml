@@ -439,6 +439,14 @@
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:layout_gravity">top</item>
     </style>
+    
+    <style name="ListViewRowTransItemUnitTextStyle" parent="ListViewRowTransItemBaseTextStyle">
+        <item name="android:layout_weight">0</item>
+        <item name="android:layout_width">25dp</item>
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:layout_gravity">top</item>
+    </style>
 
     <style name="ListViewRowTransItemProductTextStyle" parent="ListViewRowTransItemBaseTextStyle">
         <item name="android:layout_weight">40</item>

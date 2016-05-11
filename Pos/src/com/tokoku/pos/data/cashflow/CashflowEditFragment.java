@@ -203,11 +203,12 @@ public class CashflowEditFragment extends BaseEditFragment<Cashflow> {
     		if (Constant.CASHFLOW_TYPE_CAPITAL_IN.equals(type) ||
 				Constant.CASHFLOW_TYPE_BANK_WITHDRAWAL.equals(type) ||
 				Constant.CASHFLOW_TYPE_INVC_PAYMENT.equals(type)) {
-				
-    			mItem.setCashAmount(cashAmount);
     			
+    			cashAmount = cashAmount != null ? cashAmount : 0f;
+				mItem.setCashAmount(cashAmount);
+				
 			} else {
-				Float negativeAmount = cashAmount != null ? -cashAmount : null;
+				Float negativeAmount = cashAmount != null ? -cashAmount : 0f;
 				mItem.setCashAmount(negativeAmount);
 			}
     		

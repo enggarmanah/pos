@@ -106,9 +106,11 @@ public class CashflowSearchArrayAdapter extends BaseSearchArrayAdapter<Cashflow>
 		}
 		
 	    flowImage.setPadding(padding, padding, padding, padding);
+	    
+	    float cashAmount = CommonUtil.getNvlFloat(item.getCashAmount());
 		
 	    typeText.setText(CodeUtil.getCashflowTypeLabel(item.getType()));
-	    cashAmountText.setText(CommonUtil.formatCurrency(Math.abs(item.getCashAmount())));
+	    cashAmountText.setText(CommonUtil.formatCurrency(Math.abs(cashAmount)));
 		cashDateText.setText(CommonUtil.formatDate(item.getCashDate()));
 		
 		String billReferenceNo = null;

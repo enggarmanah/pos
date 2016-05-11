@@ -288,8 +288,8 @@ public class HttpAsyncManager {
 		
 		startTime = new Date().getTime();
 		
-		mLoginId = loginId;
-		mPassword = password;
+		mLoginId = loginId.toUpperCase(CommonUtil.getLocale());
+		mPassword = password.toUpperCase(CommonUtil.getLocale());
 		
 		mTaskIndex = 0;
 		

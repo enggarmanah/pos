@@ -80,7 +80,7 @@ public class CashierProductArrayAdapter extends ArrayAdapter<Product> {
 		}
 		
 		prdCode.setText(product.getCode());
-		prdName.setText(product.getName());
+		prdName.setText(product.getName() + "  [" + CommonUtil.getShortUnitName(product.getQuantityType()) + "]");
 		
 		prdPrice.setText(CommonUtil.formatCurrency(CommonUtil.getCurrentPrice(product)));
 		

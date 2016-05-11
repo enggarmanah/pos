@@ -874,6 +874,7 @@ public class CashierActivity extends BaseActivity
 		try {
 			PrintUtil.printTransaction(transaction);
 		} catch (Exception e) {
+			e.printStackTrace();
 			showMessage(getString(R.string.printer_cant_print));
 		}
 	}
@@ -886,6 +887,7 @@ public class CashierActivity extends BaseActivity
 		try {
 			PrintUtil.printOrder(order);
 		} catch (Exception e) {
+			e.printStackTrace();
 			showMessage(getString(R.string.printer_cant_print));
 		}
 		
@@ -1007,6 +1009,7 @@ public class CashierActivity extends BaseActivity
 			try {
 				PrintUtil.printOrder(mOrder);
 			} catch (Exception e) {
+				e.printStackTrace();
 				showMessage(getString(R.string.printer_cant_print));
 			}
 		

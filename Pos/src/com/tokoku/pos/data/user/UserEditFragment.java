@@ -487,7 +487,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
 	    			
 	    			ImageButton checkedBtn = accessRights.get(userAccess);
 	    			
-	    			userAccess.setStatus(Constant.STATUS_INACTIVE);
+	    			userAccess.setStatus(Constant.STATUS_NO);
 	    			checkedBtn.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_clear_black));
 	    		}
 		    	
@@ -518,7 +518,7 @@ public class UserEditFragment extends BaseEditFragment<User> {
 	    			
 	    			ImageButton checkedBtn = accessRights.get(userAccess);
 	    			
-	    			userAccess.setStatus(Constant.STATUS_ACTIVE);
+	    			userAccess.setStatus(Constant.STATUS_YES);
 	    			checkedBtn.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_check_black));
 	    		}
 			}

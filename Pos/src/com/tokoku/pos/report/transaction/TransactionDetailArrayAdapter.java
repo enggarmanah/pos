@@ -3,7 +3,9 @@ package com.tokoku.pos.report.transaction;
 import java.util.List;
 
 import com.tokoku.pos.R;
+import com.android.pos.dao.Product;
 import com.android.pos.dao.TransactionItem;
+import com.tokoku.pos.dao.ProductDaoService;
 import com.tokoku.pos.util.CommonUtil;
 
 import android.content.Context;
@@ -18,6 +20,8 @@ public class TransactionDetailArrayAdapter extends ArrayAdapter<TransactionItem>
 	private Context context;
 	private List<TransactionItem> transactionItems;
 	private ItemActionListener mCallback;
+	
+	private ProductDaoService mProductDaoService = new ProductDaoService();
 
 	public interface ItemActionListener {
 
@@ -87,8 +91,10 @@ public class TransactionDetailArrayAdapter extends ArrayAdapter<TransactionItem>
 			totalPriceText = viewHolder.totalPriceText;
 		}
 		
+		Product product = mProductDaoService.getProduct(transactionItem.getProductId());
+		
 		quantityText.setText(CommonUtil.formatNumber(transactionItem.getQuantity()));
-		nameText.setText(transactionItem.getProductName());
+		nameText.setText(transactionItem.getProductName() + "  [" + CommonUtil.getShortUnitName(product.getQuantityType()) + "]");
 		
 		if (transactionItem.getEmployee() != null) {
 			
