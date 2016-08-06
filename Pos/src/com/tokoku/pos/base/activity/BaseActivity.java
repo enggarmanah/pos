@@ -283,7 +283,7 @@ public abstract class BaseActivity extends Activity
 		
 		boolean isCashier = false;
 		
-		if (UserUtil.isCashier() || (!UserUtil.isWaitress() && UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER))) {
+		if (UserUtil.isMerchant() || UserUtil.isCashier() || (!UserUtil.isWaitress() && UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER))) {
 			
 			isCashier = true;
 			mMenus.add(getString(R.string.menu_cashier));
@@ -304,16 +304,17 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(getString(R.string.menu_merchant));
 		}
 		
-		if (UserUtil.isMerchant()) {
+		/*if (UserUtil.isMerchant()) {
 			
 			mMenus.add(getString(R.string.menu_user_access));
-		}
+		}*/
 		
 		if (UserUtil.isWaitress() || UserUtil.isUserHasAccess(Constant.ACCESS_ORDER)) {
 			mMenus.add(getString(R.string.menu_order));
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION) ||
+		if (UserUtil.isMerchant() ||
+			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS) ||
@@ -327,44 +328,45 @@ public abstract class BaseActivity extends Activity
 		
 		if (Config.isMenuReportExpanded()) {
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TRANSACTION)) {
 				mMenus.add(getString(R.string.menu_report_transaction));
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_PRODUCT_STATISTIC)) {
 				mMenus.add(getString(R.string.menu_report_product_statistic));
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_COMMISION)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_COMMISION)) {
 				mMenus.add(getString(R.string.menu_report_commision));
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CASHFLOW)) {
 				mMenus.add(getString(R.string.menu_report_cashflow));
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CREDIT)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_CREDIT)) {
 				mMenus.add(getString(R.string.menu_report_credit));
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TAX)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_TAX)) {
 				mMenus.add(getString(R.string.menu_report_tax));
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_SERVICE_CHARGE)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_SERVICE_CHARGE)) {
 				mMenus.add(getString(R.string.menu_report_service_charge));
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_BILLS)) {
 				mMenus.add(getString(R.string.menu_report_bills));
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_REPORT_INVENTORY)) {
 				mMenus.add(getString(R.string.menu_report_inventory));
 			}
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER) ||
+		if (UserUtil.isMerchant() || 
+			UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER) ||
 			UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_SUPPLIER)) {
 				
 			mMenus.add(getString(R.string.menu_favorite));
@@ -372,7 +374,7 @@ public abstract class BaseActivity extends Activity
 		
 		if (Config.isMenuFavoriteExpanded()) {
 		
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_CUSTOMER)) {
 				
 				if (Constant.MERCHANT_TYPE_MEDICAL_SERVICES.equals(MerchantUtil.getMerchantType())) {
 					mMenus.add(getString(R.string.menu_favorite_patient));
@@ -381,24 +383,24 @@ public abstract class BaseActivity extends Activity
 				}
 			}
 			
-			if (UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_SUPPLIER)) {
+			if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_FAVORITE_SUPPLIER)) {
 				mMenus.add(getString(R.string.menu_favorite_supplier));
 			}
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_BILLS)) {
+		if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_BILLS)) {
 			mMenus.add(getString(R.string.menu_bills));
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW)) {
+		if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_CASHFLOW)) {
 			mMenus.add(getString(R.string.menu_cashflow));
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
+		if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_INVENTORY)) {
 			mMenus.add(getString(R.string.menu_inventory));
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
+		if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_CUSTOMER)) {
 			
 			if (Constant.MERCHANT_TYPE_MEDICAL_SERVICES.equals(MerchantUtil.getMerchantType())) {
 				mMenus.add(getString(R.string.menu_patient));
@@ -407,11 +409,11 @@ public abstract class BaseActivity extends Activity
 			}	
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
+		if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_USER_ACCESS)) {
 			mMenus.add(getString(R.string.menu_user_access));
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
+		if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_DATA_MANAGEMENT)) {
 			mMenus.add(getString(R.string.menu_data_management));
 		}
 		
@@ -430,7 +432,7 @@ public abstract class BaseActivity extends Activity
 			mMenus.add(getString(R.string.menu_change_password));
 		}
 		
-		if (UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
+		if (UserUtil.isMerchant() || UserUtil.isUserHasAccess(Constant.ACCESS_CASHIER)) {
 			
 			mMenus.add(getString(R.string.menu_printer));
 		}
@@ -676,7 +678,8 @@ public abstract class BaseActivity extends Activity
 			}
 			
 			if (UserUtil.isMerchant()) {
-				mHttpAsyncManager.syncUsers();
+				//mHttpAsyncManager.syncUsers();
+				mHttpAsyncManager.syncAll();
 				
 			} else if (UserUtil.isRoot()) {
 				mHttpAsyncManager.syncMerchants();

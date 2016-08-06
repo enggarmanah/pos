@@ -72,7 +72,7 @@ public class HttpAsyncManager {
 	private static HttpPost httpPost;
 	
 	private Context mContext;
-	private Merchant mMerchant;
+	private MerchantBean mMerchant;
 	private String mLoginId;
 	private String mPassword;
 
@@ -161,6 +161,7 @@ public class HttpAsyncManager {
 		taskMessage.put(Constant.TASK_VALIDATE_USER, context.getString(R.string.task_validate_user));
 		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT, context.getString(R.string.task_root_get_merchant));
 		taskMessage.put(Constant.TASK_ROOT_GET_MERCHANT_ACCESS, context.getString(R.string.task_root_get_merchant_access));
+		taskMessage.put(Constant.TASK_ACTIVATE_MERCHANT, context.getString(R.string.task_activate_merchant));
 		taskMessage.put(Constant.TASK_UPDATE_ORDER, context.getString(R.string.task_submit_orders));
 		taskMessage.put(Constant.TASK_UPDATE_ORDER_ITEM, context.getString(R.string.task_submit_order_items));
 		taskMessage.put(Constant.TASK_GET_ORDER, context.getString(R.string.task_get_orders));
@@ -328,7 +329,7 @@ public class HttpAsyncManager {
 		executeNextTask();
 	}
 	
-	public void registerMerchant(Merchant merchant) {
+	public void registerMerchant(MerchantBean merchant) {
 		
 		startTime = new Date().getTime();
 		
@@ -342,7 +343,7 @@ public class HttpAsyncManager {
 		executeNextTask();
 	}
 	
-	public void resendActivationCode(Merchant merchant) {
+	public void resendActivationCode(MerchantBean merchant) {
 		
 		startTime = new Date().getTime();
 		
@@ -424,6 +425,22 @@ public class HttpAsyncManager {
 		mTasks.addAll(getTaskWithUpdate(mUpdateTasks));
 		
 		mTasks.add(Constant.TASK_UPDATE_LAST_SYNC);
+		mTasks.add(Constant.TASK_COMPLETED);
+		
+		executeNextTask();
+	}
+	
+	public void activateMerchant(MerchantBean merchant) {
+		
+		mMerchant = merchant;
+		
+		startTime = new Date().getTime();
+		
+		mTaskIndex = 0;
+		
+		mTasks.clear();
+		
+		mTasks.add(Constant.TASK_ACTIVATE_MERCHANT);
 		mTasks.add(Constant.TASK_COMPLETED);
 		
 		executeNextTask();
@@ -768,17 +785,13 @@ public class HttpAsyncManager {
 				
 				url = Config.SERVER_URL + "/merchantRegisterJsonServlet";
 
-				MerchantBean merchant = BeanUtil.getBean(mMerchant);
-				
-				request.setMerchant(merchant);
+				request.setMerchant(mMerchant);
 
 			} else if (Constant.TASK_RESEND_ACTIVATION_CODE.equals(params[0])) {
 				
 				url = Config.SERVER_URL + "/merchantResendActivationCodeJsonServlet";
 
-				MerchantBean merchant = BeanUtil.getBean(mMerchant);
-				
-				request.setMerchant(merchant);
+				request.setMerchant(mMerchant);
 
 			} else if (Constant.TASK_VALIDATE_MERCHANT.equals(params[0])) {
 				
@@ -790,6 +803,12 @@ public class HttpAsyncManager {
 				merchant.setPassword(mPassword);
 				
 				request.setMerchant(merchant);
+
+			} else if (Constant.TASK_ACTIVATE_MERCHANT.equals(params[0])) {
+
+				url = Config.SERVER_URL + "/merchantActivateJsonServlet";
+
+				request.setMerchant(mMerchant);
 
 			} else if (Constant.TASK_GET_MERCHANT_BY_LOGIN_ID.equals(params[0])) {
 				
@@ -1108,6 +1127,11 @@ public class HttpAsyncManager {
 						
 						LoginListener mLoginListener = (LoginListener) mContext;
 						mLoginListener.onMerchantValidated(merchant);
+						
+					} else if (Constant.TASK_ACTIVATE_MERCHANT.equals(task)) {
+	
+						MerchantBean bean =  resp.getMerchant();
+						// no action required, just need to update the data on server end
 						
 					} else if (Constant.TASK_GET_MERCHANT_BY_LOGIN_ID.equals(task)) {
 	

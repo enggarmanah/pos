@@ -639,6 +639,7 @@
 	<string name="task_validate_user">"Authenticate user &#8230;"</string>
 	<string name="task_root_get_merchant">"Download merchant &#8230;"</string>
 	<string name="task_root_get_merchant_access">"Download merchant access &#8230;"</string>
+	<string name="task_activate_merchant">"Activating merchant &#8230;"</string>
 	<string name="task_submit_orders">"Submit order &#8230;"</string>
 	<string name="task_submit_order_items">"Submit order detail &#8230;"</string>
 	<string name="task_get_orders">"Download order &#8230;"</string>

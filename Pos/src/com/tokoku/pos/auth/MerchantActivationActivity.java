@@ -16,9 +16,12 @@ import com.tokoku.pos.R;
 import com.android.pos.dao.Merchant;
 import com.android.pos.dao.MerchantAccess;
 import com.tokoku.pos.Constant;
+import com.tokoku.pos.async.HttpAsyncManager;
 import com.tokoku.pos.dao.MerchantAccessDaoService;
 import com.tokoku.pos.dao.MerchantDaoService;
 import com.tokoku.pos.model.FormFieldBean;
+import com.tokoku.pos.model.MerchantBean;
+import com.tokoku.pos.util.BeanUtil;
 import com.tokoku.pos.util.CodeUtil;
 import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.DbUtil;
@@ -41,12 +44,16 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 	
 	Button mOkBtn;
 	
+	protected static final String progressDialogTag = "progressDialogTag";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		DbUtil.initDb(this);
 		CodeUtil.initCodes(this);
+		
+		MerchantUtil.recreateDao();
 		
 		mMerchantDaoService = new MerchantDaoService();
 		mMerchantAccessDaoService = new MerchantAccessDaoService();
@@ -142,10 +149,23 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 						
 						CommonUtil.sendEvent(getString(R.string.event_cat_merchant), getString(R.string.event_act_activation));
 						
-						Intent intent = new Intent(context, UserLoginActivity.class);
+						/*Intent intent = new Intent(context, UserLoginActivity.class);
 						startActivity(intent);
 						
-						finish();
+						finish();*/
+						
+						if (mProgressDialog.isAdded()) {
+							return;
+						}
+						
+						mProgressDialog.show(getFragmentManager(), progressDialogTag);
+						
+						if (mHttpAsyncManager == null) {
+							mHttpAsyncManager = new HttpAsyncManager(context);
+						}
+						
+						MerchantBean merchantBean = BeanUtil.getBean(mMerchant);
+						mHttpAsyncManager.activateMerchant(merchantBean);
 						
 					} else {
 						
@@ -182,5 +202,14 @@ public class MerchantActivationActivity extends BaseAuthActivity {
 		        startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", number, null)));
 			}
 		};
+	}
+	
+	@Override
+	protected void onSyncCompleted() {
+		
+		Intent intent = new Intent(context, UserLoginActivity.class);
+		startActivity(intent);
+		
+		finish();
 	}
 }

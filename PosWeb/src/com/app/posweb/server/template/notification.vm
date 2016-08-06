@@ -14,7 +14,7 @@ Merchant Registration
 </p>
 <table style="border-collapse: collapse;">
 	<tr>
-		<td width="85px" style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Merchant : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Merchant : &nbsp;</td>
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$merchant</td>
 	<tr>
 	<tr>

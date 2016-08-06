@@ -37,9 +37,9 @@ public class UserSearchFragment extends BaseSearchFragment<User> {
 	public void onStart() {
 		super.onStart();
 		
-		if (mItems != null && mItems.size() == 0) {
+		/*if (mItems != null && mItems.size() == 0) {
 			NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.msg_register_user));
-		}
+		}*/
 	}
 	
 	protected Long getItemId(User item) {

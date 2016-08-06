@@ -625,6 +625,7 @@
 	<string name="task_reset_password">"Ganti password &#8230;"</string>
 	<string name="task_validate_merchant">"Melaksanakan validasi &#8230;"</string>
 	<string name="task_validate_user">"Melaksanakan validasi &#8230;"</string>
+	<string name="task_activate_merchant">"Aktivasi merchant &#8230;"</string>
 	<string name="task_root_get_merchant">"Download data merchant &#8230;"</string>
 	<string name="task_root_get_merchant_access">"Download data akses merchant &#8230;"</string>
 	<string name="task_submit_orders">"Submit order &#8230;"</string>

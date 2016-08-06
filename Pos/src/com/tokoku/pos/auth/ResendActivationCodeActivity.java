@@ -16,6 +16,8 @@ import com.tokoku.pos.async.ProgressDlgFragment;
 import com.tokoku.pos.dao.MerchantAccessDaoService;
 import com.tokoku.pos.dao.MerchantDaoService;
 import com.tokoku.pos.model.FormFieldBean;
+import com.tokoku.pos.model.MerchantBean;
+import com.tokoku.pos.util.BeanUtil;
 import com.tokoku.pos.util.CodeUtil;
 import com.tokoku.pos.util.DbUtil;
 import com.tokoku.pos.util.MerchantUtil;
@@ -81,8 +83,10 @@ public class ResendActivationCodeActivity extends BaseAuthActivity implements Re
 					Merchant merchant = MerchantUtil.getMerchant();
 					merchant.setContactEmail(email);
 					
+					MerchantBean merchantBean = BeanUtil.getBean(merchant);
+					
 					mHttpAsyncManager = new HttpAsyncManager(context);
-					mHttpAsyncManager.resendActivationCode(merchant);
+					mHttpAsyncManager.resendActivationCode(merchantBean);
 				}
 			}
 		};

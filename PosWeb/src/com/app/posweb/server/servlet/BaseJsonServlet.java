@@ -135,6 +135,7 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		
 		if ("/getLastSyncJsonServlet".equals(path) || 
 			"/updateLastSyncJsonServlet".equals(path) ||
+			"/merchantActivateJsonServlet".equals(path) ||
 			"/merchantRegisterJsonServlet".equals(path) ||
 			"/merchantResendActivationCodeJsonServlet".equals(path) ||
 			"/merchantResetPasswordJsonServlet".equals(path) ||
@@ -186,7 +187,7 @@ public abstract class BaseJsonServlet extends HttpServlet {
 	protected abstract SyncResponse processRequest(SyncRequest request)
 			throws IOException;
 
-	public static String uncompress(InputStream inputStream)
+	public String uncompress(InputStream inputStream)
 			throws IOException {
 		
 		String result = null;
@@ -210,7 +211,7 @@ public abstract class BaseJsonServlet extends HttpServlet {
 		return result;
 	}
 	
-	public static byte[] compress(byte[] bytes) throws IOException {
+	public byte[] compress(byte[] bytes) throws IOException {
 
 		ByteArrayOutputStream rstBao = new ByteArrayOutputStream();
 		GZIPOutputStream zos = new GZIPOutputStream(rstBao);

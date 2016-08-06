@@ -114,6 +114,8 @@ public class Constant {
 	public static final String TASK_GET_MERCHANT = "TASK_GET_MERCHANT";
 	public static final String TASK_UPDATE_MERCHANT = "TASK_UPDATE_MERCHANT";
 	
+	public static final String TASK_ACTIVATE_MERCHANT = "TASK_ACTIVATE_MERCHANT";
+	
 	public static final String TASK_GET_EMPLOYEE = "TASK_GET_EMPLOYEE";
 	public static final String TASK_UPDATE_EMPLOYEE = "TASK_UPDATE_EMPLOYEE";
 	

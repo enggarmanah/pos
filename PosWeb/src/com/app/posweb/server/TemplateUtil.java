@@ -45,6 +45,8 @@ public class TemplateUtil {
             
             String template = Constant.EMPTY_STRING;
             
+            //merchant.setLocale("in,ID");
+            
             if ("in,ID".equals(merchant.getLocale())) {
             	template = "com/app/posweb/server/template/registration-id.vm";
             } else {

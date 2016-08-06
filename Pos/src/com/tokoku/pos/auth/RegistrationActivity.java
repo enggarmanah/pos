@@ -26,8 +26,10 @@ import com.tokoku.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.tokoku.pos.dao.MerchantAccessDaoService;
 import com.tokoku.pos.dao.MerchantDaoService;
 import com.tokoku.pos.model.FormFieldBean;
+import com.tokoku.pos.model.MerchantBean;
 import com.tokoku.pos.popup.search.LocaleDlgFragment;
 import com.tokoku.pos.popup.search.LocaleSelectionListener;
+import com.tokoku.pos.util.BeanUtil;
 import com.tokoku.pos.util.CodeUtil;
 import com.tokoku.pos.util.CommonUtil;
 import com.tokoku.pos.util.DbUtil;
@@ -257,8 +259,10 @@ public class RegistrationActivity extends BaseAuthActivity implements Registrati
 						merchant.setUpdateBy(Constant.SYSTEM);
 						merchant.setUpdateDate(new Date());
 						
+						MerchantBean merchantBean = BeanUtil.getBean(merchant);
+						
 						mHttpAsyncManager = new HttpAsyncManager(context);
-						mHttpAsyncManager.registerMerchant(merchant);
+						mHttpAsyncManager.registerMerchant(merchantBean);
 					}
 					
 				} else {

@@ -52,6 +52,10 @@
 		<servlet-class>com.app.posweb.server.servlet.MerchantValidateJsonServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>merchantActivateJsonServlet</servlet-name>
+		<servlet-class>com.app.posweb.server.servlet.MerchantActivateJsonServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>userValidateJsonServlet</servlet-name>
 		<servlet-class>com.app.posweb.server.servlet.UserValidateJsonServlet</servlet-class>
 	</servlet>
@@ -243,6 +247,10 @@
 	<servlet-mapping>
 		<servlet-name>merchantValidateJsonServlet</servlet-name>
 		<url-pattern>/merchantValidateJsonServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>merchantActivateJsonServlet</servlet-name>
+		<url-pattern>/merchantActivateJsonServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>userValidateJsonServlet</servlet-name>

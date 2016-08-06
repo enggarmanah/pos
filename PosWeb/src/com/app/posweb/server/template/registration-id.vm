@@ -9,16 +9,39 @@
 </style>
 <div id="message">
 <br>
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Selamat Datang di TokoKu - Sistem Kasir dengan Teknologi Cloud.
-</p>
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Selamat Datang di <strong>TokoKu - Sistem Kasir dengan Teknologi Cloud</strong>.
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Terima kasih telah mendownload aplikasi Android kami dari Google Play Store.
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Kami telah memberi anda Servis Tokoku Cloud selama 30 hari.<br/><br/>
+Sync dan akses data usaha kapan saja, di mana saja, dan pada semua perangkat Android!
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Silahkan kontak kami jika anda ingin menikmati Servis Tokoku Cloud setelah periode tersebut berakhir.<br/><br/>
+Anda masih dapat mengakses data anda di smartphone tanpa Servis Tokoku Cloud, akan tetapi anda tidak dapat melakukan singkronisasi data ke perangkat Android lainnya.<br/><br/>
+Anda tidak dapat lagi melakukan remote monitoring usaha anda dan back up data jika perangkat anda hilang atau rusak. 
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
 Kami telah mendaftarkan merchant Anda di bawah ini ke dalam sistem kami, kode aktivasi Anda adalah
 <strong>$code</strong>
-</p>
+</div>
+<br/>
+
+</div>
 <table style="border-collapse: collapse;">
 	<tr>
-		<td width="85px" style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Merchant : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Merchant : &nbsp;</td>
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$merchant</td>
 	<tr>
 	<tr>
@@ -38,23 +61,24 @@ Kami telah mendaftarkan merchant Anda di bawah ini ke dalam sistem kami, kode ak
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$password</td>
 	<tr>
 </table>
+<br/>
 
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
 Jika anda membutuhkan bantuan, anda dapat menghubungi kami melalui SMS / Whatsapp +62 856-4745-3111.   
-</p>
+</div>
+<br/>
 
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Untuk info lebih lanjut silahkan kunjungi website kami <a href="https://www.pos-tokoku.com?lang=id" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com</a>.
-Petunjuk penggunaan aplikasi TokoKu dapat diakses pada <a href="https://www.pos-tokoku.com/guide?lang=id" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com/guide</a>.
-</p>
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Kami harap produk kami dapat bermanfaat untuk usaha anda. Harap email kami <span style="font: normal 14px 'Open Sans'; color: #438db0; important!">app.tokoku@gmail.com</span> jika anda membutuhkan bantuan.  
-</p>
-<br>
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Untuk info lebih lanjut silahkan kunjungi website kami <a href="https://www.pos-tokoku.com?lang=id" style="font: normal 14px "Open Sans", Georgia, "Comic Sans"; color: #438db0;">https://www.pos-tokoku.com</a>.<br/>
+Petunjuk penggunaan aplikasi TokoKu dapat diakses pada <a href="https://www.pos-tokoku.com/guide?lang=id" style="font: normal 14px "Open Sans", Georgia, "Comic Sans"; color: #438db0;">https://www.pos-tokoku.com/guide</a>.
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
 Salam Hangat,<br><br><br>
+
 TokoKu Team - Cloud POS Solutions<br><br>
 Whatsapp: +62 856-4745-3111<br>
 Line: tokoku.solutions<br>
-</p>
+</div>
 </div>

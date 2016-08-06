@@ -81,10 +81,15 @@ public class MerchantDaoService {
 		
 		String status = Constant.STATUS_ACTIVE;
 		
-		Cursor cursor = db.rawQuery("SELECT _id "
+		/*Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM merchant "
 				+ " WHERE LOWER(login_id) = ? AND LOWER(password) = ? AND status = ? ",
-				new String[] { loginId.toLowerCase(CommonUtil.getLocale()).trim(), password.toLowerCase(CommonUtil.getLocale()).trim(), status });
+				new String[] { loginId.toLowerCase(CommonUtil.getLocale()).trim(), password.toLowerCase(CommonUtil.getLocale()).trim(), status });*/
+		
+		Cursor cursor = db.rawQuery("SELECT _id "
+				+ " FROM merchant "
+				+ " WHERE LOWER(login_id) = ? AND LOWER(password) = ? ",
+				new String[] { loginId.toLowerCase(CommonUtil.getLocale()).trim(), password.toLowerCase(CommonUtil.getLocale()).trim() });
 		
 		Merchant merchant = null;
 		

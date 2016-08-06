@@ -32,7 +32,7 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
 
 	protected final Context context = this;
 	
-	protected static HttpAsyncManager mHttpAsyncManager;
+	protected HttpAsyncManager mHttpAsyncManager;
 	protected static ProgressDlgFragment mProgressDialog;
 	
 	protected static String mProgressDialogTag = "progressDialogTag";
@@ -224,7 +224,9 @@ public class BaseAuthActivity extends Activity implements HttpAsyncListener {
 		};
     }
 	
-	protected void onSyncCompleted() {}
+	protected void onSyncCompleted() {
+		System.out.println("task sync completed");
+	}
 	
 	@Override
 	public void setSyncProgress(int progress) {

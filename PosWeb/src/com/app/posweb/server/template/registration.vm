@@ -9,15 +9,38 @@
 </style>
 <div id="message">
 <br>
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Welcome to TokoKu - Cloud POS Solutions.
-</p>
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Welcome to <strong>TokoKu - Cloud POS Solutions</strong>.
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Thank you for downloading our Android App from  Google Play Store.
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+We have provided you with complimentary Tokoku Cloud Service for the next 30 days.<br/><br/>
+Sync and access your business data any where, any time on any android devices!<br/>
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+Please contact our sales representative if you want to enjoy Cloud Service after the period ends.<br/><br/>
+You still can access your business data on your smartphone without Cloud Service but you will not be able to sync the data to other Android device.<br/><br/>
+No more remote monitoring of your business, no more data back up/recovery in the event that your device got lost or spoiled.
+</div>
+<br/>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
 We have registered your merchant below into our system, your merchant activation code is <strong>$code</strong>
-</p>
+</div>
+<br/>
+
 <table style="border-collapse: collapse;">
 	<tr>
-		<td width="85px" style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Merchant : &nbsp;</td>
+		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Merchant : &nbsp;</td>
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$merchant</td>
 	<tr>
 	<tr>
@@ -37,19 +60,26 @@ We have registered your merchant below into our system, your merchant activation
 		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$password</td>
 	<tr>
 </table>
+<br/>
 
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-For more info please visit our website at <a href="https://www.pos-tokoku.com" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com</a> for more info.
-The guide for TokoKu App can be found at <a href="https://www.pos-tokoku.com/guide" style="font: normal 14px 'Open Sans'; color: #438db0;">https://www.pos-tokoku.com/guide</a>.
-</p>
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-We hope that our product can give benefit to your business. Please email us at <span style="font: normal 14px 'Open Sans'; color: #438db0; important!">app.tokoku@gmail.com</span> if you have any inquiry.  
-</p>
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+For more info please visit our website at <a href="https://www.pos-tokoku.com" style="font: normal 14px "Open Sans", Georgia, "Comic Sans"; color: #438db0;">https://www.pos-tokoku.com</a>.
+<br/>
+The guide for TokoKu App can be found at <a href="https://www.pos-tokoku.com/guide" style="font: normal 14px "Open Sans", Georgia, "Comic Sans"; color: #438db0;">https://www.pos-tokoku.com/guide</a>.
+</div>
 <br>
-<p style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
+We hope that our product can give benefit to your business. <br/>
+Please email or chat with us via whatssap if you have any enquiry, we will be happy to help you.  
+</div>
+<br>
+
+<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
 Warm Regards,<br><br><br>
+
 TokoKu Team - Cloud POS Solutions<br><br>
 Whatsapp: +62 856-4745-3111<br>
 Line: tokoku.solutions<br>
-</p>
+</div>
 </div>
