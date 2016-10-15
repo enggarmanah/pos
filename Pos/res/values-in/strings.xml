@@ -376,6 +376,7 @@
     <string name="search_customer">Cari Pelanggan</string>
     <string name="select_customer">Pilih Pelanggan</string>
     <string name="track_customer">Catat Pelanggan</string>
+    <string name="new_customer">Pelanggan Baru</string>
     <string name="no_customer">Tanpa Pelanggan</string>
     <string name="search_employee">Cari Karyawan</string>
     <string name="select_employee">Pilih Karyawan</string>
@@ -480,6 +481,7 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
     <string name="alert_empty_mandatory_field">"%1$s tidak boleh kosong"</string>
+    <string name="alert_invalid_format_field">"%1$s tidak valid.\nContoh nilai : %2$s"</string>
     <string name="alert_password_incorrect">"Password tidak benar"</string>
 	<string name="alert_password_dont_match">"Password dan konfirmasi password tidak sama"</string>
 	<string name="alert_merchant_login_id_not_exist">"Login Id merchant tidak terdaftar"</string>

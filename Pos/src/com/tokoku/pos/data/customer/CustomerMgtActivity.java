@@ -9,7 +9,10 @@ import com.tokoku.pos.Constant;
 import com.tokoku.pos.base.activity.BaseItemMgtActivity;
 import com.tokoku.pos.util.MerchantUtil;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 
 public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragment, CustomerEditFragment, Customer> {
@@ -17,9 +20,13 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 	List<Customer> mCustomers;
 	Customer mSelectedCustomer;
 	
+	boolean isRegisterFromCashier;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		isRegisterFromCashier = getIntent().getBooleanExtra("fromCashier", false);
 	}
 	
 	@Override
@@ -36,6 +43,13 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 			setTitle(getString(R.string.menu_customer));
 			setSelectedMenu(getString(R.string.menu_customer));
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		boolean status = super.onCreateOptionsMenu(menu);
+		return status;
 	}
 	
 	@Override
@@ -150,12 +164,24 @@ public class CustomerMgtActivity extends BaseItemMgtActivity<CustomerSearchFragm
 	protected void saveItem() {
 		
 		mEditFragment.saveEditItem();
+		
+		if (isRegisterFromCashier) {
+			
+			Intent resultIntent = new Intent();
+			setResult(Activity.RESULT_OK, resultIntent);
+			finish();
+		}
 	}
 	
 	@Override
 	protected void discardItem() {
 		
 		mEditFragment.discardEditItem();
+		
+		if (isRegisterFromCashier) {
+			
+			finish();
+		}
 	}
 	
 	@Override

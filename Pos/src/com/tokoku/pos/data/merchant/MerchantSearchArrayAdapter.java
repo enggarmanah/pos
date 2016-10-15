@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.android.pos.dao.Merchant;
 import com.tokoku.pos.base.adapter.BaseSearchArrayAdapter;
+import com.tokoku.pos.util.UserUtil;
 
 import android.content.Context;
 
@@ -20,6 +21,13 @@ public class MerchantSearchArrayAdapter extends BaseSearchArrayAdapter<Merchant>
 	
 	@Override
 	public String getItemName(Merchant merchant) {
-		return merchant.getName();
+		
+		String name = merchant.getName();
+		
+		if (UserUtil.isRoot()) {
+			name = name + " [ " + merchant.getLoginId() + " ]";  
+		}
+		
+		return name;
 	}
 }

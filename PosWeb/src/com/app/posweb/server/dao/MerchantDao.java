@@ -147,13 +147,17 @@ public class MerchantDao {
 		EntityManager em = PersistenceManager.getEntityManager();
 		StringBuffer sql = new StringBuffer();
 		
+		String code = "000000" + merchant.getPassword().toLowerCase();
+		code = "%" + code.substring(code.length()-6);
+		
 		sql.append(" SELECT m FROM Merchant m ");
-		sql.append(" WHERE LOWER(login_id) = :loginId AND LOWER(password) = :password");
+		sql.append(" WHERE LOWER(login_id) = :loginId AND (LOWER(password) = :password OR ref_id LIKE :code)");
 		
 		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
 		
 		query.setParameter("loginId", merchant.getLogin_id().toLowerCase());
 		query.setParameter("password", merchant.getPassword().toLowerCase());
+		query.setParameter("code", code);
 		
 		Merchant result = null;
 		

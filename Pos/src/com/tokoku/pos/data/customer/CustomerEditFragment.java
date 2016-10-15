@@ -6,6 +6,7 @@ import com.tokoku.pos.R;
 import com.android.pos.dao.Customer;
 import com.tokoku.pos.CodeBean;
 import com.tokoku.pos.Constant;
+import com.tokoku.pos.Session;
 import com.tokoku.pos.base.adapter.CodeSpinnerArrayAdapter;
 import com.tokoku.pos.base.fragment.BaseEditFragment;
 import com.tokoku.pos.dao.CustomerDaoService;
@@ -152,6 +153,8 @@ public class CustomerEditFragment extends BaseEditFragment<Customer> {
     protected boolean addItem() {
     	
         mCustomerDaoService.addCustomer(mItem);
+        
+        Session.setCustomer(mItem);
         
         mNameText.getText().clear();
         mTelephoneText.getText().clear();

@@ -4,7 +4,24 @@
 
     <LinearLayout
         style="@style/FormStyle">
+		
+        <LinearLayout style="@style/FormRowStyle"
+            android:id="@+id/codePanel">
 
+            <TextView
+                style="@style/FormTextFirstLetterStyle"
+                android:text="@string/field_code_fl" />
+            
+            <TextView
+                style="@style/FormTextStyle"
+                android:text="@string/field_code" />
+
+            <EditText
+                android:id="@+id/codeText"
+                style="@style/FormInputStyle"
+                android:focusable="false"/>
+        </LinearLayout>
+        
         <LinearLayout style="@style/FormRowStyle" >
 
             <TextView

@@ -223,7 +223,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			mRemarksBtn.setVisibility(View.GONE);
 		}
 		
-		if (Constant.PRODUCT_TYPE_SERVICE.equals(mProduct.getType())) {
+		/*if (Constant.PRODUCT_TYPE_SERVICE.equals(mProduct.getType())) {
 			
 			mQuantity = Float.valueOf(1);
 			
@@ -234,7 +234,7 @@ public class CashierProductCountDlgFragment extends DialogFragment {
 			
 			mProductCountPanel.setVisibility(View.VISIBLE);
 			mNumberBtnPanel.setVisibility(View.VISIBLE);
-		}
+		}*/
 		
 		mProductText.setText(mProduct.getName());
 		mRemarksText.setText(mRemarks);

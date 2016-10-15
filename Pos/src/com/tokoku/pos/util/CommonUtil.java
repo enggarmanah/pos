@@ -928,21 +928,6 @@ public class CommonUtil {
         return number; 
 	}
 	
-	public static Float parseFloat(String inputStr) {
-		
-		Float number = null;
-		
-		try {
-			if (!isEmpty(inputStr)) {
-				number = Float.valueOf(inputStr);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-        return number; 
-	}
-	
 	public static Float getCurrentPrice(Product product) {
 		
 		Float price = product.getPrice1();

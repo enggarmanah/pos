@@ -40,8 +40,7 @@
 
     <LinearLayout
         android:id="@+id/printerMiniSizePanel"
-        style="@style/FormRowStyle"
-        android:visibility="gone">
+        style="@style/FormRowStyle">
 
         <TextView
             style="@style/FormTextFirstLetterStyle"

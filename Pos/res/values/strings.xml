@@ -389,6 +389,7 @@
     <string name="select_customer">Select Customer</string>
     <string name="track_customer">Select Customer</string>
     <string name="no_customer">No Customer</string>
+    <string name="new_customer">New Customer</string>
     <string name="search_employee">Search Employee</string>
     <string name="select_employee">Select Employee</string>
     <string name="track_employee">Select Employee</string>
@@ -492,6 +493,7 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
     <string name="alert_empty_mandatory_field">"%1$s should not be empty"</string>
+    <string name="alert_invalid_format_field">"%1$s invalid value.\nCorrect format e.g: %2$s"</string>
     <string name="alert_password_incorrect">"Password is incorrect"</string>
     <string name="alert_password_dont_match">"Password and retype password don\'t match"</string>
     <string name="alert_merchant_login_id_not_exist">"Merchant Login Id is not registered"</string>

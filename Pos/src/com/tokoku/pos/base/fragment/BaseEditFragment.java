@@ -39,6 +39,7 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     protected boolean isEnableInputFields = false;
     
     protected List<FormFieldBean> mandatoryFields = new ArrayList<FormFieldBean>();
+    protected List<FormFieldBean> floatFields = new ArrayList<FormFieldBean>();
 	
 	protected boolean isValidated() {
     	
@@ -62,6 +63,32 @@ public abstract class BaseEditFragment<T> extends BaseFragment {
     			input.requestFocus();
     			
     			return false;
+    		}
+    	}
+    	
+    	for (FormFieldBean field : floatFields) {
+    		
+    		View input = field.getField();
+    		String value = null;
+    		
+    		if (input instanceof EditText) {
+    			
+    			EditText inputText = (EditText) input;
+    			value = inputText.getText().toString();
+    		}
+    		
+    		if (!CommonUtil.isEmpty(value)) {
+    			
+    			Float floatValue = CommonUtil.parseFloatNumber(value);
+    			String fieldLabel = getString(field.getLabel());
+    			
+    			if (floatValue == null) {
+    				
+    				NotificationUtil.setAlertMessage(getFragmentManager(), getString(R.string.alert_invalid_format_field, fieldLabel, CommonUtil.formatNumber(2.5f)));
+        			input.requestFocus();
+        			
+        			return false;
+    			}
     		}
     	}
     	

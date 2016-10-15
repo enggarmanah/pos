@@ -48,7 +48,20 @@
         style="@style/ListViewStyle"
         android:layout_height="357dp">
     </ListView>
-
+	
+    <TextView
+        android:id="@+id/newCustomerText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:background="@color/dialog_button_background"
+        android:gravity="center"
+        android:text="@string/new_customer"
+        android:textColor="@color/dialog_button_text"
+        android:textSize="@dimen/button_text"
+        android:textStyle="bold"
+        android:layout_marginBottom="0.5dp">
+    </TextView>
     <TextView
         android:id="@+id/noCustomerText"
         android:layout_width="fill_parent"

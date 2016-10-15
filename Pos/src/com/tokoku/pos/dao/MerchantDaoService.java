@@ -79,6 +79,9 @@ public class MerchantDaoService {
 		
 		SQLiteDatabase db = DbUtil.getDb();
 		
+		String code = "000000" + password;
+		code = "%" + code.substring(code.length()-6);
+		
 		String status = Constant.STATUS_ACTIVE;
 		
 		/*Cursor cursor = db.rawQuery("SELECT _id "
@@ -88,8 +91,8 @@ public class MerchantDaoService {
 		
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM merchant "
-				+ " WHERE LOWER(login_id) = ? AND LOWER(password) = ? ",
-				new String[] { loginId.toLowerCase(CommonUtil.getLocale()).trim(), password.toLowerCase(CommonUtil.getLocale()).trim() });
+				+ " WHERE LOWER(login_id) = ? AND (LOWER(password) = ? OR ref_id LIKE ?)",
+				new String[] { loginId.toLowerCase(CommonUtil.getLocale()).trim(), password.toLowerCase(CommonUtil.getLocale()).trim(), code });
 		
 		Merchant merchant = null;
 		
@@ -175,7 +178,7 @@ public class MerchantDaoService {
 		Cursor cursor = db.rawQuery("SELECT _id "
 				+ " FROM merchant "
 				+ " WHERE name like ? AND status <> ? "
-				+ " ORDER BY name LIMIT ? OFFSET ? ",
+				+ " ORDER BY UPPER(name) LIMIT ? OFFSET ? ",
 				new String[] { queryStr, status, limit, lastIdx});
 		
 		List<Merchant> list = new ArrayList<Merchant>();

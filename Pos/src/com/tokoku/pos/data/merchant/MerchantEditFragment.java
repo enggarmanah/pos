@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     
+	EditText mCodeText;
 	EditText mNameText;
 	Spinner mTypeSp;
     EditText mAddressText;
@@ -69,6 +70,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     Spinner mDiscountTypeSp;
     Spinner mOrderTypeSp;
     Spinner mStatusSp;
+    
+    LinearLayout mCodePanel;
     
     LinearLayout mStatusPanel;
     LinearLayout orderTypePanel;
@@ -139,6 +142,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
         
     	super.initViewReference(view);
     	
+    	mCodePanel = (LinearLayout) view.findViewById(R.id.codePanel);
+    	
+    	mCodeText = (EditText) view.findViewById(R.id.codeText);
         mNameText = (EditText) view.findViewById(R.id.nameText);
     	mTypeSp = (Spinner) view.findViewById(R.id.typeSp);
     	mAddressText = (EditText) view.findViewById(R.id.addressText);
@@ -162,6 +168,12 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mDiscountTypeSp = (Spinner) view.findViewById(R.id.discountTypeSp);
     	mOrderTypeSp = (Spinner) view.findViewById(R.id.orderTypeSp);
     	mStatusSp = (Spinner) view.findViewById(R.id.statusSp);
+    	
+    	if (!UserUtil.isRoot()) {
+    		mCodePanel.setVisibility(View.GONE);
+    	} else {
+    		mCodePanel.setVisibility(View.VISIBLE);
+    	}
     	
     	// disable locale selection for demo account
     	if (!UserUtil.isRoot() && MerchantUtil.getMerchantId() != Constant.DEMO_MERCHANT_ID) {
@@ -188,6 +200,7 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	registerRootField(mAddressText);
     	registerRootField(mTelephoneText);*/
     	
+    	//registerRootField(mCodeText);
     	registerRootField(mLoginIdText);
     	registerRootField(mPeriodStartDate);
     	registerRootField(mPeriodEndDate);
@@ -258,6 +271,11 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		int orderTypeIndex = orderTypeArrayAdapter.getPosition(merchant.getOrderType());
     		int statusIndex = statusArrayAdapter.getPosition(merchant.getStatus());
     		
+    		String code = CommonUtil.formatString(merchant.getRefId());
+    		code = code.substring(code.length()-6);
+    		
+    		mCodeText.setText(code);
+    		
     		mNameText.setText(merchant.getName());
     		mAddressText.setText(merchant.getAddress());
     		mTelephoneText.setText(merchant.getTelephone());
@@ -269,8 +287,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mPeriodStartDate.setText(CommonUtil.formatDate(merchant.getPeriodStart()));
     		mPeriodEndDate.setText(CommonUtil.formatDate(merchant.getPeriodEnd()));
     		
-    		Locale locale = CommonUtil.parseLocale(merchant.getLocale());
-    		mLocaleText.setText(locale.getDisplayName());
+    		mLocale = CommonUtil.parseLocale(merchant.getLocale());
+    		mLocaleText.setText(mLocale.getDisplayName());
     		
     		mPriceLabel1Text.setText(merchant.getPriceLabel1());
     		mPriceLabel2Text.setText(merchant.getPriceLabel2());
@@ -278,8 +296,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     		mSecurityQuestionText.setText(CommonUtil.getNvlString(merchant.getSecurityQuestion()));
     		mSecurityAnswerText.setText(CommonUtil.getNvlString(merchant.getSecurityAnswer()));
     		
-    		mTaxText.setText(CommonUtil.formatString(merchant.getTaxPercentage()));
-    		mServiceChargeText.setText(CommonUtil.formatString(merchant.getServiceChargePercentage()));
+    		mTaxText.setText(CommonUtil.formatNumber(merchant.getTaxPercentage()));
+    		mServiceChargeText.setText(CommonUtil.formatNumber(merchant.getServiceChargePercentage()));
     		
     		mTypeSp.setSelection(typeIndex);
     		mPriceTypeCountSp.setSelection(priceTypeCountIndex);
@@ -420,8 +438,8 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	String contactEmail = mContactEmailText.getText().toString();
     	String loginId = mLoginIdText.getText().toString();
     	String password = mPasswordText.getText().toString();
-    	Float tax = CommonUtil.parseFloat(mTaxText.getText().toString());
-    	Float serviceCharge = CommonUtil.parseFloat(mServiceChargeText.getText().toString());
+    	Float tax = CommonUtil.parseFloatNumber(mTaxText.getText().toString());
+    	Float serviceCharge = CommonUtil.parseFloatNumber(mServiceChargeText.getText().toString());
     	Date startDate = CommonUtil.parseDate(mPeriodStartDate.getText().toString());
     	Date endDate = CommonUtil.parseDate(mPeriodEndDate.getText().toString());
     	
@@ -702,6 +720,9 @@ public class MerchantEditFragment extends BaseEditFragment<Merchant> {
     	mandatoryFields.add(new FormFieldBean(mServiceChargeText, R.string.field_service_charge_percentage));
     	mandatoryFields.add(new FormFieldBean(mSecurityQuestionText, R.string.field_security_question));
     	mandatoryFields.add(new FormFieldBean(mSecurityAnswerText, R.string.field_security_answer));
+    	
+    	floatFields.add(new FormFieldBean(mTaxText, R.string.field_tax_percentage));
+    	floatFields.add(new FormFieldBean(mServiceChargeText, R.string.field_service_charge_percentage));
 		
     	if (priceTypeCount == 2) {
     		

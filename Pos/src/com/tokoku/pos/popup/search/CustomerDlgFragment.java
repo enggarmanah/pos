@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tokoku.pos.R;
+import com.tokoku.pos.Session;
 import com.android.pos.dao.Customer;
+import com.tokoku.pos.auth.MerchantLoginActivity;
 import com.tokoku.pos.dao.CustomerDaoService;
+import com.tokoku.pos.data.customer.CustomerMgtActivity;
 import com.tokoku.pos.util.CommonUtil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,12 +29,15 @@ public class CustomerDlgFragment extends BaseSearchDlgFragment<Customer> impleme
 	EditText mCustomerSearchText;
 	ListView mCustomerListView;
 	TextView mNoCustomerText;
+	TextView mNewCustomerText;
 	
 	CustomerSelectionListener mActionListener;
 	
 	CustomerArrayAdapter customerArrayAdapter;
 	
 	private CustomerDaoService mCustomerDaoService = new CustomerDaoService();
+	
+	private static final int REGISTER_CUSTOMER = 1;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +95,9 @@ public class CustomerDlgFragment extends BaseSearchDlgFragment<Customer> impleme
 		mNoCustomerText = (TextView) getView().findViewById(R.id.noCustomerText);
 		mNoCustomerText.setOnClickListener(getNoCustomerTextOnClickListener());
 		
+		mNewCustomerText = (TextView) getView().findViewById(R.id.newCustomerText);
+		mNewCustomerText.setOnClickListener(getNewCustomerTextOnClickListener());
+		
 		mCancelBtn = (TextView) getView().findViewById(R.id.cancelBtn);
 		mCancelBtn.setOnClickListener(getCancelBtnOnClickListener());
 		
@@ -107,6 +117,21 @@ public class CustomerDlgFragment extends BaseSearchDlgFragment<Customer> impleme
                     + " must implement CashierActionListener");
         }
     }
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == Activity.RESULT_OK) {
+			
+			if (requestCode == REGISTER_CUSTOMER) {
+				
+				Customer customer = Session.getCustomer();
+				mActionListener.onCustomerSelected(customer);
+				dismiss();
+			}
+		}
+	}
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -130,6 +155,20 @@ public class CustomerDlgFragment extends BaseSearchDlgFragment<Customer> impleme
 				
 				mActionListener.onCustomerSelected(null);
 				dismiss();
+			}
+		};
+	}
+	
+	private View.OnClickListener getNewCustomerTextOnClickListener() {
+		
+		return new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(getActivity(), CustomerMgtActivity.class);
+				intent.putExtra("fromCashier", true);
+				startActivityForResult(intent, REGISTER_CUSTOMER);
 			}
 		};
 	}
