@@ -8,6 +8,8 @@ import javax.persistence.Table;
 public class Discount extends Base {
 
 	private String name;
+	private String type;
+	private Float amount;
 	private Float percentage;
 	private String status;
 
@@ -34,12 +36,30 @@ public class Discount extends Base {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Float getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Float amount) {
+		this.amount = amount;
+	}
 
 	public void setBean(Discount bean) {
 
 		super.setBean(bean);
 		
 		this.name = bean.getName();
+		this.type = bean.getType();
+		this.amount = bean.getAmount();
 		this.percentage = bean.getPercentage();
 		this.status = bean.getStatus();
 	}

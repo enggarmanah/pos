@@ -11,11 +11,13 @@ public class Product extends Base {
 	private String code;
 	private String name;
 	private String type;
+	private String price_type;
 	private Float price_1;
 	private Float price_2;
 	private Float price_3;
 	private Float cost_price;
 	private String pic_required;
+	private String commision_type;
 	private Float commision;
 	private Float promo_price;
 	private java.util.Date promo_start;
@@ -32,11 +34,13 @@ public class Product extends Base {
 		this.code = bean.getCode();
 		this.name = bean.getName();
 		this.type = bean.getType();
+		this.price_type = bean.getPrice_type();
 		this.price_1 = bean.getPrice_1();
 		this.price_2 = bean.getPrice_2();
 		this.price_3 = bean.getPrice_3();
 		this.cost_price = bean.getCost_price();
 		this.pic_required = bean.getPic_required();
+		this.commision_type = bean.getCommision_type();
 		this.commision = bean.getCommision();
 		this.promo_price = bean.getPromo_price();
 		this.promo_start = bean.getPromo_start();
@@ -181,5 +185,21 @@ public class Product extends Base {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPrice_type() {
+		return price_type;
+	}
+
+	public void setPrice_type(String price_type) {
+		this.price_type = price_type;
+	}
+
+	public String getCommision_type() {
+		return commision_type;
+	}
+
+	public void setCommision_type(String commision_type) {
+		this.commision_type = commision_type;
 	}
 }
