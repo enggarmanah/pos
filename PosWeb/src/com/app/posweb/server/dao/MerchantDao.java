@@ -199,6 +199,33 @@ public class MerchantDao {
 		return result;
 	}
 	
+	public Merchant getMerchantByEmail(String email) {
+		
+		EntityManager em = PersistenceManager.getEntityManager();
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT m FROM Merchant m ");
+		sql.append(" WHERE LOWER(contact_email) = :email");
+		
+		TypedQuery<Merchant> query = em.createQuery(sql.toString(), Merchant.class);
+		
+		query.setParameter("email", email.toLowerCase());
+		
+		List<Merchant> result = null;
+		
+		result = query.getResultList();
+		
+		Merchant merchant = null;
+		
+		if (result != null && result.size() > 0) {
+			merchant = result.get(0);
+		}
+		
+		em.close();
+
+		return merchant;
+	}
+	
 	public List<Merchant> getMerchants(SyncRequest syncRequest) {
 		
 		Sync sync = syncDao.getSync(syncRequest.getMerchant_id(), syncRequest.getUuid(), Constant.SYNC_MERCHANT);

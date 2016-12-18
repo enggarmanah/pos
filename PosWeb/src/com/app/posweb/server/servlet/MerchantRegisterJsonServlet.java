@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import com.app.posweb.server.MailUtil;
+import com.app.posweb.server.ServiceException;
 import com.app.posweb.server.dao.MerchantDao;
 import com.app.posweb.server.model.Merchant;
 import com.app.posweb.server.model.SyncRequest;
@@ -24,6 +25,11 @@ public class MerchantRegisterJsonServlet extends BaseJsonServlet {
         try {
         	
         	Merchant merchant = request.getMerchant();
+        	
+        	if (merchantDao.getMerchantByEmail(merchant.getContact_email()) != null) {
+        		throw new ServiceException(Constant.ERROR_EMAIL_HAS_BEEN_REGISTERED);
+        	}
+        	
         	merchant.setSync_date(new Date());
         	merchantDao.registerMerchant(merchant);
 			
@@ -31,6 +37,13 @@ public class MerchantRegisterJsonServlet extends BaseJsonServlet {
 			
 			MailUtil.sendRegistrationEmail(merchant);
 			MailUtil.sendNotificationEmail(merchant);
+			
+		} catch (ServiceException e) {
+			
+			response.setRespCode(SyncResponse.ERROR);
+			response.setRespDescription(e.getMessage());
+			
+			e.printStackTrace();
 			
 		} catch (Exception e) {
 			
