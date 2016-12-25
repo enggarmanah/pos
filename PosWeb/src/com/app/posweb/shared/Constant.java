@@ -27,7 +27,7 @@ public class Constant {
 	public static final int MIN_SECS = 60;
 	public static final int MILISECS = 1000;
 	
-	public static final int SYNC_RECORD_LIMIT = 100;
+	public static final int SYNC_RECORD_LIMIT = 1000;
 	
 	public static final String TASK_VALIDATE_MERCHANT = "TASK_VALIDATE_MERCHANT";
 	public static final String TASK_VALIDATE_USER = "TASK_VALIDATE_USER";
