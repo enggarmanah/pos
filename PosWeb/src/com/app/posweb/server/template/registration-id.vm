@@ -1,84 +1,211 @@
-<style>
-    @import url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2);
-	@font-face {
-	  font-family: "Open Sans";
-	  font-style: normal;
-	  font-weight: 400;
-	  src: local("Open Sans"), local("OpenSans"), url("https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2") format("woff2");
-	}
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!--
+    This template is provided for free of charge by Email on Acid, LLC.
+
+    Every email client is different. See exactly how your email looks in the most popular inboxes, so you can fix any problems before you hit send.
+    https://www.emailonacid.com/
+    -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Responsive Email Template</title>
+
+<style type="text/css">
+	.ReadMsgBody {width: 100%; background-color: #ffffff;}
+	.ExternalClass {width: 100%; background-color: #ffffff;}
+	body	 {width: 100%; background-color: #ffffff; margin:0; padding:0; -webkit-font-smoothing: antialiased;font-family: Georgia, Times, serif}
+	table {border-collapse: collapse;}
+
+	@media only screen and (max-width: 640px)  {
+					.deviceWidth {width:440px!important; padding:0;}
+					.center {text-align: center!important;}
+			}
+
+	@media only screen and (max-width: 479px) {
+					.deviceWidth {width:280px!important; padding:0;}
+					.center {text-align: center!important;}
+			}
+
 </style>
-<div id="message">
-<br>
-<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Selamat Datang di <strong>TokoKu - Sistem Kasir dengan Teknologi Cloud</strong>.
-</div>
-<br/>
+</head>
 
-<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Terima kasih telah mendownload aplikasi Android kami dari Google Play Store.
-</div>
-<br/>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="font-family: Georgia, Times, serif">
 
-<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Kami telah memberi anda Servis Tokoku Cloud selama 30 hari.<br/><br/>
-Sync dan akses data usaha kapan saja, di mana saja, dan pada semua perangkat Android!
-</div>
-<br/>
+<!-- Wrapper -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+	<tr>
+		<td width="100%" valign="top" bgcolor="#ffffff" style="padding-top:20px">
 
-<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Silahkan kontak kami jika anda ingin menikmati Servis Tokoku Cloud setelah periode tersebut berakhir.<br/><br/>
-Anda masih dapat mengakses data anda di smartphone tanpa Servis Tokoku Cloud, akan tetapi anda tidak dapat melakukan singkronisasi data ke perangkat Android lainnya.<br/><br/>
-Anda tidak dapat lagi melakukan remote monitoring usaha anda dan back up data jika perangkat anda hilang atau rusak. 
-</div>
-<br/>
+			<!-- Start Header-->
+			<table width="580" border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth" style="margin:0 auto;">
+				<tr>
+					<td width="100%" bgcolor="#ffffff">
 
-<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Kami telah mendaftarkan merchant Anda di bawah ini ke dalam sistem kami, kode aktivasi Anda adalah
-<strong>$code</strong>
-</div>
-<br/>
+                            <!-- Logo -->
+                            <table border="0" cellpadding="0" cellspacing="0" align="left" class="deviceWidth">
+                                <tr>
+                                    <td style="padding:0px 0px" class="center">
+                                        <a href="https://www.pos-tokoku.com/home?lang=id"><img src="https://www.pos-tokoku.com/images/tokoku.png" alt="" border="0" style="max-height: 50px; border-top-left-radius: 10px; border-bottom-right-radius: 10px;"/></a>
+                                    </td>
+                                </tr>
+                            </table><!-- End Logo -->
 
-</div>
-<table style="border-collapse: collapse;">
-	<tr>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Merchant : &nbsp;</td>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$merchant</td>
-	<tr>
-	<tr>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Alamat : &nbsp;</td>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$address</td>
-	<tr>
-	<tr>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Telepon : &nbsp;</td>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$telephone</td>
-	<tr>
-	<tr>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Login Id : &nbsp;</td>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$loginId</td>
-	<tr>
-	<tr>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">Password : &nbsp;</td>
-		<td style="vertical-align: top; font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">$password</td>
-	<tr>
-</table>
-<br/>
+                            <!-- Nav -->
+                            <table border="0" cellpadding="0" cellspacing="0" align="right" class="deviceWidth">
+                                <tr>
+                                    <td class="center" style="font-size: 13px; color: #272727; font-weight: light; text-align: right; font-family: 'Century Gothic', Georgia, Times, serif; line-height: 20px; vertical-align: middle; padding:10px 0px; font-style:italic">
+                                        <a href="https://www.pos-tokoku.com/home?lang=id" style="text-decoration: none; color: #3b3b3b;">Fungsionalitas</a>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <a href="https://www.pos-tokoku.com/home?lang=id" style="text-decoration: none; color: #3b3b3b;">Galeri</a>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <a href="https://www.pos-tokoku.com/home?lang=id" style="text-decoration: none; color: #3b3b3b;">Petunjuk</a>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <a href="https://www.pos-tokoku.com/home?lang=id" style="text-decoration: none; color: #3b3b3b;">Langganan</a>
+                                    </td>
+                                </tr>
+                            </table><!-- End Nav -->
 
-<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Jika anda membutuhkan bantuan, anda dapat menghubungi kami melalui SMS / Whatsapp +62 856-4745-3111.   
-</div>
-<br/>
+					</td>
+				</tr>
+			</table><!-- End Header -->
 
-<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Untuk info lebih lanjut silahkan kunjungi website kami <a href="https://www.pos-tokoku.com?lang=id" style="font: normal 14px "Open Sans", Georgia, "Comic Sans"; color: #438db0;">https://www.pos-tokoku.com</a>.<br/>
-Petunjuk penggunaan aplikasi TokoKu dapat diakses pada <a href="https://www.pos-tokoku.com/guide?lang=id" style="font: normal 14px "Open Sans", Georgia, "Comic Sans"; color: #438db0;">https://www.pos-tokoku.com/guide</a>.
-</div>
-<br/>
+			<!-- One Column -->
+			<table width="580"  class="deviceWidth" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#eeeeed" style="margin:0 auto;">
+				<tr>
+					<td style="font-size: 13px; color: #555; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif; line-height: 24px; vertical-align: top; padding:10px 8px 10px 0px" bgcolor="#fff">
+						Selamat Datang di <strong>TokoKu - Sistem Kasir dengan Teknologi Cloud</strong>
+					</td>
+				</tr>
+                <tr>
+                    <td style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif; line-height: 24px; vertical-align: top; padding:15px 8px 15px 8px" bgcolor="#eeeeed">
+                        Terima kasih telah mendownload aplikasi Android kami dari Google Play Store.
+						Kami telah memberi anda Servis Tokoku Cloud selama 30 hari.<br/><br/>
+						Sync dan akses data usaha kapan saja, di mana saja, dan pada semua perangkat Android!<br/><br/>
+						Silahkan kontak kami jika anda ingin menikmati Servis Tokoku Cloud setelah periode tersebut berakhir.<br/><br/>
+						Anda masih dapat mengakses data anda di smartphone tanpa Servis Tokoku Cloud, akan tetapi anda tidak dapat melakukan singkronisasi data ke perangkat Android lainnya.<br/><br/>
+						Anda tidak dapat lagi melakukan remote monitoring usaha anda dan back up data jika perangkat anda hilang atau rusak. 
+                    </td>
+                </tr>
+                </tr>
+			</table><!-- End One Column -->
 
-<div style="font: normal 12px "Open Sans", Georgia, "Comic Sans"; color: #444;">
-Salam Hangat,<br><br><br>
+			<div style="height:15px;margin:0 auto;">&nbsp;</div><!-- spacer -->
 
-TokoKu Team - Cloud POS Solutions<br><br>
-Whatsapp: +62 856-4745-3111<br>
-Line: tokoku.solutions<br>
+			<!-- One Column -->
+			<table width="580px"  class="deviceWidth" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#eeeeed" style="margin:0 auto;">
+				<tr>
+                    <td style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif; line-height: 24px; vertical-align: top; padding:15px 8px 15px 8px" bgcolor="#eeeeed">
+                        Kami telah mendaftarkan merchant Anda di bawah ini ke dalam sistem kami, kode aktivasi Anda adalah
+						<strong>$code</strong>
+						<br/><br/>
+						<table style="border-collapse: collapse;" width="100%">
+						<tr>
+							<td width="100px" style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">Merchant : &nbsp;</td>
+							<td style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">$merchant</td>
+						<tr>
+						<tr>
+							<td width="100px" style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">Alamat : &nbsp;</td>
+							<td style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">$address</td>
+						<tr>
+						<tr>
+							<td width="100px" style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">Telepon : &nbsp;</td>
+							<td style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">
+							<a href="#" style="font: normal 13px 'Century Gothic', Georgia; color: #666; text-decoration: none;">
+							$telephone
+							</a>
+							</td>
+						<tr>
+						<tr>
+							<td width="100px" style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">Login Id : &nbsp;</td>
+							<td style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">$loginId</td>
+						<tr>
+						<tr>
+							<td width="100px" style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">Password : &nbsp;</td>
+							<td style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif;">$password</td>
+						<tr>
+					</table>
+                    </td>
+                </tr>
+                </tr>
+			</table><!-- End One Column -->
+			
+			<div style="height:15px;margin:0 auto;">&nbsp;</div><!-- spacer -->
+
+			<!-- One Column -->
+			<table width="580"  class="deviceWidth" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#eeeeed" style="margin:0 auto;">
+				<tr>
+                    <td style="font-size: 13px; color: #666; font-weight: normal; text-align: left; font-family: 'Century Gothic', Georgia, Times, serif; line-height: 24px; vertical-align: top; padding:15px 8px 15px 8px" bgcolor="#eeeeed">
+                        Jika anda membutuhkan bantuan, anda dapat menghubungi kami melalui SMS / Whatsapp <a href="#" style="font: normal 13px 'Century Gothic', Georgia; color: #666; text-decoration: none;">+62 856-4745-3111.</a><br><br/>
+						Untuk info lebih lanjut silahkan kunjungi website kami <a href="https://www.pos-tokoku.com?lang=id" style="font: normal 14px 'Century Gothic', Georgia; color: #438db0;">https://www.pos-tokoku.com</a>.<br/>
+						Petunjuk penggunaan aplikasi TokoKu dapat diakses pada <a href="https://www.pos-tokoku.com/guide?lang=id" style="font: normal 14px 'Century Gothic', Georgia; color: #438db0;">https://www.pos-tokoku.com/guide</a>.<br/><br/>
+						
+						Salam Hangat,<br><br>
+
+						TokoKu Team - Cloud POS Solutions<br><br>
+                    </td>
+                </tr>
+                </tr>
+			</table><!-- End One Column -->
+
+			<div style="height:15px;margin:0 auto;">&nbsp;</div><!-- spacer -->
+
+			<!-- 4 Columns -->
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+				<tr>
+					<td bgcolor="#275363" style="padding:30px 0">
+                        <table width="580" border="0" cellpadding="10" cellspacing="0" align="center" class="deviceWidth" style="margin:0 auto;">
+                            <tr>
+                                <td>
+                                        <table width="50%" cellpadding="0" cellspacing="0"  border="0" align="left" class="deviceWidth">
+                                            <tr>
+                                                <td valign="top" style="font-size: 13px; color: #ddd; font-family: 'Century Gothic', Arial, sans-serif; padding-bottom:20px" class="center">
+
+                                                    <p>
+														TokoKu Marketing Office<br/><br/>
+														Jl. Merak 4 Gonilan Solo 57162, Indonesia<br/>
+														Tel: <a href="#" style="font: normal 13px 'Century Gothic', Georgia; color: #ddd; text-decoration: none;">+62 856-4745-3111</a><br/>
+														Email: <a href="#" style="font: normal 13px 'Century Gothic', Georgia; color: #ddd; text-decoration: none;">app.tokoku@gmail.com</a><br/>
+														Website: <a href="http://www.pos-tokoku.com" style="font: normal 13px 'Century Gothic', Georgia; color: #ddd; text-decoration: none;">www.pos-tokoku.com</a>
+													</p>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <table width="40%" cellpadding="0" cellspacing="0"  border="0" align="right" class="deviceWidth">
+                                            <tr>
+                                                <td valign="top" style="font-size: 11px; color: #fff; font-weight: normal; font-family: Georgia, Times, serif; line-height: 26px; vertical-align: top; text-align:right" class="center">
+
+                                                    <a href=""><img src="https://www.pos-tokoku.com/images/templatemo_icon_1.png" width="42" height="42" alt="RSS Feed" title="RSS Feed" border="0" /></a>
+
+                                                    <a href=""><img src="https://www.pos-tokoku.com/images/templatemo_icon_2.png" width="42" height="42" alt="Twitter" title="Twitter" border="0" /></a>
+
+                                                    <a href=""><img src="https://www.pos-tokoku.com/images/templatemo_icon_3.png" width="42" height="42" alt="Vimeo" title="Vimeo" border="0" /></a>
+
+                                                    <a href=""><img src="https://www.pos-tokoku.com/images/templatemo_icon_4.png" width="42" height="42" alt="Facebook" title="Facebook" border="0" /></a>
+                                                    <br />
+
+                                                    <a href="#"></a><br/>
+                                                    <a href="#" style="text-decoration: none; color: #848484; font-weight: normal;"></a><br/>
+                                                    <a href="#" style="text-decoration: none; color: #848484; font-weight: normal;"></a>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                        		</td>
+                        	</tr>
+                        </table>
+                    </td>
+                </tr>
+            </table><!-- End 4 Columns -->
+
+		</td>
+	</tr>
+</table> <!-- End Wrapper -->
+<div style="display:none; white-space:nowrap; font:15px courier; color:#ffffff;">
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 </div>
-</div>
+</body>
+</html>
