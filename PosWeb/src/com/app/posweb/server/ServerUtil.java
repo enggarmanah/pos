@@ -1,5 +1,6 @@
 package com.app.posweb.server;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -201,4 +202,28 @@ public class ServerUtil {
 			query.setParameter("id" + i++, id);
 		}
 	}
+	
+	public static Long getIntegerToLong(Object object) {
+		
+		if (object == null) {
+			return null;
+		} else {
+			Long value = new Long((Integer) object);
+			return value;
+		}
+	}
+	
+	public static Float getBigDecimalToFloat(Object object) {
+		
+		String obj = null;
+		Object o = obj;
+		obj = (String) o;
+		
+		if (object == null) {
+			return null;
+		} else {
+			Float value = ((BigDecimal) object).floatValue();
+			return value;
+		}
+	} 
 }
